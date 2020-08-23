@@ -55,7 +55,24 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/firebase',
   ],
+  firebase: { //// ingrese datos de firebase para iniciar configuración 
+    config:{
+        apiKey: "",
+        authDomain: "",
+        databaseURL: "",
+        projectId: "",
+        storageBucket: "",
+        messagingSenderId: "",
+        appId: "",
+        measurementId: ""
+    },
+    services: {
+      auth: true, // Just as example. Can be any other service.
+      firestore:true
+    }
+  },
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
@@ -87,9 +104,5 @@ export default {
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
-  },
-  serverMiddleware: [
-    '~/api/index.js'
-   
-  ]
+  }
 }

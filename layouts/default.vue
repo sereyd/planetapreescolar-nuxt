@@ -51,7 +51,7 @@
       <!----Espacio de carga de vistas------>
 
     <v-footer
-      :absolute="!fixed"
+  
       app
       class="primary white--text"
     >
