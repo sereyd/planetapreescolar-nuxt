@@ -70,13 +70,13 @@ export default {
         measurementId: ""
       },
       development:{
-        apiKey: "AIzaSyBdyfgIAzhwXhf4GbrS8FGjYyRB3lOthJY",
-        authDomain: "planeta-educadora.firebaseapp.com",
-        databaseURL: "https://planeta-educadora.firebaseio.com",
-        projectId: "planeta-educadora",
-        storageBucket: "planeta-educadora.appspot.com",
-        messagingSenderId: "498908744238",
-        appId: "1:498908744238:web:6b722756ea2129d4142dbf",
+        apiKey: "",
+        authDomain: "",
+        databaseURL: "",
+        projectId: "",
+        storageBucket: "",
+        messagingSenderId: "",
+        appId: "",
         measurementId: ""
       }
     },
