@@ -1,10 +1,29 @@
 export default{
     data(){
         return {
-            datosuser:[]
+            altauser:false,
+            datosuser:[],
+            cabecera:[{
+                text:'Nombre',
+                value:'nombre'
+            },
+            {
+                text:'Correo',
+                value:'correo'
+            },
+            {
+                text:'Contraseña',
+                value:'password'
+            },
+            {
+                text:'Editar',
+                value:'action'
+            }    
+        ]
         }
     },
     methods:{
+        
         async getElement(){ 
             //// carga datos de usuario 
 

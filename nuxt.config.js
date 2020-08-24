@@ -59,6 +59,7 @@ export default {
   ],
   firebase: {
     config:{
+        production: {
         apiKey: "AIzaSyAFKFFc5NQ8LAiR0KB_FVkUP3s3JEP9jCw",
         authDomain: "planetapreescolar-39350.firebaseapp.com",
         databaseURL: "https://planetapreescolar-39350.firebaseio.com",
@@ -67,7 +68,18 @@ export default {
         messagingSenderId: "1085237806661",
         appId: "1:1085237806661:web:8bf6f3d51794c3a88d452c",
         measurementId: "G-MTG60YV1RZ"
-    },
+        },
+        development: {
+          apiKey: "AIzaSyB8GyvM9PdvjufoAyEZv2uRQLVhVQM-Z-o",
+          authDomain: "educadorafirebase.firebaseapp.com",
+          databaseURL: "https://educadorafirebase.firebaseio.com",
+          projectId: "educadorafirebase",
+          storageBucket: "educadorafirebase.appspot.com",
+          messagingSenderId: "4922270561",
+          appId: "1:4922270561:web:d12332e6277b143e5c9b20",
+          measurementId: "G-E7Y6JTQG51"
+        }
+      },
     services: {
       auth: true, // Just as example. Can be any other service.
       firestore:true
@@ -83,7 +95,7 @@ export default {
   ** https://github.com/nuxt-community/vuetify-module
   */
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
+    customVariables: ['~/assets/variables.scss','font-awesome/css/font-awesome.min.css'],
     theme: {
       light: true,
       themes: {
@@ -96,13 +108,27 @@ export default {
           success: '#4CAF50',
           warning: '#FFC107'
         }
+      },
+     
+    },
+    
+      font: {
+        family: 'Roboto' 
+      },
+      icons:  {
+        iconfont: 'mdi',
       }
-    }
+    
   },
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
+
   }
   }
+<<<<<<< HEAD
+  }
+=======
+>>>>>>> develop
