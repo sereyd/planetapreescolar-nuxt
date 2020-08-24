@@ -59,14 +59,30 @@ export default {
   ],
   firebase: {
     config:{
-        apiKey: "",
-        authDomain: "",
-        databaseURL: "",
-        projectId: "",
-        storageBucket: "",
-        messagingSenderId: "",
-        appId: "",
-        measurementId: ""
+        production: {
+        apiKey: "AIzaSyAFKFFc5NQ8LAiR0KB_FVkUP3s3JEP9jCw",
+        authDomain: "planetapreescolar-39350.firebaseapp.com",
+        databaseURL: "https://planetapreescolar-39350.firebaseio.com",
+        projectId: "planetapreescolar-39350",
+        storageBucket: "planetapreescolar-39350.appspot.com",
+        messagingSenderId: "1085237806661",
+        appId: "1:1085237806661:web:8bf6f3d51794c3a88d452c",
+        measurementId: "G-MTG60YV1RZ"
+        },
+        development: {
+          apiKey: "AIzaSyB8GyvM9PdvjufoAyEZv2uRQLVhVQM-Z-o",
+          authDomain: "educadorafirebase.firebaseapp.com",
+          databaseURL: "https://educadorafirebase.firebaseio.com",
+          projectId: "educadorafirebase",
+          storageBucket: "educadorafirebase.appspot.com",
+          messagingSenderId: "4922270561",
+          appId: "1:4922270561:web:d12332e6277b143e5c9b20",
+          measurementId: "G-E7Y6JTQG51"
+        }
+      },
+
+
+
     },
     services: {
       auth: true, // Just as example. Can be any other service.
