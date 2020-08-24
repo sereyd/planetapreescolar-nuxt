@@ -83,7 +83,7 @@ export default {
   ** https://github.com/nuxt-community/vuetify-module
   */
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
+    customVariables: ['~/assets/variables.scss','font-awesome/css/font-awesome.min.css'],
     theme: {
       light: true,
       themes: {
@@ -97,16 +97,22 @@ export default {
           warning: '#FFC107'
         }
       },
-      icons: {
-        iconfont: 'fa4', // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
-      }
+     
     },
-   
+    
+      font: {
+        family: 'Roboto' 
+      },
+      icons:  {
+        iconfont: 'mdi',
+      }
+    
   },
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
+
   }
   }

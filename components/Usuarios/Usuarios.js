@@ -1,6 +1,7 @@
 export default{
     data(){
         return {
+            altauser:false,
             datosuser:[],
             cabecera:[{
                 text:'Nombre',
@@ -22,6 +23,7 @@ export default{
         }
     },
     methods:{
+        
         async getElement(){ 
             //// carga datos de usuario 
 

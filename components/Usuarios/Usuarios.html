@@ -1,8 +1,20 @@
 <div>
     <h2>carga datos de usuarios</h2>
+    <v-btn class="secondary" ><v-icon class="white--text" @click="altauser=true" >mdi-account-plus</v-icon></v-btn>
     <v-data-table :headers="cabecera" :items="datosuser">
             <template v-slot:item.action="{ item }">
-                <v-btn class="error"><v-icon>fa-trash</v-icon></v-btn>
+                <v-btn class="error"><v-icon>mdi-delete</v-icon></v-btn>
             </template>
     </v-data-table>
+
+    <v-dialog width="600" v-model="altauser" >
+        <v-card>
+            <v-card-title class="primary white--text">
+                Alta de usaurio
+            </v-card-title>
+            <v-card-text>
+                Alta de usuario
+            </v-card-text>
+        </v-card>
+    </v-dialog>
 </div>
