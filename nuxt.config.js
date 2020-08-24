@@ -96,8 +96,12 @@ export default {
           success: '#4CAF50',
           warning: '#FFC107'
         }
+      },
+      icons: {
+        iconfont: 'fa4', // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
       }
-    }
+    },
+   
   },
   /*
   ** Build configuration
@@ -105,4 +109,4 @@ export default {
   */
   build: {
   }
-}
+  }

@@ -1,7 +1,24 @@
 export default{
     data(){
         return {
-            datosuser:[]
+            datosuser:[],
+            cabecera:[{
+                text:'Nombre',
+                value:'nombre'
+            },
+            {
+                text:'Correo',
+                value:'correo'
+            },
+            {
+                text:'Contraseña',
+                value:'password'
+            },
+            {
+                text:'Editar',
+                value:'action'
+            }    
+        ]
         }
     },
     methods:{

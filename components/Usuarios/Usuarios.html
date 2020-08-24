@@ -1,3 +1,8 @@
 <div>
     <h2>carga datos de usuarios</h2>
+    <v-data-table :headers="cabecera" :items="datosuser">
+            <template v-slot:item.action="{ item }">
+                <v-btn class="error"><v-icon>fa-trash</v-icon></v-btn>
+            </template>
+    </v-data-table>
 </div>
