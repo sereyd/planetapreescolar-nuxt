@@ -1,0 +1,27 @@
+.v-dialog--active{
+    width: 37%;
+}
+.hidden-element{
+    background-color: blue;
+    visibility: hidden;
+}
+
+@media (max-width: 576px) { 
+
+    .v-dialog--active{
+        width: 100%;
+    }
+}
+
+@media(max-width: 768px) { 
+
+    .v-dialog--active{
+        width: 80%;
+    }
+ }
+
+ @media (max-width: 992px) { 
+    .v-dialog--active{
+        width: 70%;
+    } 
+ }
