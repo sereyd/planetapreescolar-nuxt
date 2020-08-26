@@ -1,9 +1,52 @@
 import Vuex from 'vuex'
-
+var correoglobal=""
 const createStore = () => {
   return new Vuex.Store({
     state: () => ({
-      test:'prueba store con state 1'
+      test:'prueba store con state',
+      counter: 0,
+      dialog: false,
+      tipoUsuarioR: '',
+      faseFormulario: 1,
+      datosUsuario:{
+        tipo: '',
+        nombre: '',
+        apellido: '',
+        correo: '',
+        confirmarCorreo: '',
+        password: '',
+        confirmarPassword:'',
+        celular: '',
+        experiencia: '',
+        pais: '',
+        cuidad: '',
+      },
+    correo2: "dddd",
+    //validacion form
+    valid: true,
+    nombreReglas: [
+      v => !!v || 'Nombre es requerido',
+      // v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+    ],
+    apellidoReglas: [ 
+      v => !!v || 'Nombre es requerido',
+ 
+      // v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+    ],
+    correoReglas: [
+      v => !!v || 'correo es requerido',
+      v => /.+@.+\..+/.test(v) || 'Correo no válido',
+      v => correoglobal=v
+    ],
+    correoReglas2: [
+      v => (v === correoglobal) || 'El correo debe ser el mismo'
+    ],
+    passwordReglas: [
+      v => !!v || 'contraseña es requerida',
+      v => (v && v.length >= 8) || 'Contraseña debe ser 8 o más caracteres',
+    ],
+    errorFase2: true,
+    errorFase3: true
 
     }),
     actions:{
