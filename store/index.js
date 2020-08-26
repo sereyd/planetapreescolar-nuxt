@@ -1,5 +1,5 @@
 import Vuex from 'vuex'
-
+var correoglobal=""
 const createStore = () => {
   return new Vuex.Store({
     state: () => ({
@@ -28,18 +28,18 @@ const createStore = () => {
       v => !!v || 'Nombre es requerido',
       // v => (v && v.length <= 10) || 'Name must be less than 10 characters',
     ],
-    apellidoReglas: [
+    apellidoReglas: [ 
       v => !!v || 'Nombre es requerido',
+ 
       // v => (v && v.length <= 10) || 'Name must be less than 10 characters',
     ],
     correoReglas: [
       v => !!v || 'correo es requerido',
       v => /.+@.+\..+/.test(v) || 'Correo no válido',
+      v => correoglobal=v
     ],
     correoReglas2: [
-      v => !!v || 'correo es requerido',
-      v => /.+@.+\..+/.test(v) || 'Correo no válido',
-      v => (v != console.log(state.datosUsuario.correo)) || 'El correo debe ser el mismo',
+      v => (v === correoglobal) || 'El correo debe ser el mismo'
     ],
     passwordReglas: [
       v => !!v || 'contraseña es requerida',
