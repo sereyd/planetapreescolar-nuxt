@@ -1,0 +1,201 @@
+<div  justify="center">
+    
+    <v-dialog v-model="dialog" persistent class="dialog">
+      
+      <v-card>
+        <v-card-title class=" justify-space-between">
+            <!-- v-show="faseFormulario !== 1 " -->
+            
+            <v-btn icon text small color="purple" @click="atrasFormulario" >
+                <v-icon>mdi-arrow-left-bold</v-icon>
+            </v-btn>
+            <h2 class="headline purple--text ">{{titulo}}</h2>
+            
+            <!-- mdi-window-close -->
+            <v-btn icon text small color="purple" @click="abrirRegistro" >
+                <v-icon>mdi-window-close</v-icon>
+            </v-btn>
+        </v-card-title>
+        <!-- <v-btn small color="purple" @click="revisarDatos" >
+            Revisar datos
+        </v-btn> -->
+        <!-- revisarDatos -->
+        <v-card-text>
+          <v-container>
+            <div 
+            class=" d-flex align-center justify-center"  
+            style="height: auto;"
+            v-if="tipoResgistro === '' && tipoUsuarioR === '' && faseFormulario === 1 "
+            >
+                <div v-for="(usuario, index) in tipoUsuario">
+                    <v-btn
+                    class="pa-12 mx-6"
+                    fab dark large
+                    @click="elegirRegistro(usuario.tipo)"
+                    >
+                    <v-icon dark>{{usuario.icon}}</v-icon>
+                    </v-btn>
+                    <h3 class="text-center">{{usuario.tipo}}</h3>
+                </div>
+            </div>
+
+            <div  v-if="tipoUsuarioR === 'Educador'"   >
+                <!-- <template> -->
+                    <form lazy-validation ref="form" v-model="valid">
+                        <div v-if="faseFormulario === 2">
+                            <div hidden >
+                                <v-file-input
+                                    id="imagen_input"
+                                    v-model="imagen"
+                                    accept="image/png, image/jpeg, image/bmp"
+                                ></v-file-input>
+                            </div> 
+                            <div class=" d-flex justify-center align-center">
+                                <div>
+                                <v-btn
+                                    class="pa-10 mx-6 "
+                                    color="purple lighten-5"
+                                    fab  dark
+                                    @click="focus"
+                                >
+                                <div v-if="!imagen" >
+                                    <v-icon color="pink darken-4"  style="font-size: 80px;">mdi-plus</v-icon>
+                                </div>
+                                <div v-else >
+                                    <v-avatar size="52%"> 
+                                        <img
+                                        
+                                        src="https://cdn.vuetifyjs.com/images/john.jpg"
+                                        alt="John"
+                                        >
+                                    </v-avatar>
+                                </div>
+                                </v-btn>
+                                <h3 class="text-center mt-3">Foto de perfil</h3>
+                                {{imagen}}
+                                </div>
+
+                            </div>
+                            <v-row no-gutters  class="d-flex ">
+                                <v-col
+                                    cols="3"
+                                    class="flex-grow-0 flex-shrink-0"
+                                >
+                                <v-select
+                                    v-model="datosUsuario.tipo"
+                                    :items="tipos"
+                                    placeholder="Tipo:"
+                                    required
+                                    class="mr-2 "
+                                    color="purple"
+                                ></v-select>
+                                </v-col>
+                                <v-col
+                                    cols="9"
+                                >
+                                <v-text-field
+                                    v-model="datosUsuario.nombre"
+                                    placeholder="Nombre:"
+                                    required
+                                    :rules="nombreReglas"
+                                ></v-text-field>
+                                </v-col>
+                            </v-row>
+                            <v-text-field
+                                v-model="datosUsuario.apellido"
+                                placeholder="Apellido:"
+                                required
+                                :rules="apellidoReglas"
+                            ></v-text-field>
+                            {{datosUsuario.correo}}
+                            <v-text-field
+                                v-model="datosUsuario.correo"
+                                placeholder="Email:"
+                                required
+                                :rules="correoReglas"
+                            ></v-text-field>
+                            <v-text-field
+                                v-model="datosUsuario.confirmarCorreo"
+                                placeholder="Confirmar Email:"
+                                required
+                                :rules="correoReglas2"
+
+                            ></v-text-field>
+
+                            <v-text-field
+                                v-model="datosUsuario.password"
+                                placeholder="Contraseña:"
+                                required
+                                type="password"
+                                :rules="passwordReglas"
+
+                            ></v-text-field>
+                            <v-text-field
+                                v-model="datosUsuario.confirmarPassword"
+                                placeholder="Confirmar Contraseña:"
+                                required
+                                type="password"
+                                :rules="passwordReglas"
+
+                            ></v-text-field>
+                            <div class="d-flex justify-center">
+                                
+                                <v-btn dark class="red px-10" @click="siguienteFormulario"  > Siguiente</v-btn>
+                            </div>
+                        </div>
+                      <!-- <v-btn class="mr-4" @click="submit">submit</v-btn>
+                      <v-btn @click="clear">clear</v-btn> -->
+                        <div v-if="faseFormulario === 3">
+                            <v-text-field
+                                v-model="datosUsuario.celular"
+                                placeholder="Teléfono:"
+                                required
+                            ></v-text-field>
+                            <v-select
+                                v-model="datosUsuario.experiencia"
+                                :items="tipos"
+                                placeholder="Años de experiencia:"
+                                required
+                                class="mr-2 "
+                                max-width="50%"
+                            ></v-select>
+                            <v-select
+                                v-model="datosUsuario.pais"
+                                :items="tipos"
+                                placeholder="País:"
+                                required
+                                class="mr-2 "
+                            ></v-select>
+                            <v-select
+                                v-model="datosUsuario.cuidad"
+                                :items="tipos"
+                                placeholder="Cuidad:"
+                                required
+                                class="mr-2 "
+                            ></v-select>
+                            <!-- <v-checkbox
+                                v-model="allowSpaces"
+                                label="Acepto términos y condiciones"
+                            ></v-checkbox> -->
+                            <div class="d-flex justify-center">
+                                <v-btn dark class="red px-10"> Crear cuenta</v-btn>
+                            </div>
+                        </div>
+                    </form>
+                  <!-- </template> -->
+            </div>
+            <div v-if=" tipoUsuarioR === 'Tutor' ">
+                <h1>Formulario del Tutor</h1>
+            </div>
+            
+          </v-container>
+          <!-- <small>*indicates required field</small> -->
+        </v-card-text>
+        <!-- <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="abrirRegistro">Cerrar</v-btn>
+          <v-btn color="blue darken-1" text @click="abrirRegistro">Guardar</v-btn>
+        </v-card-actions> -->
+      </v-card>
+    </v-dialog>
+</div>
