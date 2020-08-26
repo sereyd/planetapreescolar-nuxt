@@ -1,3 +1,4 @@
+import { mapState, mapMutations } from 'vuex'
 export default{
     data(){
         return {
@@ -21,9 +22,15 @@ export default{
             }    
         ]
         }
+    }, 
+    computed:{
+        ...mapState(['test','counter'])
     },
+    // computed:{
+    //     ...mapState(['test'])
+    //   },
     methods:{
-        
+        ...mapMutations(['increment']),
         async getElement(){ 
             //// carga datos de usuario 
 
