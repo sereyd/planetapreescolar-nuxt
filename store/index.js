@@ -20,8 +20,10 @@ const createStore = () => {
         experiencia: '',
         pais: '',
         cuidad: '',
+        userlogin:true,
+        lvluser:0
       },
-    correo2: "dddd",
+    correo2: "",
     //validacion form
     valid: true,
     nombreReglas: [
@@ -34,9 +36,10 @@ const createStore = () => {
       // v => (v && v.length <= 10) || 'Name must be less than 10 characters',
     ],
     correoReglas: [
-      v => !!v || 'correo es requerido',
-      v => /.+@.+\..+/.test(v) || 'Correo no válido',
-      v => correoglobal=v
+        v => !!v || 'correo es requerido',
+        v => /.+@.+\..+/.test(v) || 'Correo no válido',
+        (v) => { correoglobal=v  
+          return false  }
     ],
     correoReglas2: [
       v => (v === correoglobal) || 'El correo debe ser el mismo'
@@ -46,7 +49,8 @@ const createStore = () => {
       v => (v && v.length >= 8) || 'Contraseña debe ser 8 o más caracteres',
     ],
     errorFase2: true,
-    errorFase3: true
+    errorFase3: true,
+
 
     }),
     actions:{
@@ -67,6 +71,10 @@ const createStore = () => {
     mutations: {
       increment(state) {
         state.counter++
+      },
+      cambiastatusSesion(state,data){
+        state.datosUsuario.userlogin=data.login
+        state.datosUsuario.lvluser=data.lvl
       },
       abrirRegistro(state) {
         state.dialog = !state.dialog;
