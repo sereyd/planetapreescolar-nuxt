@@ -20,8 +20,9 @@ const createStore = () => {
         experiencia: '',
         pais: '',
         cuidad: '',
-        userlogin:false,
-        lvluser:0
+        userlogin:true,
+        lvluser:1
+
       },
     correo2: "",
     //validacion form
