@@ -50,7 +50,7 @@
         </h1>
 
         <!---componente de registro-educadora--->
-
+          <Registro/>
         <!---componente de registro-educadora--->
 
       </v-main>
@@ -78,7 +78,7 @@
         </h1>
 
         <!---componente de registro-padres--->
-
+          <!-- <Registro/> -->
         <!---componente de registro-padres--->
         
       </v-main>
@@ -101,6 +101,9 @@
 </style>
 <script>
 import validasitio from "@/mixins/validasitio.js";
+import Registro from '~/components/registro/registro.vue';
+
+
 export default {
   data() {
     return {
@@ -109,6 +112,9 @@ export default {
       },
       tipo_registro: ""
     };
+  },
+  components:{
+    Registro
   },
   mixins: [validasitio]
 };
