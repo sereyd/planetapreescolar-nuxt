@@ -21,10 +21,12 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
+      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' },
+     
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { href:"https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap", rel:"stylesheet" }    
     ]
   },
   /*
@@ -37,6 +39,7 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
+    '@/plugins/validasesion.js'
   ],
   /*
   ** Auto import components
@@ -101,7 +104,10 @@ export default {
       themes: {
         light: {
           primary: '#ad227d',
-          secondary: '#ff6c5c',
+          melon:'#ff6c5c',
+          verylight:'#ebe4eb',
+          secondary: '#c93b98',
+          greysh:'#484848',
           accent: '#82B1FF',
           error: '#FF5252',
           info: '#2196F3',
@@ -113,7 +119,7 @@ export default {
     },
     
       font: {
-        family: 'Roboto' 
+        family: 'Montserrat' 
       },
       icons:  {
         iconfont: 'mdi',
