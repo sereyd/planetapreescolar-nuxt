@@ -1,0 +1,50 @@
+<div>
+    <v-card>
+        <v-card-title class="primary white--text">
+        <v-icon  @click.stop="drawer = !drawer" class="white--text  ">mdi-menu</v-icon> 
+        
+        <div v-if="devtest===true">
+        <v-btn @click="$store.commit('cambiastatusSesion',{login:false,lvl:0})">user sin registro</v-btn>
+        <v-btn @click="$store.commit('cambiastatusSesion',{login:true,lvl:0})">user registro gratis</v-btn>
+        <v-btn @click="$store.commit('cambiastatusSesion',{login:true,lvl:1})">user registro premium</v-btn>
+        <v-btn @click="$store.commit('cambiastatusSesion',{login:true,lvl:2})">user registro administrador</v-btn>
+    </div>
+
+        <v-spacer></v-spacer>
+        <router-link to="login" v-if="$validasesion($store.state,{ sinregistro:true })" class="white--text" style="text-decoration:none;">Iniciar sesión</router-link> &nbsp;&nbsp;&nbsp;
+        <v-btn class="melon white--text"  v-if="$validasesion($store.state,{ sinregistro:true })" link to="registro">Registro   </v-btn>
+
+
+        </v-card-title>
+    </v-card>
+
+    <v-navigation-drawer
+    v-model="drawer"
+    absolute
+    temporary
+    class="secondary"
+  >
+
+    <v-list dense>
+
+      <v-list-item
+        v-for="item in items"
+        :key="item.title"
+        link
+        :to="item.link"
+        v-if="$validasesion($store.state,item)"
+      >
+        <v-list-item-icon >
+          <v-icon class="white--text">{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title class="white--text">{{ item.title }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+  </v-navigation-drawer>
+
+
+
+</div>

@@ -1,4 +1,11 @@
 # Created by .ignore support plugin (hsz.mobi)
+
+#ignode config
+nuxt.config
+nuxt.config.js
+nuxt.config.*
+
+
 ### Node template
 # Logs
 /logs

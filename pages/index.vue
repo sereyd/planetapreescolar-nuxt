@@ -1,20 +1,35 @@
 <template>
- <div>
-  Hola vuejs 
-  <Usuarios />
-   </div>
+<v-main>
+  <!-----Buscador------>
+
+
+  <!------reflexiones------>
+
+
+  <!------recomendaciones----->
+
+
+  <!-------Blog------------->
+
+
+
+  <!---------memorias------------>
+
+
+
+</v-main>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
-import Usuarios from '~/components/Usuarios/Usuarios.vue'
-
 export default {
+  data() {
+    return {};
+  },
+  computed: {
+
+  },
   components: {
-    Logo,
-    VuetifyLogo,
-    Usuarios
+
   }
-}
+};
 </script>
