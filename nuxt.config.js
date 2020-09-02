@@ -39,7 +39,7 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
-    '@/plugins/validasesion.js'
+    '@/plugins/   validasesion.js'
   ],
   /*
   ** Auto import components
