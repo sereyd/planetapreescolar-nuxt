@@ -1,7 +1,23 @@
 <template>
-  <div>
-     Inicio
-  </div>
+<v-main>
+  <!-----Buscador------>
+
+
+  <!------reflexiones------>
+
+
+  <!------recomendaciones----->
+
+
+  <!-------Blog------------->
+
+
+
+  <!---------memorias------------>
+
+
+
+</v-main>
 </template>
 
 <script>

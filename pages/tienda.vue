@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-main>
       Tienda
-        </div>
+        </v-main>
 </template>

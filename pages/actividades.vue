@@ -1,5 +1,5 @@
 <template>
-    <div>
+   <v-main>
    Actividades
-        </div>
+        </v-main>
 </template>

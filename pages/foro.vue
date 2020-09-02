@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-main>
        Foro
-        </div>
+        </v-main>
 </template>

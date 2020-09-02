@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-main>
         Calendario
-    </div>
+    </v-main>
 </template>

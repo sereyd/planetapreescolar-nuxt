@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <v-main>
         Administrador
-        </div>
+        </v-main>
 </template>
 <script>
 import validasitio from '@/mixins/validasitio.js'

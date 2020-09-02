@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-main>
         Grupos
-        </div>
+        </v-main>
 </template>
