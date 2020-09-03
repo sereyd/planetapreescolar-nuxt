@@ -62,14 +62,14 @@ export default {
   ],
   firebase: {
     config:{
-        apiKey: "AIzaSyB8GyvM9PdvjufoAyEZv2uRQLVhVQM-Z-o",
-        authDomain: "educadorafirebase.firebaseapp.com",
-        databaseURL: "https://educadorafirebase.firebaseio.com",
-        projectId: "educadorafirebase",
-        storageBucket: "educadorafirebase.appspot.com",
-        messagingSenderId: "4922270561",
-        appId: "1:4922270561:web:d12332e6277b143e5c9b20",
-        measurementId: "G-E7Y6JTQG51"
+      apiKey: "AIzaSyB8GyvM9PdvjufoAyEZv2uRQLVhVQM-Z-o",
+      authDomain: "educadorafirebase.firebaseapp.com",
+      databaseURL: "https://educadorafirebase.firebaseio.com",
+      projectId: "educadorafirebase",
+      storageBucket: "educadorafirebase.appspot.com",
+      messagingSenderId: "4922270561",
+      appId: "1:4922270561:web:d12332e6277b143e5c9b20",
+      measurementId: "G-E7Y6JTQG51"
     
       },
     services: {

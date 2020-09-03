@@ -33,7 +33,7 @@ export default {
           permisos: 2
         }
       ],
-      devtest:false  //// para realizar pruebas de sesiones
+      devtest:true  //// para realizar pruebas de sesiones
     };
   },
   computed: {
