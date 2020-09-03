@@ -9,10 +9,11 @@ const createStore = () => {
       tipoUsuarioR: '',
       faseFormulario: 1,
       datosUsuario:{
-        tipo: '',
+        tipo: null,
         nombre: '',
         apellido: '',
         correo: '',
+<<<<<<< HEAD
         confirmarCorreo: '',
         password: '',
         confirmarPassword:'',
@@ -22,8 +23,33 @@ const createStore = () => {
         cuidad: '',
         userlogin:false,
         lvluser:1
+=======
+        //password: '',
+        // celular: '2222222222',
+        // experiencia: '2',
+        // pais: 'Mexico',
+        // cuidad: 'Puebla',
+        urlImagen:'',
+        userlogin:false,
+        lvluser:0
+    },
+      // datosUsuario:{
+      //   tipo: '',
+      //   nombre: '',
+      //   apellido: '',
+      //   correo: '',
+      //   confirmarCorreo: '',
+      //   password: '',
+      //   confirmarPassword:'',
+      //   celular: '',
+      //   experiencia: '',
+      //   pais: '',
+      //   cuidad: '',
+      //   userlogin:false,
+      //   lvluser:0
+>>>>>>> IvanCastro_inicio-registro
 
-      },
+      // },
     correo2: "",
     //validacion form
     valid: true,
