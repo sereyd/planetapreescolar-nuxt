@@ -6,6 +6,7 @@
 <h1 class="primary--text">Inicia sesión</h1>
 
 <!---componente de login---->
+    <login/>
 <!---componente de login---->
 
 </v-main>
@@ -19,6 +20,7 @@
 </template>
 <script>
 import validasitio from '@/mixins/validasitio.js'
+import login from '~/components/login/login.vue'
 export default {
     data(){
         return {
@@ -26,6 +28,9 @@ export default {
                 sinregistro:true
                 }
         }
+    },
+    components:{
+        login
     },
     mixins:[validasitio]
 }
