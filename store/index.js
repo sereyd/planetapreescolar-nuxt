@@ -13,17 +13,6 @@ const createStore = () => {
         nombre: '',
         apellido: '',
         correo: '',
-<<<<<<< HEAD
-        confirmarCorreo: '',
-        password: '',
-        confirmarPassword:'',
-        celular: '',
-        experiencia: '',
-        pais: '',
-        cuidad: '',
-        userlogin:false,
-        lvluser:1
-=======
         //password: '',
         // celular: '2222222222',
         // experiencia: '2',
@@ -47,7 +36,6 @@ const createStore = () => {
       //   cuidad: '',
       //   userlogin:false,
       //   lvluser:0
->>>>>>> IvanCastro_inicio-registro
 
       // },
     correo2: "",
