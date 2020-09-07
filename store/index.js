@@ -64,15 +64,17 @@ const createStore = () => {
               
             }
         });
-        
+          return true
       }
     },
     mutations: {
-  
       cambiastatusSesion(state,data){
-        // state.datosUsuario.userlogin=data.login
-        // state.datosUsuario.lvluser=data.lvl
-        state.datosUsuario =  data;
+        if(data.salida===true){
+          state.datosUsuario.userlogin=data.login
+          state.datosUsuario.lvluser=data.lvl
+        }else{
+          state.datosUsuario = data;
+        }
       },
       
     }

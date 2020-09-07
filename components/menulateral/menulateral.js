@@ -1,4 +1,4 @@
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -31,12 +31,24 @@ export default {
           link: "administrador",
           logeado: true,
           permisos: 2
-        }
+        },
+        { title: "Salir", 
+          icon: "mdi-exit-to-app", 
+          link: "exit", 
+          logeado:true,
+          permisos:0 
+        },
       ],
       devtest:false  //// para realizar pruebas de sesiones
     };
   },
   computed: {
-    ...mapState(["userlogin", "lvluser","datosUsuario"])
-  }
+    ...mapState(["datosUsuario"])
+  },
+  methods:{
+
+    ...mapMutations(['abrirRegistro']),
+
+  },
+  
 };

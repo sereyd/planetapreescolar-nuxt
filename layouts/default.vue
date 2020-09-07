@@ -8,7 +8,8 @@
         <nuxt />
       </v-main>
       <!----Espacio de carga de vistas------>
-   
+
+
   </v-app>
 </template>
 
@@ -20,6 +21,7 @@ export default {
   data () {
     return {
       drawer: null,
+      validsesion:true,
       // dialog: false,
         items: [
           { title: 'Home', icon: 'mdi-dashboard' },
@@ -32,18 +34,13 @@ export default {
     ...mapState(['dialog', 'test'])
   },
   methods:{
+
     ...mapMutations(['abrirRegistro']),
-    ...mapActions(['autenticarUsuario']),
+
   },
   components:{
     menulateral
-  },
-
-  beforeMount(){
-    this.autenticarUsuario();
-  }
-  
+  } 
   
 }
 </script>
-
