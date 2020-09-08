@@ -15,7 +15,8 @@ const createStore = () => {
         // cuidad: 'Puebla',
         urlImagen:'',
         userlogin:false,
-        lvluser:0
+        lvluser:2,
+        grupos:[],
       },
 
 
@@ -25,14 +26,33 @@ const createStore = () => {
         context.commit("cambiastatusSesion",data);
       },
       async autenticarUsuario(context){
+
+        /*
+          const usuarioAuth =  this.$fireStore.collection('usuarios').where("correo", "==", user.email).get();
+              console.log(usuarioAuth.doc)
+              this.datosUsuario = usuarioAuth.docs.map(doc=>{
+                return {
+                    id: doc.id, //SE LES AGREGA EL ID DEL USAURIO PARA REALIZAR LA BUSQUEDA POR SU ID
+                    ...doc.data()
+                    }
+                });
+        */
         await this.$fireAuth.onAuthStateChanged( user => {
           if(user)
             {
-              const productoQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
-              productoQuery.get()
+              const usuarioQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
+              usuarioQuery.get()
               .then((querySnapshot) => {
                   querySnapshot.forEach( (doc) => {
-                      context.commit("cambiastatusSesion",doc.data());
+                    // console.log(doc.id)
+                      const datos = {
+                        id: doc.id,
+                        grupos:[],
+                        ...doc.data()
+
+                      }
+                      // console.log(datos)
+                      context.commit("cambiastatusSesion",datos);
                   });
               })
               .catch(function(error) {
