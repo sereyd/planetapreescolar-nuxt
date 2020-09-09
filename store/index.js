@@ -25,6 +25,9 @@ const createStore = () => {
       async loginStore (context, data){
         context.commit("cambiastatusSesion",data);
       },
+      actualizarGrupos(context, data){
+        context.state.datosUsuario.grupos = data;
+      },
       async autenticarUsuario(context){
 
         /*
@@ -47,7 +50,7 @@ const createStore = () => {
                     // console.log(doc.id)
                       const datos = {
                         id: doc.id,
-                        grupos:[],
+                        // grupos:[],
                         ...doc.data()
 
                       }
