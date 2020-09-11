@@ -24,7 +24,10 @@ const createStore = () => {
         context.state.datosUsuario.grupos = data;
       },
       async autenticarUsuario(context){
-  
+        console.log('conexion base existente ')
+       console.log(this.$fireStore.collection('usuarios').get())
+       console.log('conexion base no existe ')
+       console.log(this.$fireStore.collection('reflexiones'))
         /*
           const usuarioAuth =  this.$fireStore.collection('usuarios').where("correo", "==", user.email).get();
               console.log(usuarioAuth.doc)
