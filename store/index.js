@@ -1,43 +1,18 @@
 import Vuex from 'vuex'
-var correoglobal=""
+// var correoglobal=""
 const createStore = () => {
   return new Vuex.Store({
     state: () => ({
-      test:'prueba store con state',
-      counter: 0,
-      dialog: false,
-      tipoUsuarioR: '',
-      faseFormulario: 1,
       datosUsuario:{
         tipo: null,
         nombre: '',
         apellido: '',
         correo: '',
-        //password: '',
-        // celular: '2222222222',
-        // experiencia: '2',
-        // pais: 'Mexico',
-        // cuidad: 'Puebla',
         urlImagen:'',
         userlogin:false,
         lvluser:0
-    },
-      // datosUsuario:{
-      //   tipo: '',
-      //   nombre: '',
-      //   apellido: '',
-      //   correo: '',
-      //   confirmarCorreo: '',
-      //   password: '',
-      //   confirmarPassword:'',
-      //   celular: '',
-      //   experiencia: '',
-      //   pais: '',
-      //   cuidad: '',
-      //   userlogin:false,
-      //   lvluser:0
 
-      // },
+    },
     correo2: "",
     //validacion form
     valid: true,
@@ -64,71 +39,44 @@ const createStore = () => {
       v => (v && v.length >= 8) || 'Contraseña debe ser 8 o más caracteres',
     ],
     errorFase2: true,
-    errorFase3: true,
+    errorFase3: true
 
 
     }),
     actions:{
-      // revisarForm2(state){
-      // if (state.datosUsuario.nombre !== '' && state.datosUsuario.tipo !== '' && state.datosUsuario.apellido !== '' 
-      // && state.datosUsuario.correo !== '' && state.datosUsuario.confirmarCorreo !== '' 
-      // && state.datosUsuario.password !== '' && state.datosUsuario.confirmarPassword !== '')
-      // {
-      //   state.errorFase2 = false
-      // }
-      // else{
-      //   state.errorFase2 = true
-      // }
-      // console.log(state.errorFase2)
-      // return errorFase2;
-      // }
+      async loginStore (context, data){
+        context.commit("cambiastatusSesion",data);
+      },
+      async autenticarUsuario(context){
+        await this.$fireAuth.onAuthStateChanged( user => {
+          if(user)
+            {
+              const productoQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
+              productoQuery.get()
+              .then((querySnapshot) => {
+                  querySnapshot.forEach( (doc) => {
+                      context.commit("cambiastatusSesion",doc.data());
+                  });
+              })
+              .catch(function(error) {
+                  console.log("Error: ", error);
+              });
+              
+            }
+        });
+          return true
+      }
     },
     mutations: {
-      increment(state) {
-        state.counter++
-      },
       cambiastatusSesion(state,data){
-        state.datosUsuario.userlogin=data.login
-        state.datosUsuario.lvluser=data.lvl
-      },
-      abrirRegistro(state) {
-        state.dialog = !state.dialog;
-      },
-      elegirRegistro(state, tipoUser){
-        state.tipoUsuarioR = tipoUser;
-        state.faseFormulario++; 
-      },
-      siguienteFormulario(state){
-        if(state.datosUsuario.nombre !== '' && state.datosUsuario.tipo !== '' && state.datosUsuario.apellido !== '' 
-        && state.datosUsuario.correo !== '' && state.datosUsuario.confirmarCorreo !== '' 
-        && state.datosUsuario.password !== '' && state.datosUsuario.confirmarPassword !== '')
-        state.faseFormulario++;
-        else{
-          alert("Necesita llenar todos los campos")
+        if(data.salida===true){
+          state.datosUsuario.userlogin=data.login
+          state.datosUsuario.lvluser=data.lvl
+        }else{
+          state.datosUsuario = data;
         }
       },
-      atrasFormulario(state){
-        // alert(state.faseFormulario)
-        //state.faseFormulario= state.faseFormulario > 1 ? state.faseFormulario = state.faseFormulario - 1 : 1
-        if(state.faseFormulario === 2)
-        {
-          state.faseFormulario--;
-          state.tipoUsuarioR='';
-        }else if(state.faseFormulario === 3){
-          state.faseFormulario--;
-        }
-      },
-
-      //VALIDACION
-      validate () {
-        this.$refs.form.validate()
-      },
-      reset () {
-        this.$refs.form.reset()
-      },
-      resetValidation () {
-        this.$refs.form.resetValidation()
-      },
+      
     }
   })
 }

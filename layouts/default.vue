@@ -8,18 +8,20 @@
         <nuxt />
       </v-main>
       <!----Espacio de carga de vistas------>
-   
+
+
   </v-app>
 </template>
 
 <script>
   import menulateral from '~/components/menulateral/menulateral.vue'
-  import { mapState, mapMutations } from 'vuex'
+  import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
   data () {
     return {
       drawer: null,
+      validsesion:true,
       // dialog: false,
         items: [
           { title: 'Home', icon: 'mdi-dashboard' },
@@ -32,12 +34,13 @@ export default {
     ...mapState(['dialog', 'test'])
   },
   methods:{
-    ...mapMutations(['abrirRegistro'])
+
+    ...mapMutations(['abrirRegistro']),
+
   },
   components:{
     menulateral
-  }
+  } 
   
 }
 </script>
-
