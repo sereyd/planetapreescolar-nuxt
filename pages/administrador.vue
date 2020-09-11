@@ -1,10 +1,12 @@
 <template>
     <v-main>
         Administrador
+        <administrador/>
         </v-main>
 </template>
 <script>
 import validasitio from '@/mixins/validasitio.js'
+import administrador from '~/components/administrador/administrador.vue'
 export default {
     data(){
         return {
@@ -13,6 +15,9 @@ export default {
                 logeado:true
             }
         }
+    },
+    components:{
+        administrador
     },
     mixins:[validasitio]
 }

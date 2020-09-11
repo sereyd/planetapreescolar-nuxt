@@ -37,6 +37,6 @@ export default {
     };
   },
   computed: {
-    ...mapState(["userlogin", "lvluser"])
+    ...mapState(["userlogin", "lvluser","datosUsuario"])
   }
 };

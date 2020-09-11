@@ -14,7 +14,7 @@
 
 <script>
   import menulateral from '~/components/menulateral/menulateral.vue'
-  import { mapState, mapMutations } from 'vuex'
+  import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
   data () {
@@ -32,11 +32,17 @@ export default {
     ...mapState(['dialog', 'test'])
   },
   methods:{
-    ...mapMutations(['abrirRegistro'])
+    ...mapMutations(['abrirRegistro']),
+    ...mapActions(['autenticarUsuario']),
   },
   components:{
     menulateral
+  },
+
+  beforeMount(){
+    this.autenticarUsuario();
   }
+  
   
 }
 </script>

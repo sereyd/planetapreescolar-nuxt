@@ -1,13 +1,8 @@
 import Vuex from 'vuex'
-var correoglobal=""
+// var correoglobal=""
 const createStore = () => {
   return new Vuex.Store({
     state: () => ({
-      test:'prueba store con state',
-      counter: 0,
-      dialog: false,
-      tipoUsuarioR: '',
-      faseFormulario: 1,
       datosUsuario:{
         tipo: null,
         nombre: '',
@@ -20,115 +15,66 @@ const createStore = () => {
         // cuidad: 'Puebla',
         urlImagen:'',
         userlogin:false,
-        lvluser:0
-    },
-      // datosUsuario:{
-      //   tipo: '',
-      //   nombre: '',
-      //   apellido: '',
-      //   correo: '',
-      //   confirmarCorreo: '',
-      //   password: '',
-      //   confirmarPassword:'',
-      //   celular: '',
-      //   experiencia: '',
-      //   pais: '',
-      //   cuidad: '',
-      //   userlogin:false,
-      //   lvluser:0
-
-      // },
-    correo2: "",
-    //validacion form
-    valid: true,
-    nombreReglas: [
-      v => !!v || 'Nombre es requerido',
-      // v => (v && v.length <= 10) || 'Name must be less than 10 characters',
-    ],
-    apellidoReglas: [ 
-      v => !!v || 'Nombre es requerido',
- 
-      // v => (v && v.length <= 10) || 'Name must be less than 10 characters',
-    ],
-    correoReglas: [
-        v => !!v || 'correo es requerido',
-        v => /.+@.+\..+/.test(v) || 'Correo no válido',
-        (v) => { correoglobal=v  
-          return false  }
-    ],
-    correoReglas2: [
-      v => (v === correoglobal) || 'El correo debe ser el mismo'
-    ],
-    passwordReglas: [
-      v => !!v || 'contraseña es requerida',
-      v => (v && v.length >= 8) || 'Contraseña debe ser 8 o más caracteres',
-    ],
-    errorFase2: true,
-    errorFase3: true,
+        lvluser:2,
+        grupos:[],
+      },
 
 
     }),
     actions:{
-      // revisarForm2(state){
-      // if (state.datosUsuario.nombre !== '' && state.datosUsuario.tipo !== '' && state.datosUsuario.apellido !== '' 
-      // && state.datosUsuario.correo !== '' && state.datosUsuario.confirmarCorreo !== '' 
-      // && state.datosUsuario.password !== '' && state.datosUsuario.confirmarPassword !== '')
-      // {
-      //   state.errorFase2 = false
-      // }
-      // else{
-      //   state.errorFase2 = true
-      // }
-      // console.log(state.errorFase2)
-      // return errorFase2;
-      // }
+      async loginStore (context, data){
+        context.commit("cambiastatusSesion",data);
+      },
+      actualizarGrupos(context, data){
+        context.state.datosUsuario.grupos = data;
+      },
+      async autenticarUsuario(context){
+
+        /*
+          const usuarioAuth =  this.$fireStore.collection('usuarios').where("correo", "==", user.email).get();
+              console.log(usuarioAuth.doc)
+              this.datosUsuario = usuarioAuth.docs.map(doc=>{
+                return {
+                    id: doc.id, //SE LES AGREGA EL ID DEL USAURIO PARA REALIZAR LA BUSQUEDA POR SU ID
+                    ...doc.data()
+                    }
+                });
+        */
+        await this.$fireAuth.onAuthStateChanged( user => {
+          if(user)
+            {
+              const usuarioQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
+              usuarioQuery.get()
+              .then((querySnapshot) => {
+                  querySnapshot.forEach( (doc) => {
+                    // console.log(doc.id)
+                      const datos = {
+                        id: doc.id,
+                        // grupos:[],
+                        ...doc.data()
+
+                      }
+                      // console.log(datos)
+                      context.commit("cambiastatusSesion",datos);
+                  });
+              })
+              .catch(function(error) {
+                  console.log("Error: ", error);
+              });
+              
+            }
+        });
+        
+      }
     },
     mutations: {
-      increment(state) {
-        state.counter++
-      },
+  
       cambiastatusSesion(state,data){
-        state.datosUsuario.userlogin=data.login
-        state.datosUsuario.lvluser=data.lvl
+        // state.datosUsuario.userlogin=data.login
+        // state.datosUsuario.lvluser=data.lvl
+        state.datosUsuario =  data;
       },
-      abrirRegistro(state) {
-        state.dialog = !state.dialog;
-      },
-      elegirRegistro(state, tipoUser){
-        state.tipoUsuarioR = tipoUser;
-        state.faseFormulario++; 
-      },
-      siguienteFormulario(state){
-        if(state.datosUsuario.nombre !== '' && state.datosUsuario.tipo !== '' && state.datosUsuario.apellido !== '' 
-        && state.datosUsuario.correo !== '' && state.datosUsuario.confirmarCorreo !== '' 
-        && state.datosUsuario.password !== '' && state.datosUsuario.confirmarPassword !== '')
-        state.faseFormulario++;
-        else{
-          alert("Necesita llenar todos los campos")
-        }
-      },
-      atrasFormulario(state){
-        // alert(state.faseFormulario)
-        //state.faseFormulario= state.faseFormulario > 1 ? state.faseFormulario = state.faseFormulario - 1 : 1
-        if(state.faseFormulario === 2)
-        {
-          state.faseFormulario--;
-          state.tipoUsuarioR='';
-        }else if(state.faseFormulario === 3){
-          state.faseFormulario--;
-        }
-      },
-
-      //VALIDACION
-      validate () {
-        this.$refs.form.validate()
-      },
-      reset () {
-        this.$refs.form.reset()
-      },
-      resetValidation () {
-        this.$refs.form.resetValidation()
-      },
+      
     }
   })
 }
