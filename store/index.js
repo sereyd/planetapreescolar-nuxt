@@ -24,7 +24,7 @@ const createStore = () => {
         context.state.datosUsuario.grupos = data;
       },
       async autenticarUsuario(context){
-
+  
         /*
           const usuarioAuth =  this.$fireStore.collection('usuarios').where("correo", "==", user.email).get();
               console.log(usuarioAuth.doc)
