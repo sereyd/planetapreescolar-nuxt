@@ -1,6 +1,6 @@
 <template>
     <v-main>
-        <h2 class="text-center">Administrador</h2>
+        <!-- <h2 class="text-center">Administrador</h2> -->
         <administrador/>
         </v-main>
 </template>
