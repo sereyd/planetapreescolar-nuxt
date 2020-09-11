@@ -1,0 +1,15 @@
+.principal{
+    background-color: white ;
+    opacity: 1;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    /* z-index: 100; */
+}
+.nav{
+    display: flex;
+    /* align-content: center; */
+    justify-content: space-between;
+    align-items: center;
+}

@@ -2,9 +2,11 @@
   <v-app>
 
    <!----Menu lateral------>
+
   <menulateral/>
       <!----Espacio de carga de vistas------>
       <v-main class="ma-0 pa-0">
+        
         <nuxt />
       </v-main>
       <!----Espacio de carga de vistas------>
