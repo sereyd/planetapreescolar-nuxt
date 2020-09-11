@@ -14,7 +14,7 @@ const createStore = () => {
         // pais: 'Mexico',
         // cuidad: 'Puebla',
         urlImagen:'',
-        userlogin:false,
+        userlogin:true,
         lvluser:2,
         grupos:[],
       },

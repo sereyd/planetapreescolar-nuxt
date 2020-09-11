@@ -4,6 +4,10 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 export default{
     data(){
         return {
+
+          //DATA DE PRUEBA
+          pageid: 123,
+
             
 
             //DATA PARA PASAR ENTRE FORMULARIOS
@@ -138,7 +142,9 @@ export default{
             );
             
             //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
-            let usuarioGruposRef = this.$fireStore.collection("usuarios").doc(id);
+            let usuarioGruposRef =  this.$fireStore.collection("usuarios").doc(id);
+
+            console.log(usuarioGruposRef);
             
             //SE ACTUALIZA EN FIREBASE EL CAMPO DE GRUPOS
             usuarioGruposRef.update({
@@ -156,6 +162,9 @@ export default{
             this.$refs.form.reset();
             this.$refs.form2.reset();
             this.dialog = false;
+            this.faseFormulario = 1;
+            console.log("pusheando");
+            this.$router.push('/grupos')
 
             
           } catch (error) {
@@ -176,5 +185,8 @@ export default{
              this.crearGrupo()
             console.log("valido")
         },
-    }
+    },
+    created() {
+      console.log(this)
+    },
 }
