@@ -1,6 +1,6 @@
 <template>
     <v-main>
-        Administrador
+        <h2 class="text-center">Administrador</h2>
         <administrador/>
         </v-main>
 </template>

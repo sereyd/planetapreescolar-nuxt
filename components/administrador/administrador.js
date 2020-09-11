@@ -2,6 +2,7 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 export default{
     data(){
         return {
+            fullScreenUsuarios: false,
 
             //DATA DE FORMULARIO LOGIN
             usuarios:[],
