@@ -38,6 +38,9 @@ const createStore = () => {
         await this.$fireAuth.onAuthStateChanged( user => {
           if(user)
             {
+
+            
+
               const usuarioQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
               usuarioQuery.get()
               .then((querySnapshot) => {

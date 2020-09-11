@@ -1,5 +1,5 @@
 import { mapState, mapMutations } from "vuex";
-import loader from '~/components/loader/loader.vue'
+
 export default {
   data() {
     return {
@@ -50,9 +50,6 @@ export default {
 
     ...mapMutations(['abrirRegistro']),
 
-  },
-  compoents:{
-    loader
   }
   
 };

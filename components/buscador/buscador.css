@@ -1,0 +1,14 @@
+/*css de buscador */
+.backbuscador{
+    background-image:url('/images/nubes.png');
+    background-size: 100%;
+    background-position: bottom;
+}
+
+.v-input__slot{
+    background-color:#fff;
+}
+
+.modbuscador{
+    border-radius:15px;
+}

@@ -2,7 +2,7 @@
 <v-main>
   <!-----Buscador------>
 
-
+<buscador />
   <!------reflexiones------>
 
 
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import buscador from '~/components/buscador/buscador.vue'
 export default {
   data() {
     return {};
@@ -29,7 +30,7 @@ export default {
 
   },
   components: {
-
+    buscador
   }
 };
 </script>
