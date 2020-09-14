@@ -50,7 +50,7 @@ export default{
         
     },
     methods:{
-        ...mapActions(['loginStore']),
+        ...mapActions(['loginStore', 'cerrarSesion']),
         async login (){
             this.spinner = true;
             this.error = false;
@@ -97,6 +97,30 @@ export default{
 
 
           },
+
+        //LOGIN PARA FACEBOOK Y GOOGLE
+        loginExterno(tipo){
+            //ACTIVANDO ANIMACIÓN DE SPINNER
+            this.spinner = true;
+  
+            const provider = tipo === 'google' 
+            ? new this.$fireAuthObj.GoogleAuthProvider() 
+            : new this.$fireAuthObj.FacebookAuthProvider()
+            
+            
+            this.$fireAuth.languageCode = 'es';
+
+            this.$fireAuth.signInWithPopup(provider).then((result) => {
+                const user = result.user;
+                //TOKEN EXTERNO QUE PUEDE UTILIZARSE
+                // const token = result.credential.accessToken;
+                this.$router.push("/");
+            }).catch((error) => {
+              console.log(error)
+            });
+            
+          },
+
           validate () {
             const vd = this.$refs.form.validate();
             this.valid = vd;
