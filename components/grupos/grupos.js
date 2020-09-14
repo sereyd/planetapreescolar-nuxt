@@ -140,11 +140,15 @@ export default{
                     boys: 0, girls: 0, total: 0, fechaCreado: Date.now(), horario: this.horario
                 }
             );
+            console.log("horario");
+            console.log(this.horario);
+            console.log(id);
             
             //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
             let usuarioGruposRef =  this.$fireStore.collection("usuarios").doc(id);
 
             console.log(usuarioGruposRef);
+            // console.log(this.grupos);
             
             //SE ACTUALIZA EN FIREBASE EL CAMPO DE GRUPOS
             usuarioGruposRef.update({
@@ -159,8 +163,19 @@ export default{
             });
 
             //SE RESETEA EL FORMULARIO Y SE CIERRA LA VENTANA FLOTANTE
-            this.$refs.form.reset();
-            this.$refs.form2.reset();
+            // this.$refs.form.reset();
+            // this.$refs.form2.reset();
+            this.horario= [
+              {dia:"Lunes", clase: false, horaInicio:"", horaFin: ""},
+              {dia:"Martes", clase: false, horaInicio:"", horaFin: ""},
+              {dia:"Miercoles", clase: false, horaInicio:"", horaFin: ""},
+              {dia:"Jueves", clase: false, horaInicio:"", horaFin: ""},
+              {dia:"Viernes", clase: false, horaInicio:"", horaFin: ""},
+              {dia:"Sabado", clase: false, horaInicio:"", horaFin: ""},
+              {dia:"Domingo", clase: false, horaInicio:"", horaFin: ""},
+          ];
+            console.log("horario resetado")
+            console.log(this.horario)
             this.dialog = false;
             this.faseFormulario = 1;
             console.log("pusheando");
