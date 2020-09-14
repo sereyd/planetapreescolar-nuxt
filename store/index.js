@@ -8,11 +8,6 @@ const createStore = () => {
         nombre: '',
         apellido: '',
         correo: '',
-        //password: '',
-        // celular: '2222222222',
-        // experiencia: '2',
-        // pais: 'Mexico',
-        // cuidad: 'Puebla',
         urlImagen:'',
         userlogin:true,
         lvluser:2,
@@ -29,7 +24,10 @@ const createStore = () => {
         context.state.datosUsuario.grupos = data;
       },
       async autenticarUsuario(context){
-
+        console.log('conexion base existente ')
+       console.log(this.$fireStore.collection('usuarios').get())
+       console.log('conexion base no existe ')
+       console.log(this.$fireStore.collection('reflexiones'))
         /*
           const usuarioAuth =  this.$fireStore.collection('usuarios').where("correo", "==", user.email).get();
               console.log(usuarioAuth.doc)
@@ -43,6 +41,9 @@ const createStore = () => {
         await this.$fireAuth.onAuthStateChanged( user => {
           if(user)
             {
+
+            
+
               const usuarioQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
               usuarioQuery.get()
               .then((querySnapshot) => {
@@ -64,15 +65,17 @@ const createStore = () => {
               
             }
         });
-        
+          return true
       }
     },
     mutations: {
-  
       cambiastatusSesion(state,data){
-        // state.datosUsuario.userlogin=data.login
-        // state.datosUsuario.lvluser=data.lvl
-        state.datosUsuario =  data;
+        if(data.salida===true){
+          state.datosUsuario.userlogin=data.login
+          state.datosUsuario.lvluser=data.lvl
+        }else{
+          state.datosUsuario = data;
+        }
       },
       
     }
