@@ -98,8 +98,6 @@ export default {
       if (this.valid) this.login();
       // this.siguienteFormulario()
     },
-<<<<<<< HEAD
-=======
     methods:{
         ...mapActions(['loginStore', 'cerrarSesion']),
         async login (){
@@ -144,8 +142,7 @@ export default {
             this.$refs.form.reset();
             this.spinner = false;
             this.$router.push('/')
->>>>>>> 9134bf3230b31ca6fc103b0902532be6dff08bf8
-
+          },
     restablecerPassword() {
       console.log("Restableciendo...");
 
@@ -153,9 +150,6 @@ export default {
       const auth = this.$fireAuthObj();
       this.$fireAuthObj().languageCode = "es";
 
-<<<<<<< HEAD
-      const { correo } = this.dataLogin;
-=======
           },
 
         //LOGIN PARA FACEBOOK Y GOOGLE
@@ -188,10 +182,8 @@ export default {
               this.login();
                // this.siguienteFormulario()
           },
->>>>>>> 9134bf3230b31ca6fc103b0902532be6dff08bf8
 
-      auth
-        .sendPasswordResetEmail(correo)
+      auth.sendPasswordResetEmail(correo)
         .then(() => {
           console.log("enviando correo");
           // Email sent.
