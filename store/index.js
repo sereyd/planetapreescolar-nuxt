@@ -23,6 +23,9 @@ const createStore = () => {
       actualizarGrupos(context, data){
         context.state.datosUsuario.grupos = data;
       },
+      actualizarAlumnos(context, data){
+        context.state.datosUsuario.alumnos = data;
+      },
       async autenticarUsuario(context){
         console.log('conexion base existente ')
        console.log(this.$fireStore.collection('usuarios').get())

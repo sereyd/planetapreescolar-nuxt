@@ -16,32 +16,48 @@ export default{
             //DATA PARA VALIDACIONES
             dialog: false,
             valid: false,
-            valid2: false,
+            esGrupoValido: false,
             error: false,
             mensajeError: "",
 
             //DATA FROMULARIO 1
             imagen: null,
+            // datosNuevoGrupo:{
+            //     escuela: "Miguel Hildalgo",
+            //     grado: "3",
+            //     grupo: "B",
+            //     cicloEscolar: "2020",
+            //     seccion: "2",
+            //     turno: "Matutino",
+            //     periodo: "",
+            //     urlImagen: "",
+            // },
             datosNuevoGrupo:{
-                escuela: "Miguel Hildalgo",
-                grado: "3",
-                grupo: "B",
-                cicloEscolar: "2020",
-                seccion: "2",
-                turno: "Matutino",
-                periodo: "",
-                urlImagen: "",
-            },
+              nombreGrupo: "4 B",
+              adicionales: "Miguel Hidalgo",
+              cicloEscolar: "Enero 2020",
+              // seccion: "2",
+              // turno: "Matutino",
+              // periodo: "",
+              urlImagen: "",
+          },
             
             //DATA FORMULARIO 2
             horario: [
-                {dia:"Lunes", clase: false, horaInicio:"08:00 am", horaFin: "03:00 pm"},
-                {dia:"Martes", clase: false, horaInicio:"08:00 am", horaFin: "03:00 pm"},
-                {dia:"Miercoles", clase: false, horaInicio:"08:00 am", horaFin: "03:00 pm"},
-                {dia:"Jueves", clase: false, horaInicio:"08:00 am", horaFin: "03:00 pm"},
-                {dia:"Viernes", clase: false, horaInicio:"08:00 am", horaFin: "03:00 pm"},
-                {dia:"Sabado", clase: false, horaInicio:"1", horaFin: "1"},
-                {dia:"Domingo", clase: false, horaInicio:"1", horaFin: "1"},
+                {dia:"Lunes", clase: false, horaInicio:"", horaFin: "", 
+                listas:["Asistencia", "Comportamiento"], alumnos:[]},
+                {dia:"Martes", clase: false, horaInicio:"", horaFin: "", 
+                listas:["Asistencia", "Comportamiento"], alumnos:[]},
+                {dia:"Miercoles", clase: false, horaInicio:"", horaFin: "", 
+                listas:["Asistencia", "Comportamiento"], alumnos:[]},
+                {dia:"Jueves", clase: false, horaInicio:"", horaFin: "", 
+                listas:["Asistencia", "Comportamiento"], alumnos:[]},
+                {dia:"Viernes", clase: false, horaInicio:"", horaFin: "", 
+                listas:["Asistencia", "Comportamiento"], alumnos:[]},
+                {dia:"Sabado", clase: false, horaInicio:"", horaFin: "", 
+                listas:["Asistencia", "Comportamiento"], alumnos:[]},
+                {dia:"Domingo", clase: false, horaInicio:"", horaFin: "", 
+                listas:["Asistencia", "Comportamiento"], alumnos:[]},
             ],
 
             //DATA DE TODOS LOS GRUPOS DEL USUARIO
@@ -70,6 +86,18 @@ export default{
             this.urlImagenPrevia = URL.createObjectURL(this.$refs.fileupload.files[0]);
             this.imagen = this.$refs.fileupload.files[0];
             
+        },
+        changeModo(item){
+          console.log("change");
+          console.log(item);
+          this.horario.map( h =>{
+            if(h.dia === item.dia)
+            {
+              h.horaFin = h.horaInicio = h.clase ? "" : "0";
+            }
+
+          })
+
         },
         async crearGrupo(){
             //ACTIVANDO ANIMACIÓN DE SPINNER Y ERROR FALSE PARA OCULTAR ERRORES PREVIOS
@@ -124,8 +152,9 @@ export default{
           //SE ALMACENA EL NUEVO USUARIO EN LA COLECCION DE USUARIOS
           const {id} = this.datosUsuario;
           try {
+
             //SE EXTRAEN LOS DATOS DEL OBJETO
-            const {escuela, grado, grupo, cicloEscolar, seccion, turno, periodo, urlImagen} 
+            const {nombreGrupo, adicionales, cicloEscolar, urlImagen} 
             = this.datosNuevoGrupo;
 
             //VERIFICAR SI EL OBJETO datosUsuario TIENE LE CAMPO GRUPOS, SI TIENE GRUPOS PREVIOS
@@ -136,13 +165,14 @@ export default{
                 //SE INSERTAN LOS DATOS DEL NUEVO GRUPO A LA DATA DE GRUPO.
             this.grupos.push(
                 {
-                    escuela, grado, grupo, cicloEscolar, seccion, turno, periodo, urlImagen,
-                    boys: 0, girls: 0, total: 0, fechaCreado: Date.now(), horario: this.horario
+                  nombreGrupo, adicionales, cicloEscolar, urlImagen,
+                    boys: 0, girls: 0, total: 0, fechaCreado: Date.now()
+                    , horario: this.horario
                 }
             );
-            console.log("horario");
-            console.log(this.horario);
-            console.log(id);
+            // console.log("horario");
+            // console.log(this.horario);
+            // console.log(id);
             
             //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
             let usuarioGruposRef =  this.$fireStore.collection("usuarios").doc(id);
@@ -163,17 +193,17 @@ export default{
             });
 
             //SE RESETEA EL FORMULARIO Y SE CIERRA LA VENTANA FLOTANTE
-            // this.$refs.form.reset();
+            this.$refs.formGrupos.reset();
             // this.$refs.form2.reset();
-            this.horario= [
-              {dia:"Lunes", clase: false, horaInicio:"", horaFin: ""},
-              {dia:"Martes", clase: false, horaInicio:"", horaFin: ""},
-              {dia:"Miercoles", clase: false, horaInicio:"", horaFin: ""},
-              {dia:"Jueves", clase: false, horaInicio:"", horaFin: ""},
-              {dia:"Viernes", clase: false, horaInicio:"", horaFin: ""},
-              {dia:"Sabado", clase: false, horaInicio:"", horaFin: ""},
-              {dia:"Domingo", clase: false, horaInicio:"", horaFin: ""},
-          ];
+          //   this.horario= [
+          //     {dia:"Lunes", clase: false, horaInicio:"", horaFin: ""},
+          //     {dia:"Martes", clase: false, horaInicio:"", horaFin: ""},
+          //     {dia:"Miercoles", clase: false, horaInicio:"", horaFin: ""},
+          //     {dia:"Jueves", clase: false, horaInicio:"", horaFin: ""},
+          //     {dia:"Viernes", clase: false, horaInicio:"", horaFin: ""},
+          //     {dia:"Sabado", clase: false, horaInicio:"", horaFin: ""},
+          //     {dia:"Domingo", clase: false, horaInicio:"", horaFin: ""},
+          // ];
             console.log("horario resetado")
             console.log(this.horario)
             this.dialog = false;
@@ -194,14 +224,14 @@ export default{
 
             console.log(this.faseFormulario)
         },
-        validarFormulario2 () {
-            this.valid2 =this.$refs.form2.validate();
-            if(this.valid2)
+        validarFormularioGrupo () {
+            this.esGrupoValido =this.$refs.formGrupos.validate();
+            if(this.esGrupoValido)
              this.crearGrupo()
             console.log("valido")
         },
     },
     created() {
-      console.log(this)
+      console.log(this.$route)
     },
 }
