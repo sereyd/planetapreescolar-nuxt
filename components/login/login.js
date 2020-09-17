@@ -98,6 +98,53 @@ export default {
       if (this.valid) this.login();
       // this.siguienteFormulario()
     },
+<<<<<<< HEAD
+=======
+    methods:{
+        ...mapActions(['loginStore', 'cerrarSesion']),
+        async login (){
+            this.spinner = true;
+            this.error = false;
+
+            try {
+                const response = await this.$fireAuth
+                .signInWithEmailAndPassword(this.dataLogin.correo, this.dataLogin.password);
+                
+            } catch (error) {
+                // console.log(error)
+                this.error = true;
+                // if(error.code === )
+                this.mensajeError = error.code === "auth/user-not-found" ? "Correo no registrado" : "Contraseña incorrecta"
+                // this.mensajeError = error.message;
+                // this.$refs.inputCorreo.focus();
+            }
+            //console.log( response );
+
+            if(this.error)
+            {
+                this.spinner = false;
+                return
+            }
+                
+
+            // const correo = this.dataLogin.correo;
+            const productoQuery = await this.$fireStore.collection('usuarios').where("correo", "==", this.dataLogin.correo);
+            // console.log(productoQuery);
+            productoQuery.get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach( (doc) => {
+                //    console.log(doc.data());
+                    // this.previo = doc.data();
+                    this.loginStore(doc.data());
+                });
+            })
+            .catch(function(error) {
+                console.log("Error getting documents: ", error);
+            });
+            this.$refs.form.reset();
+            this.spinner = false;
+            this.$router.push('/')
+>>>>>>> 9134bf3230b31ca6fc103b0902532be6dff08bf8
 
     restablecerPassword() {
       console.log("Restableciendo...");
@@ -106,7 +153,42 @@ export default {
       const auth = this.$fireAuthObj();
       this.$fireAuthObj().languageCode = "es";
 
+<<<<<<< HEAD
       const { correo } = this.dataLogin;
+=======
+          },
+
+        //LOGIN PARA FACEBOOK Y GOOGLE
+        loginExterno(tipo){
+            //ACTIVANDO ANIMACIÓN DE SPINNER
+            this.spinner = true;
+  
+            const provider = tipo === 'google' 
+            ? new this.$fireAuthObj.GoogleAuthProvider() 
+            : new this.$fireAuthObj.FacebookAuthProvider()
+            
+            
+            this.$fireAuth.languageCode = 'es';
+
+            this.$fireAuth.signInWithPopup(provider).then((result) => {
+                const user = result.user;
+                //TOKEN EXTERNO QUE PUEDE UTILIZARSE
+                // const token = result.credential.accessToken;
+                this.$router.push("/");
+            }).catch((error) => {
+              console.log(error)
+            });
+            
+          },
+
+          validate () {
+            const vd = this.$refs.form.validate();
+            this.valid = vd;
+            if(this.valid)
+              this.login();
+               // this.siguienteFormulario()
+          },
+>>>>>>> 9134bf3230b31ca6fc103b0902532be6dff08bf8
 
       auth
         .sendPasswordResetEmail(correo)
