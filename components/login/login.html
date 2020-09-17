@@ -1,5 +1,5 @@
 <!-- <div  justify="center">  -->
-      <v-card class="mt-10">
+    <v-card class="mt-10">
         <v-card-text>
           <v-container>
             <div  >
@@ -28,12 +28,26 @@
                             :rules="passwordReglas"
                             ref="inputPass"
                         ></v-text-field>
-                        <div class="d-flex justify-center">
-                            <v-btn 
+                        <div class="">
+                            <v-btn v-if="!spinner"
                                 dark block
                                 class="pink darken-4 px-10 mb-3" 
                                 @click="validate"
                             > Iniciar sesión</v-btn>
+
+                            <div>
+                                <v-btn v-if="!spinner"
+                                dark block
+                                class="blue px-10 mb-2" 
+                                @click="loginExterno('google')">Iniciar con Google</v-btn>
+                            </div>
+                            <div>
+                               
+                            <v-btn v-if="!spinner"
+                                dark block
+                                class="blue darken-4 px-10" 
+                                @click="loginExterno('facebook')">Iniciar con Facebook</v-btn>
+                            </div>
                             
                         </div>
                         <a @click ="restablecerPassword" class="">Restablecer contraseña</a>
