@@ -9,7 +9,8 @@ export default {
         { title: "Actividades", icon: "mdi-human", link: "actividades" },
         { title: "Foro", icon: "mdi-forum", link: "", link: "foro" },
         { title: "Tienda", icon: "mdi-tag", link: "", link: "tienda" },
-        { title: "Mis Grupos", icon: "mdi-account-multiple", link: "grupos" },
+        { title: "Mis Grupos", icon: "mdi-account-multiple", link: "grupos",  logeado: true,
+        permisos: 0 },
         { title: "Directorio", icon: "mdi-book-multiple", link: "directorio" },
         { title: "Calendario", icon: "mdi-calendar", link: "calendario" },
         {
