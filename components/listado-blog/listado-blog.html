@@ -1,0 +1,26 @@
+<v-row class="pa-4">
+
+<v-col cols="12" md="11" >
+    <h2 class="primary--text">{{titulo}}</h2>
+    <p>{{subtitulos}}</p>
+</v-col>
+<v-col cols="12" md="1">
+   <v-btn class="melon white--text rounded-pill" :to="'/'+linkmas"  >Ver más</v-btn> 
+</v-col>
+<v-col cols="12" md="3" v-for="(key,index) in blogpost" :key="'post'+index">
+    <v-card >
+        <v-card-text class="pa-2">
+            <v-skeleton-loader v-if="key.imagen===''"
+            class="mx-auto "
+            max-width="100%"
+            type="image"
+          ></v-skeleton-loader>
+            <img v-if="key.imagen!==''" :src="key.imagen" />            
+            <h2>{{key.titulo}}</h2>
+            <p>{{key.subtitulo}}</p>
+            <span>{{key.grado}}</span>
+        </v-card-text>
+    </v-card>
+</v-col>
+
+</v-row>

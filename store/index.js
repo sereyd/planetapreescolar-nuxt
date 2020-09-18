@@ -13,7 +13,7 @@ const createStore = () => {
         lvluser:2,
         grupos:[],
       },
-
+      connection:{}
 
     }),
     actions:{
@@ -24,10 +24,11 @@ const createStore = () => {
         context.state.datosUsuario.grupos = data;
       },
       async autenticarUsuario(context){
-        console.log('conexion base existente ')
-       console.log(this.$fireStore.collection('usuarios').get())
-       console.log('conexion base no existe ')
-       console.log(this.$fireStore.collection('reflexiones'))
+      
+            context.commit("compruebaConexion",'usuarios')
+            setTimeout(()=>{
+              console.log(context.state.connection)
+            },2000)
         /*
           const usuarioAuth =  this.$fireStore.collection('usuarios').where("correo", "==", user.email).get();
               console.log(usuarioAuth.doc)
@@ -42,8 +43,6 @@ const createStore = () => {
           if(user)
             {
 
-            
-
               const usuarioQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
               usuarioQuery.get()
               .then((querySnapshot) => {
@@ -53,7 +52,6 @@ const createStore = () => {
                         id: doc.id,
                         // grupos:[],
                         ...doc.data()
-
                       }
                       // console.log(datos)
                       context.commit("cambiastatusSesion",datos);
@@ -77,7 +75,22 @@ const createStore = () => {
           state.datosUsuario = data;
         }
       },
-      
+    compruebaConexion(state,data){
+        if(data!==null){
+        
+         this.$fireStore.collection(data).get()
+          .then((res)=>{
+            state.connection={
+              [data]:{
+              empty:res.empty
+              }
+            }
+          })
+          .catch((error)=>{
+            console.log(error)
+          })
+        }
+      }
     }
   })
 }

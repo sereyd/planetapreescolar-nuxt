@@ -1,0 +1,28 @@
+<div>
+ <v-btn class="melon" @click="editar=true">Editor de blog</v-btn> 
+    <v-dialog v-model="editar" max-width='800px'>
+            <v-card>
+                <v-card-text>
+                    <v-row>
+                        <v-col cols="12" md="12" filled>
+                            <h2>Editor de Post</h2>
+                            </v-col>
+                        </v-col>
+                        <v-col cols="12" md="12">
+                            <v-text-field label="Ingrese el titulo" filled ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="12">
+                            <v-textarea filled outlined>
+
+                            </v-textarea>
+                        </v-col>
+
+                        </v-col>
+                        <v-col>
+                            <v-btn class="primary">Guardar</v-btn> <v-btn class="error">Cancelar</v-btn>
+                        </v-col>
+                        </v-row>
+                </v-card-text>
+            </v-card>
+    </v-dialog>
+</div>

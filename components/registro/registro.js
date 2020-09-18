@@ -1,12 +1,13 @@
 
 import { mapState, mapMutations, mapActions } from 'vuex'
+import subirImagen from '@/components/subirimagen/subirimagen.vue'
 
 export default{
     data(){
         return {
 
             //DATA DE ELEMENTOS
-            imagen: null,
+            uploadimg:false,
             checkbox:false,
             spinner: false,
 
@@ -17,9 +18,9 @@ export default{
             //DATA QUE SE MANDARÁ A FIREBASE
             datosUsuarioR:{
                 tipo: null,
-                nombre: 'Lorena',
+                nombre: 'Emita',
                 apellido: 'Diaz',
-                correo: 'lore@gmail.com',
+                correo: 'emita@gmail.com',
                 //password: '',
                 // celular: '2222222222',
                 // experiencia: '2',
@@ -34,7 +35,7 @@ export default{
             password: '12345678',
             confirmarPassword:'12345678',
             confirmarCorreo: 'lore@gmail.com',
-            urlImagenPrevia: '',
+            
 
             //DATA PARA VALIDAR QUE ESTEN LLENOS LOS CAMPOS DE CADA FORMULARIO
             valid: false,
@@ -85,23 +86,17 @@ export default{
             ],
         }
     },
+    components:{
+      subirImagen
+    },
     computed:{
         ...mapState(['datosUsuario']),
     },
     methods:{
         //...mapActions(['autenticarUsuario']),
 
-        /* LANZA EL FOCUS PARA SELECCIONAR LA IMAGEN DE PERFIL */
-        focus(){
-            this.$refs.fileupload.click();
-        },
-
-        /* VISTA PREVIA DE LA IMAGEN DE PERFIL SELECCIONADA */
-        async change(){
-          this.urlImagenPrevia = URL.createObjectURL(this.$refs.fileupload.files[0]);
-          this.imagen = this.$refs.fileupload.files[0];
-          
-        },
+       
+      
 
         //REGISTRO PARA FACEBOOK Y GOOGLE
         registroExterno(tipo){
@@ -143,7 +138,7 @@ export default{
           });
           
         },
-
+      
        
         /*  SELECCIONA EL TIPO DE USUARIO QUE SE REGISTRARÁ */
         // elegirRegistro( tipoUser){
@@ -160,15 +155,15 @@ export default{
         //     }
         //   },
 
-          
+        iniciasubida(){
+          this.uploadimg=true;
+        },
         async crearUsuario(){
           //ACTIVANDO ANIMACIÓN DE SPINNER Y ERROR FALSE PARA OCULTAR ERRORES PREVIOS
           this.spinner = true;
           this.error = false;
-
-          await this.almacenarFotoStorage();
+           
           await this.almacenarUsuarioAuthentication();
-          
           //EN EL METODO DE almacenarUsuarioAuthentication SI EL USUARIO EXISTE MODIFICA this.error
           //DE ESTA FORMA EVITA QUE ALMACENE EL USUARIO EN LA COLLECION
           if(!this.error){
@@ -178,38 +173,19 @@ export default{
           }
 
         },
-
-
-        async almacenarFotoStorage(){
-
-          const file =  this.imagen;
-          const metadata = {
-            contentType: 'image/jpeg'
-          };
-
-          //VERIFICAR QUE SELECCIONARA UNA FOTO DE PERFIL
-          if(file)
-          {
-            // console.log("entroo")
-            try {
-              //SE AGREGA LA FOTO AL STORAGE DE FIREBASE
-              let storageRef = this.$fireStorage.ref("fotos_perfil");
-              await storageRef.child(file.name).put(file, metadata);
-
-              //SE OBTIENE LA URL DE LA IMAGEN DE PERFIL Y SE AGREGA AL OBJETO DE USUARIO
-              await storageRef.child(file.name).getDownloadURL().then((url) =>{
-                this.datosUsuarioR.urlImagen = url;
-              });
-              
-            } catch (error) {
-              console.log(error)
-            }
-          }
-          else{
-            this.datosUsuarioR.urlImagen = "none";
+        async almacenarUsuarioCollection(){
+          //SE ALMACENA EL NUEVO USUARIO EN LA COLECCION DE USUARIOS
+          try {
+              this.datosUsuarioR.userlogin = true,
+              this.datosUsuarioR.lvluser = 1;
+              await this.$fireStore.collection('usuarios').add(this.datosUsuarioR);
+              this.datosUsuario = this.datosUsuarioR;
+              this.resetearData();
+            
+          } catch (error) {
+            console.log(error)
           }
         },
-
         async almacenarUsuarioAuthentication(){
 
           const {correo, nombre, apellido, urlImagen } = this.datosUsuarioR;
@@ -236,27 +212,11 @@ export default{
 
         },
 
-        async almacenarUsuarioCollection(){
-          //SE ALMACENA EL NUEVO USUARIO EN LA COLECCION DE USUARIOS
-          try {
-              this.datosUsuarioR.userlogin = true,
-              this.datosUsuarioR.lvluser = 1;
-              await this.$fireStore.collection('usuarios').add(this.datosUsuarioR);
-              this.datosUsuario = this.datosUsuarioR;
-              this.resetearData();
-            
-          } catch (error) {
-            console.log(error)
-          }
-        },
-
-
         resetearData(){
             this.$refs.form.reset();
           //   this.faseFormulario = 1;
           //   this.tipoUsuarioR='';
             this.datosUsuarioR.urlImagen = '';
-            this.imagen = null;
             this.checkbox = false;
             this.spinner = false;
             this.error = false;
@@ -279,9 +239,17 @@ export default{
           const vd = this.$refs.form.validate();
           this.valid = vd;
           if(this.valid)
-            this.crearUsuario()
+            this.iniciasubida()
              // this.siguienteFormulario()
         },
-       
+        
+    },
+    watch:{
+    datosUsuarioR(){
+        if(this.datosUsuarioR.urlImagen!==""){
+           this.crearUsuario()
+        }
+      }
     }
+  
 }
