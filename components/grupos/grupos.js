@@ -44,20 +44,62 @@ export default{
             
             //DATA FORMULARIO 2
             horario: [
-                {dia:"Lunes", clase: false, horaInicio:"", horaFin: "", 
-                listas:["Asistencia", "Comportamiento"], alumnos:[]},
-                {dia:"Martes", clase: false, horaInicio:"", horaFin: "", 
-                listas:["Asistencia", "Comportamiento"], alumnos:[]},
-                {dia:"Miercoles", clase: false, horaInicio:"", horaFin: "", 
-                listas:["Asistencia", "Comportamiento"], alumnos:[]},
-                {dia:"Jueves", clase: false, horaInicio:"", horaFin: "", 
-                listas:["Asistencia", "Comportamiento"], alumnos:[]},
-                {dia:"Viernes", clase: false, horaInicio:"", horaFin: "", 
-                listas:["Asistencia", "Comportamiento"], alumnos:[]},
-                {dia:"Sabado", clase: false, horaInicio:"", horaFin: "", 
-                listas:["Asistencia", "Comportamiento"], alumnos:[]},
-                {dia:"Domingo", clase: false, horaInicio:"", horaFin: "", 
-                listas:["Asistencia", "Comportamiento"], alumnos:[]},
+                {
+                  dia:"Lunes", clase: false, horaInicio:"", horaFin: "", 
+                  alumnos:[],
+                  listas:[
+                    {nombre:"Asistencia",tipoLista: "Si/No"}, 
+                    {nombre:"Comportamiento", tipoLista:"Semáforo"}
+                  ]
+                },
+                {
+                  dia:"Martes", clase: false, horaInicio:"", horaFin: "", 
+                  alumnos:[],
+                  listas:[
+                    {nombre:"Asistencia",tipoLista: "Si/No"}, 
+                    {nombre:"Comportamiento", tipoLista:"Semáforo"}
+                  ]
+                },
+                {
+                  dia:"Miercoles", clase: false, horaInicio:"", horaFin: "", 
+                  alumnos:[],
+                  listas:[
+                    {nombre:"Asistencia",tipoLista: "Si/No"}, 
+                    {nombre:"Comportamiento", tipoLista:"Semáforo"}
+                  ]
+                },
+                {
+                  dia:"Jueves", clase: false, horaInicio:"", horaFin: "", 
+                  alumnos:[],
+                  listas:[
+                    {nombre:"Asistencia",tipoLista: "Si/No"}, 
+                    {nombre:"Comportamiento", tipoLista:"Semáforo"}
+                  ]
+                },
+                {
+                  dia:"Viernes", clase: false, horaInicio:"", horaFin: "", 
+                  alumnos:[],
+                  listas:[
+                    {nombre:"Asistencia",tipoLista: "Si/No"}, 
+                    {nombre:"Comportamiento", tipoLista:"Semáforo"}
+                  ]
+                },
+                {
+                  dia:"Sabado", clase: false, horaInicio:"", horaFin: "", 
+                  alumnos:[],
+                  listas:[
+                    {nombre:"Asistencia",tipoLista: "Si/No"}, 
+                    {nombre:"Comportamiento", tipoLista:"Semáforo"}
+                  ]
+                },
+                {
+                  dia:"Domingo", clase: false, horaInicio:"", horaFin: "", 
+                  alumnos:[],
+                  listas:[
+                    {nombre:"Asistencia",tipoLista: "Si/No"}, 
+                    {nombre:"Comportamiento", tipoLista:"Semáforo"}
+                  ]
+                },
             ],
 
             //DATA DE TODOS LOS GRUPOS DEL USUARIO
@@ -87,18 +129,19 @@ export default{
             this.imagen = this.$refs.fileupload.files[0];
             
         },
-        changeModo(item){
-          console.log("change");
-          console.log(item);
-          this.horario.map( h =>{
-            if(h.dia === item.dia)
-            {
-              h.horaFin = h.horaInicio = h.clase ? "" : "0";
-            }
+        //SE PUEDE USAR SI CAMBIAN EL FORMULARIO DE CREACION DE GRUPO
+        // changeModo(item){
+        //   console.log("change");
+        //   console.log(item);
+        //   this.horario.map( h =>{
+        //     if(h.dia === item.dia)
+        //     {
+        //       h.horaFin = h.horaInicio = h.clase ? "" : "0";
+        //     }
 
-          })
+        //   })
 
-        },
+        // },
         async crearGrupo(){
             //ACTIVANDO ANIMACIÓN DE SPINNER Y ERROR FALSE PARA OCULTAR ERRORES PREVIOS
             // this.spinner = true;
@@ -195,20 +238,20 @@ export default{
             //SE RESETEA EL FORMULARIO Y SE CIERRA LA VENTANA FLOTANTE
             this.$refs.formGrupos.reset();
             // this.$refs.form2.reset();
-          //   this.horario= [
-          //     {dia:"Lunes", clase: false, horaInicio:"", horaFin: ""},
-          //     {dia:"Martes", clase: false, horaInicio:"", horaFin: ""},
-          //     {dia:"Miercoles", clase: false, horaInicio:"", horaFin: ""},
-          //     {dia:"Jueves", clase: false, horaInicio:"", horaFin: ""},
-          //     {dia:"Viernes", clase: false, horaInicio:"", horaFin: ""},
-          //     {dia:"Sabado", clase: false, horaInicio:"", horaFin: ""},
-          //     {dia:"Domingo", clase: false, horaInicio:"", horaFin: ""},
-          // ];
-            console.log("horario resetado")
-            console.log(this.horario)
+            //   this.horario= [
+            //     {dia:"Lunes", clase: false, horaInicio:"", horaFin: ""},
+            //     {dia:"Martes", clase: false, horaInicio:"", horaFin: ""},
+            //     {dia:"Miercoles", clase: false, horaInicio:"", horaFin: ""},
+            //     {dia:"Jueves", clase: false, horaInicio:"", horaFin: ""},
+            //     {dia:"Viernes", clase: false, horaInicio:"", horaFin: ""},
+            //     {dia:"Sabado", clase: false, horaInicio:"", horaFin: ""},
+            //     {dia:"Domingo", clase: false, horaInicio:"", horaFin: ""},
+            // ];
+            // console.log("horario resetado")
+            // console.log(this.horario)
             this.dialog = false;
             this.faseFormulario = 1;
-            console.log("pusheando");
+            // console.log("pusheando");
             this.$router.push('/grupos')
 
             
