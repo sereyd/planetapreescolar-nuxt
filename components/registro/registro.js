@@ -1,5 +1,5 @@
 
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import subirImagen from '@/components/subirimagen/subirimagen.vue'
 
 export default{
@@ -28,13 +28,14 @@ export default{
                 // cuidad: 'Puebla',
                 urlImagen:'',
                 userlogin:false,
+                foldercode:'',  
                 lvluser:0
             },
 
             //DATA DE CONFIRMACION DE CAMPOS
             password: '12345678',
             confirmarPassword:'12345678',
-            confirmarCorreo: 'lore@gmail.com',
+            confirmarCorreo: 'emita@gmail.com',
             
 
             //DATA PARA VALIDAR QUE ESTEN LLENOS LOS CAMPOS DE CADA FORMULARIO
@@ -90,10 +91,11 @@ export default{
       subirImagen
     },
     computed:{
-        ...mapState(['datosUsuario']),
+        ...mapState(['datosUsuario','urlimg']),
     },
     methods:{
-        //...mapActions(['autenticarUsuario']),
+
+      ...mapMutations(['almacenarFotoStorage','guardaDatosUsuarioStore']),
 
        
       
@@ -155,23 +157,18 @@ export default{
         //     }
         //   },
 
-        iniciasubida(){
-          this.uploadimg=true;
-        },
+   
         async crearUsuario(){
           //ACTIVANDO ANIMACIÓN DE SPINNER Y ERROR FALSE PARA OCULTAR ERRORES PREVIOS
           this.spinner = true;
           this.error = false;
-           
-          await this.almacenarUsuarioAuthentication();
-          //EN EL METODO DE almacenarUsuarioAuthentication SI EL USUARIO EXISTE MODIFICA this.error
-          //DE ESTA FORMA EVITA QUE ALMACENE EL USUARIO EN LA COLLECION
-          if(!this.error){
-              this.almacenarUsuarioCollection();
-          }else{
-            this.spinner = false
-          }
+        
+         var codigo=this.$codegenerate();
 
+         this.datosUsuarioR.foldercode=codigo
+         
+         await this.almacenarFotoStorage("fotos_perfil/"+codigo);
+    
         },
         async almacenarUsuarioCollection(){
           //SE ALMACENA EL NUEVO USUARIO EN LA COLECCION DE USUARIOS
@@ -179,9 +176,9 @@ export default{
               this.datosUsuarioR.userlogin = true,
               this.datosUsuarioR.lvluser = 1;
               await this.$fireStore.collection('usuarios').add(this.datosUsuarioR);
-              this.datosUsuario = this.datosUsuarioR;
+             ////Guarda los datos de usuario en el store con una mutación 
+              this.guardaDatosUsuarioStore(this.datosUsuarioR);
               this.resetearData();
-            
           } catch (error) {
             console.log(error)
           }
@@ -216,7 +213,7 @@ export default{
             this.$refs.form.reset();
           //   this.faseFormulario = 1;
           //   this.tipoUsuarioR='';
-            this.datosUsuarioR.urlImagen = '';
+            this.datosUsuarioR.urlImagen = this.urlImagen;
             this.checkbox = false;
             this.spinner = false;
             this.error = false;
@@ -239,16 +236,25 @@ export default{
           const vd = this.$refs.form.validate();
           this.valid = vd;
           if(this.valid)
-            this.iniciasubida()
-             // this.siguienteFormulario()
+            this.crearUsuario()
         },
-        
+       
     },
     watch:{
-    datosUsuarioR(){
-        if(this.datosUsuarioR.urlImagen!==""){
-           this.crearUsuario()
-        }
+      async urlimg(){
+
+       this.datosUsuarioR.urlImagen=this.urlimg
+        
+        await this.almacenarUsuarioAuthentication();
+        //EN EL METODO DE almacenarUsuarioAuthentication SI EL USUARIO EXISTE MODIFICA this.error
+        //DE ESTA FORMA EVITA QUE ALMACENE EL USUARIO EN LA COLLECION
+         if(!this.error){
+             this.almacenarUsuarioCollection();
+             this.$router.push('/')
+         }else{
+           this.spinner = false
+         }
+        
       }
     }
   

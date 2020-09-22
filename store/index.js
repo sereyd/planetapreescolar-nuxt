@@ -13,7 +13,9 @@ const createStore = () => {
         lvluser:2,
         grupos:[],
       },
-      connection:{}
+      connection:{},
+      imgupload:"",
+      urlimg:""
 
     }),
     actions:{
@@ -67,6 +69,45 @@ const createStore = () => {
       }
     },
     mutations: {
+ 
+      guardaDatosUsuarioStore(state,data){
+        state.datosUsuario=data
+      },
+      actualizaurlimg(state,data){
+        state.urlimg=data
+      },
+      async almacenarFotoStorage(state,ubi){
+
+        const file =  state.imgupload;
+        const metadata = {
+          contentType: 'image/jpeg'
+        };
+
+        //VERIFICAR QUE SELECCIONARA UNA FOTO DE PERFIL
+        if(file){
+          // console.log("entroo")
+          try {
+            //SE AGREGA LA FOTO AL STORAGE DE FIREBASE
+            let storageRef = this.$fireStorage.ref(ubi);
+            await storageRef.child(file.name).put(file, metadata);
+            //SE OBTIENE LA URL DE LA IMAGEN DE PERFIL Y SE AGREGA AL OBJETO DE USUARIO
+            await storageRef.child(file.name).getDownloadURL()
+            .then((url) =>{
+                  state.urlimg=url     
+                  ///// manda instruccion de foto en lo que tendra el link de la foto con la url de la imagen 
+                }
+            );
+          } catch (error) {
+            console.log(error)
+          }
+        }else{
+          state.urlimg='none'
+          ///// manda instruccion de foto en lo que tendra el link de la foto en none
+        }
+      },
+      actualizaImgUpload(state,data){
+        state.imgupload=data
+      },
       cambiastatusSesion(state,data){
         if(data.salida===true){
           state.datosUsuario.userlogin=data.login

@@ -39,7 +39,8 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
-    '@/plugins/validasesion.js'
+    '@/plugins/validasesion.js',
+    '@/plugins/codegenerate.js'
   ],
   /*
   ** Auto import components
