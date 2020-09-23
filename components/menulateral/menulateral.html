@@ -19,6 +19,11 @@
 
         </v-card-title>
     </v-card>
+    <v-card v-if="datosUsuario.vercorreo===false">
+      <v-card-title class="melon white--text">
+    <v-icon class="white--text">mdi-email</v-icon>      Su correo aun no esta confirmado
+      </v-card-title>
+    </v-card>
 
     <v-navigation-drawer
     v-model="drawer"

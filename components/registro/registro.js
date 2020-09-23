@@ -5,7 +5,7 @@ import subirImagen from '@/components/subirimagen/subirimagen.vue'
 export default{
     data(){
         return {
-
+            succesreg:false,
             //DATA DE ELEMENTOS
             uploadimg:false,
             checkbox:false,
@@ -18,9 +18,9 @@ export default{
             //DATA QUE SE MANDARÁ A FIREBASE
             datosUsuarioR:{
                 tipo: null,
-                nombre: 'Emita',
-                apellido: 'Diaz',
-                correo: 'emita@gmail.com',
+                nombre: '',
+                apellido: '',
+                correo: '',
                 //password: '',
                 // celular: '2222222222',
                 // experiencia: '2',
@@ -29,13 +29,14 @@ export default{
                 urlImagen:'',
                 userlogin:false,
                 foldercode:'',  
+                vercorre:false, //// se utiliza para confirmar el correo registrado
                 lvluser:0
             },
 
             //DATA DE CONFIRMACION DE CAMPOS
-            password: '12345678',
-            confirmarPassword:'12345678',
-            confirmarCorreo: 'emita@gmail.com',
+            password: '',
+            confirmarPassword:'',
+            confirmarCorreo: '',
             
 
             //DATA PARA VALIDAR QUE ESTEN LLENOS LOS CAMPOS DE CADA FORMULARIO
@@ -250,9 +251,16 @@ export default{
         //DE ESTA FORMA EVITA QUE ALMACENE EL USUARIO EN LA COLLECION
          if(!this.error){
              this.almacenarUsuarioCollection();
-             this.$router.push('/')
-         }else{
-           this.spinner = false
+             this.succesreg=true
+          setTimeout(()=>{
+            this.$router.push('/')
+          },3000)
+            
+
+            }else{
+
+          this.spinner = false
+
          }
         
       }

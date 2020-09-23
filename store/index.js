@@ -12,6 +12,7 @@ const createStore = () => {
         userlogin:false,
         lvluser:2,
         grupos:[],
+        vercorreo:false
       },
       connection:{},
       imgupload:"",
