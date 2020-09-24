@@ -30,7 +30,8 @@ export default{
                 userlogin:false,
                 foldercode:'',  
                 vercorre:false, //// se utiliza para confirmar el correo registrado
-                lvluser:0
+                lvluser:0,
+                codigocorreo:''
             },
 
             //DATA DE CONFIRMACION DE CAMPOS
@@ -165,8 +166,9 @@ export default{
           this.error = false;
         
          var codigo=this.$codegenerate();
-
+          var codigo1=this.$codecorreo();
          this.datosUsuarioR.foldercode=codigo
+         this.datosUsuarioR.codigocorreo=codigo1
          
          await this.almacenarFotoStorage("fotos_perfil/"+codigo);
     
@@ -252,9 +254,35 @@ export default{
          if(!this.error){
              this.almacenarUsuarioCollection();
              this.succesreg=true
-          setTimeout(()=>{
-            this.$router.push('/')
-          },3000)
+              var payload={
+                tipo:'confirmacion',
+                datos:this.datosUsuarioR
+              }
+              
+              ///envia correo de confirmación 
+
+             fetch('http://tiendasereyd.ml/mailsender/',
+              {
+                method:'POST',
+                headers:{
+                  'Content-type':'applications/json'
+                },
+                body:JSON.stringify(payload)
+
+              }
+             )
+             .then((data)=>{
+               consoel
+             if(data.code===1){
+     
+              setTimeout(()=>{
+                this.$router.push('/')
+              },3000)
+              
+             }
+              
+            })
+      
             
 
             }else{
