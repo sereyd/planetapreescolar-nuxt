@@ -5,6 +5,7 @@ import subirImagen from '@/components/subirimagen/subirimagen.vue'
 export default{
     data(){
         return {
+            finish:false,
             succesreg:false,
             //DATA DE ELEMENTOS
             uploadimg:false,
@@ -241,6 +242,9 @@ export default{
           if(this.valid)
             this.crearUsuario()
         },
+        finalizaproceso(){
+          this.$router.push('/')
+        }
        
     },
     watch:{
@@ -261,7 +265,7 @@ export default{
               
               ///envia correo de confirmación 
 
-             fetch('http://tiendasereyd.ml/mailsender/',
+             fetch('https://tiendasereyd.ml/mailsender/',
               {
                 method:'POST',
                 headers:{
@@ -272,14 +276,8 @@ export default{
               }
              )
              .then((data)=>{
-               consoel
-             if(data.code===1){
-     
-              setTimeout(()=>{
-                this.$router.push('/')
-              },3000)
-              
-             }
+               console.log(data)
+              this.finish=true
               
             })
       

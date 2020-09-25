@@ -16,15 +16,13 @@
         <router-link to="login" v-if="$validasesion($store,{ sinregistro:true })" class="white--text" style="text-decoration:none;">Iniciar sesión</router-link> &nbsp;&nbsp;&nbsp;
         <v-btn class="melon white--text"  v-if="$validasesion($store,{ sinregistro:true })" link to="registro">Registro </v-btn>
         </div>
-
         </v-card-title>
     </v-card>
-    <v-card v-if="datosUsuario.userlogin===true && datosUsuario.vercorreo===false">
+    <v-card v-if="datosUsuario.userlogin===true && datosUsuario.vercorre===false">
       <v-card-title class="melon white--text">
     <v-icon class="white--text">mdi-email</v-icon>      Su correo aun no esta confirmado
       </v-card-title>
     </v-card>
-
     <v-navigation-drawer
     v-model="drawer"
     absolute
@@ -51,5 +49,4 @@
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
-
 </div>

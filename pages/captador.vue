@@ -1,7 +1,7 @@
 <template>
     <div>
-        {{respuesta}}
-        {{recive}}
+       <h1>{{respuesta}}</h1>
+        
         </div>
 </template>
 <script>
@@ -13,7 +13,7 @@ export default {
         }
     },
     methods:{
-        captadatos(){
+    async captadatos(){
             var get=window.location.href
             var get1=get.split('?')
 
@@ -23,15 +23,31 @@ export default {
                 this.$set(this.recive,[rec[0]],rec[1])
                 rec="" 
                 })
-
-
+                var code=parseInt(this.recive.code)
+                const usuarioQuery =  this.$fireStore.collection('usuarios').where("codigocorreo","==",code)
+                await  usuarioQuery.get()
+               .then((querySnapshot) => {
+                  querySnapshot.forEach((doc)=>{
+                      console.log(doc.id)
+                      //// actualizando datos
+                      console.log(doc.id,"=>",doc.data())
+                      this.respuesta="Actualizando Datos"
+                     this.$fireStore.collection("usuarios").doc(doc.id).update({vercorre:true})
+                      
+                      setTimeout(()=>{
+                          this.$router.push('/login')
+                      },2000)
+                  })
+              })
+              .catch(function(error) {
+                  console.log("Error: ", error);
+              });
+            
         },
-        validandoRespuesta(res){
-            console.log(res)
-        },
-        async init(){
-            await this.captadatos()
-            await this.validandoRespuesta(this.recive)
+     init(){
+      
+        this.captadatos()
+            
         }
     },
     mounted(){
