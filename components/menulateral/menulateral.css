@@ -1,0 +1,15 @@
+.menu-sec{
+    font-size:14px;
+}
+
+.menu-sec-premium{
+    position:absolute;
+    bottom:-10px;   
+}
+
+/*   vista mobil */
+@media (max-width:800px){
+.vMmobilview{
+    display:none;
+}
+}

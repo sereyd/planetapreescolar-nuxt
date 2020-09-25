@@ -26,7 +26,7 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { href:"https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap", rel:"stylesheet" }    
+      {  href:"https://fonts.googleapis.com/css2?family=Montserrat&display=swap", rel:"stylesheet" }    
     ]
   },
   /*
@@ -115,7 +115,7 @@ export default {
       icons:  {
         iconfont: 'mdi',
       }
-    
+     
   },
   /*
   ** Build configuration

@@ -1,7 +1,10 @@
 <div style="text-align:left;" class="pt-5">
  <v-btn class="melon" @click="editar=true">Administrar Blog</v-btn> 
-    <v-dialog v-model="editar" max-width='800px'>
+    <v-dialog v-model="editar" max-width="600px"  >
             <v-card>
+                <v-card-title class="primary white--text">
+                    Crea nueva entrada
+                </v-card-title>
                 <v-card-text>
                     <v-row>
                         <v-col cols="12" md="12" filled>
