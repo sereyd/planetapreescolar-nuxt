@@ -12,7 +12,7 @@
             <v-row class="mb-6" no-gutters
             >
               <!-- BOTON PARA CREAR GRUPO -->
-              <v-col cols="3" class=" mb-3">
+              <v-col cols="12" md="3" sm="6" class=" mb-3">
                 <v-card
                   class="pa-2 mx-2 grey lighten-3 d-flex justify-center align-center"
                   height="150px"
@@ -31,10 +31,11 @@
                 </div>
               </v-col>
               <!-- GRUPOS CREDADOS -->
-              <v-col v-for="(grupo, index) in datosUsuario.grupos" :key="index" cols="3" class=" mb-3">
+              <v-col v-for="(grupo, index) in datosUsuario.grupos" :key="index" cols="12" md="3" sm="6" class=" mb-3">
                 <v-card
-                  class=" grey lighten-3 d-flex justify-center align-center"
+                  class=" grey lighten-3 d-flex justify-center align-center mx-2"
                   height="150px"
+                  
                 >
                   <v-img
                     :src="grupo.urlImagen"
@@ -44,8 +45,11 @@
                 </v-card> 
                 <div>
                     <div class=" ml-3">
-                        <h4>{{grupo.grado}}  {{grupo.grupo}}</h4>
-                        <p>{{grupo.total}} alumnos</p>
+                        <h4>{{grupo.nombreGrupo}}</h4>
+                        <p class="datosGrupo">{{grupo.adicionales}}</p>
+                        <p class="datosGrupo">{{grupo.cicloEscolar}}</p>
+                        <p class="datosGrupo">{{grupo.total}} alumnos</p>
+                        <router-link class="" style="font-size: 13px;" :to="{name: 'grupo-id', params:{id: grupo.nombreGrupo}, query:datosUsuario.grupos }">Ver más</router-link>
                     </div>
                 </div>
               </v-col>
@@ -57,135 +61,107 @@
 
 
     <!-- DIALOG DE REGISTRO DE GRUPOS -->
-    <v-dialog v-model="dialog" persistent max-width="750">
+    <v-dialog v-model="dialog" persistent max-width="755">
         
       <v-card class="">
         <v-card-title class=" justify-space-between">
-            <v-btn icon text small color="purple" @click="faseFormulario--" >
-                <v-icon>mdi-arrow-left-bold</v-icon>
+            <v-btn icon text small color="purple" @click="" >
+                <!-- <v-icon>mdi-arrow-left-bold</v-icon> -->
             </v-btn>
-            <h2 class="headline purple--text "></h2>
+            <h2 class="headline purple--text ">Nuevo grupo</h2>
             <v-btn icon text small color="purple" @click="dialog = false" >
                 <v-icon>mdi-window-close</v-icon>
             </v-btn>
         </v-card-title>
-        <div class="p-0 m-0">
-          <div>
-            <div  >
-                <!-- <template> -->
-                    <v-form ref="form"
-                    v-model="valid"
-                    v-show="faseFormulario === 1"
-                    lazy-validation>
-                        <div class="" >
-                            <div  hidden>
-                                <!-- <v-file-input
-                                    ref="fileupload" @change = "change"
-                                    v-model="imagen"
-                                    accept="image/png, image/jpeg, image/bmp"
-                                ></v-file-input> -->
-                                <input type="file" @change = "change" ref="fileupload"/>
-                            </div> 
+        <div class="">
+         <v-form ref="formGrupos"
+         v-model="esGrupoValido"
+         v-show="faseFormulario === 1"
+         lazy-validation>
+          <v-row>
+            <v-col class="" cols="5">
+              <div  hidden>
+                  <input type="file" @change = "change" ref="fileupload"/>
+              </div> 
 
-                            <!-- BOTON DE PARA ELEGIR FOTO  -->
-                            <div class="  d-flex justify-center align-center red m-0 p-0">
-                              <v-btn
-                                class="m-0 p-0"
-                                color=""
-                                height="250" width="100%"
-                                @click="seleccionarImagen"
-                              >
-                                <div v-if="!imagen" >
-                                    <v-icon color="pink darken-4"  style="font-size: 120px;">mdi-plus</v-icon>
-                                </div>
-                                <div v-else  class="foto">
-                                    <!-- <v-avatar size="300" >  -->
-                                        <v-img
-                                        :src="urlImagenPrevia"
-                                        alt="foto"
-                                        height="250"
-                                        contain
-                                        ></v-img>
-                                        <!-- <v-img src="https://picsum.photos/510/300?random" aspect-ratio="1.7"></v-img> -->
-                                        <!-- <v-img
-                                          src="https://picsum.photos/350/165?random"
-                                         
-                                          class="grey darken-4 "
-                                        ></v-img> -->
-                                    <!-- </v-avatar> -->
-                                </div>
-                              </v-btn>
-                            </div>
-                            <!-- BOTON DE PARA ELEGIR FOTO  -->
+              <!-- BOTON DE PARA ELEGIR FOTO  -->
+              <div class="  d-flex justify-center align-center ">
+                <v-btn
+                  class=" mt-12"
+                  color=""
+                  height="150" width="85%"
+                  @click="seleccionarImagen"
+                >
+                  <div v-if="!imagen" >
+                      <v-icon color="pink darken-4"  style="font-size: 120px;">mdi-plus</v-icon>
+                  </div>
+                  <!-- <div  v-else 
+                    class=" grey lighten-3 divFoto  "
+                  >
+                    <v-img
+                      :src="urlImagenPrevia"
+                      class=""
+                      height="100"
+                      contain
+                    ></v-img>
+                  </div>  -->
+                  <div v-else  class="divFoto">
+                          <v-img
+                          :src="urlImagenPrevia"
+                          alt="foto"
+                          class="imagenPre"
+                          contain
+                          ></v-img>
+                  </div>
+                </v-btn>
+              </div>
+              <p class="text-center sub mt-2">Añadir imagen de grupo</p>
+            </v-col>
+
+            <v-col cols="7" class="pr-7">
+              <div class=""> 
+                <v-text-field
+                    v-model="datosNuevoGrupo.nombreGrupo"
+                    placeholder="Nombre grupo*"
+                    required
+                    outlined
+                    :rules="[v => !!v || 'Nombre grupo es requerida']"
+                ></v-text-field>
+                <v-text-field
+                    v-model="datosNuevoGrupo.adicionales"
+                    placeholder="Adicionales [p/e nombre escuela]"
+                    required
+                    outlined
+                ></v-text-field>
+                <v-text-field
+                    v-model="datosNuevoGrupo.cicloEscolar"
+                    placeholder="Ciclo escolar / periodo"
+                    required
+                    outlined
+                ></v-text-field>
+                <p class="sub">*Campo obligatorio</p >
+              </div>
+            </v-col>
+
+          </v-row>
+          <div class="d-flex justify-center">
+              <v-btn 
+                  :disabled="!esGrupoValido" dark 
+                  class="red px-10 mb-5" 
+                  @click="validarFormularioGrupo"  
+              > Crear</v-btn>
+          </div>
+             
+         </v-form>
+
+                    
+                 
+        </div>
+      </v-card>
+    </v-dialog>
 
 
-                            <div class="mx-15 px-8"> 
-                            <v-text-field
-                                v-model="datosNuevoGrupo.escuela"
-                                label="Escuela:"
-                                required
-                                :rules="[v => !!v || 'Escuela es requerida']"
-
-                                
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="datosNuevoGrupo.grado"
-                                label="Grado:"
-                                required
-                                :rules="[v => !!v || 'Grado es requerido']"
-                                
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="datosNuevoGrupo.grupo"
-                                label="Grupo:"
-                                required
-                                :rules="[v => !!v || 'Grupo es requerido']"
-                                
-                            ></v-text-field>
-
-                            <v-text-field
-                                v-model="datosNuevoGrupo.cicloEscolar"
-                                label="Ciclo escolar:"
-                                required
-                                :rules="[v => !!v || 'Ciclo escolar es requerido']"
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="datosNuevoGrupo.seccion"
-                                label="Seccion:"
-                                required
-                                :rules="[v => !!v || 'Seccion es requerida']"
-                                
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="datosNuevoGrupo.turno"
-                                label="Turno:"
-                                required
-                                :rules="[v => !!v || 'Turno es requerido']"
-                                
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="datosNuevoGrupo.periodo"
-                                label="Periodo:"
-                                required
-                                :rules="[v => !!v || 'Periodo es requerido']"
-                                
-                            ></v-text-field>
-                            
-                            
-                          </div>   
-                            <div class="d-flex justify-center">
-                                <v-btn 
-                                    :disabled="!valid" dark 
-                                    class="red px-10 mb-5" 
-                                    @click="validarFormulario"  
-                                > Siguiente</v-btn>
-                            </div>
-                        </div>
-
-                        
-                    </v-form>
-
-                    <div 
+    <!-- <div 
                     v-show="faseFormulario === 2"
                     >
                       <v-form ref="form2"
@@ -199,7 +175,9 @@
                              <div class="d-flex flex-nowrap align-center justify-space-between">
                                <div class> {{h.dia}} </div>
                                 <div>
-                                  <v-switch v-model="h.clase" :label="h.clase ? 'Clase' : 'Descanso' "></v-switch>
+                                  <v-switch @change="changeModo(h)" 
+                                  v-model="h.clase" :label="h.clase ? 'Clase' : 'Descanso' "
+                                  ></v-switch>
                                 </div>
                              </div>
                             </v-col>
@@ -213,6 +191,7 @@
                                 v-model="h.horaInicio"
                                 :rules="[v => !!v || 'Hora de inicio es requerido']"
                                 required
+                                :disabled="h.horaInicio === '0' && h.clase === false"
                               ></v-text-field>
                             </v-col>
 
@@ -221,6 +200,9 @@
                                 label="Hora fin"
                                 v-model="h.horaFin"
                                 :rules="[v => !!v || 'Hora de fin es requerido']"
+                                :disabled="h.horaInicio === '0' && h.clase === false"
+
+
                                 required
                               ></v-text-field>
                             </v-col>
@@ -237,64 +219,7 @@
                           > Crear</v-btn>
                       </div>
                       </v-form>
-                    </div v-else>
-                    <!-- 
-                    <v-form>
-                    
-                      <v-row>
-                        <v-col cols="4" md="4">
-                          <v-switch v-model="h.clase" :label="h.clase ? 'Clase' : 'Descanso' "></v-switch>
-                        </v-col>
-
-                        <v-col cols="4" md="4" >
-                          <v-text-field
-                            v-model=""
-                            :rules=""
-                            :counter="10"
-                            label="First name"
-                            required
-                          ></v-text-field>
-                        </v-col>
-
-                        <v-col cols="4" md="4" >
-                          <v-text-field
-                            v-model=""
-                            :rules=""
-                            :counter="10"
-                            label="Last name"
-                            required
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                      
-                      <div v-for ="(h, index) in horario" :key="index" class="d-flex align-center justify-center">
-                        <div class="">{{h.dia}}</div>
-                        <div class="">
-                          <v-switch 
-                          v-model="h.clase" 
-                          :label="h.clase ? 'Clase' : 'Descanso' "></v-switch>
-                        </div>
-                        <div class="d-flex">
-                          <v-text-field
-                            :counter="10"
-                            label="Last name"
-                            required
-                          ></v-text-field>
-                          <v-text-field
-                            :counter="10"
-                            label="Last name"
-                            required
-                          ></v-text-field>
-                        </div>
-                      </div>  
-                        
-                    </v-form> -->
-            </div>
-            
-          </div>
-        </div>
-      </v-card>
-    </v-dialog>
+                    </div> -->
 
 
 </div>

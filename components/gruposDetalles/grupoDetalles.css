@@ -1,0 +1,24 @@
+
+.orden
+{
+    display: flex;
+    justify-content: flex-end;
+    /* background-color: ; */
+}
+.tabla_titulos{
+ font-size: 14px;
+}
+
+/* .fila{
+    background-color: red; 
+    padding:0;
+    margin:0; 
+     padding-bottom: 0px;
+    padding-top: 0px;
+    margin-bottom: 0px;
+    margin-top: 0px; 
+} */
+.usuarios{
+    /* border-bottom: hotpink; */
+    border-bottom: solid 1px green;
+}

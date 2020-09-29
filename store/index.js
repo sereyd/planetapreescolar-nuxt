@@ -9,7 +9,7 @@ const createStore = () => {
         apellido: '',
         correo: '',
         urlImagen:'',
-        userlogin:false,
+        userlogin:true,
         lvluser:2,
         grupos:[],
         vercorreo:false
@@ -25,6 +25,9 @@ const createStore = () => {
       },
       actualizarGrupos(context, data){
         context.state.datosUsuario.grupos = data;
+      },
+      actualizarAlumnos(context, data){
+        context.state.datosUsuario.alumnos = data;
       },
       async autenticarUsuario(context){
       
