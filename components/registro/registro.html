@@ -45,6 +45,8 @@
                     single-line
                     solo
                     :rules="nombreReglas"
+                    @keyup.enter="validate"
+
                 ></v-text-field>
                 <v-text-field
                     v-model="datosUsuarioR.apellido"
@@ -53,6 +55,7 @@
                     single-line
                     solo
                     :rules="apellidoReglas"
+                    @keyup.enter="validate"
                 ></v-text-field>
 
                 <v-text-field
@@ -62,6 +65,7 @@
                     single-line
                     solo
                     :rules="correoReglas"
+                    @keyup.enter="validate"
                 ></v-text-field>
                 <v-text-field
                     v-model="confirmarCorreo"
@@ -69,7 +73,8 @@
                     required
                     single-line
                     solo
-                    :rules="correoReglas2"  
+                    :rules="correoReglas2"
+                    @keyup.enter="validate"
                 ></v-text-field>    
                 <v-text-field
                     v-model="password"
@@ -81,7 +86,8 @@
                     single-line
                     solo
 
-                    :rules="passwordReglas" 
+                    :rules="passwordReglas"
+                    @keyup.enter="validate"
                 ></v-text-field>
 
                 <v-text-field
@@ -93,7 +99,8 @@
                     required
                     single-line
                     solo
-                    :rules="passwordReglas2"    
+                    :rules="passwordReglas2"
+                    @keyup.enter="validate"  
                 ></v-text-field>
 
                 <v-btn v-if="!spinner"

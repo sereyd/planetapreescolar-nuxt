@@ -15,6 +15,7 @@
                             solo
                             :rules="correoReglas"
                             ref="inputCorreo"
+                            @keyup.enter="validate"
                         ></v-text-field>
                         <v-text-field
                             v-model="dataLogin.password"
@@ -27,6 +28,7 @@
                             solo
                             :rules="passwordReglas"
                             ref="inputPass"
+                            @keyup.enter="validate"
                         ></v-text-field>
                         <div class="">
                             <v-btn v-if="!spinner"
