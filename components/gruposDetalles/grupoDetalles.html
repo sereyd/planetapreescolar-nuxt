@@ -176,6 +176,8 @@
                     required
                     outlined
                     :rules="[v => !!v || 'Nombre es requerido']"
+                    @keyup.enter="validarFormularioAlumno"
+
                 ></v-text-field>
                 <v-text-field
                     v-model="datosNuevoAlumno.apellidos"
@@ -183,6 +185,7 @@
                     required
                     outlined
                     :rules="[v => !!v || 'Apellidos son requeridos']"
+                    @keyup.enter="validarFormularioAlumno"
 
                 ></v-text-field>
                 <v-text-field
@@ -191,6 +194,7 @@
                     required
                     outlined
                     :rules="[v => !!v || 'Fecha de nacimiento es requerida']"
+                    @keyup.enter="validarFormularioAlumno"
 
                 ></v-text-field>
                 <!-- {{datosNuevoAlumno.sexo}} -->
@@ -208,6 +212,7 @@
                     required
                     outlined
                     :rules="[v => !!v || 'Telefono es requerido']"
+                    @keyup.enter="validarFormularioAlumno"
 
                 ></v-text-field>
                 <!-- <p class="sub">*Campo obligatorio</p > -->
@@ -260,6 +265,7 @@
                     required
                     outlined
                     :rules="[v => !!v || 'Nombre es requerido']"
+
                 ></v-text-field>
     
                 <v-card>
@@ -348,23 +354,25 @@
                     <v-row>
                   <v-col cols="6" class="days">
                     <v-text-field
-                      label="Hora inicio"
-                      v-model="nuevoHorario.horaInicio"
-                      :rules="[v => !!v || 'Hora de inicio es requerido']"
-                      required
-                      :disabled="nuevoHorario.horaInicio === '0' && nuevoHorario.clase === false"
+                        label="Hora inicio"
+                        v-model="nuevoHorario.horaInicio"
+                        :rules="[v => !!v || 'Hora de inicio es requerido']"
+                        required
+                        :disabled="nuevoHorario.horaInicio === '0' && nuevoHorario.clase === false"
+                        @keyup.enter="validarFormularioHorario"
+                      
                     ></v-text-field>
                   </v-col>
     
                   <v-col cols="6" class="days">
                     <v-text-field
-                      label="Hora fin"
-                      v-model="nuevoHorario.horaFin"
-                      :rules="[v => !!v || 'Hora de fin es requerido']"
-                      :disabled="nuevoHorario.horaInicio === '0' && nuevoHorario.clase === false"
-    
-    
-                      required
+                        label="Hora fin"
+                        v-model="nuevoHorario.horaFin"
+                        :rules="[v => !!v || 'Hora de fin es requerido']"
+                        :disabled="nuevoHorario.horaInicio === '0' && nuevoHorario.clase === false"
+                        required
+                        @keyup.enter="validarFormularioHorario"
+
                     ></v-text-field>
                   </v-col>
                 </v-row>

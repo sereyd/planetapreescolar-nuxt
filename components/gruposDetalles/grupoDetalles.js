@@ -29,7 +29,7 @@ export default {
             imagen: null,
             urlImagenPrevia: "",
             datosNuevoAlumno:{
-                nombre:"Joel",
+                nombre:"",
                 apellidos: "Gomez Nieves",
                 fechaNacimiento:"1902",
                 sexo:"",
@@ -44,7 +44,7 @@ export default {
             dialogLista: false,
             esListaValido: true,
             datosNuevoLista:{
-                nombre:"Puntualidad",
+                nombre:"",
                 tipoLista:"",
             },
             listas:[
@@ -67,16 +67,36 @@ export default {
             },
 
             // DATA GRUPO
-            // allDays:"",
+            allDays:"",
             grupos:[],
             grupo:{},
         }
     },
-    mounted(){
-        this.grupos = this.$route.query;
-        this.idGrupo = this.$route.params.id;
-        this.grupo = this.grupos.find( grupo => this.idGrupo === grupo.nombreGrupo );
-        this.grupo.alumnos = this.grupo.alumnos ? this.grupo.alumnos : [];
+    beforeMount() {
+        // this.grupos = this.$route.query;
+        
+
+        // setTimeout(() => {
+            console.log("datos usuario")
+            console.log(this.datosUsuario);
+            this.grupos = this.datosUsuario.grupos;
+            this.idGrupo = this.$route.params.id;
+            console.log(this.idGrupo);
+            console.log(this.grupos);
+            if(this.idGrupo === "exit")
+            {
+                // this.$route.push("/");
+                this.$router.push("/exit");
+
+                // this.$route
+            }
+            else{
+                this.grupo = this.grupos.find( grupo => this.idGrupo === grupo.nombreGrupo );
+                this.grupo.alumnos = this.grupo.alumnos ? this.grupo.alumnos : [];
+            }
+            
+        //   }, 7000);
+        
     },
     components:{
         // grupos
@@ -227,8 +247,16 @@ export default {
         },
         validarFormularioLista() {
             this.esListaValido =this.$refs.formLista.validate();
+            console.log("form lleno: "+this.esListaValido)
             if(this.esListaValido)
-                this.almacenarListaCollection();
+            {
+                console.log("almacenando lista")
+            }
+            else{
+                console.log("reprobado men lista")
+
+            }
+                // this.almacenarListaCollection();
         },
 
         async almacenarListaCollection(){
