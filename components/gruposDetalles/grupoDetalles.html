@@ -1,6 +1,6 @@
 <div>
     <v-container fluid>
-        
+        <!-- MENU DE SELECCION DE DIA -->
         <v-card v-if = "dia === ''" class=" mt-7 ">
             <div class="d-flex flex-column align-center ">
                 <div v-for="(dia, index) in dias" :key="index" class="mt-1">
@@ -8,7 +8,10 @@
                 </div>
             </div>
         </v-card>
-    
+        <!-- MENU DE SELECCION DE DIA -->
+
+
+        <!-- CABECERA DIA, CLASE, HORARIO, VERO OTROS DIAS -->
         <v-card v-if = "dia !== ''" class=" mt-7" >
             <v-row>
                 <v-col class="ml-3">
@@ -39,11 +42,14 @@
                 </v-col>
             </v-row>
         </v-card>
+        <!-- CABECERA DIA, CLASE, HORARIO, VERO OTROS DIAS -->
+
     
-        
+        <!-- TABLA DE ALUMNOS -->
         <v-card v-if = "dia !== ''" class="  mt-7" contain >
             <v-row >
                 <v-col cols="12" class=" mr-2  ml-2" >
+                    <!-- ENCABEZADOS DE TABLA -->
                     <v-row >
                         <v-col cols="2" class="">
                             <h3 class="tabla_titulos mt-2">
@@ -71,6 +77,9 @@
                         
                     </v-row>
                     <v-divider class="mx-4"></v-divider>
+                    <!-- ENCABEZADOS DE TABLA -->
+
+                    <!-- DATOS DE ALUMNO Y DATOS DE LISTAS -->
                     <v-row v-for="(a, index) in horario.alumnos" :key="index"  class="" >
                         <v-col  cols='2' class=" py-1  d-flex align-center" >
                             <!-- <div class="red d-flex align-center"> -->
@@ -90,6 +99,8 @@
                         <!-- <v-col class="fila red"  v-for="(lista, index) in a.listas" :key="index" :cols="index === 'nombre' ? '2' : '2'" > -->
                         <v-col class="fila "  v-for="(lista, index) in a.listas" :key="index" cols="2" >
                             <!-- <div class=" blue"> -->
+                                <p :class="index === 'nombre' ? '' : 'text-center'">{{lista.tipoLista}}</p>
+                                
                                 <p :class="index === 'nombre' ? '' : 'text-center'">{{lista.calificacion}}</p>
                             <!-- </div> -->
                         </v-col>
@@ -111,13 +122,16 @@
                         <!-- <v-divider class="mx-4"></v-divider> -->
     
                     </v-row>
-                        <!-- <v-divider class="mx-4"></v-divider> -->
+                    <!-- DATOS DE ALUMNO Y DATOS DE LISTAS -->
+                    
     
                 </v-col>
             </v-row>
             <!-- <div class="pink"><h1 class="primary--text ml-3">Mis Grupos</h1></div>
             <div class="blue"><v-btn class="orange mr-3">Ver más</v-btn></div> -->
         </v-card>
+        <!-- TABLA DE ALUMNOS -->
+
     </v-container>
     
     
