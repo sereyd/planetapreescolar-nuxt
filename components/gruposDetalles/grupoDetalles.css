@@ -22,3 +22,30 @@
     /* border-bottom: hotpink; */
     border-bottom: solid 1px green;
 }
+
+.tabla{
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+.nombres{
+    width: 20rem;
+}
+.titulo_nombres{
+    /* width: 500px!important; */
+    width: 56.8rem;
+    /* height:  500px!important; */
+
+    /* margin-left: 7em!important;
+    margin-right: 7em!important; */
+    /* padding-left: 800px; */
+    background-color: blue;
+}
+
+.titulosLista{
+    width: 40%;
+    background-color: darkmagenta;
+}
+.Lista{
+    width: 18%;
+    background-color: darkmagenta;
+}

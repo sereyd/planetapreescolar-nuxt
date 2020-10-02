@@ -48,56 +48,56 @@ export default{
                   dia:"Lunes", clase: false, horaInicio:"", horaFin: "", 
                   alumnos:[],
                   listas:[
-                    {nombre:"Asistencia",tipoLista: "Si/No"}, 
-                    {nombre:"Comportamiento", tipoLista:"Semáforo"}
+                    {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
+                    {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
                   ]
                 },
                 {
                   dia:"Martes", clase: false, horaInicio:"", horaFin: "", 
                   alumnos:[],
                   listas:[
-                    {nombre:"Asistencia",tipoLista: "Si/No"}, 
-                    {nombre:"Comportamiento", tipoLista:"Semáforo"}
+                    {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
+                    {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
                   ]
                 },
                 {
                   dia:"Miercoles", clase: false, horaInicio:"", horaFin: "", 
                   alumnos:[],
                   listas:[
-                    {nombre:"Asistencia",tipoLista: "Si/No"}, 
-                    {nombre:"Comportamiento", tipoLista:"Semáforo"}
+                    {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
+                    {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
                   ]
                 },
                 {
                   dia:"Jueves", clase: false, horaInicio:"", horaFin: "", 
                   alumnos:[],
                   listas:[
-                    {nombre:"Asistencia",tipoLista: "Si/No"}, 
-                    {nombre:"Comportamiento", tipoLista:"Semáforo"}
+                    {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
+                    {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
                   ]
                 },
                 {
                   dia:"Viernes", clase: false, horaInicio:"", horaFin: "", 
                   alumnos:[],
                   listas:[
-                    {nombre:"Asistencia",tipoLista: "Si/No"}, 
-                    {nombre:"Comportamiento", tipoLista:"Semáforo"}
+                    {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
+                    {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
                   ]
                 },
                 {
                   dia:"Sabado", clase: false, horaInicio:"", horaFin: "", 
                   alumnos:[],
                   listas:[
-                    {nombre:"Asistencia",tipoLista: "Si/No"}, 
-                    {nombre:"Comportamiento", tipoLista:"Semáforo"}
+                    {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
+                    {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
                   ]
                 },
                 {
                   dia:"Domingo", clase: false, horaInicio:"", horaFin: "", 
                   alumnos:[],
                   listas:[
-                    {nombre:"Asistencia",tipoLista: "Si/No"}, 
-                    {nombre:"Comportamiento", tipoLista:"Semáforo"}
+                    {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
+                    {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
                   ]
                 },
             ],
@@ -275,6 +275,6 @@ export default{
         },
     },
     created() {
-      console.log(this.$route)
+      // console.log(this.$route)
     },
 }
