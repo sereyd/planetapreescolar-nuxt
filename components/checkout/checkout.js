@@ -13,13 +13,27 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 import { Card, createToken } from 'vue-stripe-elements-plus'
 import Spinner from '~/components/spinner.vue'
 
+import { StripeCheckout } from 'vue-stripe-checkout';
+
  
 export default {
   data () {
     return {
       complete: false,
         stripeKey: "pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx",
+      sessionId: "cd_hsjd3893",
+      loading: false,
 
+      //RUTAS DE RESPUESTA
+      successUrl:"http://localhost:3000/pago-realizado",
+      cancelUrl:"http://localhost:3000/cancelado",
+      items: [
+        {
+          sku: 'sku_FdQKocNoVzznpJ', 
+          quantity: 1,
+          amount: 20000
+        }
+      ],
       stripeOptions: {
         // see https://stripe.com/docs/stripe.js#element-options for details
         amount: 1000,
@@ -54,8 +68,11 @@ export default {
         },
     }
   },
+  computed:{
+    ...mapState(['idCompra']),
+  },
  
-  components: { Card, Spinner },
+  components: { Card, Spinner, StripeCheckout },
   mounted() {
        
             // this.elements = this.$stripe.import().elements();
@@ -67,11 +84,87 @@ export default {
             console.log(this.card)
             console.log("stripe")
             console.log(this.stripe);
+
+
+      //       fetch("http://localhost:4242/create-session", {
+      //   method: "POST",
+      // })
+
+      //   .then( (response) => {
+      //     return response.json();
+      //   })
+      //   .then( (session) => {
+      //       console.log(session)
+      //       // localStorage.setItem("sesion", JSON.stringify(session) );
+      //       this.sessionId = session.id;
+      //       return this.sessionId;
+      //   })
+
+      //   .then( (result) => {
+
+      //     if (result.error) {
+      //       alert(result.error.message);
+      //     }
+      //   })
+
+      //   .catch( (error) => {
+      //     console.error("Error:", error);
+      //   });
     
             
         },
  
   methods: {
+    checkout () {
+      fetch("http://localhost:4242/create-session", {
+        method: "POST",
+      })
+
+        .then( (response) => {
+          return response.json();
+        })
+        .then( (session) => {
+            console.log(session)
+            localStorage.setItem("payment_intent", JSON.stringify(session.payment_intent) );
+            this.sessionId = session.id;
+            this.idCompra = session.id;
+            console.log(this.idCompra)
+            // this.$refs.sessionRef.redirectToCheckout({ sessionId: session.id })
+            // const resultado = this.$refs.checkoutRef.redirectToCheckout({ sessionId: session.id });
+
+            //const resultado =  stripe.redirectToCheckout({ sessionId: session.id });
+  
+            // console.log(resultado);
+            // alert(session.id);
+            // debugger;
+          // return resultado
+          return this.sessionId
+        })
+
+        .then( async(result) => {
+          // If redirectToCheckout fails due to a browser or network
+          // error, you should display the localized error message to your
+          // customer using error.message.
+          console.log("result")
+          console.log(result)
+          const res = await this.$refs.sessionRef.redirectToCheckout();
+          console.log(res);
+          // debugger;
+          // alert("listo")
+
+          if (result.error) {
+            alert(result.error.message);
+          }
+        })
+
+        .catch( (error) => {
+          console.error("Error:", error);
+        });
+
+       
+    },
+
+
     pagarMembresia () {
       // createToken returns a Promise which resolves in a result object with
       // either a token or an error key.
@@ -171,7 +264,7 @@ export default {
         this.error= false;
         this.errorMensaje = "El pago a sido completado";
         setTimeout(() => {
-            this.$router.push('/')
+            this.$router.push('/pago-realizado')
         }, 3000);
 
     },
@@ -185,7 +278,52 @@ export default {
             this.errorMensaje = "";
         }, 4000);
             
-    }
+    },
+
+    //FORMATO DE PAGO 2
+    async pagarConTarjeta(){
+
+        var stripe = Stripe("pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx");
+
+    // var checkoutButton = document.getElementById("checkout-button");
+
+    // checkoutButton.addEventListener("click", function () {
+      fetch("http://localhost:4242/create-session", {
+        method: "POST",
+      })
+
+        .then( (response) => {
+          return response.json();
+        })
+        .then( (session) => {
+            console.log(session)
+            localStorage.setItem("sesion", JSON.stringify(session) );
+            this.sessionId = session.id;
+            const resultado =  stripe.redirectToCheckout({ sessionId: session.id });
+  
+            console.log(resultado);
+            // alert(session.id);
+            // debugger;
+          return resultado
+        })
+
+        .then( (result) => {
+          // If redirectToCheckout fails due to a browser or network
+          // error, you should display the localized error message to your
+          // customer using error.message.
+
+          if (result.error) {
+            alert(result.error.message);
+          }
+        })
+
+        .catch( (error) => {
+          console.error("Error:", error);
+        });
+
+    // });
+
+    },
 
 
 

@@ -44,6 +44,36 @@
       </form>
     </div>
 
+
+    <!-- <stripe-checkout
+      ref="sessionRef"
+      :pk="stripeKey"
+      :session-id="sessionId"
+    >
+      <template slot="checkout-button">
+        <v-btn 
+          @click="$refs.sessionRef.redirectToCheckout()"
+          color="#42b883"
+          large
+          dark
+        >Comprar membresia</v-btn>
+      </template>
+    </stripe-checkout>
+
+    <template>
+      <stripe-checkout
+        ref="checkoutRef"
+        :pk="stripeKey"
+        :items="items"
+        :successUrl="successUrl"
+        :cancelUrl="cancelUrl"
+      >
+        <template slot="checkout-button">
+          <button @click="checkout">Shut up and take my money!</button>
+        </template>
+      </stripe-checkout>
+    </template> -->
+
     <!-- <div id="card-element" class="StripeElement StripeElement--empty">
       <div class="__PrivateStripeElement" 
       style="margin: 0px !important; padding: 0px !important; border: medium none !important; display: block !important; background: transparent none repeat scroll 0% 0% !important; position: relative !important; opacity: 1 !important;">
@@ -93,6 +123,47 @@
       </div>
       <v-btn class="primary btn-block">Pagar</v-btn>
     </form> -->
+    <div class="d-flex justify-center mt-5 mb-5"> 
+
+      <v-card class="product  lighten-3   " width="auto" >
+
+        <div
+          class="  lighten-3 d-flex justify-center align-center mx-16 px-16"
+          width="70%" 
+        >
+          <img
+            src="../../static/images/PlanetaEscolar.jpg"
+
+            class="fotomini"
+          ></img>
+        </div> 
+
+        <div class="description mx-16 px-16 mb-4">
+          <h3>Membresia Planeta Escolar</h3>
+          <h5>$500.00</h5>
+            <!-- <stripe-checkout
+              ref="sessionRef"
+              :pk="stripeKey"
+              :session-id="sessionId"
+            >
+              <template slot="checkout-button">
+                <v-btn 
+                  @click="checkout()"
+                  color="primary"
+                  block
+                  large
+                  dark
+                >Comprar membresia</v-btn>
+              </template>
+            </stripe-checkout> -->
+          <v-btn block @click="pagarConTarjeta" class="primary">Comprar membresia</v-btn>
+        </div>
+
+      </v-card>
+
+
+    </div>
+
 </div>
 
 
