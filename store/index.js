@@ -3,17 +3,17 @@ import Vuex from 'vuex'
 const createStore = () => {
   return new Vuex.Store({
     state: () => ({
-      datosUsuario:{
-        tipo: null,
-        nombre: '',
-        apellido: '',
-        correo: '',
-        urlImagen:'',
-        userlogin:false,
-        lvluser:0,
-        grupos:[],
-        vercorreo:false
-      },
+      datosUsuario:
+        {
+          tipo: null,
+          nombre: '',
+          apellido: '',
+          urlImagen:'',
+          userlogin:false,
+          lvluser:0,
+          grupos:[],
+          vercorreo:false
+        },
       connection:{},
       imgupload:"",
       urlimg:""
