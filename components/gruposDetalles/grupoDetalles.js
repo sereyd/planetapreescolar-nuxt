@@ -30,10 +30,10 @@ export default {
             urlImagenPrevia: "",
             datosNuevoAlumno:{
                 nombre:"",
-                apellidos: "Gomez Nieves",
-                fechaNacimiento:"1902",
+                apellidos: "",
+                fechaNacimiento:"",
                 sexo:"",
-                telefono:"2736273",
+                telefono:"",
                 urlImagen: "",
 
             },

@@ -33,9 +33,9 @@ export default{
             //     urlImagen: "",
             // },
             datosNuevoGrupo:{
-              nombreGrupo: "4 B",
-              adicionales: "Miguel Hidalgo",
-              cicloEscolar: "Enero 2020",
+              nombreGrupo: "",
+              adicionales: "",
+              cicloEscolar: "",
               // seccion: "2",
               // turno: "Matutino",
               // periodo: "",

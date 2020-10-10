@@ -39,7 +39,7 @@ export default {
           icon: "mdi-speedometer",
           link: "checkout",
           logeado: true,
-          permisos: 1
+          permisos: 0
         },
         { title: "Salir", 
           icon: "mdi-exit-to-app", 
