@@ -34,6 +34,13 @@ export default {
           logeado: true,
           permisos: 2
         },
+        {
+          title: "Checkout",
+          icon: "mdi-speedometer",
+          link: "checkout",
+          logeado: true,
+          permisos: 1
+        },
         { title: "Salir", 
           icon: "mdi-exit-to-app", 
           link: "exit", 

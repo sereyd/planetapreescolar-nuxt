@@ -197,31 +197,74 @@ export default {
             
                 let listasAlumno = [];
 
-                //SE AGREGAN LAS LISTA A EVALUAR AL ALUMNO
-                this.horario.listas.map( lista => {
-                    console.log(lista)
+                if( sexo === "F")
+                {
+                    this.grupo.girls++;
+                }else{
+                    this.grupo.boys++;
+                }
+
+                this.grupo.total++;
+
+                // //SE AGREGAN LAS LISTA A EVALUAR AL ALUMNO
+                // this.horario.listas.map( lista => {
+                //     console.log(lista)
+                //     listasAlumno.push({
+                //         lista: lista.nombre, 
+                //         calificacion: (lista.tipoLista === "Si/No" || lista.tipoLista === "ON/OFF" )? false : "", 
+                //         tipoLista: lista.tipoLista, rango : lista.rango
+                //     })
+                // })
+
+                // //SE INSERTA LOS DATOS DEL ALUMNO Y SU LISTA DE EVALUACION EN LA DATA DE HORARIO
+                // this.horario.alumnos.push(
+                //     {
+                //         nombre, apellidos, fechaNacimiento, sexo, telefono, urlImagen,
+                //         fechaCreado: Date.now(),
+                //         listas: listasAlumno
+                //     }
+                // );
+            
+            this.grupo.horario.map( h => {
+                console.log("HORARIO")
+                console.log(h)
+
+                // if(h.dia === this.dia)
+                // {
+                    //   console.log("ES IGUSL")
+                    // h.alumnos = this.horario.alumnos;
+                    // h.alumnos.map( a => {
+
+
+                    /*
                     listasAlumno.push({
                         lista: lista.nombre, 
                         calificacion: (lista.tipoLista === "Si/No" || lista.tipoLista === "ON/OFF" )? false : "", 
                         tipoLista: lista.tipoLista, rango : lista.rango
                     })
-                })
+                    */
 
-                //SE INSERTA LOS DATOS DEL ALUMNO Y SU LISTA DE EVALUACION EN LA DATA DE HORARIO
-                this.horario.alumnos.push(
-                    {
-                        nombre, apellidos, fechaNacimiento, sexo, telefono, urlImagen,
-                        fechaCreado: Date.now(),
-                        listas: listasAlumno
-                    }
-                );
-            
-            this.grupo.horario.map( h => {
-                if(h.dia === this.dia)
-                {
-                    //   console.log("ES IGUSL")
-                    h.alumnos = this.horario.alumnos;
-                }
+                   h.listas.map( lista => {
+                        console.log("LISTA")
+                        console.log(lista)
+                        listasAlumno.push({
+                            lista: lista.nombre, 
+                            calificacion: (lista.tipoLista === "Si/No" || lista.tipoLista === "ON/OFF" )? false : "", 
+                            tipoLista: lista.tipoLista, rango : lista.rango
+                        })
+                    })
+
+
+                        h.alumnos.push({
+                            nombre, apellidos, fechaNacimiento, sexo, telefono, urlImagen,
+                            fechaCreado: Date.now(),
+                            listas: listasAlumno
+                        })
+                    // })
+
+                // }
+                listasAlumno = [];
+
                     
             })
 
