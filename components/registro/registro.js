@@ -19,9 +19,9 @@ export default{
             //DATA QUE SE MANDARÁ A FIREBASE
             datosUsuarioR:{
                 tipo: null,
-                nombre: '',
-                apellido: '',
-                correo: '',
+                nombre: 'Lore',
+                apellido: 'Diaz',
+                correo: 'lore@gmail.com',
                 //password: '',
                 // celular: '2222222222',
                 // experiencia: '2',
@@ -36,9 +36,9 @@ export default{
             },
 
             //DATA DE CONFIRMACION DE CAMPOS
-            password: '',
-            confirmarPassword:'',
-            confirmarCorreo: '',
+            password: '12345678',
+            confirmarPassword:'12345678',
+            confirmarCorreo: 'lore@gmail.com',
             
 
             //DATA PARA VALIDAR QUE ESTEN LLENOS LOS CAMPOS DE CADA FORMULARIO
@@ -250,11 +250,14 @@ export default{
     watch:{
       async urlimg(){
 
+        console.log("entrando al watcher");
+
        this.datosUsuarioR.urlImagen=this.urlimg
         
         await this.almacenarUsuarioAuthentication();
         //EN EL METODO DE almacenarUsuarioAuthentication SI EL USUARIO EXISTE MODIFICA this.error
         //DE ESTA FORMA EVITA QUE ALMACENE EL USUARIO EN LA COLLECION
+        console.log("error: "+this.error)
          if(!this.error){
              this.almacenarUsuarioCollection();
              this.succesreg=true

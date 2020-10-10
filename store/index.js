@@ -10,7 +10,7 @@ const createStore = () => {
         correo: '',
         urlImagen:'',
         userlogin:false,
-        lvluser:2,
+        lvluser:0,
         grupos:[],
         vercorreo:false
       },
@@ -26,7 +26,12 @@ const createStore = () => {
       actualizarGrupos(context, data){
         context.state.datosUsuario.grupos = data;
       },
+      actualizarAlumnos(context, data){
+        context.state.datosUsuario.alumnos = data;
+      },
       async autenticarUsuario(context){
+
+          console.log("Verificando si hay sesion abierta")
       
             context.commit("compruebaConexion",'usuarios')
             setTimeout(()=>{
@@ -43,6 +48,7 @@ const createStore = () => {
                 });
         */
         await this.$fireAuth.onAuthStateChanged( user => {
+          console.log(user)
           if(user)
             {
 
@@ -56,7 +62,7 @@ const createStore = () => {
                         // grupos:[],
                         ...doc.data()
                       }
-                      // console.log(datos)
+                      console.log(datos)
                       context.commit("cambiastatusSesion",datos);
                   });
               })
@@ -78,6 +84,7 @@ const createStore = () => {
         state.urlimg=data
       },
       async almacenarFotoStorage(state,ubi){
+        console.log("entra al fotoStorage: "+ state.urlimg)
 
         const file =  state.imgupload;
         const metadata = {
@@ -102,22 +109,35 @@ const createStore = () => {
             console.log(error)
           }
         }else{
-          state.urlimg='none'
+          state.urlimg= state.urlimg === 'none' ? "" : "none"
           ///// manda instruccion de foto en lo que tendra el link de la foto en none
         }
+
+        console.log("entra al fotoStorage: "+ state.urlimg)
+
       },
       actualizaImgUpload(state,data){
         state.imgupload=data
       },
       cambiastatusSesion(state,data){
+        console.log(data)
+
         if(data.salida===true){
           state.datosUsuario.userlogin=data.login
           state.datosUsuario.lvluser=data.lvl
+          state.datosUsuario.nombre = ""
+          state.datosUsuario.apellido = ""
+          state.datosUsuario.correo = ""
         }else{
           state.datosUsuario = data;
         }
+        console.log(state.datosUsuario)
+
       },
     compruebaConexion(state,data){
+      console.log("Verificando conexion")
+      console.log(data)
+
         if(data!==null){
         
          this.$fireStore.collection(data).get()
