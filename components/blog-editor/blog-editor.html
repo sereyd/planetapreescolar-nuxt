@@ -15,9 +15,9 @@
                 </v-card-title>
                 <v-card-text>
                     <v-row>
-                        <v-col cols="12" md="6" class="text-center"  v-if="imagen===true">
+                        <v-col cols="12" md="6" class="text-center"  v-if="imagen==='true'">
               <!-----upload imagen perfil---->
-              <subirImagen v-if="imagen===true" @urlfoto="datablog.urlImagen=$event" ejecimagen="uploadimg" tpimg="post" titulo="Foto de Publicación" />  
+              <subirImagen v-if="imagen==='true'" @urlfoto="datablog.urlImagen=$event" ejecimagen="uploadimg" tpimg="post" titulo="Foto de Publicación" />  
                         </v-col>
                         
                         <v-col cols="12" md="6">

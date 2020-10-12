@@ -7,7 +7,7 @@
 
         <cargablog>
           <template v-slot:header>
-            <editorblog tipo="REFLEXION" />
+            <editorblog tipo="REFLEXION"  imagen="false" />
           </template>
         </cargablog>
       </v-col>
@@ -15,10 +15,10 @@
         <h2>Mis Memorias</h2>
         <v-row>
           <v-col cols="12" md="3">
-            <editorblog tipo="MEMORIA" imagen="false" />
+            <editorblog tipo="MEMORIA"  />
           </v-col>
         </v-row>
-      </v-col>
+      </v-col>  
       <v-col cols="12" md="12">
         <h2>Mi Blog</h2>
         <v-row>
