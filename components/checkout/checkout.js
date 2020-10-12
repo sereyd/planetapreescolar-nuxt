@@ -106,7 +106,8 @@ export default {
           usuario: `${this.datosUsuario.nombre} ${this.datosUsuario.apellido}`,
       };
     
-      fetch("http://localhost:4242/pagar-membresia", {
+      fetch("https://stripe-checkout-api.herokuapp.com/pagar-membresia", {
+
           method: "POST",
           headers: {
               "Content-Type": "application/json"
