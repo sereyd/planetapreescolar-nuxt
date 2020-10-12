@@ -26,13 +26,16 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      {  href:"https://fonts.googleapis.com/css2?family=Montserrat&display=swap", rel:"stylesheet" }    
+      {  href:"https://fonts.googleapis.com/css2?family=Montserrat&display=swap", rel:"stylesheet" } ,
+      { href:"https://fonts.googleapis.com/css?family=Material+Icons", rel:"stylesheet"},
+      { href:"https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css",  rel:"stylesheet" }   
     ]
   },
   /*
   ** Global CSS
   */
   css: [
+
   ],
   /*
   ** Plugins to load before mounting the App
@@ -60,7 +63,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/firebase',
-    'nuxt-stripe-module', 
+    'nuxt-stripe-module'
   ],
   stripe: {
     publishableKey: 'pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx',
@@ -115,13 +118,12 @@ export default {
       },
      
     },
-    
-      font: {
-        family: 'Montserrat' 
-      },
       icons:  {
         iconfont: 'mdi',
-      }
+      },
+  customVariables: ['~/assets/scss/variables.scss'],
+  treeShake: true,
+  defaultAssets: false
      
   },
   /*

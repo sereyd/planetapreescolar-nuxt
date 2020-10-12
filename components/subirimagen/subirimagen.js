@@ -7,7 +7,15 @@ export default{
         }
     },
     props:{
-        ejecimagen:false
+        ejecimagen:false,
+        tpimg:{
+            type:String,
+            default:'avatar'
+        },
+        titulo:{
+            type:String,
+            default:"Foto de Pefil"
+        }
     },
     methods:{
       ...mapMutations(['actualizaImgUpload']),

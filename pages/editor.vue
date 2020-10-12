@@ -2,7 +2,7 @@
     <v-main>
         
     <v-row>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="12">
             <editorblog />
             </v-col>
 

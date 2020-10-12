@@ -1,37 +1,90 @@
 <div style="text-align:left;" class="pt-5">
- <v-btn class="melon" @click="editar=true">Administrar Blog</v-btn> 
-    <v-dialog v-model="editar" max-width="600px"  >
+ 
+    <v-btn class="btnaddpost" @click="editar=true">  
+        <v-avatar size="80" color="#48c9d9" >
+            <v-icon color="#3fefdb"  style="font-size: 80px;">mdi-plus</v-icon>
+        </v-avatar>
+
+    </v-btn>
+    
+    
+    <v-dialog v-model="editar" max-width="600px" persistent >
             <v-card>
-                <v-card-title class="primary white--text">
-                    Crea nueva entrada
+                <v-card-title class="primary--text text-center">
+                    <h2>Nuevo(a) {{tipo}}</h2> <v-spacer></v-spacer><v-btn @click="editar=false"> X </v-btn>
                 </v-card-title>
                 <v-card-text>
                     <v-row>
-                        <v-col cols="12" md="12" filled>
-                            <h2>Editor de Post</h2>
+                        <v-col cols="12" md="6" class="text-center"  v-if="imagen===true">
+              <!-----upload imagen perfil---->
+              <subirImagen v-if="imagen===true" @urlfoto="datablog.urlImagen=$event" ejecimagen="uploadimg" tpimg="post" titulo="Foto de Publicación" />  
+                        </v-col>
+                        
+                        <v-col cols="12" md="6">
+                            <v-text-field label="Nombre de la memoria" filled  v-model="datablog.titulo" ></v-text-field>
+                           <v-radio-group
+                            v-model="datablog.edopost"
+                            row
+                            >
+                            <v-radio
+                                label="Publico"
+                                value="publico"
+                            ></v-radio>
+                            <v-radio
+                                label="Privado"
+                                value="privado"
+                            ></v-radio>
+                            </v-radio-group>
+                           
+                        </v-col>
+                        <v-col cols="12" md="12" class="text-center">
+                            <span class="red--text">{{mensajeError1}}</span><br />
+                            <v-btn class="melon white--text" @click="creanuevopost()">crear</v-btn> 
                             </v-col>
-                        </v-col>
-                        <v-col cols="12" md="12">
-                            <v-text-field label="Ingrese el titulo" filled ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" md="12">
-                            <v-textarea filled outlined>
 
-                            </v-textarea>
-                        </v-col>
-
-                        </v-col>
-                        <v-col>
-                            <v-btn class="primary">Guardar</v-btn> <v-btn class="error">Cancelar</v-btn>
-                        </v-col>
                         </v-row>
                 </v-card-text>
             </v-card>
     </v-dialog>
+    <v-dialog fullscreen persistent v-model="creablog" >
+        <v-card> 
+            <v-card-title class="primary white--text">
+                {{datablog.titulo}} <v-spacer></v-spacer> <v-btn class="melon white--text" @click="cerrar()">X</v-btn>
+             </v-card-title>
+                <v-card-text class="pa-5">
+                    
+                    <v-row>
+                        <v-col cols="12" md="12">
+                    <VueEditor class="elevation-3 rounded-lg" v-model="datablog.contenido"></VueEditor>
+                </v-col>
+                <v-col cols="12" md="3">
+                    
+                </v-col>
+                <v-col cols="12" md="3">
+                    
+                </v-col>
+                <v-col cols="12" md="3">
+                    <v-radio-group
+                            v-model="datablog.edopost"
+                            row
+                            >
+                            <v-radio
+                                label="Publico"
+                                value="publico"
+                            ></v-radio>
+                            <v-radio
+                                label="Privado"
+                                value="privado"
+                            ></v-radio>
+                            </v-radio-group>
+                        </v-col>
+                        <v-col cols="12" md="3">
 
-<v-data-table>
-
-</v-data-table>
-
+                    <v-btn class="primary white--text" @click="guardarPost()">Guardar</v-btn> <v-btn class="melon white--text">Publicar</v-btn>
+                </v-col>
+                </v-row>        
+                </v-card-text>
+        </v-card>    
+    </v-dialog>
 
 </div>

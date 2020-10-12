@@ -1,7 +1,7 @@
 <div>
     <v-card >
         <v-card-title class="primary white--text">
-        <v-icon  @click.stop="drawer = !drawer" class="white--text  ">mdi-menu</v-icon> {{datosUsuario.nombre}} {{datosUsuario.apellido}}
+        <v-icon  @click.stop="drawer = !drawer" class="white--text  ">mdi-menu</v-icon> <span class="menu-sec vMmobilviewmkñlh5trdd">{{datosUsuario.nombre}} {{datosUsuario.apellido}} </span>
         
         <div v-if="devtest===true">
         <v-btn @click="$store.commit('cambiastatusSesion',{login:false,lvl:0})">user sin registro</v-btn>
@@ -19,14 +19,21 @@
 
         <div v-if="datosUsuario.userlogin===true" >
 
-
+          <router-link to="checkout" class="white--text menu-sec" style="text-decoration:none; position:relative;" > 
+            <img src="../../static/images/iconos/haztepremium.png" class="menu-sec-anim"  />
+            <span class="vMmobilview"> <img src="../../static/images/iconos/haztepremium1.png" style="  left:-100px; 
+              width:100px; 
+              position:absolute;"  /></span>
+          </router-link>
+          &nbsp;
           <router-link to="#" class="white--text menu-sec" style="text-decoration:none;">
+
           <v-icon class="white--text">mdi-bell</v-icon>
           &nbsp;
          <span class="vMmobilview"> Notificaciones</span>
         </router-link> 
           &nbsp;
-
+        
         <router-link to="configuracion" class="white--text menu-sec" style="text-decoration:none;">
           &nbsp; 
           <v-icon class="white--text">mdi-brightness-7</v-icon> 

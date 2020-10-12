@@ -21,9 +21,9 @@ export default {
           permisos: 0
         },
         {
-          title: "Editor",
+          title: "Mis Publicaciones",
           icon: "mdi-table-edit",
-          link: "editor",
+          link: "publicaciones",
           logeado: true,
           permisos: 1
         },
@@ -33,14 +33,14 @@ export default {
           link: "administrador",
           logeado: true,
           permisos: 2
-        },
+        },/*
         {
           title: "Checkout",
           icon: "mdi-speedometer",
           link: "checkout",
           logeado: true,
           permisos: 0
-        },
+        },*/
         { title: "Salir", 
           icon: "mdi-exit-to-app", 
           link: "exit", 

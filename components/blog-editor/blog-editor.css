@@ -1,0 +1,10 @@
+.btnaddpost{
+    width:100%;
+    height:100%;
+    max-width:200px;
+    min-height:200px;
+    border-radius:10px;
+    text-align: center;
+    vertical-align: middle;
+
+}
