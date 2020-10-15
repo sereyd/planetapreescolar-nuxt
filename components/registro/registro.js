@@ -19,9 +19,9 @@ export default{
             //DATA QUE SE MANDARÁ A FIREBASE
             datosUsuarioR:{
                 tipo: null,
-                nombre: 'Lore',
-                apellido: 'Diaz',
-                correo: 'lore@gmail.com',
+                nombre: '',
+                apellido: '',
+                correo: '',
                 //password: '',
                 // celular: '2222222222',
                 // experiencia: '2',
@@ -36,11 +36,9 @@ export default{
             },
 
             //DATA DE CONFIRMACION DE CAMPOS
-            password: '12345678',
-            confirmarPassword:'12345678',
-            confirmarCorreo: 'lore@gmail.com',
-            
-
+            password: '',
+            confirmarPassword:'',
+            confirmarCorreo: '',
             //DATA PARA VALIDAR QUE ESTEN LLENOS LOS CAMPOS DE CADA FORMULARIO
             valid: false,
             //valid2: false,
@@ -249,6 +247,8 @@ export default{
     },
     watch:{
       async urlimg(){
+
+        
 
         console.log("entrando al watcher");
 

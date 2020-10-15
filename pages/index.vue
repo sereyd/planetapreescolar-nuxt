@@ -9,15 +9,15 @@
 
   <!------recomendaciones----->
   <div style="width:100%; height:50px;"></div>
-<listablog titulo="Recomendación del día" subtitulos="Una sección de recursos y planeación para tu día" basedatos="recomendaciones" />
+<listablog tipo="RECOMENDACION" titulo="Recomendación del día" subtitulos="Una sección de recursos y planeación para tu día"  />
 
   <!-------Blog------------->
 <div style="width:100%; height:50px;"></div>
-<listablog titulo="Blog de la educadora" subtitulos="Conoce lo que pasa en el mundo de la educación inicial" basedatos="blogeducadora" />
+<listablog tipo="BLOG" titulo="Blog de la educadora" subtitulos="Conoce lo que pasa en el mundo de la educación inicial"  />
 
   <!---------memorias------------>
 <div style="width:100%; height:50px;"></div>
-<listablog titulo="Memorias de la educadora" subtitulos="Compoarte tus vivencias y experiencias con la comunidad" basedatos="memorias" />
+<listablog tipo="MEMORIA" titulo="Memorias de la educadora" subtitulos="Compoarte tus vivencias y experiencias con la comunidad"  linkmas="memorias" />
 
 </v-main>
 </template>

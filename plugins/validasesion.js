@@ -2,9 +2,6 @@ import Vue from "vue";
 
 Vue.prototype.$validasesion = (store, item) => {
   let ret = false;  
-
-
-
   
   if(!item.logeado){
         item.logeado=false

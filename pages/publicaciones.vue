@@ -5,27 +5,38 @@
       <v-col cols="12" md="12">
         <h2>Mis Reflexiones</h2>
 
-        <cargablog>
+        <cargablog tipo="REFLEXION"   :updatelist="updatepost.reflexiones" >
           <template v-slot:header>
-            <editorblog tipo="REFLEXION"  imagen="false" />
+            <editorblog tipo="REFLEXION" @updatepost="updatepost.reflexiones=$event"  imagen="false" ></editorblog>
           </template>
         </cargablog>
+
+      </v-col>
+      <v-col cols="12" md="12">
+        <h2>Mis Reflexiones</h2>
+
+        <cargablog tipo="RECOMENDACION"  :updatelist="updatepost.recomendacion"  >
+          <template v-slot:header>
+            <editorblog tipo="RECOMENDACION"   @updatepost="updatepost.recomendacion=$event"   ></editorblog>
+          </template>
+        </cargablog>
+
       </v-col>
       <v-col cols="12" md="12">
         <h2>Mis Memorias</h2>
-        <v-row>
-          <v-col cols="12" md="3">
-            <editorblog tipo="MEMORIA"  />
-          </v-col>
-        </v-row>
+        <cargablog tipo="MEMORIA"  :updatelist="updatepost.memorias" >
+          <template v-slot:header>
+            <editorblog tipo="MEMORIA"  @updatepost="updatepost.memorias=$event"    ></editorblog>
+          </template>
+        </cargablog>
       </v-col>  
       <v-col cols="12" md="12">
         <h2>Mi Blog</h2>
-        <v-row>
-          <v-col cols="12" md="3">
-            <editorblog tipo="BLOG" />
-          </v-col>
-        </v-row>
+        <cargablog tipo="BLOG"  :updatelist="updatepost.blog" >
+          <template v-slot:header>
+            <editorblog tipo="BLOG"  @updatepost="updatepost.blog=$event"  ></editorblog>
+          </template>
+        </cargablog>
       </v-col>
     </v-row>
   </v-main>
@@ -37,6 +48,12 @@ import cargablog from "~/components/carga-blog/carga-blog.vue";
 export default {
   data() {
     return {
+      updatepost:{
+        memorias:"",
+        blog:"",
+        reflexiones:"",
+        recomendacion:""
+      },
       datapage: {
         permisos: 1,
         logeado: true
