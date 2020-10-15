@@ -1,10 +1,12 @@
 
 <div>
 
-  <h1 class="text-center">Selcciona el tipo de paquete</h1>
+  <h1 v-if="!spinner" class="text-center">Selcciona el tipo de paquete</h1>
+  <h1 v-else class="text-center">Redireccionando...</h1>
 
     <v-container>
-      <v-card>
+      <Spinner v-if="spinner" />
+      <v-card v-else>
       <v-row class="price-table-container">
         <v-col class=" d-flex justify-center">
           <section>

@@ -4,7 +4,7 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 // import { CardNumber, CardExpiry, CardCvc } from 'vue-stripe-elements-plus'
 // import { stripeKey, stripeOptions } from './stripeConfig.json'
 // import { Card, CardNumber, CardExpiry, CardCvc, createToken, confirmCardPayment, handleCardPayment } from 'vue-stripe-elements-plus'
-// import Spinner from '~/components/spinner.vue'
+import Spinner from '~/components/spinner.vue'
 
 // import { StripeCheckout } from 'vue-stripe-checkout';
 
@@ -35,6 +35,8 @@ export default {
       //CLAVES DE PAQUETES
       trimestralPriceId: "price_1HcaNeGqO5WLKI2H66t5f2bc",
       anualPriceId: "price_1HcaOZGqO5WLKI2HTm79PBnc",
+
+      spinner: false,
 
 
 
@@ -127,6 +129,7 @@ export default {
     ...mapState(['datosUsuario']),
     
   },
+  components:{Spinner},
  
   // components: { Card, Spinner, StripeCheckout,  CardNumber, CardExpiry, CardCvc },
   // components: { Card, Spinner, StripeCheckout,  CardNumber, CardExpiry, CardCvc },
@@ -155,6 +158,7 @@ export default {
     //PRUEBAS
 
     crearSesionSuscripcion(priceTipo){
+      this.spinner = true;
 
       this.tipoSuscripcion = priceTipo;
       this.importe = priceTipo === 'trimestral' ? "$500.00 MX" : "$1500.00 MX";

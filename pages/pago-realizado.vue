@@ -142,7 +142,7 @@ export default {
       else
         data.sessionId= "";
 
-        alert("mira")
+        // alert("mira")
 
       localStorage.setItem("payment_intent", "" );
       console.log(data);
