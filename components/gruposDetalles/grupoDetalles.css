@@ -49,3 +49,9 @@
     width: 18%;
     background-color: darkmagenta;
 }
+
+.calNumero{
+    font-weight: bold;
+    font-size: 18px;
+    padding-top: 14px;
+}

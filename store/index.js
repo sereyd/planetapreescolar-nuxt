@@ -12,11 +12,13 @@ const createStore = () => {
           userlogin:false,
           lvluser:0,
           grupos:[],
+          idMembresia:"",
           vercorreo:false
         },
       connection:{},
       imgupload:"",
-      urlimg:""
+      urlimg:"",
+      stripeObj: null
 
     }),
     actions:{
@@ -55,12 +57,20 @@ const createStore = () => {
               const usuarioQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
               usuarioQuery.get()
               .then((querySnapshot) => {
-                  querySnapshot.forEach( (doc) => {
+                querySnapshot.forEach( (doc) => {
+                  let data = doc.data();
+                  // console.log(doc.data());
+                  // console.log(doc.data);
+                  // console.log(doc.data.grupos);
+                  data.grupos = data.grupos ? data.grupos : [];
+                  // console.log(grups);
                     // console.log(doc.id)
                       const datos = {
                         id: doc.id,
+                        idMembresia:"",
+
                         // grupos:[],
-                        ...doc.data()
+                        ...data
                       }
                       console.log(datos)
                       context.commit("cambiastatusSesion",datos);
@@ -79,6 +89,9 @@ const createStore = () => {
  
       guardaDatosUsuarioStore(state,data){
         state.datosUsuario=data
+      },
+      guardarStripeObj(state, data){
+        state.stripeObj = data
       },
       actualizaurlimg(state,data){
         state.urlimg=data

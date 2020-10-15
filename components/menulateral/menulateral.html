@@ -18,8 +18,7 @@
         </div>
 
         <div v-if="datosUsuario.userlogin===true" >
-
-          <router-link to="checkout" class="white--text menu-sec" style="text-decoration:none; position:relative;" > 
+          <router-link v-show="datosUsuario.idMembresia === ''" to="checkout" class="white--text menu-sec" style="text-decoration:none; position:relative;" > 
             <img src="../../static/images/iconos/haztepremium.png" class="menu-sec-anim"  />
             <span class="vMmobilview"> <img src="../../static/images/iconos/haztepremium1.png" style="  left:-100px; 
               width:100px; 

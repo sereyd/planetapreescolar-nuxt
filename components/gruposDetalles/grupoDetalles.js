@@ -249,7 +249,9 @@ export default {
                         console.log(lista)
                         listasAlumno.push({
                             lista: lista.nombre, 
-                            calificacion: (lista.tipoLista === "Si/No" || lista.tipoLista === "ON/OFF" )? false : "", 
+                            calificacion: (lista.tipoLista === "Si/No" || lista.tipoLista === "ON/OFF" )? true 
+                            : lista.tipoLista === "Rango 1/10" ? 0
+                            :  "Bien", 
                             tipoLista: lista.tipoLista, rango : lista.rango
                         })
                     })
@@ -348,6 +350,11 @@ export default {
             const rango = tipoLista === "Semáforo" ? this.rangoSemaforo 
                         : tipoLista === "Si/No"  ? this.rangoSiNo : tipoLista === "Rango 1/10" ? this.rangoNumeros
                         : this.rangoOnOff
+            
+            const calificacion = 
+                (tipoLista === "ON/OFF" || tipoLista === "Si/No") ? true 
+                : tipoLista === "Rango 1/10" ? 0
+                :  "Bien"
 
             // console.log("this.allDays");
             // console.log(this.allDays);
@@ -362,7 +369,7 @@ export default {
                     })
 
                     h.alumnos.forEach( alumno => {
-                        alumno.listas.push({calificacion: "", lista: nombre, tipoLista, rango })
+                        alumno.listas.push({calificacion, lista: nombre, tipoLista, rango })
                     })
                 })
 
@@ -377,7 +384,7 @@ export default {
                 // //AGREGAR LISTA A HORARIO.ALUMNOS.LISTAS
                 this.horario.alumnos.forEach( alumno => {
                     // console.log(alumno);
-                    alumno.listas.push({calificacion: "", lista: nombre, tipoLista, rango })
+                    alumno.listas.push({calificacion, lista: nombre, tipoLista, rango })
                 })
 
             }
@@ -429,20 +436,17 @@ export default {
         },
 
         asignarCal(lista, alumno, nombreLista){
-            // console.log("this.horario");
-            // console.log(this.horario);
-            // console.log("alumno")
-            // console.log(alumno)
-            // console.log("lista")
-            // console.log(lista)
             const alumnoModificar = this.horario.alumnos.find(a => alumno.nombre === a.nombre && alumno.apellidos === a.apellidos);
-            console.log(alumnoModificar);
+            // console.log(alumnoModificar);
 
             alumnoModificar.listas.forEach( li => {
                 if(li.lista === nombreLista)
                 {
-                    console.log("li.rango")
-                    console.log(li.rango)
+                    // console.log("li.rango")
+                    // console.log(li.rango)
+                    console.log("li.tipoLista")
+                    console.log(li.tipoLista)
+
 
                     if(li.tipoLista === "Si/No" || li.tipoLista === "ON/OFF")
                         li.calificacion = !li.calificacion
@@ -459,25 +463,17 @@ export default {
                         else if(li.calificacion === "Mal")
                             li.calificacion = "Bien"
                         
-                        // console.log(li.calificacion)
-                        
+                    }
+                    if(li.tipoLista === "Rango 1/10")
+                        li.calificacion = li.calificacion <= 9 ? li.calificacion + 1 : 0;
+                    
+         
 
-
-                    }                    
-
-                    // console.log(nombreLista)
-                    // console.log("lista que se modificara")
-                    // console.log(li)
-                    // console.log(li.calificacion)
-                    // li.calificacion = !li.calificacion
-                    // console.log("CALIFICACION CAMBIADA")
-                    // console.log(li)
-                    // console.log(li.calificacion)
 
                 }
                 // return li;
             })
-            console.log(alumnoModificar.listas);
+            // console.log(alumnoModificar.listas);
 
 
 
@@ -499,8 +495,8 @@ export default {
             //     }
             //     console.log(a)
             // })
-            console.log("Todo cambiadoo ahoraa")
-            console.log(this.horario.alumnos)
+            // console.log("Todo cambiadoo ahoraa")
+            // console.log(this.horario.alumnos)
             
 
 
