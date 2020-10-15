@@ -1,7 +1,13 @@
 .menu-sec{
     font-size:14px;
 }
-
+.hovermenu span{
+ color:#ad227d;
+}
+.hovermenu:hover, .hovermenu:hover span, hovermenu:hover a{
+    background-color:#ad227d;
+    color:#fff;
+}
 .menu-sec-anim{
   
     position:absolute; top:-20px; left:-160px; width:60px;
@@ -12,14 +18,52 @@
     bottom:-10px;   
 }
 
+
+.viewmobil{
+    display: none;
+}
+
+.datamenu{
+    width: 100%;
+    max-width:200px;
+    border-radius:10px;
+    position:relative;
+}
+
+
+
+.btnmenu{
+    cursor:pointer;
+}
+
+.miniMovilsp{
+    display:none;
+}
+
 /*   vista mobil */
-@media (max-width:800px){
+@media (max-width:959px){
 .vMmobilview{
     display:none;
 }
+
+.viewmobil{
+    display: block;
+}
+
 .menu-sec-anim{
     left:-70px; 
 
 }
 
+}
+
+
+@media (max-width:500px){
+    .miniMovil{
+        display:none;
+    }
+    .miniMovilsp{
+        display:block;
+    }
+    
 }

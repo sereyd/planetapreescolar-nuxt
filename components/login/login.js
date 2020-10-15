@@ -7,8 +7,8 @@ export default{
 
             //DATA DE FORMULARIO LOGIN
             dataLogin:{
-                correo: 'lore@gmail.com',
-                password: '12345678',
+                correo: '',
+                password: '',
             },
 
             //DATA PARA VALIDAR

@@ -3,6 +3,56 @@ import Vuex from 'vuex'
 const createStore = () => {
   return new Vuex.Store({
     state: () => ({
+      pubActive:{},
+      itemsmenu: [
+        { title: "Inicio", icon: "mdi-home", link: "/",visible:true },
+        { title: "Actividades", icon: "mdi-human", link: "actividades",visible:false },
+        { title: "Foro", icon: "mdi-forum", link: "", link: "foro",visible:false },
+        { title: "Tienda", icon: "mdi-tag", link: "", link: "tienda",visible:true },
+        { title: "Mis Grupos", icon: "mdi-account-multiple", link: "grupos",  logeado: true,
+        permisos: 0,visible:true },
+        { title: "Directorio", icon: "mdi-book-multiple", link: "directorio",visible:false },
+        { title: "Calendario", icon: "mdi-calendar", link: "calendario",visible:false },
+        {
+          title: "Cuenta",
+          icon: "mdi-account",
+          link: "perfil",
+          logeado: true,
+          permisos: 0,
+          visible:false
+        },
+        {
+          title: "Mis Memorias",
+          icon: "mdi-table-edit",
+          link: "memorias",
+          logeado: true,
+          permisos: 1,
+          visible:false
+          
+        },
+        { 
+          title: "Administrador",
+          icon: "mdi-speedometer",
+          link: "administrador",
+          logeado: true,
+          permisos: 2,
+          visible:true
+        },/*
+        {
+          title: "Checkout",
+          icon: "mdi-speedometer",
+          link: "checkout",
+          logeado: true,
+          permisos: 0
+        },*/
+        { title: "Salir", 
+          icon: "mdi-exit-to-app", 
+          link: "exit", 
+          logeado:true,
+          permisos:0,
+          visible:false
+        },
+      ],
       datosUsuario:
         {
           tipo: null,
@@ -18,7 +68,9 @@ const createStore = () => {
       connection:{},
       imgupload:"",
       urlimg:"",
-      stripeObj: null
+      stripeObj: null,
+      linktienda:"https://tiendasereyd.ml",
+
 
     }),
     actions:{
@@ -86,7 +138,9 @@ const createStore = () => {
       }
     },
     mutations: {
- 
+      selectpub(state,pub){
+        state.pubActive=pub
+      },  
       guardaDatosUsuarioStore(state,data){
         state.datosUsuario=data
       },

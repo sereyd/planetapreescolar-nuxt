@@ -28,6 +28,7 @@ export default{
           async change(){
             this.urlImagenPrevia = URL.createObjectURL(this.$refs.fileupload.files[0]);
             this.imagen=this.$refs.fileupload.files[0]
+            this.$emit('updateImg',this.urlImagenPrevia);
             this.actualizaImgUpload(this.$refs.fileupload.files[0]);
             
           }

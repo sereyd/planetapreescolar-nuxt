@@ -1,49 +1,53 @@
 export default{
     data(){
         return {
-            blogpost:[
-                {
-                    imagen:"",    
-                    titulo:"Cargando 1",
-                    subtitulo:"Cargando Subtitulo 1",
-                    grado:"Cargando Grado"
-                },
-                {
-                    imagen:"",
-                    titulo:"Cargando 2",
-                    subtitulo:"Cargando Subtitulo 2",
-                    grado:"Cargando Grado"
-                },
-                {
-                    imagen:"",
-                    titulo:"Cargando 3",
-                    subtitulo:"Cargando Subtitulo 3",
-                    grado:"Cargando Grado"
-                },
-                {
-                    imagen:"",
-                    titulo:"Cargando 4",
-                    subtitulo:"Cargando Subtitulo 4",
-                    grado:"Cargando Grado"
-                }
-            ]
+            blogpost:[]
         }
     },
     methods:{
       async  cargabase(){
-            if(this.basedatos!==''){
-                await this.$fireStore.collection(this.basedatos).get()
-                .then((snapshot) => {
-                    console.log(snapshot)
-                 
-                })
-                .catch((err) => {
-                  console.log('No existe la base de datos', err);
+        try {
+
+        
+
+            if(idexclude!==null){
+                await 
+                this.$fireStore
+                .collection("publicaciones")
+                .where("tipo","==",this.tipo)
+                .where("edopost","==","publico")  
+                .get()
+                .then((data) => {
+                    data.forEach((doc) => {
+                    this.blogpost.push(doc.data());
+                    });
                 });
+            }else{
+                await 
+                this.$fireStore
+                .collection("publicaciones")
+                .where("tipo","==",this.tipo)
+                .where("id","!==",idexclude)
+                .where("edopost","==","publico")  
+                .get()
+                .then((data) => {
+                    data.forEach((doc) => {
+                    this.blogpost.push(doc.data());
+                    });
+                });
+
             }
+          } catch (e) {
+            console.log(e);
+          }
         },
     },
     props:{
+        tipo:{
+            default:()=>{
+                return 'BLOG'
+            }
+        },
         titulo:{
             default:()=>{
                 return "titulo";
@@ -58,6 +62,11 @@ export default{
         subtitulos:{
             default:()=>{
                 return "Subtitulo de sección disponible";
+            }
+        },
+        idexclude:{
+            default:()=>{
+                return null
             }
         }
     },
