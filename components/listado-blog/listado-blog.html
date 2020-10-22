@@ -4,20 +4,45 @@
     <h2 class="primary--text">{{titulo}}</h2>
     <p>{{subtitulos}}</p>
 </v-col>
-<v-col cols="12" md="2" style="text-align: right;">
+
+<v-col cols="12" md="2"  style="text-align: right;" >
    <v-btn v-if="linkmas!=='#'" class="melon white--text rounded-pill" :to="'/'+linkmas"  >Ver más</v-btn> 
 </v-col>
+
+<v-col cols="12" md="3" v-if="addslot===true" style="text-align: right;">
+    <slot></slot>
+    </v-col>
 <v-col cols="12" md="3" v-for="(key,index) in blogpost" :key="'post'+index">
     <v-card >
         <v-card-text class="pa-2">
-            <v-skeleton-loader v-if="key.urlImagen===''"
-            class="mx-auto "
-            max-width="100%"
-            type="image"
-          ></v-skeleton-loader>
-            <img v-if="key.urlImagen!==''" :src="key.urlImagen"   width="100%" />            
-            <h2>{{key.titulo}}</h2>
+     
+            <v-img v-if="imagen==='true'" :src="key.urlImagen!=='' ? key.urlImagen : 'images/logos/planeta_preescolar_logo.png'" style="border-radius:15px; height:200px; background-color:azure; "  ></v-img>   
+            
+                
+        <v-main v-if="tipo==='MEMORIA'">
+            <h3>{{key.titulo}}</h3>
             <p>{{key.fecha}}</p>
+        </v-main>
+        
+        <v-main v-if="tipo==='BLOG'">
+            <h3>{{key.titulo}}</h3>
+        </v-main>
+        
+        <v-main v-if="tipo==='RECOMENDACION'">
+            <h3>{{key.titulo}} {{key.fecha}}</h3>
+
+        </v-main>
+
+        <v-main v-if="tipo==='REFLEXIONES'">
+
+            <div style="width:100%; height:200px;  background-color:lightyellow; border-radius:10px; box-shadow: 0 0 10px #ccc; overflow: auto; font-size:14px;" class="pa-2" v-html="key.contenido"  >
+              
+            </div>
+            <h3>{{key.titulo}} <br />{{key.fecha}}</h3>
+            
+        </v-main>
+
+
 
         </v-card-text>
     </v-card>

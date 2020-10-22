@@ -13,6 +13,7 @@ export default {
   methods:{
     redTienda(){
         window.open(this.$store.state.linktienda,"_blank")
+        this.$router.push('/')
     }
   },
   mounted(){

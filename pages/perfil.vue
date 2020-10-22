@@ -6,63 +6,72 @@
     size="300"
     >
     <img :src="datosuser.urlImagen" />
-    </v-avatar><br />
-<v-btn v-if="editar===true" class="melon white--text" @click="delimg()" >Eliminar foto</v-btn>
+    </v-avatar>
+
 
 <h1 v-if="editar===false">{{datosuser.nombre}} {{datosuser.apellido}}</h1>
     <div v-if="editar===true">
-        <label>Nombre</label>
-        <v-text-field v-model="datosUsuario.nombre"></v-text-field>
-        <label>Apellido</label>
-        <v-text-field v-model="datosUsuario.apellido"></v-text-field>
+        <label  v-if="editar===false" >Nombre</label>
+        <v-text-field label="Nombre" v-model="datosUsuario.nombre" hide-details="auto"></v-text-field>
+        <label  v-if="editar===false"  >Apellido</label>
+        <v-text-field label="Apellido" v-model="datosUsuario.apellido" hide-details="auto"></v-text-field>
         </div>
 
 
-<v-btn class="melon white--text" @click="editar=true"> Editar perfil </v-btn>
+<v-btn  v-if="editar===false"  class="melon white--text" @click="editar=true"> Editar perfil </v-btn>
 
     </v-col>
     <v-col cols="12" md="6" class="pa-10">
-<label>Teléfono</label><br />
-        <div class="textview"  v-if="editar===false">{{datosuser.telefono}}</div ><br />
-        <v-text-field v-model="datosuser.telefono" v-if="editar===true" ></v-text-field><br />
-<label>Años de experiencia</label><br />
-        <div class="textview"  v-if="editar===false" >{{datosuser.exp}}</div ><br />
-        <v-text-field v-model="datosuser.exp"  v-if="editar===true" ></v-text-field><br />
-<label>País</label><br />
-        <div class="textview"  v-if="editar===false" >{{datosuser.pais}}</div ><br />
-        <v-text-field v-model="datosuser.pais"  v-if="editar===true"  ></v-text-field><br />
-<label>Ciudad</label><br />
-        <div class="textview"  v-if="editar===false" >{{datosuser.ciudad}}</div ><br />
-        <v-text-field v-model="datosuser.ciudad"  v-if="editar===true" ></v-text-field><br />
-<label >¿Por que elegí esta profesión?</label><br />
-        <div class="textview"  v-if="editar===false">{{datosuser.profesion}}</div ><br />
-        <v-text-field  v-model="datosuser.profesion"  v-if="editar===true" ></v-text-field><br />
-<label>Acerca de mi</label><br />
-        <div class="textview"   v-if="editar===false" >{{datosuser.acerca}}</div ><br />
-        <v-text-field v-model="datosuser.acerca"  v-if="editar===true"  ></v-text-field><br />
-
-        <v-progress-circular v-if="loader===true"
-      :size="70"
-      :width="7"
-      color="purple"
-      indeterminate
-    ></v-progress-circular>
+<label class="labelview"   v-if="editar===false" >Teléfono</label>
+        <div class="textview"  v-if="editar===false">{{datosuser.telefono}}</div >
+        <v-text-field class="inputTextView" label="Teléfono" v-model="datosuser.telefono" hide-details="auto" v-if="editar===true" ></v-text-field>
+<label class="labelview"   v-if="editar===false" >Años de experiencia</label>
+        <div class="textview"  v-if="editar===false" >{{datosuser.exp}}</div >
+        <v-text-field class="inputTextView" label="Años de experiencia" v-model="datosuser.exp" hide-details="auto"  v-if="editar===true" ></v-text-field>
+<label class="labelview"   v-if="editar===false"  >País</label>
+        <div class="textview"  v-if="editar===false" >{{datosuser.pais}}</div >
+        <v-text-field class="inputTextView" label="País" v-model="datosuser.pais" hide-details="auto"  v-if="editar===true"  ></v-text-field>
+<label class="labelview"   v-if="editar===false" >Ciudad</label>
+        <div class="textview"  v-if="editar===false" >{{datosuser.ciudad}}</div >
+        <v-text-field class="inputTextView"  label="Ciudad" v-model="datosuser.ciudad" hide-details="auto"  v-if="editar===true" ></v-text-field>
+<label class="labelview"    v-if="editar===false" >¿Por que elegí esta profesión?</label>
+        <div class="textview"  v-if="editar===false">{{datosuser.profesion}}</div >
+        <v-text-field class="inputTextView" label="¿Por que elegí esta profesión?"  v-model="datosuser.profesion" hide-details="auto"  v-if="editar===true" ></v-text-field>
+<label class="labelview"   v-if="editar===false" >Acerca de mi</label>
+        <div class="textview"   v-if="editar===false" >{{datosuser.acerca}}</div >
+        <v-text-field class="inputTextView" label="Acerca de mi" v-model="datosuser.acerca" hide-details="auto"  v-if="editar===true"  ></v-text-field>
 
 
-            <v-btn class="melon white--text" @click="guardarCambios()">Guardar Cambios</v-btn>
+
+
+<br /><br />
+            <v-btn  v-if="editar===true" class="melon white--text" @click="guardarCambios()">Guardar Cambios</v-btn>
     </v-col>
+
+<simpleloader :stload="loader" ></simpleloader>
+
+
     </v-row>
 </template>
 <style scoped>
 .textview{
     width: 100%;
     font-size: 18px;
-    border-bottom:solid 1px  #ccc;
+    border-bottom:solid 1px  #ccc;  
+    margin-bottom:20px;
+}
+.labelview{
+    font-weight: bold;
+    margin-top:10px;
+}
+.inputTextView{
+    margin-top:20px;
 }
 </style>
 <script>
 
 import {mapState} from 'vuex'
+import simpleloader from '~/components/simpleloader/simpleloader.vue'
 export default {
     
 data(){
@@ -76,18 +85,6 @@ computed:{
     ...mapState(['datosUsuario'])
 },
 methods:{
-     delimg(){
-         try{
-                let imgdel=this.$fireStorage.child(this.datosuser.urlImagen)
-
-                 imgdel.delete()
-                 .then((d)=>{
-                 console.log(d)
-                        })
-         }catch(r){
-             console.error(r)
-         }   
-    },
     cargadatos(){
         this.datosuser=this.datosUsuario
     },
@@ -107,6 +104,9 @@ methods:{
 
         }
     }
+},
+components:{
+    simpleloader
 },
 mounted(){
         this.cargadatos()

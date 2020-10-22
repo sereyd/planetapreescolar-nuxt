@@ -6,8 +6,8 @@ export default {
       drawer: null,
       devtest:false,  //// para realizar pruebas de sesiones
       itemsmenumni:[
-        { title: 'Perfil',link:"perfil" },
-        { title: 'Cerrar Sesión', link:"exit" },
+        { title: 'Ver perfil',link:"perfil" },
+        { title: 'Cerrar sesión', link:"exit" },
 
       ]
     }

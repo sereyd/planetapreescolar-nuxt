@@ -25,7 +25,7 @@ export default {
       // cardSuscripcion: null,
 
       //SELECCIONAR DOMINIO
-      dominio:"http://localhost:3000",
+      dominio:"https://educadora.cf",
       // dominio:"https://educadora.cf/",
 
       //DATOS PRA PANTLLA DE PAGO EXITOSO
