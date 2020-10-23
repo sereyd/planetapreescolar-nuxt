@@ -269,6 +269,8 @@ export default{
 
             // this.materias.clases = 
             let alumnos = [];
+            let alumnosListasD = [];
+
             if(!grupo.alumnosDefault)
             { 
               console.log("NO EIXSTEN ALUMNOS")
@@ -278,43 +280,60 @@ export default{
               }
             }
             else{
+              console.log(nombreGrupo);
+              let materia = grupo.materias.find( materia => nombreGrupo === materia.nombreGrupo );
               let lista = [];
-              grupo.alumnosDefault.map( al =>{
-                console.log("al")
-                console.log(al)
-                console.log(lista)
 
-                al.listas.map( list => {
-                  
-                  lista.push({
-                    calificacionDefault: list.calificacionDefault,
-                    lista: list.lista,
-                    rango: list.rango,
-                    tipoLista: list.tipoLista
-                  })
+              let ald = {};
+              console.log("grupo.materias")
+              console.log(grupo.materias)
+              console.log("materia")
+              console.log(materia)
+              //SE OBTIENE LA LISTA POR DEFAULT Y LOS ALUMNOS POR DEFAULT,
+              grupo.alumnosDefault.map( ad => {
 
-                })
-                console.log(lista)
-
-
-
-                alumnos.push({
-                  apellidos: al.apellidos,
-                  fechaCreado: al.fechaCreado,
-                  fechaNacimiento: al.fechaNacimiento,
-                  lista,
-                  nombre: al.nombre,
-                  sexo: al.sexo,
-                  telefono: al.telefono,
-                  urlImagen: al.urlImagen,
-                })
-                lista = [];
+                  ald = {...ad,  listas: this.listasG }
+                  alumnosListasD.push(ald);
 
               })
+
+
+              // grupo.alumnosDefault.map( al =>{
+              //   console.log("al")
+              //   console.log(al)
+              //   console.log(lista)
+
+              //   al.listas.map( list => {
+                  
+              //     lista.push({
+              //       calificacion: list.calificacionDefault,
+              //       lista: list.lista,
+              //       rango: list.rango,
+              //       tipoLista: list.tipoLista
+              //     })
+
+              //   })
+              //   console.log(lista)
+
+
+
+              //   alumnos.push({
+              //     apellidos: al.apellidos,
+              //     fechaCreado: al.fechaCreado,
+              //     fechaNacimiento: al.fechaNacimiento,
+              //     listas: lista,
+              //     nombre: al.nombre,
+              //     sexo: al.sexo,
+              //     telefono: al.telefono,
+              //     urlImagen: al.urlImagen,
+              //   })
+              //   lista = [];
+
+              // })
             }
 
 
-            this.materias.push(
+            grupo.materias.push(
                 {
                   nombreGrupo, adicionales, cicloEscolar, urlImagen,
                   boys: 0, girls: 0, total: 0, fechaCreado: this.fecha,
@@ -323,7 +342,7 @@ export default{
                     {
                       fecha: this.fecha,
                       // alumnos: this.materias.alumnos ? this.materias.alumnos : [],
-                      alumnos,
+                      alumnos: alumnosListasD,
                       listas: this.listasG,
                       // alumnos:[],
                     },

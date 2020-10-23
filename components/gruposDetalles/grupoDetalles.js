@@ -143,7 +143,7 @@ export default {
 
         const f = new Date();
         console.log(f);
-        let materia = {};
+        // let materia = {};
 
         this.diaHoy = this.diasSemana[f.getDay()];
         // console.log(this.diaHoy)
@@ -167,16 +167,7 @@ export default {
 
 
             this.grupo = {...this.datosUsuario.grupo};
-            // this.grupo.idGrupo = "wrerwerwerwerwer";
-            console.log(this.grupo)
-            // this.grupo = this.$route.query;
-            // this.materias = {...this.datosUsuario.grupo.materias};
-            // this.materias = {...this.grupo.materias};
-            // this.materias = this.grupo.materias;
-            // this.alumnos = this.grupo.alumnos;
             this.idGrupo = this.$route.params.id;
-            // console.log(this.idGrupo);
-            // console.log(this.grupos);
             
             if(this.idGrupo === "exit")
             {
@@ -186,98 +177,47 @@ export default {
                 // this.$route
             }
             else{
-                // this.materia = this.grupo.materias.find( materia => this.idGrupo === materia.nombreGrupo );
-               materia = this.grupo.materias.find( materia => this.idGrupo === materia.nombreGrupo );
-                console.log(materia);
-                // console.log(this.materia);
-                // this.materia.alumnos = this.materia.alumnos ? this.materia.alumnos : [];
+                
+                //HACERLO METODO
+                let materia = this.grupo.materias.find( materia => this.idGrupo === materia.nombreGrupo );
                 this.clase = materia.clases.find( c => c.fecha === this.fecha);
-                console.log(this.clase);
 
                 if(!this.clase)
                 {
                     let listasAlumno = [];
 
-                
 
-                //SE AGREGA LA LISTA POR DEFAULT EN LA MATERIA ACTUAL,
+                    let alumnosListasD = [];
+                    let ald = {};
+                    
+                    //SE OBTIENE LA LISTA POR DEFAULT Y LOS ALUMNOS POR DEFAULT,
+                    this.grupo.alumnosDefault.map( ad => {
+                        ald = {...ad,  listas: materia.listasDefault }
+                        alumnosListasD.push(ald);
 
+                    })
+
+                    //SE AGREGA LA LISTA Y LOS ALUMNOS POR DEFAULT EN LA MATERIA ACTUAL,
                     materia.clases.push({
-                    fecha: this.fecha,
-                    alumnos: this.grupo.alumnosDefault ? this.grupo.alumnosDefault : [],
-                    listas: materia.listasDefault,
-                    // alumnos: this.materias.alumnos ? this.materias.alumnos : [],
-                    // listas: this.materia.listasDefault,
-                    // listasDefault: this.listasDefault,
-                })
-                materia = this.grupo.materias.find( mat => this.idGrupo === mat.nombreGrupo );
-                this.clase = materia.clases.find( c => c.fecha === this.fecha);
+                        fecha: this.fecha,
+                        alumnos: alumnosListasD,
+                        listas: materia.listasDefault,
+                    })
+
+                    //SE ACTUALIZA EL GRUPO ACTUAL CON LOS NUEVOS DATOS
+                    materia = this.grupo.materias.find( mat => this.idGrupo === mat.nombreGrupo );
+                    this.clase = materia.clases.find( c => c.fecha === this.fecha);
+
+                    // this.updateFirebaseGrupo()
                 }
+                //SE ACTUALIZA PARA LA VISTA DEL USUARIO LA FECHA DE SELECCIONADA EN EL CALENDARIO
+                this.horarioHoy = materia.horario.find( hr => hr.dia === this.diaHoy);
+                this.horarioHoy = this.horarioHoy ? this.horarioHoy : {};
+                //HACERLO METODO
 
 
-
-                // console.log("this.grupo");
-                // console.log(this.grupo);
             }
-            // console.log(this.fecha);
-            // console.log(this.clase);
-            // console.log(this.materia);
-            // alert("fecha  clase   grupo")
-            // console.log(this)
-
-            //BUSCAR SI EL DIA ESTA DADO DE ALTA 
-            // this.clase = this.getClase;
-            // const clase = this.materia.clases.find( c => c.fecha === this.fecha);
-            // // console.log("clase");
-            // // console.log(this.clase);
-            // if(!clase)
-            // {   
-            //     console.log("clase no existe")
-            //     // this.clase = [];
-            //     // console.log(this.materia)
-            //     console.log("Creando nuevo dia");
-
-            //     //SE AGREGA LA LISTA POR DEFAULT EN LA MATERIA ACTUAL,
-            //     // this.materia.listasDefault = this.listasDefault;
-
-            //     // console.log( "this.materia.listasDefault")
-            //     // console.log( this.materia.listasDefault)
-
-            //     // this.listasFireBase  = this.materia.listasDefault= this.materia.listasDefault ? this.materia.listasDefault : this.listasDefault;
-            //     // console.log( "this.materia.listasDefault")
-            //     // console.log( this.materia.listasDefault)
-            //     // console.log( this.listasFireBase)
-
-            //     // this.materia.clases.push({
-            //     //     fecha: this.fecha,
-            //     //     alumnos: this.datosUsuario.grupo.alumnos ? this.datosUsuario.grupo.alumnos : [],
-            //     //     // alumnos: this.materias.alumnos ? this.materias.alumnos : [],
-            //     //     listas: this.materia.listasDefault,
-            //     //     // listasDefault: this.listasDefault,
-            //     // })
-            //     console.log(clase)
-            //     // this.clase={
-            //     //     fecha: this.fecha,
-            //     //     alumnos: this.datosUsuario.grupo.alumnos ? this.datosUsuario.grupo.alumnos : [],
-            //     //     listas: this.materia.listasDefault,
-            //     //     // listasDefault: this.listasDefault,
-            //     // }
-            //     // this.materias
-            //     // console.log("this.clase")
-            //     // console.log(this.clase)
-
-            //     // console.log(this)
-            //     // console.log(this.$fireStore)
-                // this.updateFirebaseGrupo();
-                
-
-            // }
-            this.horarioHoy = materia.horario.find( hr => hr.dia === this.diaHoy);
-
-            this.horarioHoy = this.horarioHoy ? this.horarioHoy : {};
-            // this.materia.alumnos = this.materia.alumnos ? this.materia.alumnos : [];
-            // console.log("this.horarioHoy")
-            console.log(this.horarioHoy)
+            
 
             
 
@@ -310,105 +250,50 @@ export default {
             this.fechaVisual = this.diaHoy+" "+this.fechaVisual;
             
 
+            
+            
+            //HACERLO METODO
             //BUSCAR SI EL DIA ESTA DADO DE ALTA 
-            // let materia = this.grupo.materias.find( materia => this.idGrupo === materia.nombreGrupo );
-
             let materia = this.grupo.materias.find( materia => this.idGrupo === materia.nombreGrupo );
             this.clase = materia.clases.find( c => c.fecha === this.fecha);
 
             if(!this.clase)
             {   
                 this.clase = [];
-                console.log(materia)
-                console.log("CREANDO NUEVO DIA");
-                console.log(this.grupo);
-                let listasAlumno = [];
-
+                // let listasAlumno = [];
+                let alumnosListasD = [];
+                let ald = {};
                 
+                //SE OBTIENE LA LISTA POR DEFAULT Y LOS ALUMNOS POR DEFAULT,
+                this.grupo.alumnosDefault.map( ad => {
 
-                //SE AGREGA LA LISTA POR DEFAULT EN LA MATERIA ACTUAL,
+                    ald = {...ad,  listas: materia.listasDefault }
+                    alumnosListasD.push(ald);
 
+                })
+                
+                
+                //SE AGREGA LA LISTA Y LOS ALUMNOS POR DEFAULT EN LA MATERIA ACTUAL,
                 materia.clases.push({
                     fecha: this.fecha,
-                    alumnos: this.grupo.alumnosDefault ? this.grupo.alumnosDefault : [],
+                    alumnos: alumnosListasD,
                     listas: materia.listasDefault,
-                    // alumnos: this.materias.alumnos ? this.materias.alumnos : [],
-                    // listas: this.materia.listasDefault,
-                    // listasDefault: this.listasDefault,
                 })
+
+                //SE ACTUALIZA EL GRUPO ACTUAL CON LOS NUEVOS DATOS
                 materia = this.grupo.materias.find( mat => this.idGrupo === mat.nombreGrupo );
                 this.clase = materia.clases.find( c => c.fecha === this.fecha);
 
-                // this.clase={
-                //     fecha: this.fecha,
-                //     alumnos: this.grupo.alumnosDefault ? this.grupo.alumnosDefault : [],
-                //     listas: this.materia.listasDefault,
-                //     // listas: this.materia.listasDefault,
-                //     // listasDefault: this.listasDefault,
-                // }
-
-                // this.materia.clases.push({
-                //     fecha: this.fecha,
-                //     alumnos: this.materias.alumnos ? this.materias.alumnos : [],
-                //     listas: this.materia.listasDefault,
-                //     // listasDefault: this.listasDefault,
-                // })
-                
-                // this.materia.clases.map( c => {
-
-
-                //     c.listas.map( lista => {
-                //         listasAlumno.push({
-                //             lista: lista.nombre, 
-                //             // calificacion: (lista.tipoLista === "Si/No" || lista.tipoLista === "ON/OFF" )? true 
-                //             // : lista.tipoLista === "Rango 1/10" ? 0
-                //             // :  "Bien", 
-                //             calificacion: lista.calificacionDefault ,
-                //             tipoLista: lista.tipoLista, rango : lista.rango
-                //         })
-                //     })
-
-                //     // c.alumnos.push({
-                //     //     nombre, apellidos, fechaNacimiento, sexo, telefono, urlImagen,
-                //     //     fechaCreado: Date.now(),
-                //     //     listas: listasAlumno
-                //     // })
-                // })
-
-                /**
-                 c.listas.map( lista => {
-                        console.log("LISTA")
-                        console.log(lista)
-                        listasAlumno.push({
-                            lista: lista.nombre, 
-                            calificacion: (lista.tipoLista === "Si/No" || lista.tipoLista === "ON/OFF" )? true 
-                            : lista.tipoLista === "Rango 1/10" ? 0
-                            :  "Bien", 
-                            tipoLista: lista.tipoLista, rango : lista.rango
-                        })
-                    })
-
-
-                    c.alumnos.push({
-                        nombre, apellidos, fechaNacimiento, sexo, telefono, urlImagen,
-                        fechaCreado: Date.now(),
-                        listas: listasAlumno
-                    })
-                 */
-
-                // this.clase={
-                //     fecha: this.fecha,alumnos: this.materias.alumnos ? this.materias.alumnos : [],
-                //     listas: this.materia.listasDefault,
-                //     // listasDefault: this.listasDefault,
-                // }
 
                 // this.updateFirebaseGrupo()
                 
 
             }
+            //SE ACTUALIZA PARA LA VISTA DEL USUARIO LA FECHA DE SELECCIONADA EN EL CALENDARIO
             this.horarioHoy = materia.horario.find( hr => hr.dia === this.diaHoy);
-
             this.horarioHoy = this.horarioHoy ? this.horarioHoy : {};
+            //HACERLO METODO
+
         },
     },
     components:{
@@ -562,7 +447,7 @@ export default {
                 this.grupo.alumnosDefault.push({
                     nombre, apellidos, fechaNacimiento, sexo, telefono, urlImagen,
                     fechaCreado,
-                    listas: listasAlumno
+                    // listas: listasAlumno
                 })
 
                 listasAlumno = [];
@@ -711,6 +596,19 @@ export default {
 
                 //SE AGREGA LA LISTA POR DEFAULT EN LA MATERIA ACTUAL,
                 materia.listasDefault.push({calificacion, nombre, tipoLista, rango});
+
+                //AGREGANDO NUEVA LISTA A LOS ALUMNOS YA CREADO
+
+                // LISTA DEFAULT
+                //     calificacion:"Si"
+                //     nombre:"Asistencia"
+                //     rango:Array[2]
+                //     tipoLista:"Si/No"
+
+
+                // this.grupo.alumnosDefault.map( ad => {
+
+                // })
 
                 // console.log( "this.materia.listasDefault")
                 // console.log( this.materia.listasDefault)
