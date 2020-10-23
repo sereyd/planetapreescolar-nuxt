@@ -89,7 +89,7 @@
 // import validasitio from '@/mixins/validasitio.js'
 import { mapState, mapMutations, mapActions } from 'vuex'
 
-import readXlsxFile from 'read-excel-file'
+// import readXlsxFile from 'read-excel-file'
 
 export default {
     data(){
@@ -122,13 +122,13 @@ export default {
             this.imagen=this.$refs.fileupload.files[0]
             this.actualizaImgUpload(this.$refs.fileupload.files[0]);
         */
-        readXlsxFile(this.file).then((rows) => {
-          // `rows` is an array of rows
-          // each row being an array of cells.
-          console.log(rows);
-          console.table(rows);
-          rows.map( row => console.log(row));
-        })
+        // readXlsxFile(this.file).then((rows) => {
+        //   // `rows` is an array of rows
+        //   // each row being an array of cells.
+        //   console.log(rows);
+        //   console.table(rows);
+        //   rows.map( row => console.log(row));
+        // })
 
       },
     },

@@ -5,7 +5,7 @@
          <menulateral />
 <v-row>
   
-<v-col cols="12" md="2"  class="viewmobil primary">   
+<v-col cols="12" md="2" v-show="vistaValida"   class="viewmobil primary">   
   <!----Menu lateral------>
   <v-list dense class="primary" > 
 
@@ -27,7 +27,7 @@
     </v-list>
 </v-col>
 
-<v-col  cols="12" md="10" >
+<v-col  cols="12" :md="vistaValida ? 10 : 12" >
 
 
       <!----Espacio de carga de vistas------>
@@ -78,7 +78,7 @@ export default {
     }
   },
   computed:{
-    ...mapState(['dialog', 'test','itemsmenu'])
+    ...mapState(['dialog', 'test','itemsmenu','vistaValida'])
   },
   methods:{
 

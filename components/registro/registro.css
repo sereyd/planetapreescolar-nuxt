@@ -25,6 +25,72 @@
     }
 
 
+/* ESPACIOS PARA */
+
+    
+
+/*  formulario*/
+.v-input__slot{
+  min-height: 37px!important;
+}
+.v-btn{
+  letter-spacing: 0em;
+  /* justify-content: center; */
+  text-indent: 0em;
+  /* text-transform: uppercase; */
+  text-transform: none;
+  border-radius: 14px;
+  /* align-items: flex-start; */
+}
+.redes .v-btn__content{
+  /* justify-content: space-between; */
+} 
+.v-text-field--full-width .v-input__prepend-outer, .v-text-field--full-width .v-input__prepend-inner, .v-text-field--full-width .v-input__append-inner, .v-text-field--full-width .v-input__append-outer, .v-text-field--enclosed .v-input__prepend-outer, .v-text-field--enclosed .v-input__prepend-inner, .v-text-field--enclosed .v-input__append-inner, .v-text-field--enclosed .v-input__append-outer {
+  margin-top: 4px;
+}
+
+.purpleColor{
+  color: #AD227D;
+}
+
+
+/*ESPCACIOS DE CHECKBOX*/
+
+.v-input--selection-controls {
+  margin-top: 5px;
+  padding-top: 0px;
+}
+.v-input--checkbox .v-input__control .v-input__slot{
+  min-height: 3px !important;
+}
+.v-input--selection-controls {
+  margin-top: 1px!important;
+  padding-top: 1px!important;
+}
+
+/*ESPCAIO PARA LO DIVIDERS*/
+.izq {
+  margin-right: 16px !important;
+}
+
+.der {
+  margin-left: 16px !important;
+}
+.spn{
+  font-size: 15px;
+  color: darkgray;
+  margin-top: 4px;
+}
+/* .v-input__control{
+  min-height: 40px!important;
+  width: 70%!important;
+}
+
+.v-text-field > .v-input__control > .v-input__slot::before{
+  width: 0%!important; 
+} */
+
+
 /* ESTILOS DE SPINNER*/
 
 .sk-chase {

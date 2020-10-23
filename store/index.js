@@ -6,13 +6,13 @@ const createStore = () => {
       pubActive:{},
       itemsmenu: [
         { title: "Inicio", icon: "mdi-home", link: "/",visible:true },
-        { title: "Actividades", icon: "mdi-human", link: "actividades",visible:false },
-        { title: "Foro", icon: "mdi-forum", link: "", link: "foro",visible:false },
-        { title: "Tienda", icon: "mdi-tag", link: "", link: "tienda",visible:true },
-        { title: "Mis Grupos", icon: "mdi-account-multiple", link: "grupos",  logeado: true,
+        { title: "Actividades", icon: "mdi-human", link: "/actividades",visible:false },
+        { title: "Foro", icon: "mdi-forum", link: "", link: "/foro",visible:false },
+        { title: "Tienda", icon: "mdi-tag", link: "", link: "/tienda",visible:true },
+        { title: "Mis Grupos", icon: "mdi-account-multiple", link: "/grupos",  logeado: true,
         permisos: 0,visible:true },
-        { title: "Directorio", icon: "mdi-book-multiple", link: "directorio",visible:false },
-        { title: "Calendario", icon: "mdi-calendar", link: "calendario",visible:false },
+        { title: "Directorio", icon: "mdi-book-multiple", link: "/directorio",visible:false },
+        { title: "Calendario", icon: "mdi-calendar", link: "/calendario",visible:false },
         {
           title: "Cuenta",
           icon: "mdi-account",
@@ -61,7 +61,10 @@ const createStore = () => {
           urlImagen:'',
           userlogin:false,
           lvluser:0,
-          grupos:[],
+          grupo:{
+            materias:[],
+            // alumnos:[],
+          },
           idMembresia:"",
           vercorreo:false
         },
@@ -71,14 +74,17 @@ const createStore = () => {
       stripeObj: null,
       linktienda:"https://tiendasereyd.ml",
 
+      vistaValida: true,
+
 
     }),
     actions:{
       async loginStore (context, data){
         context.commit("cambiastatusSesion",data);
       },
+      
       actualizarGrupos(context, data){
-        context.state.datosUsuario.grupos = data;
+        context.state.datosUsuario.grupo = data;
       },
       actualizarAlumnos(context, data){
         context.state.datosUsuario.alumnos = data;
@@ -114,14 +120,14 @@ const createStore = () => {
                   // console.log(doc.data());
                   // console.log(doc.data);
                   // console.log(doc.data.grupos);
-                  data.grupos = data.grupos ? data.grupos : [];
+                  data.grupo = data.grupo ? data.grupo : {};
                   // console.log(grups);
                     // console.log(doc.id)
                       const datos = {
                         id: doc.id,
                         idMembresia:"",
 
-                        // grupos:[],
+                        // grupo:{},
                         ...data
                       }
                       console.log(datos)
@@ -149,6 +155,12 @@ const createStore = () => {
       },
       actualizaurlimg(state,data){
         state.urlimg=data
+      },
+      guardarVistaValida(state, data){
+        // alert("Cambnio"+ data)
+
+        state.vistaValida = data;
+        // alert("Cambnio"+ state.vistaValida)
       },
       async almacenarFotoStorage(state,ubi){
         console.log("entra al fotoStorage: "+ state.urlimg)

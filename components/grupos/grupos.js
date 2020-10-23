@@ -1,5 +1,7 @@
 
 import { mapState, mapMutations, mapActions } from 'vuex'
+import { format } from 'date-fns'
+// import { es } from 'date-fns/locale';
 
 export default{
     data(){
@@ -33,9 +35,9 @@ export default{
             //     urlImagen: "",
             // },
             datosNuevoGrupo:{
-              nombreGrupo: "",
-              adicionales: "",
-              cicloEscolar: "",
+              nombreGrupo: "gg",
+              adicionales: "gg",
+              cicloEscolar: "gg",
               // seccion: "2",
               // turno: "Matutino",
               // periodo: "",
@@ -43,67 +45,83 @@ export default{
           },
             
             //DATA FORMULARIO 2
-            horario: [
-                {
-                  dia:"Lunes", clase: false, horaInicio:"", horaFin: "", 
-                  alumnos:[],
-                  listas:[
-                    {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
-                    {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
-                  ]
-                },
-                {
-                  dia:"Martes", clase: false, horaInicio:"", horaFin: "", 
-                  alumnos:[],
-                  listas:[
-                    {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
-                    {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
-                  ]
-                },
-                {
-                  dia:"Miercoles", clase: false, horaInicio:"", horaFin: "", 
-                  alumnos:[],
-                  listas:[
-                    {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
-                    {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
-                  ]
-                },
-                {
-                  dia:"Jueves", clase: false, horaInicio:"", horaFin: "", 
-                  alumnos:[],
-                  listas:[
-                    {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
-                    {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
-                  ]
-                },
-                {
-                  dia:"Viernes", clase: false, horaInicio:"", horaFin: "", 
-                  alumnos:[],
-                  listas:[
-                    {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
-                    {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
-                  ]
-                },
-                {
-                  dia:"Sabado", clase: false, horaInicio:"", horaFin: "", 
-                  alumnos:[],
-                  listas:[
-                    {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
-                    {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
-                  ]
-                },
-                {
-                  dia:"Domingo", clase: false, horaInicio:"", horaFin: "", 
-                  alumnos:[],
-                  listas:[
-                    {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
-                    {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
-                  ]
-                },
+            // horario:{
+            //   clase: false, horaInicio:"", horaFin: "",
+            // },
+            clase:[],
+            // horario: [
+            //     {
+            //       dia:"Lunes", clase: false, horaInicio:"", horaFin: "", 
+            //       alumnos:[],
+            //       listas:[
+            //         {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
+            //         {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
+            //       ]
+            //     },
+            //     {
+            //       dia:"Martes", clase: false, horaInicio:"", horaFin: "", 
+            //       alumnos:[],
+            //       listas:[
+            //         {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
+            //         {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
+            //       ]
+            //     },
+            //     {
+            //       dia:"Miercoles", clase: false, horaInicio:"", horaFin: "", 
+            //       alumnos:[],
+            //       listas:[
+            //         {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
+            //         {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
+            //       ]
+            //     },
+            //     {
+            //       dia:"Jueves", clase: false, horaInicio:"", horaFin: "", 
+            //       alumnos:[],
+            //       listas:[
+            //         {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
+            //         {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
+            //       ]
+            //     },
+            //     {
+            //       dia:"Viernes", clase: false, horaInicio:"", horaFin: "", 
+            //       alumnos:[],
+            //       listas:[
+            //         {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
+            //         {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
+            //       ]
+            //     },
+            //     {
+            //       dia:"Sabado", clase: false, horaInicio:"", horaFin: "", 
+            //       alumnos:[],
+            //       listas:[
+            //         {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
+            //         {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
+            //       ]
+            //     },
+            //     {
+            //       dia:"Domingo", clase: false, horaInicio:"", horaFin: "", 
+            //       alumnos:[],
+            //       listas:[
+            //         {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"]}, 
+            //         {nombre:"Comportamiento", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"]}
+            //       ]
+            //     },
+            // ],
+
+            //LISTAS POR DEFECTO
+            listasG:[
+              {nombre:"Asistencia",tipoLista: "Si/No", rango:["Si","No"],calificacion:"Si"}, 
+              {nombre:"Conducta", tipoLista:"Semáforo", rango:["Bien", "Regular", "Mal"],calificacion:"Bien"}
             ],
 
             //DATA DE TODOS LOS GRUPOS DEL USUARIO
-            grupos:[],
+            materias:[],
+
+            //DATA DE FECHA
+            // meses:["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],
+            // diasSemana:["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"],
+            // diaHoy:"",
+            fecha:"",
             
 
             
@@ -112,6 +130,23 @@ export default{
     computed:{
         ...mapState(['datosUsuario']),
 
+
+    },
+    mounted() {
+      // this.guardarVistaValida(true);
+      this.fecha = format(new Date(), 'yyyy-MM-dd')
+      console.log(this.fecha);
+      console.log(this.datosUsuario)
+
+      
+      
+      // const f = new Date();
+      // // this.diaHoy = this.diasSemana[f.getDay()];
+      // // document.write(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear());
+      // // this.fecha = f.getDate()+ "/" + (f.getMonth() +1)+ "/" + f.getFullYear();
+      // this.fecha = f.getFullYear() + "-" + (f.getMonth() +1)+ "-" + f.getDate();
+      // console.log(this.fecha)
+      // alert("mounted")
     },
     methods:{
         // crearGrupo(){
@@ -121,6 +156,7 @@ export default{
         //     console.log(this.newUsuario);
         // },
         ...mapActions(['actualizarGrupos']),
+        // ...mapMutations(['guardarVistaValida']),
         seleccionarImagen(){
             this.$refs.fileupload.click();
         },
@@ -193,7 +229,11 @@ export default{
         
         async almacenarGrupoCollection(){
           //SE ALMACENA EL NUEVO USUARIO EN LA COLECCION DE USUARIOS
+          console.log( this.datosUsuario.grupo)
           const {id} = this.datosUsuario;
+          let grupo = this.datosUsuario.grupo ? this.datosUsuario.grupo : {};
+          console.log("entrando...")
+          console.log(grupo);
           try {
 
             //SE EXTRAEN LOS DATOS DEL OBJETO
@@ -202,19 +242,100 @@ export default{
 
             //VERIFICAR SI EL OBJETO datosUsuario TIENE LE CAMPO GRUPOS, SI TIENE GRUPOS PREVIOS
             //SE ALMACENAN EN LA DATA grupos
-            if( this.datosUsuario.grupos )
-                this.grupos = this.datosUsuario.grupos;
+            // console.log(this.datosUsuario)
+            // alert("1")
+          console.log(grupo.materias);
+
+            if( grupo.materias )
+              this.materias = grupo.materias;
+            else
+              this.materias = [];
+            // alert("2")
+
+                // console.log(this.datosUsuario)
+            
+
+                // const existe = this.materias.clases.includes( clase => clase.fecha === this.fecha);
+    
+                // if(existe)
+                // {
+                //   console.log("existe")
+                // }
+                // else{
+                //   console.log("no existe")
+                // }
 
                 //SE INSERTAN LOS DATOS DEL NUEVO GRUPO A LA DATA DE GRUPO.
-            this.grupos.push(
+
+            // this.materias.clases = 
+            let alumnos = [];
+            if(!grupo.alumnosDefault)
+            { 
+              console.log("NO EIXSTEN ALUMNOS")
+              grupo= {
+                ...grupo,
+                alumnosDefault: [],
+              }
+            }
+            else{
+              let lista = [];
+              grupo.alumnosDefault.map( al =>{
+                console.log("al")
+                console.log(al)
+                console.log(lista)
+
+                al.listas.map( list => {
+                  
+                  lista.push({
+                    calificacionDefault: list.calificacionDefault,
+                    lista: list.lista,
+                    rango: list.rango,
+                    tipoLista: list.tipoLista
+                  })
+
+                })
+                console.log(lista)
+
+
+
+                alumnos.push({
+                  apellidos: al.apellidos,
+                  fechaCreado: al.fechaCreado,
+                  fechaNacimiento: al.fechaNacimiento,
+                  lista,
+                  nombre: al.nombre,
+                  sexo: al.sexo,
+                  telefono: al.telefono,
+                  urlImagen: al.urlImagen,
+                })
+                lista = [];
+
+              })
+            }
+
+
+            this.materias.push(
                 {
                   nombreGrupo, adicionales, cicloEscolar, urlImagen,
-                    boys: 0, girls: 0, total: 0, fechaCreado: Date.now()
-                    , horario: this.horario
+                  boys: 0, girls: 0, total: 0, fechaCreado: this.fecha,
+                  horario: [],
+                  clases:[
+                    {
+                      fecha: this.fecha,
+                      // alumnos: this.materias.alumnos ? this.materias.alumnos : [],
+                      alumnos,
+                      listas: this.listasG,
+                      // alumnos:[],
+                    },
+                  ],
+                  // alumnos:[],
+                  listasDefault: this.listasG
                 }
             );
-            // console.log("horario");
-            // console.log(this.horario);
+            // this.grupo.alumnos= [];
+            console.log("materias");
+            console.log(this.materias);
+            grupo.materias =  this.materias;
             // console.log(id);
             
             //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
@@ -222,14 +343,24 @@ export default{
 
             console.log(usuarioGruposRef);
             // console.log(this.grupos);
+            console.log("grupo")
+            console.log("grupo")
+            console.log("grupo")
+            console.log(grupo)
+            // console.log(this.datosUsuario)
             
             //SE ACTUALIZA EN FIREBASE EL CAMPO DE GRUPOS
+            console.log(grupo.materias);
+            
             usuarioGruposRef.update({
-                grupos: this.grupos
+                grupo:{
+                  alumnosDefault: grupo.alumnosDefault,
+                  materias: grupo.materias
+                }
             })
             .then(() => {
                 //SE ACTUALIZA EL OBJETO USUARIOS POR MEDIO DE UN ACTION QUE ESTA EN EL STORE
-                this.actualizarGrupos(this.grupos);
+              this.actualizarGrupos(grupo);
             })
             .catch((error) => {
                 console.error("ErroR al agregar grupo: ", error);

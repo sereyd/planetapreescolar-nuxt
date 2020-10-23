@@ -43,7 +43,9 @@ export default {
   */
   plugins: [
     '@/plugins/validasesion.js',
-    '@/plugins/codegenerate.js'
+    '@/plugins/codegenerate.js',
+    '@/plugins/v-calendar.js',
+    // { src: '~plugins/v-calendar.js', ssr: false }
   ],
   /*
   ** Auto import components
