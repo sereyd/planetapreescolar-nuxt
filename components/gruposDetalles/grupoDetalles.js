@@ -165,9 +165,10 @@ export default {
 
         // this.fecha = "16/9/2020"
 
-
+            //DATA QUE SE REQUIERE PARA LA VISTA
             this.grupo = {...this.datosUsuario.grupo};
             this.idGrupo = this.$route.params.id;
+            this.materia = this.grupo.materias.find( materia => this.idGrupo === materia.nombreGrupo );
             
             if(this.idGrupo === "exit")
             {
@@ -180,6 +181,7 @@ export default {
                 
                 //HACERLO METODO
                 let materia = this.grupo.materias.find( materia => this.idGrupo === materia.nombreGrupo );
+                
                 this.clase = materia.clases.find( c => c.fecha === this.fecha);
 
                 if(!this.clase)
@@ -304,6 +306,19 @@ export default {
     },
     computed:{
         ...mapState(['datosUsuario','vistaValida']),
+        diasRestantes(){
+            const red =this.materia.horario.filter(d => 
+                {
+                    console.log(d.dia)
+                    console.log(this.dias)
+                    return !this.dias.includes(d.dia)
+                })
+
+            // const r = this.dias.filter ( (d, index) => this. )
+            // const red =this.dias.filter(d => this.materia.horario.includes(d))
+            console.log(red)
+            return red;
+        }
         // getClase(){
         //     return this.materia.clases.find( c => c.fecha === this.fecha);
         // }
@@ -424,6 +439,15 @@ export default {
                 }
 
                 materia.total++;
+
+                console.log( this.grupo.materias)
+                this.grupo.materias.map(mat => {
+                    mat.boys= materia.boys;
+                    mat.girls= materia.girls;
+                    mat.total= materia.total;
+                    console.log("MATERIA MATERIA")
+                    console.log(mat)  
+                })
 
                 this.clase.listas.map( lista => {
                     listasAlumno.push({
@@ -582,16 +606,25 @@ export default {
 
                 //SE INSERTAN LA LISTA EN TODOS LOS DIAS
                 materia.clases.map( c => {
-                    console.log(c)
-                    c.listas.push({ 
-                        calificacionDefault: calificacion,
-                        nombre, tipoLista, rango
-                    })
-                    console.log(c);
 
-                    c.alumnos.forEach( alumno => {
-                        alumno.listas.push({calificacion, lista: nombre, tipoLista, rango })
-                    })
+                    console.log("c.fecha")
+                    console.log(c.fecha)
+                    console.log("this.fecha")
+                    console.log(this.fecha)
+
+                    if(c.fecha !== this.fecha)
+                    {
+                        console.log(c)
+                        c.listas.push({ 
+                            calificacionDefault: calificacion,
+                            nombre, tipoLista, rango
+                        })
+                        console.log(c);
+
+                        c.alumnos.forEach( alumno => {
+                            alumno.listas.push({calificacion, lista: nombre, tipoLista, rango })
+                        })
+                    }
                 });
 
                 //SE AGREGA LA LISTA POR DEFAULT EN LA MATERIA ACTUAL,
@@ -785,6 +818,10 @@ export default {
 
         cambiarHorario(tipoForm){
             //SE ALMACENA EL NUEVO ALUMNO EN LA COLECCION DE USUARIOS
+            this.materia = this.grupo.materias.find( materia => this.idGrupo === materia.nombreGrupo );
+            // this.clase = this.materia.clases.find( c => c.fecha === this.fecha);
+
+            
             
             try {
 
@@ -803,6 +840,7 @@ export default {
                     // this.horario.horaFin = horaFin;
                     // this.horario.horaInicio = horaInicio;
                     // console.log(this.horario);
+                    console.log(this.materia);
     
                     this.materia.horario.push({
                         clase: true,
@@ -812,20 +850,18 @@ export default {
                         edit: false,
                     });
                 }
+
+                //SE OBTIENE EL HORARIO DEL DIA ACTUAL 
                 this.horarioHoy = this.materia.horario.find( hr => hr.dia === this.diaHoy);
 
 
-                // this.materia.horario.map( h => {
-                //     if(h.dia === this.dia)
-                //     {
-                //         h = this.horario;
-                //     }  
-                // })
+                //SE DESHABILITAN LOS HORARIOAS CREADOS
                 this.materia.horario.forEach( hr => {hr.edit = false});
                     
-            //    this.updateFirebaseGrupo();
-               this.crearHorario = false;
-            //     // //SE RESETEA EL FORMULARIO Y SE CIERRA LA VENTANA FLOTANTE
+                this.updateFirebaseGrupo();
+
+                //SE RESETEA EL FORMULARIO Y SE CIERRA LA VENTANA FLOTANTE
+                this.crearHorario = false;
                 this.$refs.formHorario.reset();
 
             //     this.dialogHorario = false;

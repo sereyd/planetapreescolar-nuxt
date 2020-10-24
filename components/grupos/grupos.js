@@ -270,6 +270,11 @@ export default{
             // this.materias.clases = 
             let alumnos = [];
             let alumnosListasD = [];
+            //VARIABLES PARA AUMENTAR TOTAL ALUMNOS, NIÑOS Y NIÑAS
+            let total = 0;
+            let girls = 0;
+            let boys = 0;
+
 
             if(!grupo.alumnosDefault)
             { 
@@ -281,62 +286,32 @@ export default{
             }
             else{
               console.log(nombreGrupo);
-              let materia = grupo.materias.find( materia => nombreGrupo === materia.nombreGrupo );
-              let lista = [];
-
+              // let materia = grupo.materias.find( materia => nombreGrupo === materia.nombreGrupo );
+              // let lista = [];
+              // materia.total++;
               let ald = {};
-              console.log("grupo.materias")
-              console.log(grupo.materias)
-              console.log("materia")
-              console.log(materia)
               //SE OBTIENE LA LISTA POR DEFAULT Y LOS ALUMNOS POR DEFAULT,
               grupo.alumnosDefault.map( ad => {
+                total++;
+
+                if( ad.sexo === "F")
+                    girls++;
+                else
+                    boys++;
+              
+
 
                   ald = {...ad,  listas: this.listasG }
                   alumnosListasD.push(ald);
 
               })
-
-
-              // grupo.alumnosDefault.map( al =>{
-              //   console.log("al")
-              //   console.log(al)
-              //   console.log(lista)
-
-              //   al.listas.map( list => {
-                  
-              //     lista.push({
-              //       calificacion: list.calificacionDefault,
-              //       lista: list.lista,
-              //       rango: list.rango,
-              //       tipoLista: list.tipoLista
-              //     })
-
-              //   })
-              //   console.log(lista)
-
-
-
-              //   alumnos.push({
-              //     apellidos: al.apellidos,
-              //     fechaCreado: al.fechaCreado,
-              //     fechaNacimiento: al.fechaNacimiento,
-              //     listas: lista,
-              //     nombre: al.nombre,
-              //     sexo: al.sexo,
-              //     telefono: al.telefono,
-              //     urlImagen: al.urlImagen,
-              //   })
-              //   lista = [];
-
-              // })
             }
 
 
             grupo.materias.push(
                 {
                   nombreGrupo, adicionales, cicloEscolar, urlImagen,
-                  boys: 0, girls: 0, total: 0, fechaCreado: this.fecha,
+                  boys, girls, total, fechaCreado: this.fecha,
                   horario: [],
                   clases:[
                     {
