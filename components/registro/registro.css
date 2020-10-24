@@ -31,17 +31,17 @@
 
 /*  formulario*/
 .v-input__slot{
-  min-height: 37px!important;
+  min-height: 42px!important;
 }
 .v-btn{
   letter-spacing: 0em;
-  /* justify-content: center; */
   text-indent: 0em;
-  /* text-transform: uppercase; */
   text-transform: none;
-  border-radius: 14px;
-  /* align-items: flex-start; */
+  /* border-radius: 14px; */
 }
+/* justify-content: center; */
+/* align-items: flex-start; */
+/* text-transform: uppercase; */
 .redes .v-btn__content{
   /* justify-content: space-between; */
 } 

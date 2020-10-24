@@ -5,6 +5,11 @@
     justify-content: flex-end;
     /* background-color: ; */
 }
+
+.cards{
+    border-radius: 15px!important;
+}
+
 .tabla_titulos{
  font-size: 12px;
 }
@@ -15,20 +20,30 @@
 .add{
     opacity: 0.6;
 }
+.btn_add_list{
+    background-color: #48C9D9;
+    height: 20px!important;
+    width: 20px!important;
+    margin-bottom: 4px!important;
+}
 .btn_add{
     /* color: #48C9D9; */
     background-color: #48C9D9;
-    height: 45px;
-    width: 45px;
+    height: 36px!important;
+    width: 36px!important;
+}
+.btn_add_img{
+    background-color: #48C9D9;
 }
 .icon_add{
     color: #3FEFBD!important;
     /* background-color: #3FEFBD; */
 }
 .btn_crearG{
-    border-radius: 15px!important;
+    border-radius: 13px;
+    font-weight: bold;
 }
-.principal{
+/* .principal{
     background-color: white ;
     opacity: 1;
     position: fixed;
@@ -37,11 +52,22 @@
     top: 0;
     left: 0;
     z-index: 100;
-}
+} */
 
 .span_txt{
-    font-size:14px;
+    font-size:13.5px;
     color: rgba(0, 0, 0, 0.87);
+    font-weight: bold;
+}
+.span_txt_titulo{
+    font-size:12.5px;
+    color: rgba(0, 0, 0, 0.87);
+    font-weight: bold;
+}
+
+.radio_text{
+    font-size:11px;
+    color: black
 }
 .nombre_alumno{
     font-size: 13px;
@@ -66,9 +92,9 @@
     margin-right: 48px !important;
     margin-left: 48px !important;
 }
-.container {
+/* .container {
     max-width: 1100px;
-}
+} */
 
 /* .fila{
     background-color: red; 

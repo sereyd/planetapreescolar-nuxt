@@ -58,11 +58,11 @@ export default {
             imagen: null,
             urlImagenPrevia: "",
             datosNuevoAlumno:{
-                nombre:"jose",
-                apellidos: "mende",
-                fechaNacimiento:"1008",
+                nombre:"",
+                apellidos: "",
+                fechaNacimiento:"",
                 sexo:"",
-                telefono:"241142",
+                telefono:"",
                 urlImagen: "",
 
             },
@@ -73,7 +73,7 @@ export default {
             dialogLista: false,
             esListaValido: true,
             datosNuevoLista:{
-                nombre:"gg",
+                nombre:"",
                 tipoLista:"",
             },
             allDays:false,
@@ -210,7 +210,7 @@ export default {
                     materia = this.grupo.materias.find( mat => this.idGrupo === mat.nombreGrupo );
                     this.clase = materia.clases.find( c => c.fecha === this.fecha);
 
-                    // this.updateFirebaseGrupo()
+                    this.updateFirebaseGrupo()
                 }
                 //SE ACTUALIZA PARA LA VISTA DEL USUARIO LA FECHA DE SELECCIONADA EN EL CALENDARIO
                 this.horarioHoy = materia.horario.find( hr => hr.dia === this.diaHoy);
@@ -287,7 +287,7 @@ export default {
                 this.clase = materia.clases.find( c => c.fecha === this.fecha);
 
 
-                // this.updateFirebaseGrupo()
+                this.updateFirebaseGrupo()
                 
 
             }
@@ -512,6 +512,8 @@ export default {
                     }
                     
                 })
+
+            this.updateFirebaseGrupo();
             
 
             //SE RESETEA EL FORMULARIO Y SE CIERRA LA VENTANA FLOTANTE
@@ -616,7 +618,7 @@ export default {
                     {
                         console.log(c)
                         c.listas.push({ 
-                            calificacionDefault: calificacion,
+                            calificacion,
                             nombre, tipoLista, rango
                         })
                         console.log(c);
@@ -626,6 +628,21 @@ export default {
                         })
                     }
                 });
+
+                //AGREGAR A CLASE ACTUAL
+                
+                this.clase.listas.push({
+                        calificacion,
+                        nombre, tipoLista, rango
+                    
+                })
+
+
+                this.clase.alumnos.map( al => {
+                    al.listas.push({
+                        calificacion, lista: nombre, tipoLista, rango 
+                    })
+                })
 
                 //SE AGREGA LA LISTA POR DEFAULT EN LA MATERIA ACTUAL,
                 materia.listasDefault.push({calificacion, nombre, tipoLista, rango});
@@ -707,7 +724,7 @@ export default {
 
         
             
-        //    this.updateFirebaseGrupo();
+           this.updateFirebaseGrupo();
 
             // //SE RESETEA EL FORMULARIO Y SE CIERRA LA VENTANA FLOTANTE
             this.$refs.formLista.reset();
@@ -737,10 +754,18 @@ export default {
                     console.log(li.tipoLista)
 
 
-                    if(li.tipoLista === "Si/No" || li.tipoLista === "ON/OFF")
+                    if(li.tipoLista === "Si/No" )
+                    {
+                        
                         li.calificacion = !li.calificacion
+                    }
+                    else if( li.tipoLista === "ON/OFF")
+                    {
 
-                    if(li.tipoLista === "Semáforo")
+                        li.calificacion = !li.calificacion
+                    }
+
+                    else if(li.tipoLista === "Semáforo")
                     {
                         // console.log("listaaaaaaaa")
                         // console.log(li)
@@ -753,7 +778,7 @@ export default {
                             li.calificacion = "Bien"
                         
                     }
-                    if(li.tipoLista === "Rango 1/10")
+                    else if(li.tipoLista === "Rango 1/10")
                         li.calificacion = li.calificacion <= 9 ? li.calificacion + 1 : 0;
                     
          
@@ -813,7 +838,7 @@ export default {
             // this.horarioModal = this.horarioModal.filter( h => hr.dia !== h.dia);
             this.materia.horario = this.materia.horario.filter( h =>  hr.dia !== h.dia );
             console.log(this.materia.horario);
-            // this.updateFirebaseGrupo();
+            this.updateFirebaseGrupo();
         },
 
         cambiarHorario(tipoForm){

@@ -1,8 +1,8 @@
-.v-btn{
-    letter-spacing: 0em;
+.btn_login{
+    letter-spacing: 0em!important;
     /* justify-content: center; */
-    text-indent: 0em;
+    text-indent: 0em!important;
     /* text-transform: uppercase; */
-    text-transform: none;
+    text-transform: none!important;
     /* align-items: flex-start; */
 }

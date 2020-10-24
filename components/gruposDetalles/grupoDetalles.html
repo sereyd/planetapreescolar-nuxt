@@ -12,7 +12,7 @@
 
     /> -->
 
-    <span>Dia select: {{fecha}}</span>
+    <!-- <span>Dia select: {{fecha}}</span> -->
     <div v-if="!diaSeleccionado">
         <v-date-picker
             mode="date"
@@ -46,7 +46,7 @@
         
 
         <!-- CABECERA DIA, CLASE, HORARIO, VERO OTROS DIAS -->
-        <v-card  class=" mt-7 mx-10" >
+        <v-card  class=" mt-7 mx-10 cards" >
             <v-row>
                 <v-col class="ml-3">
                     <div>
@@ -68,7 +68,7 @@
                     <div class="orden">
                         <div>
                             <p class="primary--text ">Ver otros dias 
-                                <v-icon color="pink darken-4"  @click="diaSeleccionado = false"  style="font-size: 20px;">mdi-arrow-left</v-icon>
+                                <v-icon color="pink darken-4"  @click="diaSeleccionado = false"  style="font-size: 20px;">mdi-chevron-right</v-icon>
                             </p>
                         </div>
                     </div >
@@ -188,9 +188,9 @@
         
         <!-- TABLA DE ALUMNOS -->
         <!-- <span>{{clase}}</span> -->
-        <v-card v-if = "fecha !== ''" class="mt-7  mx-10" >
+        <v-card v-if = "fecha !== ''" class="mt-7  mx-10 cards" >
             <v-row >
-                <v-col cols="" class=" mr-2  ml-2 blue" >
+                <v-col cols="" class=" mr-2  ml-2 " >
                     <!-- ENCABEZADOS DE TABLA -->
                     <v-row class="d-flex">
                         <v-col cols="3" class="">
@@ -208,14 +208,24 @@
                                 <h3 class="tabla_titulos">{{lista.nombre}}</h3> 
                         </v-col>
 
-                        <v-col cols="1" class="">
-                            <h3 class="tabla_titulos  text-center">
-                                <v-btn text @click="dialogLista = true"   fab x-small class="btn_add">
+                        <v-col cols="2" class="">
+                            <h3 class="tabla_titulos  text-center mt-3">
+                                <v-btn text @click="dialogLista = true"   fab x-small class="btn_add_list">
                                     <v-icon  class="icon_add"  style="font-size: 25px;">mdi-plus</v-icon>
                                 </v-btn>
-                                <p>Nueva lista</p>
+                                Nueva lista
                             </h3>
                         </v-col>
+
+                        <!-- <v-col cols="3" class="">
+                            <h3 class="tabla_titulo_btn mt-2">
+                                <v-btn text @click="dialogAlumno = true" fab class="btn_add">
+                                    <v-icon class="icon_add" style="font-size: 40px;" >mdi-plus</v-icon>
+                                </v-btn>
+                                 Nuevo Alumno
+                            </h3>
+                                
+                        </v-col> -->
                         
                     </v-row>
                     <v-divider class="mx-4"></v-divider>
@@ -243,7 +253,7 @@
                             <!-- <div class=" blue"> -->
                                 <!-- <p :class="index === 'nombre' ? '' : 'text-center'">{{lista.tipoLista}}</p> -->
 
-                                <v-btn v-if="lista.tipoLista === 'Semáforo'" small class="mx-2" fab text @click="asignarCal(lista, a, lista.lista)">
+                                <v-btn v-if="lista.tipoLista === 'Semáforo'" small class="mx-2" fab text @click.stop="asignarCal(lista, a, lista.lista)">
                                     <v-icon 
                                         v-if="lista.calificacion === '' || lista.calificacion === 'Bien'"
                                         color="green" style="font-size: 30px;"
@@ -263,9 +273,13 @@
                                         mdi-emoticon-sad
                                     </v-icon>
                                 </v-btn>
-                                <v-btn v-else-if="lista.tipoLista === 'Si/No' || lista.tipoLista === 'ON/OFF' " 
+                                <v-switch  
+                                    v-model="lista.calificacion"
+                                    v-else-if="lista.tipoLista === 'ON/OFF' "
+                                ></v-switch>
+                                <v-btn v-else-if="lista.tipoLista === 'Si/No'" 
                                 class="mx-2" fab text small  :color="lista.calificacion ? 'green' : 'red'" 
-                                @click="asignarCal(lista, a, lista.lista)">
+                                @click.stop="asignarCal(lista, a, lista.lista)">
                                     <!-- {{lista.calificacion}} -->
                                     <v-icon  v-if="lista.calificacion" style="font-size: 30px;">
                                         mdi-checkbox-marked-circle
@@ -280,7 +294,7 @@
 
                                 <v-btn v-else-if="lista.tipoLista === 'Rango 1/10' " 
                                 class="mx-2 " fab text small
-                                @click="asignarCal(lista, a, lista.lista)" >
+                                @click.stop="asignarCal(lista, a, lista.lista)" >
                                 <p class="calNumero" v-if="lista.calificacion === ''">0</p>
                                 <p class="calNumero" v-else>{{lista.calificacion}}</p>
                                     <!-- {{lista.calificacion}} -->
@@ -373,7 +387,7 @@
               >
 
                 <v-btn text fab dark x-large
-                  class="m-0 p-0 btn_add"
+                  class="m-0 p-0 btn_add_img"
                   @click="seleccionarImagenAlumno"
                 >
                   <div v-if="!imagen" >
@@ -471,9 +485,9 @@
           <div class="d-flex justify-center">
               <v-btn 
                   :disabled="!esAlumnoValido" dark 
-                  class="red px-10 mb-5" 
+                  class="red px-10 mb-5 btn_crearG" 
                   @click="validarFormularioAlumno"  
-              > Crear Alumno</v-btn>
+              > Crear alumno</v-btn>
           </div>
              
          </v-form>
@@ -546,7 +560,7 @@
                                 </v-btn>
                             </div>
                             <div>
-                               <h5 class="text-center span_txt"> {{lis.titulo}}</h5>
+                               <h5 class="text-center span_txt_titulo mt-2"> {{lis.titulo}}</h5>
                             </div>
                         </v-col>
                 </v-row>
@@ -564,8 +578,8 @@
                     v-model="allDays" 
                     :mandatory="false" row
                     :rules="[v => !!v || 'Dato equerido']">
-                    <v-radio label="Solo este día" value=false></v-radio>
-                    <v-radio label="Todos los días" value=true></v-radio>
+                    <v-radio label="Solo este día" class="radio_text" value=false></v-radio>
+                    <v-radio label="Todos los días" class="radio_text" value=true></v-radio>
                 </v-radio-group>
     
               </div>
@@ -575,9 +589,9 @@
           <div class="d-flex justify-center">
               <v-btn 
                   :disabled="!esListaValido" dark 
-                  class="red px-10 mb-5" 
+                  class="red px-10 mb-5 btn_crearG" 
                   @click="validarFormularioLista"  
-              > Crear Lista</v-btn>
+              > Crear lista</v-btn>
           </div>
              
          </v-form>
@@ -626,7 +640,7 @@
                         <v-col cols="12"  class="days  ">
                             <v-row class="d-flex justify-center">
                                 <v-col cols="4" class="days ">
-                                    <!-- {{hr.dia}} -->
+                                    <!-- {{hr.edit}} -->
                                     <v-select
                                         v-model="hr.dia"
                                         :items="dias"
@@ -781,7 +795,7 @@
                                 <v-btn text @click="crearHorario = true" fab class="btn_add">
                                     <v-icon class="icon_add" style="font-size: 50px;">mdi-plus</v-icon>
                                 </v-btn>
-                                <span class="primary--text">Nuevo Horario</span>
+                                <span class="primary--text tabla_titulo_btn">Nuevo Horario</span>
                             </h3>
                         </v-col>
         

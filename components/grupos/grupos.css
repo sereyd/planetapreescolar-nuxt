@@ -45,6 +45,16 @@ $font-size-root: 18px; */
     margin-bottom:0!important;
 }
 
+/* .btn_add_list{
+    background-color: #48C9D9;
+    height: 20px!important;
+    width: 20px!important;
+    margin-bottom: 4px!important;
+} */
+.btn_add_img{
+    background-color: #48C9D9;
+}
+
 .btn_add{
     /* color: #48C9D9; */
     background-color: #48C9D9;
