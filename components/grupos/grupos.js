@@ -122,21 +122,26 @@ export default{
             // diasSemana:["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"],
             // diaHoy:"",
             fecha:"",
+            grupo:{},
             
 
             
         }
     },
     computed:{
-        ...mapState(['datosUsuario']),
+        ...mapState(['datosUsuario','clasesCreadas']),
 
 
     },
-    mounted() {
+    async mounted() {
       // this.guardarVistaValida(true);
+    
+
       this.fecha = format(new Date(), 'yyyy-MM-dd')
       console.log(this.fecha);
       console.log(this.datosUsuario)
+      this.grupo = this.datosUsuario.grupo;
+      // console.log(this.grrupo)
 
       
       
@@ -156,7 +161,7 @@ export default{
         //     console.log(this.newUsuario);
         // },
         ...mapActions(['actualizarGrupos']),
-        // ...mapMutations(['guardarVistaValida']),
+        ...mapMutations(['actualizarClasesCreadas']),
         seleccionarImagen(){
             this.$refs.fileupload.click();
         },
@@ -189,7 +194,7 @@ export default{
             //EN EL METODO DE almacenarUsuarioAuthentication SI EL USUARIO EXISTE MODIFICA this.error
             //DE ESTA FORMA EVITA QUE ALMACENE EL USUARIO EN LA COLLECION
             if(!this.error){
-                this.almacenarGrupoCollection();
+              this.almacenarGrupoCollection();
             }else{
             //   this.spinner = false
             }
@@ -229,9 +234,11 @@ export default{
         
         async almacenarGrupoCollection(){
           //SE ALMACENA EL NUEVO USUARIO EN LA COLECCION DE USUARIOS
-          console.log( this.datosUsuario.grupo)
+          console.log( this.grupo)
           const {id} = this.datosUsuario;
-          let grupo = this.datosUsuario.grupo ? this.datosUsuario.grupo : {};
+          // let materias = [];
+
+          let grupo = this.grupo ? this.grupo : {};
           console.log("entrando...")
           console.log(grupo);
           try {
@@ -246,10 +253,9 @@ export default{
             // alert("1")
           console.log(grupo.materias);
 
-            if( grupo.materias )
-              this.materias = grupo.materias;
-            else
-              this.materias = [];
+            // if( grupo.materias )
+              grupo.materias = grupo.materias ? grupo.materias : [] ;
+            
             // alert("2")
 
                 // console.log(this.datosUsuario)
@@ -268,7 +274,7 @@ export default{
                 //SE INSERTAN LOS DATOS DEL NUEVO GRUPO A LA DATA DE GRUPO.
 
             // this.materias.clases = 
-            let alumnos = [];
+            // let alumnos = [];
             let alumnosListasD = [];
             //VARIABLES PARA AUMENTAR TOTAL ALUMNOS, NIÑOS Y NIÑAS
             let total = 0;
@@ -307,6 +313,12 @@ export default{
               })
             }
 
+            // materia.clases.push({
+            //   fecha: this.fecha,
+            //   alumnos: alumnosListasD,
+            //   listas: [...materia.listasDefault],
+            // })
+
 
             grupo.materias.push(
                 {
@@ -318,18 +330,18 @@ export default{
                       fecha: this.fecha,
                       // alumnos: this.materias.alumnos ? this.materias.alumnos : [],
                       alumnos: alumnosListasD,
-                      listas: this.listasG,
+                      listas: [...this.listasG],
                       // alumnos:[],
                     },
                   ],
                   // alumnos:[],
-                  listasDefault: this.listasG
+                  listasDefault: [...this.listasG]
                 }
             );
             // this.grupo.alumnos= [];
             console.log("materias");
-            console.log(this.materias);
-            grupo.materias =  this.materias;
+            console.log(grupo.materias);
+            // grupo.materias =  materias;
             // console.log(id);
             
             //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
@@ -345,16 +357,19 @@ export default{
             
             //SE ACTUALIZA EN FIREBASE EL CAMPO DE GRUPOS
             console.log(grupo.materias);
+            console.log(grupo.alumnosDefault);
             
             usuarioGruposRef.update({
                 grupo:{
                   alumnosDefault: grupo.alumnosDefault,
                   materias: grupo.materias
                 }
+               
             })
             .then(() => {
                 //SE ACTUALIZA EL OBJETO USUARIOS POR MEDIO DE UN ACTION QUE ESTA EN EL STORE
-              this.actualizarGrupos(grupo);
+              // this.actualizarGrupos(grupo);
+              this.actualizarClasesCreadas({clase: nombreGrupo, fecha: this.fecha});
             })
             .catch((error) => {
                 console.error("ErroR al agregar grupo: ", error);
@@ -377,7 +392,7 @@ export default{
             this.dialog = false;
             this.faseFormulario = 1;
             // console.log("pusheando");
-            this.$router.push('/grupos')
+            // this.$router.push('/grupos')
 
             
           } catch (error) {

@@ -75,6 +75,8 @@ const createStore = () => {
       linktienda:"https://tiendasereyd.ml",
 
       vistaValida: true,
+      grupo:{},
+      clasesCreadas:[],
 
 
     }),
@@ -84,7 +86,7 @@ const createStore = () => {
       },
       
       actualizarGrupos(context, data){
-        context.state.datosUsuario.grupo = data;
+        context.state.grupo = data;
       },
       actualizarAlumnos(context, data){
         context.state.datosUsuario.alumnos = data;
@@ -141,9 +143,18 @@ const createStore = () => {
             }
         });
           return true
-      }
+      },
     },
     mutations: {
+      actualizarClasesCreadas(state, data){
+        state.clasesCreadas=[
+          ...state.clasesCreadas,
+          data,
+        ];
+        console.log("clasesCreadas")
+        console.log(state.clasesCreadas);
+
+      },
       selectpub(state,pub){
         state.pubActive=pub
       },  
