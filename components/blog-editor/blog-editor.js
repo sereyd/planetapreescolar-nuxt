@@ -7,7 +7,6 @@ export default {
     return {
       editar: false,
       datablog: {
-        tipo: this.tipo,
         urlImagen: "",
         fecha:"",
         edopost: "",
@@ -18,7 +17,24 @@ export default {
       uploadimg: false,
       creablog: false,
       mensajeError1: "",
-      preview: ""
+      preview: "",
+      customToolbar: [
+        [{ 'font': [] }],
+        [{ 'header': [false, 1, 2, 3, 4, 5, 6, ] }],
+        [{ 'size': ['small', false, 'large', 'huge'] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{'align': ''}, {'align': 'center'}, {'align': 'right'}, {'align': 'justify'}],
+        [{ 'header': 1 }, { 'header': 2 }],
+        ['blockquote'],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],
+        [{ 'indent': '-1'}, { 'indent': '+1' }],
+        [{ 'color': [] }, { 'background': [] }],
+        ['link', 'video', 'formula'],
+        [{ 'direction': 'rtl' }],
+        ['clean'],
+      ]
+  
     };
   },
   computed: {
@@ -54,11 +70,13 @@ export default {
         if (this.imagen === "true") {
           if (this.preview) {
             this.almacenarFotoStorage(
-              "publicaciones/" + this.datosUsuario.foldercode
+              this.tipo+"/" + this.datosUsuario.foldercode
             );
           } else {
             this.guardaenstore();
           }
+        }else{
+          this.guardaenstore();
         }
       } catch (e) {
         console.error(e);
@@ -69,7 +87,7 @@ export default {
         var date=new Date();
         this.datablog.fecha=date.getDay()+"-"+date.getMonth()+"-"+date.getFullYear();
         var numhora=date.getSeconds()+date.getMilliseconds()
-        await this.$fireStore.collection("publicaciones").add(this.datablog);
+        await this.$fireStore.collection(this.tipo).add(this.datablog);
         this.creablog = false;
             this.datablog.urlImagen=""
             this.datablog.edopost=""

@@ -1,4 +1,4 @@
-import { mapState, mapMutations } from "vuex";
+
 export default {
   data() {
     return {
@@ -6,14 +6,16 @@ export default {
     };
   },
   computed: {
-    ...mapState(["datosUsuario"])
+
   },
   methods: {
-    async cargaPost() {
+    async cargaPost(p) {
+      
       try {
+   
         await this.$fireStore
           .collection("publicaciones")
-          .where("user", "==", this.datosUsuario.id)
+          .where("user", "==",this.$store.state.datosUsuario.id)
           .where("tipo","==",this.tipo)  
           .get()
           .then((data) => {
@@ -26,10 +28,13 @@ export default {
       } catch (e) {
         console.log(e);
       }
+
+  
     }
   },
   mounted() {
-    this.cargaPost();
+    
+
   },
   props: {
     tipo: {

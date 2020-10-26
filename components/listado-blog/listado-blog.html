@@ -4,23 +4,107 @@
     <h2 class="primary--text">{{titulo}}</h2>
     <p>{{subtitulos}}</p>
 </v-col>
-<v-col cols="12" md="2" style="text-align: right;">
+
+<v-col cols="12" md="2"  style="text-align: right;" >
    <v-btn v-if="linkmas!=='#'" class="melon white--text rounded-pill" :to="'/'+linkmas"  >Ver más</v-btn> 
 </v-col>
+
+<v-col cols="12" md="3" v-if="addslot===true" style="text-align: right;">
+    <slot></slot>
+    </v-col>
 <v-col cols="12" md="3" v-for="(key,index) in blogpost" :key="'post'+index">
     <v-card >
         <v-card-text class="pa-2">
-            <v-skeleton-loader v-if="key.urlImagen===''"
-            class="mx-auto "
-            max-width="100%"
-            type="image"
-          ></v-skeleton-loader>
-            <img v-if="key.urlImagen!==''" :src="key.urlImagen"   width="100%" />            
-            <h2>{{key.titulo}}</h2>
+     
+            <v-img v-if="imagen==='true'" :src="key.urlImagen!=='' ? key.urlImagen : 'images/logos/planeta_preescolar_logo.png'" style="border-radius:15px; height:200px; background-color:azure; " @click="muestrapost(key)"  ></v-img>   
+            
+                
+        <v-main v-if="tipo==='MEMORIA'" @click="muestrapost(key)" >
+            <h3>{{key.titulo}}</h3>
             <p>{{key.fecha}}</p>
+            <v-btn class="melon white--text" style="border-radius:10px;"   v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:1 })"   @click="editapost(key)" >Editar</v-btn>
+        </v-main>
+        
+        <v-main v-if="tipo==='BLOG'" @click="muestrapost(key)" >
+            <h3>{{key.titulo}}</h3>
+            <v-btn class="melon white--text" style="border-radius:10px;"   v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:2 })"   @click="editapost(key)" >Editar</v-btn>
+        </v-main>
+        
+        <v-main v-if="tipo==='RECOMENDACION'" @click="muestrapost(key)" >
+            <h3>{{key.titulo}} {{key.fecha}}</h3>
+            <v-btn class="melon white--text" style="border-radius:10px;"   v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:2 })"   @click="editapost(key)" >Editar</v-btn>
 
+        </v-main>
+
+        <v-main v-if="tipo==='REFLEXIONES'" @click="muestrapost(key)" >
+
+            <div style="width:100%; height:200px;  background-color:lightyellow; border-radius:10px; box-shadow: 0 0 10px #ccc; overflow: auto; font-size:14px;" class="pa-2" v-html="key.contenido"  >
+              
+            </div>
+            <h3>{{key.titulo}} <br />{{key.fecha}}</h3>
+            <v-btn class="melon white--text" style="border-radius:10px;"   @click="editapost(key)" >Editar</v-btn>
+        </v-main>
         </v-card-text>
     </v-card>
 </v-col>
+
+<v-dialog v-model="edit">
+<v-card>
+    <v-card-title>
+        {{editpost.titulo}}
+    </v-card-title>
+    <v-card-text >
+        <v-row>
+            <v-col cols="12" md="12">
+        <VueEditor class="elevation-3 rounded-lg" v-model="editpost.contenido" :editorToolbar="customToolbar"></VueEditor>
+</v-col>
+<v-col cols="12" md="6">
+        <v-radio-group
+                            v-model="editpost.edopost"
+                            row
+                            >
+                            <v-radio
+                                label="Publico"
+                                value="publico"
+                            ></v-radio>
+                            <v-radio
+                                label="Privado"
+                                value="privado"
+                            ></v-radio>
+                            </v-radio-group>
+</v-col>    
+                            <v-col cols="12" md="6">
+                            <v-btn class="melon white--text">Guardar Cambios</v-btn>
+                            <v-btn class="melon white--text" @click="edit=false">Cancelar</v-btn>
+                    </v-col>
+</v-row>
+
+    </v-card-text>
+</v-card>
+</v-dialog>
+
+
+<v-dialog v-model="viewpost" fullscreen >
+    <v-card >
+        <v-card-text style="text-align: right; ">
+     <span class="primary--text" style="font-weight: bold; text-align: right;" @click="viewpost=false">X</span>
+
+            <div  max-width="100%" style="height:100px; "></div>
+            <v-container class="ma-auto elevation-3 rounded-ml" style="background-image:url('images/back/backstart.jpg'); background-position:top; background-size: 100%; background-repeat: repeat-x; text-align: left; max-width:1200px; width:100%; ">
+        
+                <div  max-width="100%" style="height:90px; "></div>
+            <h2 class="primary--text pa-5"><b>{{vistapost.titulo}}</b> </h2>
+            <span >{{vistapost.nombre}} {{vistapost.apellido}}</span>
+
+                <v-section class="pa-5" v-html="vistapost.contenido"  >
+                    
+                </v-section>
+
+                <v-img v-if="imagen==='true'" :src="vistapost.urlImagen!=='' ? vistapost.urlImagen : 'images/logos/planeta_preescolar_logo.png'" style="max-width:100%;;  width:100%; background-color:azure; " ></v-img> 
+
+        </v-container>
+        </v-card-text>
+    </v-card>
+</v-dialog>
 
 </v-row>

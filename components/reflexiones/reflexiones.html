@@ -4,12 +4,15 @@
         <br />
         <v-row>
         <v-col cols="12" md="11">
-            <p style="font-size:21px; text-align:justify;">
-        Loremipsumd olorsitamet,consetetur sadipscingelitr,seddiamnonum yeirmodtempor inviduntut laboreetdolo remagnaali quyamerat,seddia mvoluptua Atveroe oset accusametjusto duodol oresetearebum. Stetclitakas dgubergren,noseatakimatasanctusestLoremipsum dolorsitamet
+            <p v-if="reflexion[0]" style="font-size:18px; text-align:left;" v-html="reflexion[0].contenido">
+                
             </p>
         </v-col>
         <v-col cols="12" md="1">
          <img src="/images/iconos/globo-estrellas.png" width="100%" />
+            </v-col>
+            <v-col cols="12" md="1"  v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:2 })"  >
+                <v-btn class="melon white--text rounded-pill" to="/reflexiones"  >Administrar</v-btn> 
             </v-col>
 </v-row>
     </v-card-text>

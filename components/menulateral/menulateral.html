@@ -1,6 +1,6 @@
 <div>
     <v-card >
-        <v-card-title class="primary white--text ">
+        <v-card-title class="secondary white--text ">
         
         <span class="viewmobil">  <v-icon  class="white--text"  @click.stop="drawer = !drawer" > mdi-menu </v-icon>
         </span>
@@ -11,7 +11,7 @@
           &nbsp;  &nbsp; 
           
           <div class="menu-sec datamenu" v-if="datosUsuario.userlogin===true"  >
-            
+            <div class="primary white--text pa-1 " style="border-radius:10px; width:100%; max-width:210px;" >
             <v-avatar
       color="secondary"
       size="36" 
@@ -19,7 +19,7 @@
      <img v-if="datosUsuario.urlImagen" :src="datosUsuario.urlImagen" width="100%" />
     </v-avatar>
 
-           <span class="vMmobilview">{{ (datosUsuario.nombre+" "+ datosUsuario.apellido).substr(0,10) }}</span> 
+           <span class="vMmobilview" >{{ (datosUsuario.nombre+" "+ datosUsuario.apellido).substr(0,13) }}</span> 
 
          
        
@@ -30,21 +30,22 @@
                   dark
                   v-bind="attrs"
                   v-on="on"
+                  class="elevation-0"
                 >
                 ▼
                 </v-btn>
               </template>
-              <v-list>
+              <v-list  style="width:210px;" >
                 <v-list-item
                   v-for="(item, index) in itemsmenumni"
                   :key="index"
                 >
-                  <v-list-item-title><router-link :to="item.link">{{ item.title }}</router-link></v-list-item-title>
+                  <v-list-item-title ><router-link class="linkmenuuser" :to="item.link">{{ item.title }} <span class="flechalink"> > </span></router-link></v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
-       
-  
+          </div>
+
           </div>
         
       <div v-if="devtest===true">
@@ -58,8 +59,8 @@
 
         <div class="minimovil"></div>
         <div v-if="datosUsuario.userlogin===false" class="miniMovil">
-        <router-link to="login" v-if="$validasesion($store,{ sinregistro:true })" class="white--text" style="text-decoration:none;">Iniciar sesión</router-link> &nbsp;&nbsp;&nbsp;
-        <v-btn class="melon white--text"  v-if="$validasesion($store,{ sinregistro:true })" link to="registro">Registro </v-btn>
+        <router-link to="login" v-if="$validasesion($store,{ sinregistro:true })" class="white--text" style="text-decoration:none;  font-size:15px;">Iniciar sesión</router-link> &nbsp;&nbsp;&nbsp;
+        <v-btn class="melon white--text pa-5"  style="border-radius: 30px; font-size:14px; text-transform:none;" v-if="$validasesion($store,{ sinregistro:true })" link to="registro">Registro </v-btn>
         </div>
 
         <div v-if="datosUsuario.userlogin===true" >

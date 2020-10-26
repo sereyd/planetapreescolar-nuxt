@@ -1,6 +1,7 @@
 <v-row>
 <v-col cols="12" md="3">
     <slot  name="header"></slot>
+  
 </v-col>
 <v-col cols="12" md="3" v-for="(key,index) in listapost" :key="'post'+index">
     
@@ -11,10 +12,12 @@
             max-width="100%"
             type="image"
           ></v-skeleton-loader>
-            <img v-if="key.urlImagen!==''" :src="key.urlImagen"   width="100%" />            
+            <img v-if="key.urlImagen!==''" :src="key.urlImagen"   width="100%" />    
+     
             <h2>{{key.titulo}}</h2>
             <p>{{key.fecha}}</p>
             <p :class="key.edopost==='privado' ? 'red--text' : 'black--text'">{{key.edopost}}</p>
+          
         </v-card-text>
     </v-card>
 

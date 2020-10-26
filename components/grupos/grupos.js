@@ -313,6 +313,7 @@ export default{
               })
             }
 
+<<<<<<< HEAD
             // materia.clases.push({
             //   fecha: this.fecha,
             //   alumnos: alumnosListasD,
@@ -320,6 +321,11 @@ export default{
             // })
 
 
+=======
+            if(!grupo.materias){
+              grupo.materias=[]
+            }
+>>>>>>> develop
             grupo.materias.push(
                 {
                   nombreGrupo, adicionales, cicloEscolar, urlImagen,
@@ -338,6 +344,9 @@ export default{
                   listasDefault: [...this.listasG]
                 }
             );
+
+
+
             // this.grupo.alumnos= [];
             console.log("materias");
             console.log(grupo.materias);
