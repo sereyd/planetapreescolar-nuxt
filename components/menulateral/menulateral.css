@@ -1,3 +1,13 @@
+.menufix{
+    position:fixed;
+    top:0px;
+    left:0px;
+    width:100%;
+    max-width:100%;
+}
+
+
+
 .menu-sec{
     font-size:14px;
 }

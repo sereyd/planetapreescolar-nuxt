@@ -96,9 +96,8 @@
             <h2 class="primary--text pa-5"><b>{{vistapost.titulo}}</b> </h2>
             <span >{{vistapost.nombre}} {{vistapost.apellido}}</span>
 
-                <v-section class="pa-5" v-html="vistapost.contenido"  >
-                    
-                </v-section>
+                <section class="pa-5" v-html="vistapost.contenido"  >
+                </section>
 
                 <v-img v-if="imagen==='true'" :src="vistapost.urlImagen!=='' ? vistapost.urlImagen : 'images/logos/planeta_preescolar_logo.png'" style="max-width:100%;;  width:100%; background-color:azure; " ></v-img> 
 

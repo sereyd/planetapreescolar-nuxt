@@ -142,7 +142,7 @@
                         <div class="fila d-flex justify-center Lista mx-10 px-10"  
                         v-for="(lista, index) in a.listas" :key="index" cols="" >
                             
-                                <v-btn v-if="lista.tipoLista === 'Semáforo'" class="mx-2" fab text @click="asignarCal(lista, a, lista.lista)">
+                                <v-btn v-if="lista.tipoLista === 'Semáforo'" class="mx-2" fab text @click="asignarCal(lista, a, lista.nombre)">
                                     <v-icon 
                                         v-if="lista.calificacion === '' || lista.calificacion === 'Bien'"
                                         color="green" style="font-size: 40px;"
@@ -164,7 +164,7 @@
                                 </v-btn>
                                 <v-btn v-else-if="lista.tipoLista === 'Si/No' || lista.tipoLista === 'ON/OFF' " 
                                 class="mx-2" fab text  :color="lista.calificacion ? 'green' : 'red'" 
-                                @click="asignarCal(lista, a, lista.lista)">
+                                @click="asignarCal(lista, a, lista.nombre)">
                                     <v-icon  v-if="lista.calificacion" style="font-size: 40px;">
                                         mdi-checkbox-marked-circle
                                     </v-icon>
@@ -253,7 +253,7 @@
                             <!-- <div class=" blue"> -->
                                 <!-- <p :class="index === 'nombre' ? '' : 'text-center'">{{lista.tipoLista}}</p> -->
 
-                                <v-btn v-if="lista.tipoLista === 'Semáforo'" small class="mx-2" fab text @click.stop="asignarCal(lista, a, lista.lista)">
+                                <v-btn v-if="lista.tipoLista === 'Semáforo'" small class="mx-2" fab text @click.stop="asignarCal(lista, a, lista.nombre, index)">
                                     <v-icon 
                                         v-if="lista.calificacion === '' || lista.calificacion === 'Bien'"
                                         color="green" style="font-size: 30px;"
@@ -279,7 +279,7 @@
                                 ></v-switch>
                                 <v-btn v-else-if="lista.tipoLista === 'Si/No'" 
                                 class="mx-2" fab text small  :color="lista.calificacion ? 'green' : 'red'" 
-                                @click.stop="asignarCal(lista, a, lista.lista)">
+                                @click.stop="asignarCal(lista, a, lista.nombre)">
                                     <!-- {{lista.calificacion}} -->
                                     <v-icon  v-if="lista.calificacion" style="font-size: 30px;">
                                         mdi-checkbox-marked-circle
@@ -294,7 +294,7 @@
 
                                 <v-btn v-else-if="lista.tipoLista === 'Rango 1/10' " 
                                 class="mx-2 " fab text small
-                                @click.stop="asignarCal(lista, a, lista.lista)" >
+                                @click.stop="asignarCal(lista, a, lista.nombre)" >
                                 <p class="calNumero" v-if="lista.calificacion === ''">0</p>
                                 <p class="calNumero" v-else>{{lista.calificacion}}</p>
                                     <!-- {{lista.calificacion}} -->

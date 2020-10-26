@@ -134,99 +134,77 @@ export default {
         
     },
     
-    created() {
+    async created() {
         // console.log(this.clase)
         // // alert("DS")
         console.log(this.fecha)
-
-        
-
         const f = new Date();
         console.log(f);
         // let materia = {};
 
         this.diaHoy = this.diasSemana[f.getDay()];
-        // console.log(this.diaHoy)
-        // document.write(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear());
-        // this.fechaVisual = this.diasSemana[f.getDay()] + " " +f.getDate()+ " de " + this.meses[(f.getMonth() +1)] + " de " + f.getFullYear();
-        // this.fecha = f.getDay()+ "/" + f.getMonth()+ "/" + f.getFullYear();
-        // this.fecha = f.getDate()+ "/" + (f.getMonth() +1)+ "/" + f.getFullYear();
-        // this.fecha = f.getFullYear() + "-" + (f.getMonth() +1)+ "-" + f.getDate();
         this.fechaVisual = format(new Date(), "dd 'de' MMMM 'de' yyyy", {
             locale: es
         })
         this.fechaVisual = this.diaHoy+" "+this.fechaVisual;
         //   console.log(this.fechaVisual);
 
-        // this.fecha = format(new Date(), 'yyyy-MM-dd')
-        // console.log(this.fecha);
+        //DATA QUE SE REQUIERE PARA LA VISTA
+        this.grupo = {...this.datosUsuario.grupo};
 
+        this.idGrupo = this.$route.params.id;
 
-
-        // this.fecha = "16/9/2020"
-
-            //DATA QUE SE REQUIERE PARA LA VISTA
-            this.grupo = {...this.datosUsuario.grupo};
-            this.idGrupo = this.$route.params.id;
-            this.materia = this.grupo.materias.find( materia => this.idGrupo === materia.nombreGrupo );
+        console.log(this.grupo)
+        this.materia = this.grupo.materias.find( materia => this.idGrupo === materia.nombreGrupo );
+        
+        if(this.idGrupo === "exit")
+        {
+            this.$router.push("/exit");
+        }
+        else{
             
-            if(this.idGrupo === "exit")
-            {
-                // this.$route.push("/");
-                this.$router.push("/exit");
+            //HACERLO METODO
+            let materia = this.grupo.materias.find( materia => this.idGrupo === materia.nombreGrupo );
+            
+            this.clase = materia.clases.find( c => c.fecha === this.fecha);
 
-                // this.$route
-            }
-            else{
+            if(!this.clase)
+            {
+                this.actualizarClasesCreadas({clase: materia.nombreGrupo, fecha: this.fecha});
+                console.log("CreandoClase")
+                let listasAlumno = [];
+                let alumnosListasD = [];
+                let ald = {};
                 
-                //HACERLO METODO
-                let materia = this.grupo.materias.find( materia => this.idGrupo === materia.nombreGrupo );
-                
+                //SE OBTIENE LA LISTA POR DEFAULT Y LOS ALUMNOS POR DEFAULT,
+                this.grupo.alumnosDefault.map( ad => {
+                    ald = {...ad,  listas: [...materia.listasDefault] }
+                    alumnosListasD.push(ald);
+
+                })
+
+                //SE AGREGA LA LISTA Y LOS ALUMNOS POR DEFAULT EN LA MATERIA ACTUAL,
+                materia.clases.push({   
+                    fecha: this.fecha,
+                    alumnos: alumnosListasD,
+                    listas:[...materia.listasDefault],
+                })
+
+                //SE ACTUALIZA EL GRUPO ACTUAL CON LOS NUEVOS DATOS
+                // materia = this.grupo.materias.find( mat => this.idGrupo === mat.nombreGrupo );
                 this.clase = materia.clases.find( c => c.fecha === this.fecha);
 
-                if(!this.clase)
-                {
-                    let listasAlumno = [];
-
-
-                    let alumnosListasD = [];
-                    let ald = {};
-                    
-                    //SE OBTIENE LA LISTA POR DEFAULT Y LOS ALUMNOS POR DEFAULT,
-                    this.grupo.alumnosDefault.map( ad => {
-                        ald = {...ad,  listas: materia.listasDefault }
-                        alumnosListasD.push(ald);
-
-                    })
-
-                    //SE AGREGA LA LISTA Y LOS ALUMNOS POR DEFAULT EN LA MATERIA ACTUAL,
-                    materia.clases.push({
-                        fecha: this.fecha,
-                        alumnos: alumnosListasD,
-                        listas: materia.listasDefault,
-                    })
-
-                    //SE ACTUALIZA EL GRUPO ACTUAL CON LOS NUEVOS DATOS
-                    materia = this.grupo.materias.find( mat => this.idGrupo === mat.nombreGrupo );
-                    this.clase = materia.clases.find( c => c.fecha === this.fecha);
-
-                    this.updateFirebaseGrupo()
-                }
-                //SE ACTUALIZA PARA LA VISTA DEL USUARIO LA FECHA DE SELECCIONADA EN EL CALENDARIO
-                this.horarioHoy = materia.horario.find( hr => hr.dia === this.diaHoy);
-                this.horarioHoy = this.horarioHoy ? this.horarioHoy : {};
-                //HACERLO METODO
-
-
+                this.updateFirebaseGrupo()
             }
-            
+            //SE ACTUALIZA PARA LA VISTA DEL USUARIO LA FECHA DE SELECCIONADA EN EL CALENDARIO
+            this.horarioHoy = materia.horario.find( hr => hr.dia === this.diaHoy);
+            this.horarioHoy = this.horarioHoy ? this.horarioHoy : {};
+            console.log(this.horarioHoy);
+            //HACERLO METODO
 
-            
 
+        }
             
-            // if(clase)
-            
-        //   }, 7000);
         
     },
     watch: {
@@ -261,7 +239,9 @@ export default {
 
             if(!this.clase)
             {   
-                this.clase = [];
+                this.actualizarClasesCreadas({clase: materia.nombreGrupo, fecha: this.fecha});
+
+                // this.clase = [];
                 // let listasAlumno = [];
                 let alumnosListasD = [];
                 let ald = {};
@@ -269,7 +249,7 @@ export default {
                 //SE OBTIENE LA LISTA POR DEFAULT Y LOS ALUMNOS POR DEFAULT,
                 this.grupo.alumnosDefault.map( ad => {
 
-                    ald = {...ad,  listas: materia.listasDefault }
+                    ald = {...ad,  listas: [...materia.listasDefault] }
                     alumnosListasD.push(ald);
 
                 })
@@ -279,7 +259,7 @@ export default {
                 materia.clases.push({
                     fecha: this.fecha,
                     alumnos: alumnosListasD,
-                    listas: materia.listasDefault,
+                    listas: [...materia.listasDefault],
                 })
 
                 //SE ACTUALIZA EL GRUPO ACTUAL CON LOS NUEVOS DATOS
@@ -292,8 +272,14 @@ export default {
 
             }
             //SE ACTUALIZA PARA LA VISTA DEL USUARIO LA FECHA DE SELECCIONADA EN EL CALENDARIO
+            console.log("this.horarioHoy")
+            console.log(this.horarioHoy)
             this.horarioHoy = materia.horario.find( hr => hr.dia === this.diaHoy);
+            console.log("this.horarioHoy")
+            console.log(this.horarioHoy)
             this.horarioHoy = this.horarioHoy ? this.horarioHoy : {};
+            console.log("this.horarioHoy")
+            console.log(this.horarioHoy)
             //HACERLO METODO
 
         },
@@ -305,7 +291,7 @@ export default {
         DatePicker
     },
     computed:{
-        ...mapState(['datosUsuario','vistaValida']),
+        ...mapState(['datosUsuario','vistaValida','clasesCreadas']),
         diasRestantes(){
             const red =this.materia.horario.filter(d => 
                 {
@@ -326,7 +312,7 @@ export default {
     methods:{
 
         ...mapActions(['actualizarGrupos']),
-        ...mapMutations(['guardarVistaValida']),
+        ...mapMutations(['guardarVistaValida','actualizarClasesCreadas']),
 
         updateFirebaseGrupo(){
             
@@ -417,6 +403,7 @@ export default {
         async almacenarAlumnoCollection(){
             //SE ALMACENA EL NUEVO ALUMNO EN LA COLECCION DE USUARIOS
             this.dialogAlumno = false;
+            let listasGA = [];
 
             try {
                 let materia = this.grupo.materias.find( materia => this.idGrupo === materia.nombreGrupo );
@@ -446,26 +433,77 @@ export default {
                     mat.girls= materia.girls;
                     mat.total= materia.total;
                     console.log("MATERIA MATERIA")
-                    console.log(mat)  
-                })
+                    console.log(mat.nombreGrupo)  
+                    console.log("mat.clases")
+                    console.log(mat)
 
-                this.clase.listas.map( lista => {
-                    listasAlumno.push({
-                        lista: lista.nombre, 
-                        calificacion: (lista.tipoLista === "Si/No" || lista.tipoLista === "ON/OFF" )? true 
-                            : lista.tipoLista === "Rango 1/10" ? 0
-                            :  "Bien", 
-                        tipoLista: lista.tipoLista, 
-                        rango : lista.rango
+                    mat.clases.map( cla => {
+
+                        //SE OBTIENE LAS LISTAS DE EVALUACION DE CADA CLASE
+                        console.log("cla.fecha");
+                        console.log(cla.fecha);
+                        cla.listas.map( li => {
+                            listasGA.push({
+                                lista: li.nombre, 
+                                calificacion: (li.tipoLista === "Si/No" || li.tipoLista === "ON/OFF" )? true 
+                                    : li.tipoLista === "Rango 1/10" ? 0
+                                    :  "Bien", 
+                                tipoLista: li.tipoLista, 
+                                rango : li.rango
+                            })
+                        })
+
+                        cla.alumnos.push({
+                            nombre, apellidos, fechaNacimiento, sexo, telefono, urlImagen,
+                            fechaCreado,
+                            listas: listasGA
+                        })
+                        listasGA = [];
                     })
                 })
 
+                // this.clase.listas.map( lista => {
+                //     listasAlumno.push({
+                //         lista: lista.nombre, 
+                //         calificacion: (lista.tipoLista === "Si/No" || lista.tipoLista === "ON/OFF" )? true 
+                //             : lista.tipoLista === "Rango 1/10" ? 0
+                //             :  "Bien", 
+                //         tipoLista: lista.tipoLista, 
+                //         rango : lista.rango
+                //     })
+                // })
 
-                this.clase.alumnos.push({
-                    nombre, apellidos, fechaNacimiento, sexo, telefono, urlImagen,
-                    fechaCreado,
-                    listas: listasAlumno
-                })
+                /*
+
+                    materia.clases.map( c => {
+                        console.log("c.fecha")
+                        console.log(c.fecha)
+                        console.log("this.fecha")
+                        console.log(this.fecha)
+
+                        // if(c.fecha !== this.fecha)
+                        // {
+                            console.log(c)
+                            c.listas.push({ 
+                                calificacion,
+                                nombre, tipoLista, rango
+                            })
+                            console.log(c);
+
+                            c.alumnos.forEach( alumno => {
+                                alumno.listas.push({calificacion, lista: nombre, tipoLista, rango })
+                            })
+                        // }
+                    });
+                
+                 */
+
+
+                // this.clase.alumnos.push({
+                //     nombre, apellidos, fechaNacimiento, sexo, telefono, urlImagen,
+                //     fechaCreado,
+                //     listas: listasAlumno
+                // })
 
                 // console.log("INSERTANDO ALUMNO DEFAULT")
                 this.grupo.alumnosDefault.push({
@@ -588,6 +626,10 @@ export default {
                 : tipoLista === "Rango 1/10" ? 0
                 :  "Bien"
 
+            const esClaseN = this.clasesCreadas.some( 
+                cc => (cc.clase === this.idGrupo  && cc.fecha === this.fecha)
+            );
+
             // console.log("this.allDays");
             // console.log(this.allDays);
             if(this.allDays === "true")
@@ -603,46 +645,85 @@ export default {
                 //     nombre, tipoLista, rango
                 // })
                 // debugger;
+
+
                 
-
-
-                //SE INSERTAN LA LISTA EN TODOS LOS DIAS
-                materia.clases.map( c => {
-
-                    console.log("c.fecha")
-                    console.log(c.fecha)
-                    console.log("this.fecha")
-                    console.log(this.fecha)
-
-                    if(c.fecha !== this.fecha)
-                    {
-                        console.log(c)
-                        c.listas.push({ 
-                            calificacion,
-                            nombre, tipoLista, rango
-                        })
-                        console.log(c);
-
-                        c.alumnos.forEach( alumno => {
-                            alumno.listas.push({calificacion, lista: nombre, tipoLista, rango })
-                        })
-                    }
-                });
-
-                //AGREGAR A CLASE ACTUAL
                 
-                this.clase.listas.push({
-                        calificacion,
-                        nombre, tipoLista, rango
-                    
-                })
+                // console.log("ES CLASE NUEVA:");
+                // console.log(esClaseN);
+                // if(esClaseN)
+                // {  
+                    //SIRVE PARA GRUPOS CREADOS DUARANTE EL FLUJO DE GRUPOS
+                    //SE INSERTAN LA LISTA EN TODOS LOS DIAS
+                    materia.clases.map( c => {
+                        console.log("c.fecha")
+                        console.log(c.fecha)
+                        console.log("this.fecha")
+                        console.log(this.fecha)
 
+                        if(c.fecha !== this.fecha)
+                        {
+                            console.log(c)
+                            c.listas.push({ 
+                                calificacion,
+                                nombre, tipoLista, rango
+                            })
+                            console.log(c);
 
-                this.clase.alumnos.map( al => {
-                    al.listas.push({
-                        calificacion, lista: nombre, tipoLista, rango 
+                            c.alumnos.forEach( alumno => {
+                                alumno.listas.push({calificacion, lista: nombre, tipoLista, rango })
+                            })
+                        }
+                    });
+
+                    this.clase.listas.push({
+                        calificacion, nombre, tipoLista, rango
                     })
-                })
+                    
+                    this.clase.alumnos.forEach( alu => {
+                        alu.listas.push({calificacion, lista: nombre, tipoLista, rango })
+                    });
+        
+
+                    //SIRVE PARA GRUPOS CREADOS DUARANTE EL FLUJO DE GRUPOS
+
+                // }
+                // else{
+                //     //SIRVE PARA GRUPOS YA CREADOS ANTES DE CARGAR PAGINA
+                //     // alert("antes de push ALUMNOS")
+                //     console.log(this.clase.alumnos);
+                //     this.clase.alumnos.forEach( al => {
+                //         // alert("DENTRO de push AL")
+                //         console.log(al);
+                //         // alert("DENTRO 2 de push AL")
+                //         al.listas.push({
+                //             calificacion, lista: nombre, tipoLista, rango 
+                //         })
+                //         console.log(al);
+                //         al = {};
+                //     })
+                //     // alert("despues de push ALUMNOS")
+                //     // console.log(this.clase.alumnos);
+
+                //     // //AGREGAR A CLASE ACTUAL
+                //     // console.log(this.clase.listas);
+                //     // alert("antes de push LISTA")
+                //     this.clase.listas = [
+                //         ...this.clase.listas,
+                //         {
+                //             calificacion,
+                //             nombre, tipoLista, rango
+                //         }
+                //     ]
+                //     // alert("despues de push LISTA")
+                //     console.log(this.clase.listas);
+
+                //     //SIRVE PARA GRUPOS YA CREADOS ANTES DE CARGAR PAGINA
+
+                // }
+
+
+
 
                 //SE AGREGA LA LISTA POR DEFAULT EN LA MATERIA ACTUAL,
                 materia.listasDefault.push({calificacion, nombre, tipoLista, rango});
@@ -670,21 +751,61 @@ export default {
 
             }else{
                 console.log("Solo este dia");
+                let alumnosL = {};
 
                 materia.clases.map( c => {
+                    console.log("c.fecha")
+                    console.log(c.fecha)
+                    console.log("this.fecha")
+                    console.log(this.fecha)
                     if(c.fecha === this.fecha)
                     {
+                        console.log(c);
+                        // alert("antes del push")
                         c.listas.push({ 
-                            calificacionDefault: calificacion,
+                            calificacion,
                             nombre, tipoLista, rango
                         })
-                        c.alumnos.forEach( alumno => {
-                            alumno.listas.push({calificacion, lista: nombre, tipoLista, rango })
-                        })
+                        console.log(c);
+                        // alert("despues del push")
+                        
+                        alumnosL = c.alumnos;
+                        console.log("alumnosL")
+                        console.log(alumnosL)
+
+
+
+                       
                     }
+                });
+
+                console.log("ES CLASE NUEVA:");
+                console.log(esClaseN);
+                // if(!esClaseN)
+                // {
+                    alumnosL.forEach( al => {
+                        console.log(al)
+                        // alert("antes del push")
+                        al.listas.push({calificacion, lista: nombre, tipoLista, rango })
+                        console.log(al)
+                        // alert("despues del push")
+                    })
+                // }
+
+                // materia.clases.map( c => {
+                //     if(c.fecha === this.fecha)
+                //     {
+                //         c.listas.push({ 
+                //             calificacion,
+                //             nombre, tipoLista, rango
+                //         })
+                //         c.alumnos.forEach( alumno => {
+                //             alumno.listas.push({calificacion, lista: nombre, tipoLista, rango })
+                //         })
+                //     }
                         
                     
-                });
+                // });
 
                 // //SE INSERTAN LOS DATOS DE LA NUEVA LISTA A LA DATA DE HORARIO.
                 // this.clase.listas.push({ 
@@ -741,12 +862,20 @@ export default {
           }
         },
 
-        asignarCal(lista, alumno, nombreLista){
+        asignarCal(lista, alumno, nombreLista, index){
             const alumnoModificar = this.clase.alumnos.find(a => alumno.nombre === a.nombre && alumno.apellidos === a.apellidos);
-            // console.log(alumnoModificar);
+            console.log(alumnoModificar);
+            console.log(lista);
+            console.log(nombreLista);
+            console.log(index)
+            // alert("123")
 
-            alumnoModificar.listas.forEach( li => {
-                if(li.lista === nombreLista)
+
+
+            alumnoModificar.listas.map( li => {
+                    console.log(alumnoModificar)
+                    console.log(li)
+                if(li.nombre === nombreLista)
                 {
                     // console.log("li.rango")
                     // console.log(li.rango)
@@ -825,6 +954,12 @@ export default {
             // console.log(lista.calificacion);
         },
 
+        claseEsNueva(){
+
+            // const claseNueva = this.clasesCreadas.some( cc => (cc.clase === && cc.fecha === ));
+
+        },
+
 
 
         //METODOS PARA HORARIO
@@ -837,6 +972,12 @@ export default {
         eliminarHorario(hr){
             // this.horarioModal = this.horarioModal.filter( h => hr.dia !== h.dia);
             this.materia.horario = this.materia.horario.filter( h =>  hr.dia !== h.dia );
+
+            this.horarioHoy = this.materia.horario.find( hr => hr.dia === this.diaHoy);
+            console.log("this.horarioHoy")
+            console.log(this.horarioHoy)
+
+            this.horarioHoy = this.horarioHoy ? this.horarioHoy : {};
             console.log(this.materia.horario);
             this.updateFirebaseGrupo();
         },
@@ -877,7 +1018,18 @@ export default {
                 }
 
                 //SE OBTIENE EL HORARIO DEL DIA ACTUAL 
+                console.log("this.horarioHoy")
+                console.log(this.horarioHoy)    
                 this.horarioHoy = this.materia.horario.find( hr => hr.dia === this.diaHoy);
+                console.log("this.horarioHoy")
+                console.log(this.horarioHoy)
+
+                this.horarioHoy = this.horarioHoy ? this.horarioHoy : {};
+
+
+                console.log("this.horarioHoy")
+                console.log(this.horarioHoy)
+                // console.log(this.horarioHoy)
 
 
                 //SE DESHABILITAN LOS HORARIOAS CREADOS
@@ -909,7 +1061,7 @@ export default {
             console.log(this.$refs)
             const tipoForm = ref === "formHorario" ? "nuevo" : "cambio";
             this.esListaValido = ref === "Lunes" 
-            ? this.$refs.Lunes.validate() 
+            ? this.$refs.Lunes[0].validate() 
             : ref === "Martes"  ? this.$refs.Martes[0].validate()
             : ref === "Miercoles"  ? this.$refs.Miercoles[0].validate()
             : ref === "Jueves"  ? this.$refs.Jueves[0].validate()

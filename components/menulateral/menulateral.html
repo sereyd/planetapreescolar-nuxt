@@ -1,12 +1,12 @@
-<div>
-    <v-card >
-        <v-card-title class="secondary white--text ">
+<div v-scroll="scrollmenu"> 
+    <v-card :class="menufix===true ? 'menufix' : ''">
+        <v-card-title class="secondary white--text">
         
         <span class="viewmobil">  <v-icon  class="white--text"  @click.stop="drawer = !drawer" > mdi-menu </v-icon>
         </span>
 
       
-          <img src="~/static/images/logos/planeta_preescolar_bco.png" width="55" class="miniMovil" />
+          <img src="  images/logos/planeta_preescolar_bco.png" width="55" class="miniMovil" />
     
           &nbsp;  &nbsp; 
           
@@ -107,7 +107,7 @@
 
 
         </v-card-title>
-    </v-card>
+    </v-card   > 
     <v-card v-if="datosUsuario.userlogin===true && datosUsuario.vercorre===false" class="menuMovil">
       <v-card-title class="melon white--text">
     <v-icon class="white--text">mdi-email</v-icon> Su correo aun no esta confirmado
