@@ -307,7 +307,9 @@ export default{
               })
             }
 
-
+            if(!grupo.materias){
+              grupo.materias=[]
+            }
             grupo.materias.push(
                 {
                   nombreGrupo, adicionales, cicloEscolar, urlImagen,
@@ -326,6 +328,9 @@ export default{
                   listasDefault: this.listasG
                 }
             );
+
+
+
             // this.grupo.alumnos= [];
             console.log("materias");
             console.log(this.materias);

@@ -23,6 +23,12 @@ export default{
             }
         }
     },
+    props:{
+        linkmas:{
+            type:String,
+            default:"#"
+        }
+    },
     mounted(){
         this.cargaref()
     }
