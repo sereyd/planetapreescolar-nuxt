@@ -26,9 +26,17 @@
 import buscador from '~/components/buscador/buscador.vue'
 import reflexiones from '~/components/reflexiones/reflexiones.vue'
 import listablog from '~/components/listado-blog/listado-blog.vue'
+import { mapState, mapMutations, mapActions } from 'vuex'
+
 export default {
   data() {
     return {};
+  },
+  methods:{
+    ...mapMutations(['guardarVistaValida']),
+  },
+  created() {
+      this.guardarVistaValida(true); 
   },
   computed: {
 

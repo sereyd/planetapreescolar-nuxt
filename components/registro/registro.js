@@ -202,7 +202,7 @@ export default{
             });
           } catch (error) {
             this.error = true;
-            this.mensajeError = error.message;
+            this.mensajeError = "Este correo ya fue registrado";;
           //   console.log(error)
             
 

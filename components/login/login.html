@@ -1,5 +1,5 @@
 <!-- <div  justify="center">  -->
-    <v-card class="mt-10">
+    <v-card class="mt-6">
         <v-card-text>
           <v-container>
             <div  >
@@ -33,23 +33,48 @@
                         <div class="">
                             <v-btn v-if="!spinner"
                                 dark block
-                                class="pink darken-4 px-10 mb-3" 
+                                class="primary mb-3 btn_login" 
                                 @click="validate"
                             > Iniciar sesión</v-btn>
 
-                            <div>
+
+                            
+
+                            <v-btn v-if="!spinner"
+                                dark block
+                                class="blue  mb-2 btn_login" 
+                                @click="loginExterno('google')"
+                            >
+                                <v-icon left>
+                                    mdi-google
+                                </v-icon>
+                                Iniciar con Google
+                            </v-btn>
+
+                            <v-btn v-if="!spinner"
+                                dark block
+                                class="blue darken-4 btn_login " 
+                                @click="loginExterno('facebook')"
+                            >
+                                <v-icon left>
+                                    mdi-facebook
+                                </v-icon>
+                                Iniciar con Facebook
+                            </v-btn>
+
+                            <!-- <div>
                                 <v-btn v-if="!spinner"
                                 dark block
-                                class="blue px-10 mb-2" 
+                                class="blue mb-2" 
                                 @click="loginExterno('google')">Iniciar con Google</v-btn>
                             </div>
                             <div>
                                
                             <v-btn v-if="!spinner"
                                 dark block
-                                class="blue darken-4 px-10" 
+                                class="blue darken-4" 
                                 @click="loginExterno('facebook')">Iniciar con Facebook</v-btn>
-                            </div>
+                            </div> -->
                             
                         </div>
                         <a @click ="restablecerPassword" class="">Restablecer contraseña</a>

@@ -5,9 +5,96 @@
     justify-content: flex-end;
     /* background-color: ; */
 }
-.tabla_titulos{
- font-size: 14px;
+
+.cards{
+    border-radius: 15px!important;
 }
+
+.tabla_titulos{
+ font-size: 12px;
+}
+.tabla_titulo_btn{
+    font-size: 14px;
+    color:#AD227D;
+   }
+.add{
+    opacity: 0.6;
+}
+.btn_add_list{
+    background-color: #48C9D9;
+    height: 20px!important;
+    width: 20px!important;
+    margin-bottom: 4px!important;
+}
+.btn_add{
+    /* color: #48C9D9; */
+    background-color: #48C9D9;
+    height: 36px!important;
+    width: 36px!important;
+}
+.btn_add_img{
+    background-color: #48C9D9;
+}
+.icon_add{
+    color: #3FEFBD!important;
+    /* background-color: #3FEFBD; */
+}
+.btn_crearG{
+    border-radius: 13px;
+    font-weight: bold;
+}
+/* .principal{
+    background-color: white ;
+    opacity: 1;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+} */
+
+.span_txt{
+    font-size:13.5px;
+    color: rgba(0, 0, 0, 0.87);
+    font-weight: bold;
+}
+.span_txt_titulo{
+    font-size:12.5px;
+    color: rgba(0, 0, 0, 0.87);
+    font-weight: bold;
+}
+
+.radio_text{
+    font-size:11px;
+    color: black
+}
+.nombre_alumno{
+    font-size: 13px;
+}
+
+.horario{
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 16px;
+}
+
+
+.v-text-field--filled > .v-input__control > .v-input__slot, .v-text-field--full-width > .v-input__control > .v-input__slot, .v-text-field--outlined > .v-input__control > .v-input__slot {
+    align-items: stretch;
+    min-height: 45px;
+}
+
+.v-text-field.v-text-field--enclosed .v-text-field__details {
+    margin-bottom: 5px;
+}
+
+.v-application .mx-12 {
+    margin-right: 48px !important;
+    margin-left: 48px !important;
+}
+/* .container {
+    max-width: 1100px;
+} */
 
 /* .fila{
     background-color: red; 
@@ -55,3 +142,81 @@
     font-size: 18px;
     padding-top: 14px;
 }
+
+/*DATA-PICKER*/
+.v-picker{
+    display: flex!important;
+    width: 100%!important;
+    padding: 90px;
+    font-size: 1.5rem!important;
+
+}
+/*DIAS DEL MES NUMEROS*/
+.v-date-picker-table .v-btn {
+    /* z-index: auto;
+    margin: 0; */
+    font-size: 20px!important;
+}
+
+/*DIAS DEL MES LETRAS*/
+.v-date-picker-table th {
+    font-size: 17px!important;
+}
+
+/*AÑO DEL CALENDARIO*/
+.v-date-picker-title__year {
+    font-size: 30px!important;
+}
+
+/*FECHA DEL CALENDARIO*/
+.v-date-picker-title__date {
+    font-size: 35px!important;
+}
+
+/*PARTE DE TODOS LOS DIAS DEL CALENDARIO*/
+.v-date-picker-table {
+    height: auto!important;
+}
+
+.v-picker__body{
+    width: 100%!important;
+}
+.v-date-picker-title__year{
+    font-size: 25px;
+}
+.v-date-picker-title__date{
+    font-size: 35px;
+
+}
+
+/*  formulario*/
+.v-input__slot{
+    min-height: 47px!important;
+  }
+  .v-btn{
+    letter-spacing: 0em;
+    /* justify-content: center; */
+    text-indent: 0em;
+    /* text-transform: uppercase; */
+    text-transform: none;
+    /* align-items: flex-start; */
+  }
+  .redes .v-btn__content{
+    /* justify-content: space-between; */
+  } 
+  .v-text-field--full-width .v-input__prepend-outer, .v-text-field--full-width .v-input__prepend-inner, .v-text-field--full-width .v-input__append-inner, .v-text-field--full-width .v-input__append-outer, .v-text-field--enclosed .v-input__prepend-outer, .v-text-field--enclosed .v-input__prepend-inner, .v-text-field--enclosed .v-input__append-inner, .v-text-field--enclosed .v-input__append-outer {
+    margin-top: 4px;
+  }
+
+
+  .v-input--selection-controls {
+    margin-top: 5px;
+    padding-top: 0px;
+  }
+  .v-input--checkbox .v-input__control .v-input__slot{
+    min-height: 3px !important;
+  }
+  .v-input--selection-controls {
+    margin-top: 1px!important;
+    padding-top: 1px!important;
+  }

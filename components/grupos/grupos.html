@@ -1,8 +1,10 @@
 <div class="">
-    <div class="d-flex align-center justify-space-between ">
-        <div><h1 class="primary--text ml-10">Mis Grupos</h1></div>
-        <div><v-btn class="orange mr-15">Ver más</v-btn></div>
-    </div>
+    <!-- <div class="d-flex align-center justify-space-between "> -->
+        <div><h3 class="primary--text ml-10 titulo">Mis Grupos</h3></div>
+        <!-- <div><v-btn class="orange mr-15">Ver más</v-btn></div> -->
+    <!-- </div> -->
+
+    
    
 
 
@@ -14,14 +16,23 @@
               <!-- BOTON PARA CREAR GRUPO -->
               <v-col cols="12" md="3" sm="6" class=" mb-3">
                 <v-card
-                  class="pa-2 mx-2 grey lighten-3 d-flex justify-center align-center"
+                  class="pa-2 mx-2 d-flex justify-center align-center"
                   height="150px"
+                  style="background-color: #F2EAF1"
                 >
-                  <v-btn text @click="dialog = true" height="100%" width="100%" class="m-0 p-0">
+                  
+
+                  <v-btn color="" text @click="dialog = true" 
+                  fab
+                  dark 
+                  x-large
+                  class="m-0 p-0 btn_add_img">
                       <div >
-                          <v-icon color="pink darken-4"  style="font-size: 120px;">mdi-plus</v-icon>
+                          <v-icon class="icon_add"  style="font-size: 80px;">mdi-plus</v-icon>
                       </div>
                   </v-btn>
+                  
+
                 </v-card>
                 <div>
                     <div class=" ml-3">
@@ -31,26 +42,32 @@
                 </div>
               </v-col>
               <!-- GRUPOS CREDADOS -->
-              <v-col v-for="(grupo, index) in datosUsuario.grupos" :key="index" cols="12" md="3" sm="6" class=" mb-3">
-                <v-card
-                  class=" grey lighten-3 d-flex justify-center align-center mx-2"
-                  height="150px"
-                  
+              <v-col v-for="(grupo, index) in datosUsuario.grupo.materias" :key="index" cols="12" md="3" sm="6" class=" mb-3">
+                <router-link 
+                class="" 
+                style="font-size: 13px;" 
+                :to="{name: 'grupo-id', params:{id: grupo.nombreGrupo} }"
                 >
-                  <v-img
-                    :src="grupo.urlImagen"
-                    class="fotomini"
+
+                  <v-card
+                    class=" grey lighten-3 d-flex justify-center align-center mx-2"
+                    height="150px"
                     
-                  ></v-img>
-                </v-card> 
+                  >
+                    <v-img
+                      :src="grupo.urlImagen"
+                      class="fotomini"
+                      
+                    ></v-img>
+                  </v-card>
+                </router-link>
                 <div>
-                    <div class=" ml-3">
+                    <div class=" ml-3 textos">
                         <h4>{{grupo.nombreGrupo}}</h4>
                         <p class="datosGrupo">{{grupo.adicionales}}</p>
                         <p class="datosGrupo">{{grupo.cicloEscolar}}</p>
                         <p class="datosGrupo">{{grupo.total}} alumnos</p>
                         <!-- <router-link class="" style="font-size: 13px;" :to="{name: 'grupo-id', params:{id: grupo.nombreGrupo}, query:datosUsuario.grupos }">Ver más</router-link> -->
-                        <router-link class="" style="font-size: 13px;" :to="{name: 'grupo-id', params:{id: grupo.nombreGrupo} }">Ver más</router-link>
 
                     </div>
                 </div>
@@ -65,17 +82,17 @@
     <!-- DIALOG DE REGISTRO DE GRUPOS -->
     <v-dialog v-model="dialog" persistent max-width="755">
         
-      <v-card class="">
+      <v-card class=" px-10">
         <v-card-title class=" justify-space-between">
             <v-btn icon text small color="purple" @click="" >
                 <!-- <v-icon>mdi-arrow-left-bold</v-icon> -->
             </v-btn>
-            <h2 class="headline purple--text ">Nuevo grupo</h2>
+            <h2 class="primary--text ">Nuevo grupo</h2>
             <v-btn icon text small color="purple" @click="dialog = false" >
                 <v-icon>mdi-window-close</v-icon>
             </v-btn>
         </v-card-title>
-        <div class="">
+        <div class="mt-8">
          <v-form ref="formGrupos"
          v-model="esGrupoValido"
          v-show="faseFormulario === 1"
@@ -87,7 +104,37 @@
               </div> 
 
               <!-- BOTON DE PARA ELEGIR FOTO  -->
-              <div class="  d-flex justify-center align-center ">
+
+              <v-card
+                  class="pa-2 mx-2  d-flex justify-center align-center"
+                  height="150px"
+                  style="background-color: #F2EAF1;"
+              >
+
+                <v-btn text fab dark x-large
+                  class="m-0 p-0 btn_add_img"
+                  @click="seleccionarImagen"
+                >
+                  <div v-if="!imagen" >
+                    <v-icon class="icon_add"  style="font-size: 80px;">mdi-plus</v-icon>
+                  </div>
+                  <div v-else  class="divFoto">
+                    <v-img
+                    :src="urlImagenPrevia"
+                    alt="foto"
+                    class="imagenPre"
+                    contain
+                    ></v-img>
+                  </div>
+                </v-btn>
+
+              </v-card>
+
+              <p class="text-center sub mt-2">Añadir imagen de grupo</p>
+
+
+              <!-- BOTON DE PARA ELEGIR FOTO  -->
+              <!-- <div class="  d-flex justify-center align-center ">
                 <v-btn
                   class=" mt-12"
                   color=""
@@ -97,7 +144,7 @@
                   <div v-if="!imagen" >
                       <v-icon color="pink darken-4"  style="font-size: 120px;">mdi-plus</v-icon>
                   </div>
-                  <!-- <div  v-else 
+                  !-- <div  v-else 
                     class=" grey lighten-3 divFoto  "
                   >
                     <v-img
@@ -106,7 +153,7 @@
                       height="100"
                       contain
                     ></v-img>
-                  </div>  -->
+                  </div>  --
                   <div v-else  class="divFoto">
                           <v-img
                           :src="urlImagenPrevia"
@@ -117,7 +164,7 @@
                   </div>
                 </v-btn>
               </div>
-              <p class="text-center sub mt-2">Añadir imagen de grupo</p>
+              <p class="text-center sub mt-2">Añadir imagen de grupo</p> -->
             </v-col>
 
             <v-col cols="7" class="pr-7">
@@ -148,7 +195,7 @@
                     @keyup.enter="validarFormularioGrupo"
 
                 ></v-text-field>
-                <p class="sub">*Campo obligatorio</p >
+                <span class="sub2">*Campo obligatorio</span >
               </div>
             </v-col>
 
@@ -156,9 +203,9 @@
           <div class="d-flex justify-center">
               <v-btn 
                   :disabled="!esGrupoValido" dark 
-                  class="red px-10 mb-5" 
+                  class="red px-10 mb-5 btn_crearG" 
                   @click="validarFormularioGrupo"  
-              > Crear</v-btn>
+              > Crear grupo</v-btn>
           </div>
              
          </v-form>
