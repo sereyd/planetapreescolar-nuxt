@@ -87,13 +87,16 @@
 <v-dialog v-model="viewpost" fullscreen >
     <v-card >
         <v-card-text style="text-align: right; ">
-     <span class="primary--text" style="font-weight: bold; text-align: right;" @click="viewpost=false">X</span>
+    
 
             <div  max-width="100%" style="height:100px; "></div>
             <v-container class="ma-auto elevation-3 rounded-ml" style="background-image:url('images/back/backstart.jpg'); background-position:top; background-size: 100%; background-repeat: repeat-x; text-align: left; max-width:1200px; width:100%; ">
-        
-                <div  max-width="100%" style="height:90px; "></div>
-            <h2 class="primary--text pa-5"><b>{{vistapost.titulo}}</b> </h2>
+                
+                <div  max-width="100%" style="height:80px; text-align:right;">
+                    <span class="primary--text" style="font-weight: bold; text-align: right; cursor:pointer;" @click="viewpost=false"><b>X</b></span>
+                </div>
+            
+                <h2 class="primary--text pa-5"><b>{{vistapost.titulo}}</b> </h2>
             <span >{{vistapost.nombre}} {{vistapost.apellido}}</span>
 
                 <section class="pa-5" v-html="vistapost.contenido"  >

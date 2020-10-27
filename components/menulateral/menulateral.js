@@ -6,6 +6,7 @@ export default {
     return {
       drawer: null,
       menufix:false,
+      menuoculto:true,
       devtest:false,  //// para realizar pruebas de sesiones
       itemsmenumni:[
         { title: 'Ver perfil',link:"perfil" },
@@ -22,8 +23,14 @@ export default {
     ...mapMutations(['abrirRegistro']),
     scrollmenu(){
 
-     window.scrollY>200 ? this.menufix=true : this.menufix=false
-     console.log( this.menufix)
+    if(window.scrollY>200){ 
+      this.menufix=true 
+
+    }else{ 
+        this.menufix=false
+  
+      }
+     
     }
 
   }
