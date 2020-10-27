@@ -313,19 +313,9 @@ export default{
               })
             }
 
-<<<<<<< HEAD
-            // materia.clases.push({
-            //   fecha: this.fecha,
-            //   alumnos: alumnosListasD,
-            //   listas: [...materia.listasDefault],
-            // })
-
-
-=======
             if(!grupo.materias){
               grupo.materias=[]
             }
->>>>>>> develop
             grupo.materias.push(
                 {
                   nombreGrupo, adicionales, cicloEscolar, urlImagen,
