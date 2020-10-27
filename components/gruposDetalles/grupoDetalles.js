@@ -207,6 +207,11 @@ export default {
             
         
     },
+    methods:{
+        regresar(){
+            this.$router.push("/")
+        }
+    },
     watch: {
         fecha (){
 
