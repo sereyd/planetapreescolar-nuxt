@@ -366,7 +366,7 @@ export default{
                
             })
             .then(() => {
-                //SE ACTUALIZA EL OBJETO USUARIOS POR MEDIO DE UN ACTION QUE ESTA EN EL STORE
+              //SE ACTUALIZA EL OBJETO USUARIOS POR MEDIO DE UN ACTION QUE ESTA EN EL STORE
               // this.actualizarGrupos(grupo);
               this.actualizarClasesCreadas({clase: nombreGrupo, fecha: this.fecha});
             })
