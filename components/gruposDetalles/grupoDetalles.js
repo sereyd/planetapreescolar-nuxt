@@ -277,14 +277,14 @@ export default {
 
             }
             //SE ACTUALIZA PARA LA VISTA DEL USUARIO LA FECHA DE SELECCIONADA EN EL CALENDARIO
-            console.log("this.horarioHoy")
-            console.log(this.horarioHoy)
+            // console.log("this.horarioHoy")
+            // console.log(this.horarioHoy)
             this.horarioHoy = materia.horario.find( hr => hr.dia === this.diaHoy);
-            console.log("this.horarioHoy")
-            console.log(this.horarioHoy)
+            // console.log("this.horarioHoy")
+            // console.log(this.horarioHoy)
             this.horarioHoy = this.horarioHoy ? this.horarioHoy : {};
-            console.log("this.horarioHoy")
-            console.log(this.horarioHoy)
+            // console.log("this.horarioHoy")
+            // console.log(this.horarioHoy)
             //HACERLO METODO
 
         },
@@ -432,21 +432,21 @@ export default {
 
                 materia.total++;
 
-                console.log( this.grupo.materias)
+                // console.log( this.grupo.materias)
                 this.grupo.materias.map(mat => {
                     mat.boys= materia.boys;
                     mat.girls= materia.girls;
                     mat.total= materia.total;
-                    console.log("MATERIA MATERIA")
-                    console.log(mat.nombreGrupo)  
-                    console.log("mat.clases")
-                    console.log(mat)
+                    // console.log("MATERIA MATERIA")
+                    // console.log(mat.nombreGrupo)  
+                    // console.log("mat.clases")
+                    // console.log(mat)
 
                     mat.clases.map( cla => {
 
                         //SE OBTIENE LAS LISTAS DE EVALUACION DE CADA CLASE
-                        console.log("cla.fecha");
-                        console.log(cla.fecha);
+                        // console.log("cla.fecha");
+                        // console.log(cla.fecha);
                         cla.listas.map( li => {
                             listasGA.push({
                                 lista: li.nombre, 
@@ -465,6 +465,7 @@ export default {
                         })
                         listasGA = [];
                     })
+
                 })
 
                 // this.clase.listas.map( lista => {
@@ -521,40 +522,40 @@ export default {
 
              
             
-                materia.clases.map( c => {
+                // materia.clases.map( c => {
 
-                    if(c.fecha !== this.fecha)
-                    {
+                //     if(c.fecha !== this.fecha)
+                //     {
 
-                        c.listas.map( lista => {
-                            listasAlumno.push({
-                                lista: lista.nombre, 
-                                calificacion: (lista.tipoLista === "Si/No" || lista.tipoLista === "ON/OFF" )? true 
-                                    : lista.tipoLista === "Rango 1/10" ? 0
-                                    :  "Bien", 
-                                tipoLista: lista.tipoLista, 
-                                rango : lista.rango
-                            })
-                        })
-                        // console.log("fecha clase");
-                        // console.log(c.fecha);
+                //         c.listas.map( lista => {
+                //             listasAlumno.push({
+                //                 lista: lista.nombre, 
+                //                 calificacion: (lista.tipoLista === "Si/No" || lista.tipoLista === "ON/OFF" )? true 
+                //                     : lista.tipoLista === "Rango 1/10" ? 0
+                //                     :  "Bien", 
+                //                 tipoLista: lista.tipoLista, 
+                //                 rango : lista.rango
+                //             })
+                //         })
+                //         // console.log("fecha clase");
+                //         // console.log(c.fecha);
     
-                        // console.log("INSERTANDO ALUMNO NORMAL")
-                        // console.log(c.alumnos)
-                        // alert("stop")
-                        c.alumnos.push({
-                            nombre, apellidos, fechaNacimiento, sexo, telefono, urlImagen,
-                            fechaCreado,
-                            listas: listasAlumno
-                        })
-                        // console.log(c.alumnos)
-                        // alert("stop")
-                        // })
-                        // ListasAlumnoG = listasAlumno
-                        listasAlumno = [];
-                    }
+                //         // console.log("INSERTANDO ALUMNO NORMAL")
+                //         // console.log(c.alumnos)
+                //         // alert("stop")
+                //         c.alumnos.push({
+                //             nombre, apellidos, fechaNacimiento, sexo, telefono, urlImagen,
+                //             fechaCreado,
+                //             listas: listasAlumno
+                //         })
+                //         // console.log(c.alumnos)
+                //         // alert("stop")
+                //         // })
+                //         // ListasAlumnoG = listasAlumno
+                //         listasAlumno = [];
+                //     }
                     
-                })
+                // })
 
             this.updateFirebaseGrupo();
             
@@ -639,7 +640,7 @@ export default {
             // console.log(this.allDays);
             if(this.allDays === "true")
             {
-                console.log("Todos los dias");
+                console.log("TODOS LOS DIAS");
                 let listasClase = null;
                 // debugger;
                 // this.clase.listas.push({ 
@@ -652,45 +653,116 @@ export default {
                 // debugger;
 
 
+                //SIRVE PARA GRUPOS CREADOS DUARANTE EL FLUJO DE GRUPOS
+                    // SE INSERTAN LA LISTA EN TODOS LOS DIAS
+                    materia.clases.map( c => {
+                        // console.log("c.fecha")
+                        // console.log(c.fecha)
+                        // console.log("this.fecha")
+                        // console.log(this.fecha)
+
+                        if(c.fecha !== this.fecha)
+                        {
+                            // console.log(c)
+                            // alert("LISTAS DE CLASE ANTES DEL PUSH")
+                            c.listas.push({ 
+                                calificacion,
+                                nombre, tipoLista, rango
+                            })
+                            // console.log(c);
+                            // alert("LISTAS DE CLASE DESPUES DEL PUSH")
+
+
+                            c.alumnos.forEach( alumno => {
+                                // console.log(alumno)
+                                // alert("LITAS DE ALMNOS ANTES DEL PUSH")
+                                alumno.listas.push({calificacion, lista: nombre, tipoLista, rango })
+                                // console.log(alumno)
+                                // alert("LITAS DE ALMNOS DESPUES DEL PUSH")
+                            })
+                        }
+                    });
+
+
+                    console.log(this.clase.listas)
+                    // alert("LISTAS DE CLASE ANTES DEL PUSH THIS.CLASE.LISTAS")
+                    this.clase.listas.push({
+                        calificacion, nombre, tipoLista, rango
+                    })
+                    // console.log(this.clase.listas)
+                    // alert("LISTAS DE CLASE DESPUES DEL PUSH THIS.CLASE.LISTAS")
+
+                    
+                    this.clase.alumnos.forEach( alu => {
+                        // console.log(this.clase.alumnos)
+                        // alert("LISTAS DE ALUMNOS ANTES DEL PUSH ALU.LISTAS")
+                        alu.listas.push({calificacion, lista: nombre, tipoLista, rango })
+                        // console.log(this.clase.alumnos)
+                        // alert("LISTAS DE ALUMNOS DESPUES DEL PUSH ALU.LISTAS")
+                    });
+        
+
+                    //SIRVE PARA GRUPOS CREADOS DUARANTE EL FLUJO DE GRUPOS
+
+
                 
                 
                 // console.log("ES CLASE NUEVA:");
                 // console.log(esClaseN);
                 // if(esClaseN)
                 // {  
+
                     //SIRVE PARA GRUPOS CREADOS DUARANTE EL FLUJO DE GRUPOS
                     //SE INSERTAN LA LISTA EN TODOS LOS DIAS
-                    materia.clases.map( c => {
-                        console.log("c.fecha")
-                        console.log(c.fecha)
-                        console.log("this.fecha")
-                        console.log(this.fecha)
+                    // materia.clases.map( c => {
+                    //     console.log("c.fecha")
+                    //     console.log(c.fecha)
+                    //     console.log("this.fecha")
+                    //     console.log(this.fecha)
 
-                        if(c.fecha !== this.fecha)
-                        {
-                            console.log(c)
-                            c.listas.push({ 
-                                calificacion,
-                                nombre, tipoLista, rango
-                            })
-                            console.log(c);
+                    //     if(c.fecha !== this.fecha)
+                    //     {
+                    //         console.log(c)
+                    //         alert("LISTAS DE CLASE ANTES DEL PUSH")
+                    //         c.listas.push({ 
+                    //             calificacion,
+                    //             nombre, tipoLista, rango
+                    //         })
+                    //         console.log(c);
+                    //         alert("LISTAS DE CLASE DESPUES DEL PUSH")
 
-                            c.alumnos.forEach( alumno => {
-                                alumno.listas.push({calificacion, lista: nombre, tipoLista, rango })
-                            })
-                        }
-                    });
 
-                    this.clase.listas.push({
-                        calificacion, nombre, tipoLista, rango
-                    })
+                    //         c.alumnos.forEach( alumno => {
+                    //             console.log(alumno.listas)
+                    //             alert("LITAS DE ALMNOS ANTES DEL PUSH")
+                    //             alumno.listas.push({calificacion, lista: nombre, tipoLista, rango })
+                    //             console.log(alumno.listas)
+                    //             alert("LITAS DE ALMNOS DESPUES DEL PUSH")
+                    //         })
+                    //     }
+                    // });
+
+
+                    // console.log(this.clase.listas)
+                    // alert("LISTAS DE CLASE ANTES DEL PUSH THIS.CLASE.LISTAS")
+                    // this.clase.listas.push({
+                    //     calificacion, nombre, tipoLista, rango
+                    // })
+                    // console.log(this.clase.listas)
+                    // alert("LISTAS DE CLASE DESPUES DEL PUSH THIS.CLASE.LISTAS")
+
                     
-                    this.clase.alumnos.forEach( alu => {
-                        alu.listas.push({calificacion, lista: nombre, tipoLista, rango })
-                    });
+                    // this.clase.alumnos.forEach( alu => {
+                    //     console.log(this.clase.alumnos)
+                    //     alert("LISTAS DE ALUMNOS ANTES DEL PUSH ALU.LISTAS")
+                    //     alu.listas.push({calificacion, lista: nombre, tipoLista, rango })
+                    //     console.log(this.clase.alumnos)
+                    //     alert("LISTAS DE ALUMNOS DESPUES DEL PUSH ALU.LISTAS")
+                    // });
         
 
                     //SIRVE PARA GRUPOS CREADOS DUARANTE EL FLUJO DE GRUPOS
+
 
                 // }
                 // else{
@@ -759,24 +831,24 @@ export default {
                 let alumnosL = {};
 
                 materia.clases.map( c => {
-                    console.log("c.fecha")
-                    console.log(c.fecha)
-                    console.log("this.fecha")
-                    console.log(this.fecha)
+                    // console.log("c.fecha")
+                    // console.log(c.fecha)
+                    // console.log("this.fecha")
+                    // console.log(this.fecha)
                     if(c.fecha === this.fecha)
                     {
-                        console.log(c);
+                        // console.log(c);
                         // alert("antes del push")
                         c.listas.push({ 
                             calificacion,
                             nombre, tipoLista, rango
                         })
-                        console.log(c);
+                        // console.log(c);
                         // alert("despues del push")
                         
                         alumnosL = c.alumnos;
-                        console.log("alumnosL")
-                        console.log(alumnosL)
+                        // console.log("alumnosL")
+                        // console.log(alumnosL)
 
 
 
@@ -789,10 +861,10 @@ export default {
                 // if(!esClaseN)
                 // {
                     alumnosL.forEach( al => {
-                        console.log(al)
+                        // console.log(al)
                         // alert("antes del push")
                         al.listas.push({calificacion, lista: nombre, tipoLista, rango })
-                        console.log(al)
+                        // console.log(al)
                         // alert("despues del push")
                     })
                 // }
@@ -823,14 +895,14 @@ export default {
                 //     alumno.listas.push({calificacion, lista: nombre, tipoLista, rango })
                 // })
 
-                console.log("this.clase")
-                console.log(this.clase)
-                console.log("this.materia")
-                console.log(this.materia)
+                // console.log("this.clase")
+                // console.log(this.clase)
+                // console.log("this.materia")
+                // console.log(this.materia)
 
             }
 
-            console.log(this.grupo)
+            // console.log(this.grupo)
 
             
 
@@ -869,23 +941,23 @@ export default {
 
         asignarCal(lista, alumno, nombreLista, index){
             const alumnoModificar = this.clase.alumnos.find(a => alumno.nombre === a.nombre && alumno.apellidos === a.apellidos);
-            console.log(alumnoModificar);
-            console.log(lista);
-            console.log(nombreLista);
-            console.log(index)
+            // console.log(alumnoModificar);
+            // console.log(lista);
+            // console.log(nombreLista);
+            // console.log(index)
             // alert("123")
 
 
 
             alumnoModificar.listas.map( li => {
-                    console.log(alumnoModificar)
-                    console.log(li)
+                    // console.log(alumnoModificar)
+                    // console.log(li)
                 if(li.nombre === nombreLista)
                 {
                     // console.log("li.rango")
                     // console.log(li.rango)
-                    console.log("li.tipoLista")
-                    console.log(li.tipoLista)
+                    // console.log("li.tipoLista")
+                    // console.log(li.tipoLista)
 
 
                     if(li.tipoLista === "Si/No" )
@@ -1005,13 +1077,13 @@ export default {
                 if(tipoForm === "nuevo")
                 {
                     const {clase, horaFin, horaInicio, dia} = this.nuevoHorario;
-                    console.log(this.nuevoHorario)
+                    // console.log(this.nuevoHorario)
                     //SE ACTUALIZA EL HORARIO DE LA VISTA
                     // this.horario.clase = clase;
                     // this.horario.horaFin = horaFin;
                     // this.horario.horaInicio = horaInicio;
                     // console.log(this.horario);
-                    console.log(this.materia);
+                    // console.log(this.materia);
     
                     this.materia.horario.push({
                         clase: true,
@@ -1023,17 +1095,17 @@ export default {
                 }
 
                 //SE OBTIENE EL HORARIO DEL DIA ACTUAL 
-                console.log("this.horarioHoy")
-                console.log(this.horarioHoy)    
+                // console.log("this.horarioHoy")
+                // console.log(this.horarioHoy)    
                 this.horarioHoy = this.materia.horario.find( hr => hr.dia === this.diaHoy);
-                console.log("this.horarioHoy")
-                console.log(this.horarioHoy)
+                // console.log("this.horarioHoy")
+                // console.log(this.horarioHoy)
 
                 this.horarioHoy = this.horarioHoy ? this.horarioHoy : {};
 
 
-                console.log("this.horarioHoy")
-                console.log(this.horarioHoy)
+                // console.log("this.horarioHoy")
+                // console.log(this.horarioHoy)
                 // console.log(this.horarioHoy)
 
 

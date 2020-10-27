@@ -313,6 +313,7 @@ export default{
               })
             }
 
+<<<<<<< HEAD
             // materia.clases.push({
             //   fecha: this.fecha,
             //   alumnos: alumnosListasD,
@@ -320,6 +321,11 @@ export default{
             // })
 
 
+=======
+            if(!grupo.materias){
+              grupo.materias=[]
+            }
+>>>>>>> 2f628fd9721339bc7c60ffecd26594a6f9491d80
             grupo.materias.push(
                 {
                   nombreGrupo, adicionales, cicloEscolar, urlImagen,
@@ -370,7 +376,7 @@ export default{
                
             })
             .then(() => {
-                //SE ACTUALIZA EL OBJETO USUARIOS POR MEDIO DE UN ACTION QUE ESTA EN EL STORE
+              //SE ACTUALIZA EL OBJETO USUARIOS POR MEDIO DE UN ACTION QUE ESTA EN EL STORE
               // this.actualizarGrupos(grupo);
               this.actualizarClasesCreadas({clase: nombreGrupo, fecha: this.fecha});
             })
