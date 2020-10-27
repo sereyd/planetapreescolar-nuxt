@@ -110,6 +110,30 @@
     border-bottom: solid 1px green;
 }
 
+/*ESTILOS PARA TABLA */
+.alumnos_T{
+    width: 100px;
+}
+
+.listas_T{
+    background-color: blue;
+    width: 10em;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.nuevaLista_T{
+    background-color: white;
+    width: 12em;
+}
+.scroll_T{
+    overflow: auto;
+}
+
+
+
+
 .tabla{
     overflow-x: scroll;
     overflow-y: hidden;
