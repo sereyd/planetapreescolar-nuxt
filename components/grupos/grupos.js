@@ -314,6 +314,7 @@ export default{
             }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             // materia.clases.push({
             //   fecha: this.fecha,
             //   alumnos: alumnosListasD,
@@ -321,6 +322,11 @@ export default{
             // })
 
 
+=======
+            if(!grupo.materias){
+              grupo.materias=[]
+            }
+>>>>>>> 2f628fd9721339bc7c60ffecd26594a6f9491d80
 =======
             if(!grupo.materias){
               grupo.materias=[]
