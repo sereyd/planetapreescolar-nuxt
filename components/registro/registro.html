@@ -34,7 +34,6 @@
                     placeholder="Tipo:"
                     required
                     hide-details
-
                     cols="4" sm="4"
                     style="width: 28%;"
                 ></v-select>
@@ -112,7 +111,7 @@
 
                 <v-btn v-if="!spinner"
                  dark block
-                class="primary " 
+                class="primary btn_crearCuenta" 
                 @click="validate"> Crear cuenta</v-btn>
 
                 <v-alert v-if="error" type="error" class="mt-2">
@@ -155,20 +154,24 @@
         class="blue  mb-2 redes" 
         @click="registroExterno('google')"
     >
-        <v-icon left>
+        <v-icon left class="pl-4" size="28px">
             mdi-google
         </v-icon>
-        Registrate con Google
+        <div class="redes_titulo d-flex justify-content align-center">
+            <span>Registrate con Google</span>
+        </div>
     </v-btn>
     <v-btn v-if="!spinner"
         dark block
         class="blue darken-4 redes" 
         @click="registroExterno('facebook')"
     >
-        <v-icon left>
+        <v-icon left class="pl-4" size="28px">
             mdi-facebook
         </v-icon>
-        Registrate con Facebook
+        <div  class="redes_titulo d-flex justify-content align-center">
+            <span >Registrate con Facebook</span>
+        </div>
     </v-btn>
     </div>
 
