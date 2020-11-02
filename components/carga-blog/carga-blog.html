@@ -1,4 +1,38 @@
-<v-row>
+<v-row class="mb-6" no-gutters>
+    <!-- <v-col cols="12" md="4" sm="6"> -->
+        <slot  name="header"></slot>
+    <!-- </v-col> -->
+    <v-col v-for="(key,index) in listaR" 
+    :key="'post'+index" cols="12" md="3" sm="6" class=" mb-3 ">
+
+        <v-card
+            class=" grey lighten-3 d-flex justify-center align-center mx-2"
+            height="150px"
+        >
+            <v-img
+            v-if="key.urlImagen!==''" 
+            :src="key.urlImagen"
+            class="fotomini"
+            @click=""
+            
+            ></v-img>
+        </v-card>
+
+        <div>
+            <div class=" ml-3 textos">
+                <h4>{{key.titulo}}</h4>
+                <p :class="key.edopost==='privado' ? 'red--text texto_mb' : 'black--text texto_mb'">{{key.edopost}}</p>
+                <p class="texto_mb">{{key.fecha}}</p>
+
+                <!-- <p class="datosGrupo">{{el.cicloEscolar}}</p>
+                <p class="datosGrupo">{{el.total}} alumnos</p> -->
+            </div>
+        </div>
+
+    </v-col>
+</v-row>
+
+<!-- <v-row>
 <v-col cols="12" md="3">
     <slot  name="header"></slot>
   
@@ -23,4 +57,4 @@
 
 </v-col>
 </v-col>
-</v-row>
+</v-row> -->

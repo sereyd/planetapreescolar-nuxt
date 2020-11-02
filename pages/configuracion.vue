@@ -1,28 +1,6 @@
 <template>
     <v-container>
         Configuración
-        <!-- <input type="file" @change = "changeVideo" ref="videoUpload" />
-        <v-file-input
-            dense
-            outlined
-            show-size
-            counter
-            label="Seleccione video"
-            prepend-icon="mdi-video"
-            accept="video/*"
-            ref="videoUpload2"
-            v-model="file"
-            @change = "changeFile"
-        ></v-file-input>
-
-        <v-btn
-            class="success mb-4"
-            block
-            @click="updateFile('video')"
-        >
-            subir video
-        </v-btn>
-        <Spinner v-if="spinner" /> -->
 
         
 
@@ -42,21 +20,25 @@
         <v-btn
             class="success"
             block
-            @click="updateFile('audio')"
+            @click="updateFile"
         >
-            subir Audio
+            Subir archivo
         </v-btn>
         <!-- <Spinner v-if="spinner" /> -->
-        <v-progress-circular
-            :rotate="-90"
-            :size="100"
-            :width="15"
-            :value="value"
-            color="primary"
-            v-if="cargando"
-        >
-        {{ value }}
-        </v-progress-circular>
+        <div class="d-flex justify-center" v-if="porcentaje < 100">
+            <div>
+                <v-progress-circular
+                :rotate="-90"
+                :size="150"
+                :width="15"
+                :value="porcentaje"
+                color="primary"
+                >
+                    <h4>{{ porcentaje }} %</h4>
+                </v-progress-circular>
+                <h5 class="text-center"> {{bytesTranferidos}} MBs / {{bytesTotal}} MBs</h5>
+            </div>
+        </div>
 
     </v-container>
 </template>
@@ -72,88 +54,66 @@ export default {
             urlFile: null,
             file: null,
             tipoRecurso: "",
+            tipoFile:"",
 
             //DATA PARA BARRA DE PROGRESO UPLOAD
             interval: {},
-            value: 0,
+            porcentaje: 100,
+            bytesTotal: 0,
+            bytesTranferidos: 0,
 
         }
     },
     components:{
         Spinner
     },
-    // mounted () {
-    //   this.interval = setInterval(() => {
-    //     if (this.value === 100) {
-    //       return (this.value = 0)
-    //     }
-    //     this.value += 10
-    //   }, 1000)
-    // },
     methods: {
         async changeFile(){
-            console.log(this)
+            // console.log(this)
             // console.log(this.$refs)
-            console.log(this.file)
+            // console.log(this.file)
             this.urlFile = URL.createObjectURL(this.file);
-            // this.file = this.$refs.videoUpload.files[0]
-            // this.$emit('updateImg',this.urlImagenPrevia);
-            // this.actualizaImgUpload(this.$refs.videoUpload.files[0]);
-            console.log(this.urlFile);
+            // console.log(this.urlFile);
             console.log(this.file);
-
-            
+            const res = this.file.type.split("/");
+            // console.log(res);
+            this.tipoFile = res[0];
+            this.bytesTranferidos = (this.file.size / 1000000).toFixed(2);
+            // const r = (6085966 / 1000000).toFixed(2);
+            // console.log(r+" MBs")
         },
-        // async changeAudio(){
-        //     console.log(this)
-        //     console.log(this.$refs)
-        //     console.log(this.file)
-        //     this.urlFile = URL.createObjectURL(this.file);
-        //     // this.file = this.$refs.videoUpload.files[0]
-        //     // this.$emit('updateImg',this.urlImagenPrevia);
-        //     // this.actualizaImgUpload(this.$refs.videoUpload.files[0]);
-        //     console.log(this.urlFile);
-        //     console.log(this.file);
 
-            
-        // },
-        async updateFile(tipo){
+        async updateFile(){
             this.cargando = true
-            const ubi = `${tipo}s/`;
+            this.porcentaje = 0;
+            const ubi = `${this.tipoFile}s/`;
             // async almacenarFotoStorage(state,ubi){
             console.log("entra al fotoStorage: "+ this.urlFile)
 
             const file =  this.file;
             const metadata = {
-            contentType: `${tipo}/*`
+            contentType: `${this.tipoFile}/*`
             // contentType: 'video/*'
             };
 
-            console.log("ubi")
-            console.log(ubi)
-            console.log("metadata")
-            console.log(metadata)
 
             //VERIFICAR QUE SELECCIONARA UNA FOTO DE PERFIL
             if(file){
-            // console.log("entroo")
+
                 try {
                     //SE AGREGA LA FOTO AL STORAGE DE FIREBASE
 
                     let storageRef = this.$fireStorage.ref(ubi);
                     let uploadTask = storageRef.child(file.name).put(file, metadata);
-                    // var uploadTask = storageRef.child('images/rivers.jpg').put(file);
-                    // Upload file and metadata to the object 'images/mountains.jpg'
-                    // var uploadTask = storageRef.child('images/' + file.name).put(file, metadata);
 
-                    // Listen for state changes, errors, and completion of the upload.
-                    uploadTask.on('state_changed', // or 'state_changed'
+                    await uploadTask.on('state_changed', // or 'state_changed'
                     (snapshot) => {
-                        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-                        this.value = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                        console.log('Upload is ' + this.value + '% done');
-                            console.log(snapshot.state)
-                            console.log(snapshot)
+                        this.porcentaje = Math.round( (snapshot.bytesTransferred / snapshot.totalBytes) * 100 );
+                        // console.log('Upload is ' + this.porcentaje + '% done');
+                        this.bytesTranferidos = ( snapshot.bytesTransferred / 1000000).toFixed(2);
+                        this.bytesTotal = ( snapshot.totalBytes / 1000000).toFixed(2);
+
+                        // console.log(Math.round(snapshot.bytesTransferred/ 100000) + "/"+ Math.round(snapshot.totalBytes/ 100000))
                         // switch (snapshot.state) {
                         // case this.$fireStorage.TaskState.PAUSED: // or 'paused'
                         //     console.log('Upload is paused');
@@ -207,7 +167,7 @@ export default {
                     console.log(error)
                 }
             }else{
-            this.urlFile= this.urlFile === 'none' ? "" : "none"
+                this.urlFile= this.urlFile === 'none' ? "" : "none"
             ///// manda instruccion de foto en lo que tendra el link de la foto en none
             }
 

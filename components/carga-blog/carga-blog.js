@@ -9,21 +9,28 @@ export default {
 
   },
   methods: {
-    async cargaPost(p) {
+    async cargaPost() {
+    console.log(this.tipo)
+    console.log(this.$store.state.datosUsuario.id)
       
       try {
+        // const usuarioQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
+
+        console.log(this)
+        console.log(this.$fireStore)
    
         await this.$fireStore
-          .collection("publicaciones")
+          .collection(this.tipo)
           .where("user", "==",this.$store.state.datosUsuario.id)
-          .where("tipo","==",this.tipo)  
+          // .where("tipo","==",this.tipo)  
           .get()
           .then((data) => {
             data.forEach((doc) => {
-                console.log("Carga tipo: "+this.tipo)
-                console.log(doc.data())
-              this.listapost.push(doc.data());
+                // console.log("Carga tipo: "+this.tipo)
+                // console.log(doc.data())
+              this.listaR.push(doc.data());
             });
+            console.log(this.listaR)
           });
       } catch (e) {
         console.log(e);
@@ -33,7 +40,9 @@ export default {
     }
   },
   mounted() {
-    
+    console.log("this.listaR")
+    console.log(this.listaR)
+    this.cargaPost();
 
   },
   props: {
@@ -41,6 +50,6 @@ export default {
       type: String,
       default: "BLOG"
     },
-    updatelist:""
+    listaR:""
   }
 };

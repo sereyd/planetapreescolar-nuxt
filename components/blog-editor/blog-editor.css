@@ -8,3 +8,11 @@
     vertical-align: middle;
 
 }
+
+.btn_add_img{
+    background-color: #48C9D9;
+}
+.icon_add{
+    color: #3FEFBD!important;
+    /* background-color: #3FEFBD; */
+}

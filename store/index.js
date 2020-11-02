@@ -30,6 +30,14 @@ const createStore = () => {
           visible:false
           
         },
+        {
+          title: "Publicaciones",
+          icon: "mdi-account",
+          link: "/publicaciones",
+          logeado: true,
+          permisos: 1,
+          visible:true
+        },
         { 
           title: "Administrador",
           icon: "mdi-speedometer",
@@ -90,6 +98,14 @@ const createStore = () => {
         'RECOMENDACION',
         'REFLEXIONES',
       ],
+
+      //DATA PARA CARGA DE RECURSOS
+      listaRecursos:{
+        memorias:[],
+        blog:[],
+        reflexiones:[],
+        recomendacion:[],
+      }
 
 
     }),
