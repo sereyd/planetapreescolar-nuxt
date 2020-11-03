@@ -9,9 +9,10 @@
             class=" grey lighten-3 d-flex justify-center align-center mx-2"
             height="150px"
         >
+        <!-- v-if="key.urlImagen!==''"  -->
             <v-img
-            v-if="key.urlImagen!==''" 
-            :src="key.urlImagen"
+            :src="key.urlImagen === '' || !key.urlImagen ? 'images/logos/planeta_preescolar_logo.png' : key.urlImagen"
+
             class="fotomini"
             @click=""
             

@@ -57,10 +57,11 @@ export default {
       barraProgreso: 0,
       urlFile: null,
       file: null,
-      tipoRecurso: "",
+      // tipoFile: "",
       tipoFile:"",
       completado: false,
       esRecursoValido: true,
+      typeFileFull: "",
       
       //DATA PARA BARRA DE PROGRESO UPLOAD
       cargando: false,
@@ -136,7 +137,7 @@ export default {
     },
 
     //METODOS PARA LA CARGA DE RECURSOS A FIREBASE
-    almacenarRecursoCollection(){
+    async almacenarRecursoCollection(){
       // await this.updateFile();
 
       if(this.completado)
@@ -145,22 +146,51 @@ export default {
 
         //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
         const {id} = this.datosUsuario;
+        // if(this.tipoFile === "imagen"){
+        //   this.datosRecurso.urlRecurso = this.urlFile
+        //   this.datosRecurso.tipoRecurso = 
+        // }
+        
 
         this.datosRecurso = {
           ...this.datosRecurso,
           fecha:  format(new Date(), 'yyyy-MM-dd'),
           user: id,
+          urlImagen: this.tipoFile === 'image' ? this.urlFile : '',
+          // idRecurso: '',
+          tipoRecurso: this.tipoFile,
+          urlRecurso: this.urlFile,
         }
 
         try {
           console.log("HACIENDO PUSH A LA LISTA R")
           console.log(this.datosRecurso)
-          this.$fireStore.collection(this.tipo).add(this.datosRecurso);
+          await this.$fireStore.collection(this.tipo).add(this.datosRecurso);
           this.listaR.push(this.datosRecurso)
-          console.log(this.listaR)
+          console.log(this.datosRecurso)
+          // alert("antes de reset")
           // this.$emit('updateListaR',this.listaR)
 
           this.$refs.formRecurso.reset();
+          console.log(this.datosRecurso)
+          // alert("despues de reset con $refs")
+
+          this.datosRecurso= {
+            titulo: "",
+            fecha: "",
+            edopost: "",
+            urlImagen: "",
+            user:"",
+            contenido:"",
+            tipoRecurso:"",
+            urlRecurso:""
+          },
+          this.file = null;
+
+          console.log(this.datosRecurso)
+          // alert("despues de reset con obj")
+
+
           
         } catch (error) {
           console.log(error);
@@ -183,12 +213,17 @@ export default {
       if(this.file)
       {
 
+        //SE CREA URL DEL ARCHIVO QUE SE SUBIRA
         this.urlFile = URL.createObjectURL(this.file);
         // console.log(this.urlFile);
         console.log(this.file);
+
+        //SE OBTIENE EL TIPO DE ARCHIVO
         const res = this.file.type.split("/");
-        // console.log(res);
         this.tipoFile = res[0];
+        this.typeFileFull = this.file.type;
+
+        //SE OBTIENE EL TAMAÑO DE ARCHIVO Y SE DIVIDE DE MANERA QUE SE OBTENGA EN MB
         this.bytesTranferidos = (this.file.size / 1000000).toFixed(2);
         // const r = (6085966 / 1000000).toFixed(2);
         // console.log(r+" MBs")
@@ -205,7 +240,7 @@ export default {
 
       const file =  this.file;
       const metadata = {
-      contentType: `${this.tipoFile}/*`
+      contentType: this.typeFileFull
       // contentType: 'video/*'
       };
 
@@ -238,6 +273,7 @@ export default {
                       console.log("saliendo fotoStorage: "+ this.urlFile)
                       // this.cargando = false;
                       this.completado = true;
+                      
                       this.almacenarRecursoCollection();
 
                   });
@@ -285,6 +321,7 @@ export default {
   },
   watch: {
     urlimg() {
+      console.log("WATCHHHHH")
       if (this.urlimg) {
         if (this.datablog.titulo && this.datablog.edopost) {
           this.datablog.urlImagen = this.urlimg;

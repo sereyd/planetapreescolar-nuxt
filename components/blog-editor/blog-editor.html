@@ -55,7 +55,7 @@
                                 outlined
                                 label="Seleccione archivo"
                                 prepend-icon="mdi-paperclip"
-                                accept="audio/*, imagen/*, video/*"
+                                accept="audio/mp3, image/png,image/jpeg , video/mp4"
                                 v-model="file"
                                 @change = "changeFile"
     
@@ -120,7 +120,7 @@
                                     mdi-checkbox-marked-circle
                                 </v-icon>
                             </v-progress-circular>
-                            <h5 class="text-center"> {{bytesTranferidos}} MBs / {{bytesTotal}} MBs</h5>
+                            <h5 class="text-center mb-3"> {{bytesTranferidos}} MBs / {{bytesTotal}} MBs</h5>
                             <div>
                                 <v-btn
                                     class="red px-10 mb-5 btn_crearG" 
