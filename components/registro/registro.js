@@ -181,6 +181,8 @@ export default{
              ////Guarda los datos de usuario en el store con una mutación 
               this.guardaDatosUsuarioStore(this.datosUsuarioR);
               this.resetearData();
+              this.$router.push('/login')
+
           } catch (error) {
             console.log(error)
           }

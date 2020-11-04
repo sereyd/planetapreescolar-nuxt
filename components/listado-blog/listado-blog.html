@@ -12,9 +12,14 @@
 <v-col cols="12" md="3" v-if="addslot===true" style="text-align: right;">
     <slot></slot>
     </v-col>
-<v-col cols="12" md="3" v-for="(key,index) in blogpost" :key="'post'+index">
-    <v-card >
+    <!-- <div>
+        {{blogpost[1]}}
+    </div> -->
+<v-col cols="12" md="3" v-for="(key,index) in blogpost" :key="'post'+index"  v-if="key.edopost === 'publico' || datosUsuario.id === key.user">
+    <v-card>
         <v-card-text class="pa-2">
+            <!-- <span>userID: {{datosUsuario.id}}</span>
+            <span>key.id: {{key.user}}</span> -->
      
             <v-img v-if="imagen==='true'" :src="key.urlImagen!=='' ? key.urlImagen : 'images/logos/planeta_preescolar_logo.png'" style="border-radius:15px; height:200px; background-color:azure; " @click="muestrapost(key)"  ></v-img>   
             
@@ -102,7 +107,22 @@
                 <section class="pa-5" v-html="vistapost.contenido"  >
                 </section>
 
-                <v-img v-if="imagen==='true'" :src="vistapost.urlImagen!=='' ? vistapost.urlImagen : 'images/logos/planeta_preescolar_logo.png'" style="max-width:100%;;  width:100%; background-color:azure; " ></v-img> 
+                <v-img 
+                    v-if="vistapost.tipoRecurso==='image'" 
+                    :src="vistapost.urlImagen!=='' ? vistapost.urlImagen : 'images/logos/planeta_preescolar_logo.png'" 
+                    style="max-width:100%;;  width:100%; background-color:azure; " 
+                ></v-img>
+
+
+                <video-player v-else-if="vistapost.tipoRecurso==='video'">
+                    <source :src="vistapost.urlRecurso" />
+                </video-player>
+
+                <audio-player v-else-if="vistapost.tipoRecurso==='audio'">
+                    <source :src="vistapost.urlRecurso" />
+                </audio-player>
+
+
 
         </v-container>
         </v-card-text>

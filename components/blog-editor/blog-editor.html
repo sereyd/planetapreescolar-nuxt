@@ -1,14 +1,156 @@
-<div style="text-align:left;" class="pt-5">
+<!-- <div style="text-align:left;" class="pt-5"> -->
+
+    <!-- BOTON PARA CREAR GRUPO -->
+    <v-col cols="12" md="3" sm="6" class=" mb-3">
+        <v-card
+          class="pa-2 mx-2 d-flex justify-center align-center"
+          height="150px"
+          style="background-color: #F2EAF1"
+        >
+          
+
+          <v-btn color="" text  @click="creaRecurso=true" 
+          fab
+          dark 
+          x-large
+          class="m-0 p-0 btn_add_img">
+              <div >
+                  <v-icon class="icon_add"  style="font-size: 80px;">mdi-plus</v-icon>
+              </div>
+          </v-btn>
+          
+
+        </v-card>
+        <div>
+            <div class=" ml-3">
+                <h4>Agregar recurso</h4>
+                <p></p>
+            </div>
+        </div>
+
+
+
+
+
+        <v-dialog v-model="creaRecurso" persistent max-width="755">
+        
+            <v-card class=" px-10">
+              <v-card-title class=" justify-space-between">
+                  <v-btn icon text small color="purple" @click="" >
+                  </v-btn>
+                  <h2 class="primary--text ">Nuevo(a) {{tipo}}</h2>
+                  <v-btn icon text small color="purple" @click="creaRecurso = false" >
+                      <v-icon>mdi-window-close</v-icon>
+                  </v-btn>
+              </v-card-title>
+              <div class="mt-8">
+                  <v-form
+                    lazy-validation
+                    ref="formRecurso"
+                    v-model="esRecursoValido"
+                  >
+                    <v-row v-if="!cargando">
+                        <v-col>
+                            <v-file-input
+                                outlined
+                                label="Seleccione archivo"
+                                prepend-icon="mdi-paperclip"
+                                accept="audio/mp3, image/png,image/jpeg , video/mp4"
+                                v-model="file"
+                                @change = "changeFile"
+    
+                            ></v-file-input>
+                            
+    
+                            <v-text-field
+                                v-model="datosRecurso.titulo"
+                                placeholder="Titulo"
+                                required
+                                outlined
+                                :rules="[v => !!v || 'Nombre grupo es requerida']"
+                                @keyup.enter=""
+                            ></v-text-field>
+    
+                            <v-textarea
+                                v-model="datosRecurso.contenido"
+                                placeholder="contenido..."
+                                required
+                                outlined
+                                :rules="[v => !!v || 'Nombre grupo es requerida']"
+                                @keyup.enter=""
+            
+                            ></v-textarea>
+                            <v-radio-group
+                                v-model="datosRecurso.edopost"
+                                row
+                                :rules="[v => !!v || 'Seleccione privacidad']">
+    
+                                <v-radio
+                                    label="Publico"
+                                    value="publico"
+                                ></v-radio>
+                                <v-radio
+                                    label="Privado"
+                                    value="privado"
+                                ></v-radio>
+                            </v-radio-group>
+                            <div class="d-flex justify-center">
+                                <v-btn 
+                                    :disabled="!esRecursoValido" dark 
+                                    class="red px-10 mb-5 btn_crearG" 
+                                    @click="validarFormularioRecurso"  
+                                >Crear</v-btn>
+                            </div>
+                        </v-col>
+                    </v-row>
+                    <v-row class="d-flex justify-center" v-else>
+                        <div>
+                            <v-progress-circular
+                            :rotate="-90"
+                            :size="150"
+                            :width="15"
+                            :value="porcentaje"
+                            color="primary"
+                            >
+                                <div v-if="porcentaje < 100">
+                                    <h3 v-if="porcentaje !== 0">{{ porcentaje }} %</h3>
+                                    <Spinner v-else/>
+                                </div>
+                                <v-icon v-else  color="primary"  style="font-size: 70px;">
+                                    mdi-checkbox-marked-circle
+                                </v-icon>
+                            </v-progress-circular>
+                            <h5 class="text-center mb-3"> {{bytesTranferidos}} MBs / {{bytesTotal}} MBs</h5>
+                            <div>
+                                <v-btn
+                                    class="red px-10 mb-5 btn_crearG" 
+                                    @click="cargando = false"
+                                    block
+                                    v-if="porcentaje === 100"
+                                >
+                                    Listo
+                                </v-btn>
+                            </div>
+                        </div>
+                    </v-row>
+                  </v-form>
+      
+                          
+                       
+              </div>
+            </v-card>
+        </v-dialog>
+      <!-- GRUPOS CREDADOS -->
  
-    <v-btn class="btnaddpost" @click="editar=true">  
+    <!-- <v-btn class="btnaddpost" @click="creaRecurso=true">  
         <v-avatar size="80" color="#48c9d9" >
             <v-icon color="#3fefdb"  style="font-size: 80px;">mdi-plus</v-icon>
         </v-avatar>
 
     </v-btn>
+     -->
     
-    
-    <v-dialog v-model="editar" max-width="600px" persistent >
+    <!-- <v-dialog v-model="editar" max-width="600px" persistent >
             <v-card>
                 <v-card-title class="primary--text text-center">
                     <h2>Nuevo(a) {{tipo}}</h2> <v-spacer></v-spacer><v-btn @click="editar=false"> X </v-btn>
@@ -16,7 +158,7 @@
                 <v-card-text>
                     <v-row>
                         <v-col cols="12" md="6" class="text-center"  v-if="imagen==='true'">
-              <!-----upload imagen perfil---->
+              upload imagen perfil
               <subirImagen v-if="imagen==='true'" @updateImg="preview=$event" ejecimagen="uploadimg" tpimg="post" titulo="Foto de Publicación" />  
                         </v-col>
                         
@@ -85,6 +227,17 @@
                 </v-row>        
                 </v-card-text>
         </v-card>    
-    </v-dialog>
+    </v-dialog> -->
+ 
+    <!-- <v-dialog  persistent v-model="">
+        <v-card>
+            <v-card-title>
+                <h3>Nuevo(a) {{tipo}}</h3>
+            </v-card-title>
+        </v-card>
+    </v-dialog> -->
 
-</div>
+    
+</v-col>
+
+<!-- </div> -->

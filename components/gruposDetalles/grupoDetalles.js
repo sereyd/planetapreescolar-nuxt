@@ -194,7 +194,7 @@ export default {
                 // materia = this.grupo.materias.find( mat => this.idGrupo === mat.nombreGrupo );
                 this.clase = materia.clases.find( c => c.fecha === this.fecha);
 
-                this.updateFirebaseGrupo()
+                // this.updateFirebaseGrupo()
             }
             //SE ACTUALIZA PARA LA VISTA DEL USUARIO LA FECHA DE SELECCIONADA EN EL CALENDARIO
             this.horarioHoy = materia.horario.find( hr => hr.dia === this.diaHoy);
@@ -272,7 +272,7 @@ export default {
                 this.clase = materia.clases.find( c => c.fecha === this.fecha);
 
 
-                this.updateFirebaseGrupo()
+                // this.updateFirebaseGrupo()
                 
 
             }
@@ -557,7 +557,7 @@ export default {
                     
                 // })
 
-            this.updateFirebaseGrupo();
+            // this.updateFirebaseGrupo();
             
 
             //SE RESETEA EL FORMULARIO Y SE CIERRA LA VENTANA FLOTANTE
@@ -922,7 +922,7 @@ export default {
 
         
             
-           this.updateFirebaseGrupo();
+        //    this.updateFirebaseGrupo();
 
             // //SE RESETEA EL FORMULARIO Y SE CIERRA LA VENTANA FLOTANTE
             this.$refs.formLista.reset();
@@ -1056,7 +1056,7 @@ export default {
 
             this.horarioHoy = this.horarioHoy ? this.horarioHoy : {};
             console.log(this.materia.horario);
-            this.updateFirebaseGrupo();
+            // this.updateFirebaseGrupo();
         },
 
         cambiarHorario(tipoForm){
@@ -1112,7 +1112,7 @@ export default {
                 //SE DESHABILITAN LOS HORARIOAS CREADOS
                 this.materia.horario.forEach( hr => {hr.edit = false});
                     
-                this.updateFirebaseGrupo();
+                // this.updateFirebaseGrupo();
 
                 //SE RESETEA EL FORMULARIO Y SE CIERRA LA VENTANA FLOTANTE
                 this.crearHorario = false;

@@ -30,6 +30,14 @@ const createStore = () => {
           visible:false
           
         },
+        {
+          title: "Publicaciones",
+          icon: "mdi-account",
+          link: "/publicaciones",
+          logeado: true,
+          permisos: 1,
+          visible:true
+        },
         { 
           title: "Administrador",
           icon: "mdi-speedometer",
@@ -77,6 +85,27 @@ const createStore = () => {
       vistaValida: true,
       grupo:{},
       clasesCreadas:[],
+
+      //DATA PARA BUSQUEDA
+      datosBusqueda:{
+        clave: "dia",
+        tipo:"",
+      },
+      recursosBusqueda: [],
+      recursos:[
+        'BLOG',
+        'MEMORIA',
+        'RECOMENDACION',
+        'REFLEXIONES',
+      ],
+
+      //DATA PARA CARGA DE RECURSOS
+      listaRecursos:{
+        memorias:[],
+        blog:[],
+        reflexiones:[],
+        recomendacion:[],
+      }
 
 
     }),
@@ -143,6 +172,73 @@ const createStore = () => {
             }
         });
           return true
+      },
+
+      async obtenerRecursos(context){
+        context.state.recursosBusqueda = [];
+        try {
+          console.log(context.state.datosBusqueda)
+
+          if(context.state.datosBusqueda.tipo === "Todos los recursos")
+          {
+            // console.log("obtener Todos los Recursos")
+            context.state.recursos.map( async(recu) =>{
+              // console.log("santes de then")
+              await this.$fireStore.collection(recu)
+              .get()
+                .then((data) => {
+              // console.log("santes de foreach")
+
+                  // console.log(data);
+                  data.forEach((doc) => {
+                    context.state.recursosBusqueda.push(doc.data());
+                    // console.log("context.state.recursosBusqueda")
+                    // console.log(context.state.recursosBusqueda)
+                    // alert("averrr")
+                  });
+                });
+
+        })
+          }
+          else{
+
+            await this.$fireStore.collection(context.state.datosBusqueda.tipo)
+            .get()
+              .then((data) => {
+                // console.log(data);
+                data.forEach((doc) => {
+                  context.state.recursosBusqueda.push(doc.data());
+                  // console.log("context.state.recursosBusqueda")
+                  // console.log(context.state.recursosBusqueda)
+                  // alert("averrr")
+                });
+              });
+
+          }
+
+          return context.state.recursosBusqueda;
+        } 
+        catch (e) {
+          console.log(e);
+        }
+      },
+      obtenerTodosRecursos(context){
+        // console.log("obtenerRecursos")
+        context.state.recursos.map( (recu) =>{
+
+           this.$fireStore.collection(recu)
+          .get()
+            .then((data) => {
+              // console.log(data);
+              data.forEach((doc) => {
+                context.state.recursosBusqueda.push(doc.data());
+                // console.log("context.state.recursosBusqueda")
+                // console.log(context.state.recursosBusqueda)
+                // alert("averrr")
+              });
+            });
+
+        })
       },
     },
     mutations: {

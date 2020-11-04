@@ -6,3 +6,10 @@
     text-transform: none!important;
     /* align-items: flex-start; */
 }
+
+.redes_titulo{
+    margin-inline: auto;
+    /* height: 46px; */
+    font-size: 17px;
+    /* font-weight: bold; */
+  }

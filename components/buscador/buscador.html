@@ -5,15 +5,23 @@
         <v-row>
             <v-col cols="12" md="2"></v-col>
             <v-col cols="12" md="2" class="white pa-0" style="border-radius:10px 0  0 10px;">
-            <v-select  class="pa-0" solo   hide-details="auto" label="Seleccione una opción":items="recursos" >
+            <v-select  class="pa-0" solo   hide-details="auto" 
+                label="Seleccione una opción":items="recursos" 
+                v-model="datosBusqueda.tipo"
+            >
 
             </v-select>
             </v-col>
             <v-col cols="12" md="5" class="white pa-0">
-                <v-text-field class="buscador"  solo  hide-details="auto"></v-text-field>
+                <v-text-field class="buscador"  solo  hide-details="auto" v-model="datosBusqueda.clave"></v-text-field>
             </v-col>
-            <v-col cols="12" md="1" class="melon pa-0" style="border-radius:0 10px  10px 0;">
+            <v-col cols="12" md="1" 
+                class="melon pa-0 btn" style="border-radius:0 10px  10px 0;"
+                @click="buscarDato"
+            >
+            <!-- <router-link to="/busqueda">  -->
                 <v-icon class="white--text mt-2" large >mdi-magnify</v-icon>
+            <!-- </router-link> -->
             </v-col>
             <v-col cols="12" md="2"></v-col>
         </v-row>
