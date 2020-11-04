@@ -1,4 +1,4 @@
-<div class="  ">
+<div class="">
     <!-- <menulateral /> -->
     <!-- <v-calendar
     mode="date"
@@ -49,10 +49,16 @@
 
         <!-- CABECERA DIA, CLASE, HORARIO, VERO OTROS DIAS -->
         <v-card  class=" mt-7 mx-10 cards" >
+
+       
+    
             <v-row>
-                <v-col class="ml-3">
-                    <v-spacer></v-spacer> <v-btn @click="regresar()">X</v-btn>
-                </v-col>
+                <v-col cols="12" md="10" class="primary--text pa-5" > 
+                <h2>Grupo {{datain.nombreGrupo}} </h2>
+            </v-col>
+            <v-col cols="12" md="2" class="primary--text text-right pa-5" > 
+                <v-btn @click="cerrarventana()" class="melon white--text" depressed><b>X</b></v-btn>
+            </v-col>
                 <v-col class="ml-3">
                     <div>
                         <h3 class="primary--text ">{{fechaVisual}}</h3>
@@ -320,7 +326,7 @@
                                 
                         </v-col>
 
-                        <v-col v-for="(lista, index) in clase.listas" 
+                        <v-col v-if="clase.listas" v-for="(lista, index) in clase.listas" 
                         :key="index" class=" d-flex align-center justify-center " cols="2">
                                 <h3 class="tabla_titulos">{{lista.nombre}}</h3> 
                         </v-col>

@@ -1,5 +1,6 @@
 
 import { mapState, mapMutations, mapActions } from 'vuex'
+import grupoDetalles from '~/components/gruposDetalles/grupoDetalles.vue'
 import { format } from 'date-fns'
 // import { es } from 'date-fns/locale';
 
@@ -9,8 +10,9 @@ export default{
 
           //DATA DE PRUEBA
           pageid: 123,
+          viewGroup:false,
+          selectGrupo:[],
 
-            
 
             //DATA PARA PASAR ENTRE FORMULARIOS
             faseFormulario:1,
@@ -154,6 +156,11 @@ export default{
       // alert("mounted")
     },
     methods:{
+
+      gruposelect(o){
+          this.selectGrupo=o
+          this.viewGroup=true
+      },
         // crearGrupo(){
         //     console.log(this.newUsuario);
         //     this.usuarios.push(this.newUsuario);
@@ -312,26 +319,10 @@ export default{
 
               })
             }
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-            // materia.clases.push({
-            //   fecha: this.fecha,
-            //   alumnos: alumnosListasD,
-            //   listas: [...materia.listasDefault],
-            // })
-
-
-=======
-            if(!grupo.materias){
+           if(!grupo.materias){
               grupo.materias=[]
             }
->>>>>>> 2f628fd9721339bc7c60ffecd26594a6f9491d80
-=======
-            if(!grupo.materias){
-              grupo.materias=[]
-            }
->>>>>>> 2f628fd9721339bc7c60ffecd26594a6f9491d80
+
             grupo.materias.push(
                 {
                   nombreGrupo, adicionales, cicloEscolar, urlImagen,
@@ -350,8 +341,6 @@ export default{
                   listasDefault: [...this.listasG]
                 }
             );
-
-
 
             // this.grupo.alumnos= [];
             console.log("materias");
@@ -428,6 +417,9 @@ export default{
              this.crearGrupo()
             console.log("valido")
         },
+    },
+    components:{
+      grupoDetalles
     },
     created() {
       // console.log(this.$route)
