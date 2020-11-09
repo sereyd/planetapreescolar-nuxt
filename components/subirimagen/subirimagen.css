@@ -1,0 +1,17 @@
+.btn_add_img{
+    background-color: #48C9D9;
+}
+.icon_add{
+    color: #3FEFBD!important;
+    /* background-color: #3FEFBD; */
+}
+.divFoto{
+    margin: 0;
+    padding: 0;
+    width: 50%;
+
+}
+.imagenPre{
+    width: 100%;
+    height: 115px;
+}

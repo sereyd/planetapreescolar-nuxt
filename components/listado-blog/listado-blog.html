@@ -9,35 +9,95 @@
    <v-btn v-if="linkmas!=='#'" class="melon white--text rounded-pill" :to="'/'+linkmas"  >Ver más</v-btn> 
 </v-col>
 
-<v-col cols="12" md="3" v-if="addslot===true" style="text-align: right;">
+<!-- <v-col cols="12" md="3" v-if="addslot===true" style="text-align: right;">
     <slot></slot>
-    </v-col>
+    </v-col> -->
     <!-- <div>
         {{blogpost[1]}}
     </div> -->
-<v-col cols="12" md="3" v-for="(key,index) in blogpost" :key="'post'+index"  v-if="key.edopost === 'publico' || datosUsuario.id === key.user">
+
+    <!-- <v-row class="mb-6" no-gutters> -->
+        <!-- <v-col cols="12" md="4" sm="6"> -->
+            <!-- <slot  name="header"></slot> -->
+        <!-- </v-col> -->
+        <v-col 
+            v-for="(key,index) in blogpost" 
+            :key="'post_'+index" 
+            cols="12" md="3" sm="6" 
+            class=" mb-3" 
+            v-if="key.edopost === 'publico' || datosUsuario.id === key.idCreador"
+        >
+    
+            <v-card
+                class=" grey lighten-3 d-flex justify-center align-center mx-2"
+                height="150px"
+            >
+            <!-- v-if="key.urlImagen!==''"  -->
+                <v-img
+                :src="key.urlImagen === '' || key.urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : key.urlImagen"
+                contain
+                class="fotomini"
+                @click="muestrapost(key)"
+                
+                ></v-img>
+            </v-card>
+    
+            <div>
+                <div v-if="tipo==='MEMORIA'" class=" ml-3 textos">
+                    <h4>{{key.titulo}}</h4>
+                    <p>{{key.nombreCreador}}</p>
+                    <!-- <p class="texto_mb">{{ fechaVisual(key.fecha) }}</p> -->
+                    <!-- <p class="datosGrupo">{{el.cicloEscolar}}</p>
+                    <p class="datosGrupo">{{el.total}} alumnos</p> -->
+                </div>
+
+                <div v-if="tipo==='BLOG'" class=" ml-3 textos">
+                    <h4>{{key.titulo}}</h4>
+                </div>
+
+                <div v-if="tipo==='RECOMENDACION'" class=" ml-3 textos">
+                    <h4>{{key.titulo}}</h4>
+                </div>
+
+                <div v-if="tipo==='REFLEXIONES'" class=" ml-3 textos">
+                    <h3>{{key.titulo}} <br />{{key.fecha}}</h3>
+                </div>
+
+                
+
+                
+                
+            </div>
+    
+        </v-col>
+    
+
+
+
+
+<!-- <v-col cols="12" md="3" v-for="(key,index) in blogpost" :key="'post'+index"  v-if="key.edopost === 'publico' || datosUsuario.id === key.idCreador">
     <v-card>
         <v-card-text class="pa-2">
-            <!-- <span>userID: {{datosUsuario.id}}</span>
-            <span>key.id: {{key.user}}</span> -->
-     
-            <v-img v-if="imagen==='true'" :src="key.urlImagen!=='' ? key.urlImagen : 'images/logos/planeta_preescolar_logo.png'" style="border-radius:15px; height:200px; background-color:azure; " @click="muestrapost(key)"  ></v-img>   
+            <!- <span>userID: {{datosUsuario.id}}</span>->
+            <!- <span>key.id: {{key.urlImagen}}</span>  ->
+            
+            <v-img v-if="imagen==='true'" :src="key.urlImagen==='' || key.urlImagen === 'none' ? 'images/logos/planeta_preescolar_logo.png'  : key.urlImagen " style="border-radius:15px; height:200px; background-color:azure; " @click="muestrapost(key)"  ></v-img>   
             
                 
         <v-main v-if="tipo==='MEMORIA'" @click="muestrapost(key)" >
             <h3>{{key.titulo}}</h3>
-            <p>{{key.fecha}}</p>
-            <v-btn class="melon white--text" style="border-radius:10px;"   v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:1 })"   @click="editapost(key)" >Editar</v-btn>
+            <p>{{key.nombreCreador}}</p>
+            <!- <v-btn class="melon white--text" style="border-radius:10px;"   v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:1 })"   @click="editapost(key)" >Editar</v-btn> ->
         </v-main>
         
         <v-main v-if="tipo==='BLOG'" @click="muestrapost(key)" >
             <h3>{{key.titulo}}</h3>
-            <v-btn class="melon white--text" style="border-radius:10px;"   v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:2 })"   @click="editapost(key)" >Editar</v-btn>
+            <!- <v-btn class="melon white--text" style="border-radius:10px;"   v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:2 })"   @click="editapost(key)" >Editar</v-btn> ->
         </v-main>
         
         <v-main v-if="tipo==='RECOMENDACION'" @click="muestrapost(key)" >
-            <h3>{{key.titulo}} {{key.fecha}}</h3>
-            <v-btn class="melon white--text" style="border-radius:10px;"   v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:2 })"   @click="editapost(key)" >Editar</v-btn>
+            <h3>{{key.titulo}} </h3>
+            <!- <v-btn class="melon white--text" style="border-radius:10px;"   v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:2 })"   @click="editapost(key)" >Editar</v-btn> ->
 
         </v-main>
 
@@ -47,11 +107,11 @@
               
             </div>
             <h3>{{key.titulo}} <br />{{key.fecha}}</h3>
-            <v-btn class="melon white--text" style="border-radius:10px;"   @click="editapost(key)" >Editar</v-btn>
+            <!- <v-btn class="melon white--text" style="border-radius:10px;"   @click="editapost(key)" >Editar</v-btn> ->
         </v-main>
         </v-card-text>
     </v-card>
-</v-col>
+</v-col> -->
 
 <v-dialog v-model="edit">
 <v-card>
@@ -97,28 +157,61 @@
             <div  max-width="100%" style="height:100px; "></div>
             <v-container class="ma-auto elevation-3 rounded-ml" style="background-image:url('images/back/backstart.jpg'); background-position:top; background-size: 100%; background-repeat: repeat-x; text-align: left; max-width:1200px; width:100%; ">
         
-                <div  max-width="100%" style="height:90px; "></div>
-            <h2 class="primary--text pa-5"><b>{{vistapost.titulo}}</b> </h2>
-            <span >{{vistapost.nombre}} {{vistapost.apellido}}</span>
+                <div  max-width="100%" style="height:90px; " ></div>
+                <h2 class="primary--text pl-5"><b>{{vistapost.titulo}}</b> </h2>
+                <div class=" d-flex flex-column mb-5 texto_recurso">
+                    <span class="pl-5" >Por {{vistapost.nombreCreador}}</span>
+                    <span class="pl-5" >{{ fechaVisual }}</span>
+                </div>
 
-                <v-section class="pa-5" v-html="vistapost.contenido"  >
+                <v-section class="pl-5" v-html="vistapost.contenido"  >
                     
                 </v-section>
 
-                <v-img 
-                    v-if="vistapost.tipoRecurso==='image'" 
-                    :src="vistapost.urlImagen!=='' ? vistapost.urlImagen : 'images/logos/planeta_preescolar_logo.png'" 
-                    style="max-width:100%;;  width:100%; background-color:azure; " 
-                ></v-img>
+                <!-- :src="vistapost.urlImagen!=='' ? vistapost.urlImagen : 'images/logos/planeta_preescolar_logo.png'"  -->
 
+                <div class="d-flex justify-center mt-5">
 
-                <video-player v-else-if="vistapost.tipoRecurso==='video'">
-                    <source :src="vistapost.urlRecurso" />
-                </video-player>
+                    <v-img 
+                        v-if="vistapost.tipoRecurso==='image'" 
+                        :src="vistapost.urlRecurso"
+                        style="max-width:50%; width:50%; background-color:azure; "
+                    ></v-img>
+    
+    
+                    <video-player 
+                        v-else-if="vistapost.tipoRecurso==='video'" 
+                        style="max-width:50%; width:50%; background-color:azure; "
+                    >
+                        <source :src="vistapost.urlRecurso" />
+                    </video-player>
+    
+                    <audio-player 
+                        v-else-if="vistapost.tipoRecurso==='audio'"
+                        style="max-width:50%; width:50%; background-color:azure; "
+                    >
+                        <source :src="vistapost.urlRecurso" />
+                    </audio-player>
+                </div>
 
-                <audio-player v-else-if="vistapost.tipoRecurso==='audio'">
-                    <source :src="vistapost.urlRecurso" />
-                </audio-player>
+                <!-- <div>
+                    <h3 class="primary--text mt-3 mb-3"> 0 comentarios</h3>
+                    <v-card class="card_border">
+                        <v-row>
+                            <v-col cols="4" class="">
+                                <div class="green">
+                                    FOTO ICONOI
+                                </div>
+                                <div class="yellow">
+                                    Nombre de usuarios
+                                </div>
+                            </v-col>
+                            <v-col cols="8" class="">
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum delectus ad harum porro ea totam dolores autem ducimus, quas suscipit! Veritatis, fuga incidunt vitae laboriosam nam saepe omnis nisi voluptates?</p>
+                            </v-col>
+                        </v-row>
+                    </v-card>
+                </div> -->
 
 
 

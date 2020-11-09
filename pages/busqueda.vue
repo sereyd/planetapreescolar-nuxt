@@ -1,8 +1,13 @@
 <template>
     <v-main>
-        <h1>Resultados {{datosBusqueda.tipo}}</h1>
+        
         <Spinner v-if="spinner" />
-        <v-row class="mb-6" no-gutters
+        <div v-else>
+            <h2 class="pirmary--text" v-if="busquedaFiltrada.length !== 0" >Resultados {{datosBusqueda.tipo}}</h2>
+            <h2 class="pirmary--text" v-else >No se encontraron coincidencias</h2>
+        </div>
+        <v-row 
+            class="mb-6" no-gutters
         >
             <v-col v-for="(el, index) in busquedaFiltrada" 
             :key="index" cols="12" md="3" sm="6" class=" mb-3">
@@ -112,7 +117,7 @@ export default {
             // alert("paso3")
         },
         filtarDatos(){
-            const clave = this.datosBusqueda.clave.toLowerCase();
+            const clave = this.datosBusqueda.clave.toLowerCase().normalize("NFD");
             let recursos = [... this.datos];
 
             this.busquedaFiltrada = recursos.filter( recurso => {
@@ -122,6 +127,7 @@ export default {
 
                 )
             })
+            console.log(this.busquedaFiltrada.length)
 
             console.log(this.busquedaFiltrada);
             this.spinner =false;

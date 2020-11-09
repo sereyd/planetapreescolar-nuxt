@@ -2,28 +2,41 @@
     <v-card-text class="backbuscador text-center white--text pa-12 rounded-2">
         <h1 class="medidah1">¡Muchos recursos para ti!</h1>
         <p class="medidap">Encuentra cantos, imágenes, planeaciones, todo para ti, educadora</p>
-        <v-row>
-            <v-col cols="12" md="2"></v-col>
-            <v-col cols="12" md="2" class="white pa-0" style="border-radius:10px 0  0 10px;">
-            <v-select  class="pa-0" solo   hide-details="auto" 
-                label="Seleccione una opción":items="recursos" 
-                v-model="datosBusqueda.tipo"
-            >
-
-            </v-select>
-            </v-col>
-            <v-col cols="12" md="5" class="white pa-0">
-                <v-text-field class="buscador"  solo  hide-details="auto" v-model="datosBusqueda.clave"></v-text-field>
-            </v-col>
-            <v-col cols="12" md="1" 
-                class="melon pa-0 btn" style="border-radius:0 10px  10px 0;"
-                @click="buscarDato"
-            >
-            <!-- <router-link to="/busqueda">  -->
-                <v-icon class="white--text mt-2" large >mdi-magnify</v-icon>
-            <!-- </router-link> -->
-            </v-col>
-            <v-col cols="12" md="2"></v-col>
-        </v-row>
+        <v-form
+            ref="formBusqueda"
+            v-model="validBusqueda"
+            lazy-validation
+        >
+            <v-row>
+                <v-col cols="12" md="2"></v-col>
+                <v-col cols="12" md="2" class="white pa-0" style="border-radius:10px 0  0 10px;">
+                <v-select  class="pa-0" solo   hide-details="auto" 
+                    label="Seleccione una opción":items="recursos" 
+                    v-model="datosBusqueda.tipo"
+                    :rules="[v => !!v || 'Seleccione tipo de busqueda']"
+    
+                >
+    
+                </v-select>
+                </v-col>
+                <v-col cols="12" md="5" class="white pa-0">
+                    <v-text-field 
+                        class="buscador"  
+                        solo  hide-details="auto" 
+                        v-model="datosBusqueda.clave"
+                        :rules="[v => !!v || 'Escriba lo que desea buscar']"
+                    ></v-text-field>
+                </v-col>
+                <v-col cols="12" md="1" 
+                    class="melon pa-0 btn" style="border-radius:0 10px  10px 0;"
+                    @click="validateBusqueda"
+                >
+                <!-- <router-link to="/busqueda">  -->
+                    <v-icon class="white--text mt-2" large >mdi-magnify</v-icon>
+                <!-- </router-link> -->
+                </v-col>
+                <v-col cols="12" md="2"></v-col>
+            </v-row>
+        </v-form>
     </v-card-text>
 </v-card>

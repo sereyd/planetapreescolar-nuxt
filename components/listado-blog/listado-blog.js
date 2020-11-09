@@ -6,6 +6,8 @@ import { VueEditor } from "vue2-editor";
 import { audioPlayer, videoPlayer } from 'vue-md-player'
 import 'vue-md-player/dist/vue-md-player.css'
 import { mapState, mapActions, mapMutations } from "vuex";
+import { format } from 'date-fns'
+import { es } from 'date-fns/locale';
 
 
 export default{
@@ -31,16 +33,25 @@ export default{
               ['clean'],
             ],
             viewpost:false,
-            vistapost:{}
+            vistapost:{
+              creador:{}
+            },
+            fechaVisual:"",
         }
     },
     methods:{
       muestrapost(p){
+        // console.log(p)
         this.viewpost=true
+        // var d = new Date("2015-03-25");
+        // console.log(d);
+        // var g = new Date(this.vistapost.fecha);
+        // console.log(g);
         this.vistapost=p
         this.vistapost.tipoRecurso = p.tipoRecurso ? p.tipoRecurso : 'image';
         this.vistapost.urlRecurso = p.urlRecurso ? p.urlRecurso : p.urlImagen;
-        console.log(this.vistapost);
+        // console.log(this.vistapost);
+        this.fechaVisual = format(this.vistapost.fecha , "dd  MMMM yyyy", {locale: es});
       },
       editapost(t){
         this.edit=true
@@ -55,6 +66,7 @@ export default{
                 data.forEach((doc) => {
                   this.blogpost.push(doc.data());
                 });
+                // console.log(this.blogpost);
               });
           } catch (e) {
             console.log(e);
@@ -64,7 +76,7 @@ export default{
         try { 
     await this.$fireStore
       .collection(this.tipo)  
-      .where("user","==",this.userId)  
+      .where("idCreador","==",this.userId)  
       .get()
       .then((data) => {
         data.forEach((doc) => {
@@ -79,7 +91,7 @@ export default{
                 try {
                     await this.$fireStore
                       .collection(this.tipo)
-                      .where("user","!=",this.idexclude)
+                      .where("idCreador","!=",this.idexclude)
                       .get()
                       .then((data) => {
                         data.forEach((doc) => {
@@ -135,8 +147,8 @@ export default{
       audioPlayer,
     },
     mounted(){
-        console.log("this.blogpost")
-        console.log(this.blogpost)
+        // console.log("this.blogpost")
+        // console.log(this.blogpost)
         if(this.userId==='' && this.idexclude===''){
             this.cargabaseGral()
         }
@@ -149,6 +161,12 @@ export default{
 
     },
     computed: {
-      ...mapState(['datosUsuario'])
+      ...mapState(['datosUsuario']),
+      // fechaVisual(payload){
+      //   console.log(payload)
+      //   const fecha = format(payload, "dd 'de' MMMM 'de' yyyy", {locale: es});
+      //   console.log(fecha)
+      //   return fecha;
+      // }
     },
 }
