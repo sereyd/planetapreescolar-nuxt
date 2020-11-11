@@ -77,12 +77,31 @@ export default {
       bytesTotal: 0,
       bytesTranferidos: 0,
       updatedCollection: false,
+      
 
   
     };
   },
   computed: {
-    ...mapState(["urlimg", "datosUsuario"])
+    ...mapState(["urlimg", "datosUsuario"]),
+    tituloCrear(){
+      let tipoM = "";
+      // console.log(this.tipo);
+      if(this.tipo === "REFLEXIONES")
+        tipoM= "Nueva reflexión";
+      else if(this.tipo === "RECOMENDACION")
+        tipoM= "Nueva recomendación";
+      else if(this.tipo === "MEMORIA")
+        tipoM= "Nueva memoria";
+      else if(this.tipo === "BLOG")
+        tipoM= "Nuevo blog";
+
+      // const tm = this.tipo.toLowerCase();
+      // console.log(tm);
+      // console.log(this.tipo);
+       
+      return tipoM;
+    }
   },
   methods: {
     ...mapMutations(["almacenarFotoStorage","actualizaurlimg","actualizaImgUpload"]),
@@ -147,7 +166,7 @@ export default {
     //METODOS PARA LA CARGA DE RECURSOS A FIREBASE
     async almacenarRecursoCollection(){
       // console.log("this.completado")
-      console.log(this.completado)
+      // console.log(this.completado)
       // alert("completadooo");
       if(this.completado)
       {
@@ -362,11 +381,11 @@ export default {
 
       // if (this.urlimg) {
         // if (this.datablog.titulo && this.datablog.edopost) {
-      console.log("SE ESTA RESETEANDO LA URL DE LA IMAGEN DE PORTADA: ",this.esUrlimgR)
+      // console.log("SE ESTA RESETEANDO LA URL DE LA IMAGEN DE PORTADA: ",this.esUrlimgR)
 
       if(!this.esUrlimgR)
       {
-        console.log("NO SE ESTA RESETEANDO")
+        // console.log("NO SE ESTA RESETEANDO")
         this.datablog.urlImagen = this.urlimg;
         this.datosRecurso.urlImagen = this.urlimg
         await this.almacenarRecursoCollection();

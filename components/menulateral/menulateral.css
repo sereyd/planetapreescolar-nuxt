@@ -61,6 +61,10 @@
     display:none;
 }
 
+.v-application--is-ltr .v-list-item__icon:first-child{
+    margin-right: 12px!important;
+}
+
 /*   vista mobil */
 @media (max-width:959px){
 .vMmobilview{

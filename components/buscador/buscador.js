@@ -10,7 +10,7 @@ export default {
             //     'Imágenes'
             // ],
             recursos:[
-                // 'Todos los recursos',
+                'TODOS LOS RECURSOS',
                 'BLOG',
                 'MEMORIA',
                 'RECOMENDACION',

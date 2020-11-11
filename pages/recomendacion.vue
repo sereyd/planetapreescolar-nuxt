@@ -1,6 +1,70 @@
 <template>
   <v-main class="pa-10">
     <v-row>
+      <v-col
+        cols="12"
+        md="12"
+        v-if="
+          $validasesion($store, {
+            sinregistro: false,
+            logeado: true,
+            permisos: 1
+          })
+        "
+      >
+        <h2
+          class="primary--text"
+          v-if="
+            $validasesion($store, {
+              sinregistro: false,
+              logeado: true,
+              permisos: 1
+            })
+          "
+        >
+          Mis Recomendaciones
+        </h2>
+
+        <listablog
+          tipo="RECOMENDACION"
+          :userId="this.datosUsuario.id"
+          titulo=""
+          subtitulos=""
+          :addslot="true"
+        >
+          <editorblog
+            tipo="RECOMENDACION"
+            v-if="
+              $validasesion($store, {
+                sinregistro: false,
+                logeado: true,
+                permisos: 1
+              })
+            "
+            @updatepost="updatepost.recomendacion = $event"
+          ></editorblog>
+        </listablog>
+      </v-col>
+
+      <div style="width:100%; height:20px;"></div>
+
+      <v-col
+        cols="12"
+        md="12"
+      >
+
+        <listablog
+          tipo="RECOMENDACION"
+          :idexclude="
+            this.datosUsuario.userlogin === true ? this.datosUsuario.id : ''
+          "
+          titulo="Conoce lo que pasa en el mundo de la educación inicial"
+          subtitulos=""
+        />
+      </v-col>
+    </v-row>
+    
+    <!-- <v-row>
 
       <v-col cols="12" md="12" v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:2 })">
         <h2 class="primary--text"   v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:2 })" >Recomendaciones</h2>
@@ -19,7 +83,7 @@
 <listablog tipo="RECOMENDACION"  :idexclude="this.datosUsuario.userlogin===true ? this.datosUsuario.id : '' " titulo="Una sección de recursos y planeación para tu día"  />
 
 
-    </v-row>
+    </v-row> -->
   </v-main>
 </template>
 <script>

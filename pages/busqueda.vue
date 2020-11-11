@@ -2,12 +2,13 @@
     <v-main>
         
         <Spinner v-if="spinner" />
-        <div v-else>
+        <div v-else-if="datosBusqueda.tipo !== 'TODOS LOS RECURSOS'">
             <h2 class="pirmary--text" v-if="busquedaFiltrada.length !== 0" >Resultados {{datosBusqueda.tipo}}</h2>
             <h2 class="pirmary--text" v-else >No se encontraron coincidencias</h2>
         </div>
         <v-row 
             class="mb-6" no-gutters
+            v-if="datosBusqueda.tipo !== 'TODOS LOS RECURSOS'"
         >
             <v-col v-for="(el, index) in busquedaFiltrada" 
             :key="index" cols="12" md="3" sm="6" class=" mb-3">
@@ -27,14 +28,53 @@
                 <div>
                     <div class=" ml-3 textos">
                         <h4>{{el.titulo}}</h4>
-                        <p class="datosGrupo">{{el.fecha}}</p>
-                        <!-- <p class="datosGrupo">{{el.cicloEscolar}}</p>
-                        <p class="datosGrupo">{{el.total}} alumnos</p> -->
+                        <p class="datosGrupo">{{el.nombreCreador}}</p>
+
+                        <!-- <p class="datosGrupo">{{el.fecha}}</p> -->
+                        <!-- <p class="datosGrupo">{{el.cicloEscolar}}</p>-->
+                        <!--<p class="datosGrupo">{{el.total}} alumnos</p> -->
                     </div>
                 </div>
 
           </v-col>
         </v-row>
+
+        <div v-else-if="datosBusqueda.tipo === 'TODOS LOS RECURSOS' && !spinner">
+            <div>
+                <h2  class="pirmary--text" v-if="!spinner" >Resultados:</h2>
+                <!-- <h2 class="pirmary--text" v-else >No se encontraron coincidencias</h2> -->
+            </div>
+            <!------recomendaciones----->
+            <!-- <div style="width:100%; height:50px;"></div> -->
+            <listablog 
+                :esBusqueda="true" 
+                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+                tipo="RECOMENDACION" 
+                titulo="Recomendaciones" 
+                subtitulos=""   
+            />
+
+            <!-------Blog------------->
+            <!-- <div style="width:100%; height:50px;"></div> -->
+            <listablog 
+                :esBusqueda="true" 
+                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+                tipo="BLOG" 
+                titulo="Blogs" 
+                subtitulos="" 
+            />
+
+            <!---------memorias------------>
+            <!-- <div style="width:100%; height:50px;"></div> -->
+            <listablog 
+                :esBusqueda="true" 
+                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+                tipo="MEMORIA" 
+                titulo="Memorias" 
+                subtitulos=""
+            />
+
+        </div>
 
         <v-dialog v-model="vistaElemento" fullscreen >
             <v-card >

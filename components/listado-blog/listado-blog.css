@@ -25,3 +25,22 @@
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
 }
+.btn_crearG{
+    border-radius: 13px;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 0em;
+    text-indent: 0em;
+    text-transform: none;
+}
+
+.texto_comentario{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+}
+
+.texto_usuario{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+}

@@ -31,8 +31,8 @@ const createStore = () => {
           
         },
         {
-          title: "Publicaciones",
-          icon: "mdi-account",
+          title: "Mis publicaciones",
+          icon: "mdi-folder-multiple",
           link: "/publicaciones",
           logeado: true,
           permisos: 1,
@@ -88,7 +88,7 @@ const createStore = () => {
 
       //DATA PARA BUSQUEDA
       datosBusqueda:{
-        clave: "dia",
+        clave: "",
         tipo:"",
       },
       recursosBusqueda: [],
