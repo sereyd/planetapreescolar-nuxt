@@ -80,6 +80,14 @@
 
 }
 
+.datamenu{
+    width: 100%;
+    max-width:115px;
+    border-radius:10px;
+    position:relative;
+ 
+}
+
 }
 
 

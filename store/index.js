@@ -74,6 +74,7 @@ const createStore = () => {
             // alumnos:[],
           },
           idMembresia:"",
+          estadoMembresia:"",
           vercorreo:false
         },
       connection:{},
@@ -105,7 +106,14 @@ const createStore = () => {
         blog:[],
         reflexiones:[],
         recomendacion:[],
-      }
+      },
+      //LINKS DE DOMINIO (PRODUCCION Y DESARROLLO)
+      // dominio:"https://educadora.cf",
+      dominio:"http://localhost:3000",
+
+      //APIS DEVELOP Y PRODUCCION
+      // urlAPI: "http://localhost:4242",
+      urlAPI: "https://stripe-checkout-api.herokuapp.com",
 
 
     }),
@@ -139,33 +147,63 @@ const createStore = () => {
                 });
         */
         await this.$fireAuth.onAuthStateChanged( user => {
-          console.log(user)
+          // console.log(user)
           if(user)
             {
 
               const usuarioQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
               usuarioQuery.get()
-              .then((querySnapshot) => {
+              .then(async (querySnapshot) => {
                 querySnapshot.forEach( (doc) => {
                   let data = doc.data();
                   // console.log(doc.data());
                   // console.log(doc.data);
                   // console.log(doc.data.grupos);
+
+                  //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
                   data.grupo = data.grupo ? data.grupo : {};
+                  data.idMembresia = data.idMembresia ? data.idMembresia : "";
+                  data.estadoMembresia = data.estadoMembresia ? data.estadoMembresia : "";
+                  data.idCliente = data.idCliente ? data.idCliente : "";
+
                   // console.log(grups);
                     // console.log(doc.id)
                       const datos = {
                         id: doc.id,
-                        idMembresia:"",
+                        // idMembresia:"",
 
                         // grupo:{},
                         ...data
                       }
-                      console.log(datos)
+                      // console.log(datos)
                       context.commit("cambiastatusSesion",datos);
                   });
+
+                  //REVISAR ESTADO DE LA SUSCRIPCIÓN 
+                  await fetch(context.state.urlAPI+"/check-suscripcion?sessionId=" + context.state.datosUsuario.idMembresia)
+                  .then((result)=>{
+                    return result.json()
+                  })
+                  .then((suscripcion)=>{
+
+                    // console.log(suscripcion)
+                    if(suscripcion.error)
+                    {
+
+                      // console.log(suscripcion)
+                      console.log("SUSCRIPCION NO VÁLIDA")
+                      context.state.datosUsuario.estadoMembresia = "canceled";
+                    }
+                    else{
+
+                      context.state.datosUsuario.estadoMembresia = suscripcion.status;
+                    }
+                  })
+                  .catch((err)=>{
+                    console.log('Error al verificar suscripción', err);
+                  });
               })
-              .catch(function(error) {
+              .catch((error) =>{
                   console.log("Error: ", error);
               });
               

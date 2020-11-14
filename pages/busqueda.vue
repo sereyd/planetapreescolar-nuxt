@@ -3,7 +3,7 @@
         
         <Spinner v-if="spinner" />
         <div v-else-if="datosBusqueda.tipo !== 'TODOS LOS RECURSOS'">
-            <h2 class="pirmary--text" v-if="busquedaFiltrada.length !== 0" >Resultados {{datosBusqueda.tipo}}</h2>
+            <h2 class="pirmary--text" v-if="busquedaFiltrada.length !== 0" >{{tituloResultados}}</h2>
             <h2 class="pirmary--text" v-else >No se encontraron coincidencias</h2>
         </div>
         <v-row 
@@ -28,7 +28,15 @@
                 <div>
                     <div class=" ml-3 textos">
                         <h4>{{el.titulo}}</h4>
-                        <p class="datosGrupo">{{el.nombreCreador}}</p>
+                        <p class="texto_busqueda">{{el.nombreCreador}}</p>
+                        <p 
+                            v-if="datosBusqueda.tipo === 'RECOMENDACION'" 
+                            class="texto_busqueda">{{el.materia}}
+                        </p>
+                        <p 
+                            v-if="datosBusqueda.tipo === 'RECOMENDACION'" 
+                            class="texto_busqueda">{{el.grado}}
+                        </p>
 
                         <!-- <p class="datosGrupo">{{el.fecha}}</p> -->
                         <!-- <p class="datosGrupo">{{el.cicloEscolar}}</p>-->
@@ -136,7 +144,19 @@ export default {
         Spinner
     },
     computed: {
-        ...mapState(['datosUsuario','datosBusqueda','recursosBusqueda'])
+        ...mapState(['datosUsuario','datosBusqueda','recursosBusqueda']),
+        tituloResultados(){
+            let tipoM = "";
+            if(this.datosBusqueda.tipo === "REFLEXIONES")
+                tipoM= "Resultados reflexiones";
+            else if(this.datosBusqueda.tipo === "RECOMENDACION")
+                tipoM= "Resultados recomendaciones";
+            else if(this.datosBusqueda.tipo === "MEMORIA")
+                tipoM= "Resultados memorias";
+            else if(this.datosBusqueda.tipo === "BLOG")
+                tipoM= "Resultados blogs";
+            return tipoM;
+        }
     },
     mounted(){
         
@@ -160,13 +180,25 @@ export default {
             const clave = this.datosBusqueda.clave.toLowerCase().normalize("NFD");
             let recursos = [... this.datos];
 
-            this.busquedaFiltrada = recursos.filter( recurso => {
-                return(
-                    recurso.titulo.toLowerCase().includes(clave) ||
-                    recurso.contenido.toLowerCase().includes(clave)
 
-                )
-            })
+            if(this.datosBusqueda.tipo === "RECOMENDACION")
+                this.busquedaFiltrada = recursos.filter( recurso => {
+                    return(
+                        recurso.titulo.toLowerCase().includes(clave) ||
+                        recurso.contenido.toLowerCase().includes(clave) ||
+                        recurso.materia.toLowerCase().includes(clave) ||
+                        recurso.grado.toLowerCase().includes(clave)
+
+                    )
+                })
+            else
+                this.busquedaFiltrada = recursos.filter( recurso => {
+                    return(
+                        recurso.titulo.toLowerCase().includes(clave) ||
+                        recurso.contenido.toLowerCase().includes(clave)
+
+                    )
+                })
             console.log(this.busquedaFiltrada.length)
 
             console.log(this.busquedaFiltrada);
@@ -247,5 +279,9 @@ export default {
         text-align: left; 
         max-width:1200px; 
         width:100%; 
+    }
+    .texto_busqueda{
+        margin-bottom:0!important;
+        font-size: 13.5px;
     }
 </style>

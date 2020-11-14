@@ -55,6 +55,9 @@
               </v-row>
             </v-col>
           </v-row>
+          <!-- <v-btn @click="opcMembresia()">Opciones de membresia</v-btn>
+          <p>{{idCompra}}</p>||||
+          <p>{{idCliente}}</p> -->
 
           
 
@@ -99,14 +102,17 @@ export default {
           idCompra:"",
           tipoSuscripcion:"",
           importe:"",
+          idCliente:"",
             // datapage:{
             //     permisos:0,
             //     logeado:false
             // }
+          // dominio:"https://educadora.cf",
+          // dominio:"http://localhost:3000",
         }
     },
     computed:{
-    ...mapState(['datosUsuario','stripeObj']),
+    ...mapState(['datosUsuario','dominio','urlAPI']),
     
     },
     methods: {
@@ -131,8 +137,72 @@ export default {
         // })
 
       },
+      async obtenerCliente(sessionId){
+        // const sessionId = "cs_test_a1mUqFoKvHsmFzSEGNe5JHZ3sk5oJy55x715ODr3tKocJfqk3keI5Mp6XK";
+        
+        let customerId; 
+
+        if (sessionId) {
+            await fetch(this.urlAPI+"/checkout-session?sessionId=" + sessionId)
+          // fetch("https://stripe-checkout-api.herokuapp.com/checkout-session?sessionId=" + sessionId)
+            .then((result)=>{
+              return result.json()
+            })
+            .then((session)=>{
+
+              console.log(session)
+              if(session.error)
+              {
+
+                console.log(session)
+                console.log("EL PAGO DECLINADO")
+              }
+              else{
+
+                this.idCliente = session.customer;
+                console.log("EL PAGO FUE REALIZADO CON EXITO")
+              }
+              // alert("yaaa")
+              // We store the customer ID here so that we can pass to the
+              // server and redirect to customer portal. Note that, in practice
+              // this ID should be stored in your database when you receive
+              // the checkout.session.completed event. This demo does not have
+              // a database, so this is the workaround. This is *not* secure.
+              // You should use the Stripe Customer ID from the authenticated
+              // user on the server.
+              // customerId = session.customer;
+
+
+              // var sessionJSON = JSON.stringify(session, null, 2);
+              // document.querySelector("pre").textContent = sessionJSON;
+            })
+            .catch(function(err){
+              console.log('Error when fetching Checkout session', err);
+            });
+        }
+      },
+    //   opcMembresia(){
+    //     fetch('http://localhost:4242/customer-portal', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify({
+    //         sessionId: this.idCompra
+    //       }),
+    //     })
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       console.log(data.url);
+    //       window.location.href = data.url;
+          
+    //     })
+    //     .catch((error) => {
+    //       console.error('Error:', error);
+    //     });
+    //   },
     },
-    mounted() {
+    async mounted() {
 
       this.json = localStorage.getItem("payment_intent");
       let data= {};
@@ -150,6 +220,7 @@ export default {
 
       if(data.sessionId)
       {
+        // await this.obtenerCliente(data.sessionId);
         //DATOS PARA EL PAGO EXITOSO
         this.idCompra = data.sessionId;
         this.tipoSuscripcion = data.tipoSuscripcion;
@@ -178,6 +249,7 @@ export default {
           //SE ACTUALIZA EL OBJETO USUARIOS POR MEDIO DE UN ACTION QUE ESTA EN EL STORE
           datosUsuario.lvluser = lvl;
           datosUsuario.idMembresia =data.sessionId;
+          datosUsuario.idCliente = this.idCliente
           this.guardaDatosUsuarioStore(datosUsuario);
         })
         .catch((error) => {

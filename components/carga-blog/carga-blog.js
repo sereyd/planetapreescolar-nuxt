@@ -38,6 +38,8 @@ export default {
           [{ 'direction': 'rtl' }],
           ['clean'],
         ],
+
+        esBlog: false,
     };
   },
   components: {
@@ -50,6 +52,18 @@ export default {
       // console.log(fecha)
       //return (id) => this.itemById(id).description;
       return (payload) => format(payload, "dd 'de' MMMM 'de' yyyy", {locale: es});
+    },
+    tituloEditar(){
+      let tipoM = "";
+      if(this.tipo === "REFLEXIONES")
+        tipoM= "Editar reflexión";
+      else if(this.tipo === "RECOMENDACION")
+        tipoM= "Editar recomendación";
+      else if(this.tipo === "MEMORIA")
+        tipoM= "Editar memoria";
+      else if(this.tipo === "BLOG")
+        tipoM= "Editar blog";
+      return tipoM;
     }
   },
   methods: {
@@ -94,6 +108,13 @@ export default {
 
 
     mostrarRecursoEdit(post){
+
+      console.log(this.tipo);
+      if(this.tipo === "RECOMENDACION")
+        this.esBlog = true;
+      else
+        this.esBlog = false;
+
       this.editRecurso = true;
       // console.log(post);
       this.datosRecursoEdit = {...post};

@@ -56,6 +56,8 @@ export default {
         idCreador:"",
         nombreCreador:"",
       },
+      materia: "",
+      grado: "",
       esUrlimgR: false,
 
       //DATA PARA CARGA DE RECURSOS
@@ -77,6 +79,8 @@ export default {
       bytesTotal: 0,
       bytesTranferidos: 0,
       updatedCollection: false,
+
+      esBlog: false,
       
 
   
@@ -86,7 +90,6 @@ export default {
     ...mapState(["urlimg", "datosUsuario"]),
     tituloCrear(){
       let tipoM = "";
-      // console.log(this.tipo);
       if(this.tipo === "REFLEXIONES")
         tipoM= "Nueva reflexión";
       else if(this.tipo === "RECOMENDACION")
@@ -95,11 +98,6 @@ export default {
         tipoM= "Nueva memoria";
       else if(this.tipo === "BLOG")
         tipoM= "Nuevo blog";
-
-      // const tm = this.tipo.toLowerCase();
-      // console.log(tm);
-      // console.log(this.tipo);
-       
       return tipoM;
     }
   },
@@ -177,24 +175,31 @@ export default {
         //   this.datosRecurso.urlRecurso = this.urlFile
         //   this.datosRecurso.tipoRecurso = 
         // }
+        let nuevoRecurso = {};
         
-
-        this.datosRecurso = {
-          ...this.datosRecurso,
-          fecha:  Date.now(),
-          // fecha:  format(new Date(), 'yyyy-MM-dd'),
-          // user: id,
-          // urlImagen: this.tipoFile === 'image' ? this.urlFile : '',
-          // foldercode: '',
-          tipoRecurso: this.tipoFile,
-          urlRecurso: this.urlFile,
-          idCreador: id,
-          nombreCreador: `${nombre} ${apellido}`,
-          
-        }
+        if(this.tipo === "RECOMENDACION")
+          nuevoRecurso = {
+            ...this.datosRecurso,
+            fecha:  Date.now(),
+            tipoRecurso: this.tipoFile,
+            urlRecurso: this.urlFile,
+            idCreador: id,
+            nombreCreador: `${nombre} ${apellido}`,
+            materia: this.materia,
+            grado: this.grado
+          }
+        else
+          nuevoRecurso = {
+            ...this.datosRecurso,
+            fecha:  Date.now(),
+            tipoRecurso: this.tipoFile,
+            urlRecurso: this.urlFile,
+            idCreador: id,
+            nombreCreador: `${nombre} ${apellido}`,
+          }
 
         try {
-          await this.$fireStore.collection(this.tipo).add(this.datosRecurso);
+          await this.$fireStore.collection(this.tipo).add(nuevoRecurso);
           this.listaR.push(this.datosRecurso)
           this.$emit('updateListaR',this.listaR)
           this.resetDatos();
@@ -317,6 +322,17 @@ export default {
       this.esRecursoValido =this.$refs.formRecurso.validate();
       if(this.esRecursoValido)
         this.updateFile()
+        // console.log("HO HAY ERRORES")
+    },
+    abrirDialog(){
+
+      console.log(this.tipo);
+      if(this.tipo === "RECOMENDACION")
+        this.esBlog = true;
+      else
+        this.esBlog = false;
+
+      this.creaRecurso=true
     },
     resetDatos(){
       // console.log("RESETENADO TODA LA DATA UTILIZADA ")
@@ -334,6 +350,8 @@ export default {
         idCreador:"",
         nombreCreador:"",
       },
+      this.materia ="";
+      this.grado ="";
       
       this.file = null;
       this.urlFile= null;

@@ -39,7 +39,7 @@
           <v-card-title class=" justify-space-between">
               <v-btn icon text small color="purple" @click="" >
               </v-btn>
-              <h2 class="primary--text ">Editar {{tipo}}</h2>
+              <h2 class="primary--text ">{{tituloEditar}}</h2>
               <v-btn icon text small color="purple" @click="editRecurso = false" >
                   <v-icon>mdi-window-close</v-icon>
               </v-btn>
@@ -59,6 +59,25 @@
                         outlined
                         :rules="[v => !!v || 'titulo del post es requerida']"
                         @keyup.enter=""
+                    ></v-text-field>
+
+                    <v-text-field
+                            v-model="datosRecursoEdit.materia"
+                            placeholder="Materia"
+                            required
+                            outlined
+                            :rules="[v => !!v || 'Materia grupo es requerida']"
+                            @keyup.enter=""
+                            v-if="esBlog"
+                    ></v-text-field>
+                    <v-text-field
+                        v-model="datosRecursoEdit.grado"
+                        placeholder="Grado"
+                        required
+                        outlined
+                        :rules="[v => !!v || 'Grado es requerida']"
+                        @keyup.enter=""
+                        v-if="esBlog"
                     ></v-text-field>
 
                     <v-textarea

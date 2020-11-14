@@ -211,12 +211,17 @@ export default{
         recursoComentariosRef.update({
              comentarios: [...this.vistapost.comentarios]
         })
-        // .then(() => {
-        //     console.log(this.grupo);
-        //     alert("paso 1")
-        //     // this.actualizarGrupos(this.grupo.materias);
+        .then(() => {
+          this.datosComentario.idUsuario = "";
+          this.datosComentario.nombreUsuario = "";
+          this.datosComentario.urlImagen = "";
+          // this.datosComentario.comentario = "";
+          // this.esComentarioValido = true;
+          this.$refs.formComentario.reset();
+
+          console.log("reset data")
  
-        // })
+        })
         .catch((error) => {
             console.error("ErroR al agregar nuevo comentario: ", error);
         });
@@ -308,13 +313,24 @@ export default{
           console.log(clave)
           let recursos = [... this.blogpost];
 
-          this.blogpost = recursos.filter( recurso => {
-              return(
-                  recurso.titulo.toLowerCase().includes(clave) ||
-                  recurso.contenido.toLowerCase().includes(clave)
+          if(this.tipo === "RECOMENDACION")
+            this.blogpost = recursos.filter( recurso => {
+                return(
+                    recurso.titulo.toLowerCase().includes(clave) ||
+                    recurso.contenido.toLowerCase().includes(clave) ||
+                    recurso.materia.toLowerCase().includes(clave) ||
+                    recurso.grado.toLowerCase().includes(clave)
 
-              )
-          })
+                )
+            })
+          else
+            this.blogpost = recursos.filter( recurso => {
+                return(
+                    recurso.titulo.toLowerCase().includes(clave) ||
+                    recurso.contenido.toLowerCase().includes(clave)
+
+                )
+            })
           if(this.blogpost.length === 0)
             this.titulo = ""
         }

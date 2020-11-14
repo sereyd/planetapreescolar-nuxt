@@ -9,7 +9,7 @@
         >
           
 
-          <v-btn color="" text  @click="creaRecurso=true" 
+          <v-btn color="" text  @click="abrirDialog()" 
           fab
           dark 
           x-large
@@ -57,52 +57,7 @@
                             tpimg="post"
                             class=" d-flex justify-center mb-4"
                         />
-                        <!-- <subirImagen 
-                            v-if="imagen==='true'" 
-                            @updateImg="preview=$event" 
-                            ejecimagen="uploadimg" 
-                            tpimg="post" titulo="Foto de Publicación" 
-                        />   -->
-                        <!-- <div  hidden>
-                            <input type="file" @change = "change" ref="fileupload" />
-                        </div> 
-                        <div class="d-flex justify-center mb-3">
-                            <v-btn
-                                max-width='210'
-                                class="pa-16"
-                                color="purple lighten-5"
-                                dark
-                                @click="focus"  style="overflow: hidden;" 
-                            >
-                                <div v-if="!imagenF"  >
-                                    <v-avatar size="80" color="#48c9d9" >
-                                        <v-icon color="#3fefdb"  style="font-size: 80px;">mdi-plus</v-icon>
-                                    </v-avatar>
-                                </div>
-                                <div v-else >
-                                    <div >
-                                        <v-img
-                                        :src="datosRecurso.urlImagen"
-                                        alt="foto"
-                                        width="210"
-                                        ></v-img>
-
-                                    </div>
-                                </div>
-                            </v-btn>
-                        </div> -->
-
-                    <!-- </div> -->
-                    <!-- <v-row v-if="!cargando" class="d-flex justify-center"> -->
-                        <!-- ---upload imagen perfil-- -->
-                        <!-- <div class=" d-flex justify-center align-center">
-                            <subirImagen 
-                                titulo="Foto de portada"  
-                                @urlfoto="datosRecurso.urlImagen=$event" 
-                                ejecimagen="uploadimg" 
-                            />
-                        </div> -->
-                        <!-- <v-col cols="11"> -->
+                        
                         <v-file-input
                             outlined
                             label="Seleccione archivo"
@@ -119,16 +74,36 @@
                             placeholder="Titulo"
                             required
                             outlined
-                            :rules="[v => !!v || 'Nombre grupo es requerida']"
+                            :rules="[v => !!v || 'Titulo es requerida']"
                             @keyup.enter=""
                         ></v-text-field>
+
+                        <v-text-field
+                            v-model="materia"
+                            placeholder="Materia"
+                            required
+                            outlined
+                            :rules="[v => !!v || 'Materia grupo es requerida']"
+                            @keyup.enter=""
+                            v-if="esBlog"
+                        ></v-text-field>
+                        <v-text-field
+                            v-model="grado"
+                            placeholder="Grado"
+                            required
+                            outlined
+                            :rules="[v => !!v || 'Grado es requerida']"
+                            @keyup.enter=""
+                            v-if="esBlog"
+                        ></v-text-field>
+
     
                         <v-textarea
                             v-model="datosRecurso.contenido"
                             placeholder="contenido..."
                             required
                             outlined
-                            :rules="[v => !!v || 'Nombre grupo es requerida']"
+                            :rules="[v => !!v || 'Contenido es requerida']"
                             @keyup.enter=""
             
                         ></v-textarea>
