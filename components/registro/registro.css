@@ -29,9 +29,9 @@
 
     
 
-/*  formulario*/
+/*  FORMULARIO*/
 .v-input__slot{
-  min-height: 42px!important;
+  min-height: 50px!important;
 }
 .v-btn{
   letter-spacing: 0em;
@@ -42,17 +42,17 @@
 /* justify-content: center; */
 /* align-items: flex-start; */
 /* text-transform: uppercase; */
-.redes .v-btn__content{
-  /* justify-content: space-between; */
+.btn_crearCuenta{
+  height: 50px!important;
+  font-family: 17px;
+}
+.redes {
+  justify-content:start;
+  height: 50px!important;
 } 
 .v-text-field--full-width .v-input__prepend-outer, .v-text-field--full-width .v-input__prepend-inner, .v-text-field--full-width .v-input__append-inner, .v-text-field--full-width .v-input__append-outer, .v-text-field--enclosed .v-input__prepend-outer, .v-text-field--enclosed .v-input__prepend-inner, .v-text-field--enclosed .v-input__append-inner, .v-text-field--enclosed .v-input__append-outer {
   margin-top: 4px;
 }
-
-.purpleColor{
-  color: #AD227D;
-}
-
 
 /*ESPCACIOS DE CHECKBOX*/
 
@@ -67,6 +67,7 @@
   margin-top: 1px!important;
   padding-top: 1px!important;
 }
+
 
 /*ESPCAIO PARA LO DIVIDERS*/
 .izq {
@@ -89,6 +90,25 @@
 .v-text-field > .v-input__control > .v-input__slot::before{
   width: 0%!important; 
 } */
+
+
+/* ESTILOS PARA LOS BOTONES DE REDES SOCIALES */
+.redes_titulo{
+  margin-inline: auto;
+  /* height: 46px; */
+  font-size: 17px;
+  /* font-weight: bold; */
+}
+
+/*  FORMULARIO*/
+
+
+.purpleColor{
+  color: #AD227D;
+}
+
+
+
 
 
 /* ESTILOS DE SPINNER*/

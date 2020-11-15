@@ -1,4 +1,13 @@
 import { VueEditor } from "vue2-editor";
+// import audioPlayer from 'vuetify-media-player/src/components/audio-player.vue'
+// import videoPlayer from 'vuetify-media-player/src/components/video-player.vue'
+// import { audioPlayer } from 'vue-md-player'
+// import 'vuetify-media-player/src/style.styl'
+import { audioPlayer, videoPlayer } from 'vue-md-player'
+import 'vue-md-player/dist/vue-md-player.css'
+import { mapState, mapActions, mapMutations } from "vuex";
+
+
 export default{
     data(){
         return {
@@ -29,6 +38,9 @@ export default{
       muestrapost(p){
         this.viewpost=true
         this.vistapost=p
+        this.vistapost.tipoRecurso = p.tipoRecurso ? p.tipoRecurso : 'image';
+        this.vistapost.urlRecurso = p.urlRecurso ? p.urlRecurso : p.urlImagen;
+        console.log(this.vistapost);
       },
       editapost(t){
         this.edit=true
@@ -118,9 +130,13 @@ export default{
         }
     },
     components:{
-      VueEditor
+      VueEditor,
+      videoPlayer,
+      audioPlayer,
     },
     mounted(){
+        console.log("this.blogpost")
+        console.log(this.blogpost)
         if(this.userId==='' && this.idexclude===''){
             this.cargabaseGral()
         }
@@ -131,5 +147,8 @@ export default{
             this.cargabaseExclude()    
         }
 
-    }
+    },
+    computed: {
+      ...mapState(['datosUsuario'])
+    },
 }

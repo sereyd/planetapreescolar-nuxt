@@ -12,3 +12,7 @@
 .modbuscador{
     border-radius:15px;
 }
+
+.btn{
+    cursor: pointer;
+}

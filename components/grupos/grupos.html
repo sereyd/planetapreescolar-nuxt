@@ -1,287 +1,139 @@
 <div class="">
-    <!-- <div class="d-flex align-center justify-space-between "> -->
-        <div><h3 class="primary--text ml-10 titulo">Mis Grupos</h3></div>
-        <!-- <div><v-btn class="orange mr-15">Ver más</v-btn></div> -->
-    <!-- </div> -->
-    <div>
-        <v-container fluid class="">
-            <v-row class="mb-6" no-gutters
+  <!-- <div class="d-flex align-center justify-space-between "> -->
+  <div><h3 class="primary--text ml-10 titulo">Mis Grupos</h3></div>
+  <!-- <div><v-btn class="orange mr-15">Ver más</v-btn></div> -->
+  <!-- </div> -->
+  <div>
+    <v-container fluid class="">
+      <v-row class="mb-6" no-gutters>
+        <!-- BOTON PARA CREAR GRUPO -->
+        <v-col cols="12" md="3" sm="6" class=" mb-3">
+          <v-card
+            class="pa-2 mx-2 d-flex justify-center align-center"
+            height="150px"
+            style="background-color: #F2EAF1"
+          >
+            <v-btn
+              color=""
+              text
+              @click="dialog = true"
+              fab
+              dark
+              x-large
+              class="m-0 p-0 btn_add_img"
             >
-              <!-- BOTON PARA CREAR GRUPO -->
-              <v-col cols="12" md="3" sm="6" class=" mb-3">
-                <v-card
-                  class="pa-2 mx-2 d-flex justify-center align-center"
-                  height="150px"
-                  style="background-color: #F2EAF1"
+              <div>
+                <v-icon class="icon_add" style="font-size: 80px;"
+                  >mdi-plus</v-icon
                 >
-                  
-
-                  <v-btn color="" text @click="dialog = true" 
-                  fab
-                  dark 
-                  x-large
-                  class="m-0 p-0 btn_add_img">
-                      <div >
-                          <v-icon class="icon_add"  style="font-size: 80px;">mdi-plus</v-icon>
-                      </div>
-                  </v-btn>
-                  
-
-                </v-card>
-                <div>
-                    <div class=" ml-3">
-                        <h4>Agregar Aula</h4>
-                        <p>Materia</p>
-                    </div>
-                </div>
-              </v-col>
-              <!-- GRUPOS CREDADOS----->
-              <v-col v-for="(grupo, index) in grupo.materias" :key="index" cols="12" md="3" sm="6" class=" mb-3">
-                <div
-                class="" 
-                style="font-size: 13px;" 
-                @click="gruposelect(grupo)"
-                >
-
-                  <v-card
-                    class=" grey lighten-3 d-flex justify-center align-center mx-2"
-                    height="150px"
-                    
-                  >
-                    <v-img
-                      :src="grupo.urlImagen"
-                      class="fotomini"
-                      
-                    ></v-img>
-                  </v-card>
-                </div>
-                <div>
-                    <div class=" ml-3 textos">
-                        <h4>{{grupo.nombreGrupo}}</h4>
-                        <p class="datosGrupo">{{grupo.adicionales}}</p>
-                        <p class="datosGrupo">{{grupo.cicloEscolar}}</p>
-                        <p class="datosGrupo">{{grupo.total}} alumnos</p>
-                        <!-- <router-link class="" style="font-size: 13px;" :to="{name: 'grupo-id', params:{id: grupo.nombreGrupo}, query:datosUsuario.grupos }">Ver más</router-link> -->
-
-                    </div>
-                </div>
-              </v-col>
-
-
-            </v-row>
-        </v-container>
-    </div>
-    <!------verGRupo--->
-    <v-dialog v-model="viewGroup" fullscreen>
-
-      <v-card max-width="100%">
-        <div style="width:100%; height:100px;"></div>
-        <v-card-text>
-          <grupoDetalles :datain="selectGrupo" @cerrarventana="viewGroup=$event" />
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-
-    <!-- DIALOG DE REGISTRO DE GRUPOS -->
-    <v-dialog v-model="dialog" persistent max-width="755">
-        
-      <v-card class=" px-10">
-        <v-card-title class=" justify-space-between">
-            <v-btn icon text small color="purple" @click="" >
-                <!-- <v-icon>mdi-arrow-left-bold</v-icon> -->
-            </v-btn>
-            <h2 class="primary--text ">Nuevo grupo</h2>
-            <v-btn icon text small color="purple" @click="dialog = false" >
-                <v-icon>mdi-window-close</v-icon>
-            </v-btn>
-        </v-card-title>
-        <div class="mt-8">
-         <v-form ref="formGrupos"
-         v-model="esGrupoValido"
-         v-show="faseFormulario === 1"
-         lazy-validation>
-          <v-row>
-            <v-col class="" cols="5">
-              <div  hidden>
-                  <input type="file" @change = "change" ref="fileupload"/>
-              </div> 
-
-              <!-- BOTON DE PARA ELEGIR FOTO  -->
-
-              <v-card
-                  class="pa-2 mx-2  d-flex justify-center align-center"
-                  height="150px"
-                  style="background-color: #F2EAF1;"
-              >
-
-                <v-btn text fab dark x-large
-                  class="m-0 p-0 btn_add_img"
-                  @click="seleccionarImagen"
-                >
-                  <div v-if="!imagen" >
-                    <v-icon class="icon_add"  style="font-size: 80px;">mdi-plus</v-icon>
-                  </div>
-                  <div v-else  class="divFoto">
-                    <v-img
-                    :src="urlImagenPrevia"
-                    alt="foto"
-                    class="imagenPre"
-                    contain
-                    ></v-img>
-                  </div>
-                </v-btn>
-
-              </v-card>
-
-              <p class="text-center sub mt-2">Añadir imagen de grupo</p>
-
-
-              <!-- BOTON DE PARA ELEGIR FOTO  -->
-              <!-- <div class="  d-flex justify-center align-center ">
-                <v-btn
-                  class=" mt-12"
-                  color=""
-                  height="150" width="85%"
-                  @click="seleccionarImagen"
-                >
-                  <div v-if="!imagen" >
-                      <v-icon color="pink darken-4"  style="font-size: 120px;">mdi-plus</v-icon>
-                  </div>
-                  !-- <div  v-else 
-                    class=" grey lighten-3 divFoto  "
-                  >
-                    <v-img
-                      :src="urlImagenPrevia"
-                      class=""
-                      height="100"
-                      contain
-                    ></v-img>
-                  </div>  --
-                  <div v-else  class="divFoto">
-                          <v-img
-                          :src="urlImagenPrevia"
-                          alt="foto"
-                          class="imagenPre"
-                          contain
-                          ></v-img>
-                  </div>
-                </v-btn>
               </div>
-              <p class="text-center sub mt-2">Añadir imagen de grupo</p> -->
-            </v-col>
-
-            <v-col cols="7" class="pr-7">
-              <div class=""> 
-                <v-text-field
-                    v-model="datosNuevoGrupo.nombreGrupo"
-                    placeholder="Nombre grupo*"
-                    required
-                    outlined
-                    :rules="[v => !!v || 'Nombre grupo es requerida']"
-                    @keyup.enter="validarFormularioGrupo"
-                    
-
-                ></v-text-field>
-                <v-text-field
-                    v-model="datosNuevoGrupo.adicionales"
-                    placeholder="Adicionales [p/e nombre escuela]"
-                    required
-                    outlined
-                    @keyup.enter="validarFormularioGrupo"
-
-                ></v-text-field>
-                <v-text-field
-                    v-model="datosNuevoGrupo.cicloEscolar"
-                    placeholder="Ciclo escolar / periodo"
-                    required
-                    outlined
-                    @keyup.enter="validarFormularioGrupo"
-
-                ></v-text-field>
-                <span class="sub2">*Campo obligatorio</span >
-              </div>
-            </v-col>
-
-          </v-row>
-          <div class="d-flex justify-center">
-              <v-btn 
-                  :disabled="!esGrupoValido" dark 
-                  class="red px-10 mb-5 btn_crearG" 
-                  @click="validarFormularioGrupo"  
-              > Crear grupo</v-btn>
+            </v-btn>
+          </v-card>
+          <div>
+            <div class=" ml-3">
+              <h4>Agregar Aula</h4>
+              <p>Materia</p>
+            </div>
           </div>
-             
-         </v-form>
+        </v-col>
+        <!-- GRUPOS CREDADOS----->
+        <v-col
+          v-for="(grupo, index) in grupos"
+          :key="index"
+          cols="12"
+          md="3"
+          sm="6"
+          class=" mb-3"
+        >
+          <div class="" style="font-size: 13px;" @click="gruposelect(grupo)">
+            <v-card
+              class=" grey lighten-3 d-flex justify-center align-center mx-2"
+              height="150px"
+            >
+              <v-img :src="grupo.urlImagen" class="fotomini"></v-img>
+            </v-card>
+          </div>
+          <div>
+            <div class=" ml-3 textos">
+              <h4>{{grupo.nombreGrupo}}</h4>
+              <p class="datosGrupo">{{grupo.adicionales}}</p>
+              <p class="datosGrupo">{{grupo.cicloEscolar}}</p>
+              <p class="datosGrupo">{{grupo.totalAlumnos}} alumnos</p>
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
+  <!------verGRupo--->
+  <v-dialog v-model="viewGroup"  persistent fullscreen>
+   
+        <grupoDetalles
+          :datain="selectGrupo"
+          :edovista="viewGroup"
+          @cerrarventana="GuardarCambiosAlumnos($event)"
+        />
+      
+  </v-dialog>
+  <!-- DIALOG DE REGISTRO DE GRUPOS -->
+  <v-dialog v-model="dialog" persistent max-width="755">
+    <v-card class=" px-10">
+      <v-card-title class=" justify-space-between">
+        <v-btn icon text small color="purple" @click="">
+          <!-- <v-icon>mdi-arrow-left-bold</v-icon> -->
+        </v-btn>
+        <h2 class="primary--text ">Nuevo grupo</h2>
+        <v-btn icon text small color="purple" @click="dialog = false">
+          <v-icon>mdi-window-close</v-icon>
+        </v-btn>
+      </v-card-title>
+      <div class="mt-8">
+        <v-row>
+          <v-col class="" cols="5">
+            <div class="text-center">
+              <subirImagen
+                ejecimagen="uploadimg"
+                @updateImg="previewImg=$event"
+                titulo="Imagen de grupo"
+              />
+            </div>
 
-                    
-                 
+            <!-- BOTON DE PARA ELEGIR FOTO  -->
+          </v-col>
+
+          <v-col cols="7" class="pr-7">
+            <div class="">
+              <v-text-field
+                v-model="datosNuevoGrupo.nombreGrupo"
+                placeholder="Nombre grupo*"
+                required
+                outlined
+                @keyup.enter="guardarGrupo()"
+              ></v-text-field>
+              <v-text-field
+                v-model="datosNuevoGrupo.adicionales"
+                placeholder="Adicionales [p/e nombre escuela]"
+                required
+                outlined
+                @keyup.enter="guardarGrupo()"
+              ></v-text-field>
+              <v-text-field
+                v-model="datosNuevoGrupo.cicloEscolar"
+                placeholder="Ciclo escolar / periodo"
+                required
+                outlined
+                @keyup.enter="guardarGrupo()"
+              ></v-text-field>
+              <span class="sub2">*Campo obligatorio</span>
+            </div>
+          </v-col>
+        </v-row>
+        <div class="d-flex justify-center">
+          <v-btn dark class="red px-10 mb-5 btn_crearG" @click="guardarGrupo()">
+            Crear grupo</v-btn
+          >
         </div>
-      </v-card>
-    </v-dialog>
-
-
-    <!-- <div 
-                    v-show="faseFormulario === 2"
-                    >
-                      <v-form ref="form2"
-                      v-model="valid2"
-                      lazy-validation>
-                        <div class="mx-16 px-2 ">
-                          <v-row v-for ="(h, index) in horario" :key="index" class="" >
-                            
-                            <v-col cols="5" class="  days">
-                            <v-col cols="12" class=" days">
-                             <div class="d-flex flex-nowrap align-center justify-space-between">
-                               <div class> {{h.dia}} </div>
-                                <div>
-                                  <v-switch @change="changeModo(h)" 
-                                  v-model="h.clase" :label="h.clase ? 'Clase' : 'Descanso' "
-                                  ></v-switch>
-                                </div>
-                             </div>
-                            </v-col>
-                            </v-col>
-                            
-                            <v-col cols="7" class="days">
-                              <v-row>
-                            <v-col cols="6" class="days">
-                              <v-text-field
-                                label="Hora inicio"
-                                v-model="h.horaInicio"
-                                :rules="[v => !!v || 'Hora de inicio es requerido']"
-                                required
-                                :disabled="h.horaInicio === '0' && h.clase === false"
-                              ></v-text-field>
-                            </v-col>
-
-                            <v-col cols="6" class="days">
-                              <v-text-field
-                                label="Hora fin"
-                                v-model="h.horaFin"
-                                :rules="[v => !!v || 'Hora de fin es requerido']"
-                                :disabled="h.horaInicio === '0' && h.clase === false"
-
-
-                                required
-                              ></v-text-field>
-                            </v-col>
-                          </v-row>
-                            </v-col>
-
-                          </v-row>
-                        </div>
-                        <div class="d-flex justify-center">
-                          <v-btn 
-                              :disabled="!valid2" dark 
-                              class="red px-10 mb-5" 
-                              @click="validarFormulario2"  
-                          > Crear</v-btn>
-                      </div>
-                      </v-form>
-                    </div> -->
-
-
+      </div>
+    </v-card>
+  </v-dialog>
 </div>
-      
-      
-     

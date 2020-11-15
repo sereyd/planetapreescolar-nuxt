@@ -45,6 +45,7 @@ export default {
     '@/plugins/validasesion.js',
     '@/plugins/codegenerate.js',
     '@/plugins/v-calendar.js',
+    '@/plugins/comparativa.js'
     // { src: '~plugins/v-calendar.js', ssr: false }
   ],
   /*

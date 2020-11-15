@@ -41,6 +41,7 @@
 </v-row>     
       <!----Espacio de carga de vistas------>
 
+<alertas />
 
   </v-app>
 </template>
@@ -63,7 +64,7 @@
   import menulateral from '~/components/menulateral/menulateral.vue'
   import { mapState, mapMutations, mapActions } from 'vuex'
   import loader from '~/components/loader/loader.vue'
-
+  import alertas from "~/components/alertas/alertas.vue"
 export default {
   data () {
     return {
@@ -78,7 +79,7 @@ export default {
     }
   },
   computed:{
-    ...mapState(['dialog', 'test','itemsmenu','vistaValida'])
+    ...mapState(['dialog', 'test','itemsmenu','vistaValida','mensajealerta','staleras','tpalert'])
   },
   methods:{
 
@@ -87,7 +88,8 @@ export default {
   },
   components:{
     menulateral,
-    loader
+    loader,
+    alertas
   } 
   
 }

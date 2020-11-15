@@ -1,966 +1,640 @@
-<div class="">
-    <!-- <menulateral /> -->
-    <!-- <v-calendar
-    mode="date"
-    is-expanded 
-    v-model="diaSeleccionado"
-    color="purple"
-    is-dark
-    locale="es"
+<v-card>
+  <v-card-title class="primary white--text pl-20 pr-20">
+    <h2 class="ml-20">{{nombredeGrupo}}</h2>
+    <v-spacer class="miniMovil"></v-spacer>
 
-
-
-    /> -->
-
-    <!-- <span>Dia select: {{fecha}}</span> -->
-    <div v-if="!diaSeleccionado">
-        <v-date-picker
-            mode="date"
-            is-expanded 
-            v-model="fecha"
-            color="purple"
-            is-dark
-            locale="es"
-            
-            
-        />
+    <div class="minimovil"></div>
+    <div v-if="datosUsuario.userlogin===false" class="miniMovil">
+      <router-link
+        to="login"
+        v-if="$validasesion($store,{ sinregistro:true })"
+        class="white--text"
+        style="text-decoration:none;  font-size:15px;"
+        >Iniciar sesión</router-link
+      >
+      &nbsp;&nbsp;&nbsp;
+      <v-btn
+        class="melon white--text pa-5"
+        style="border-radius: 30px; font-size:14px; text-transform:none;"
+        v-if="$validasesion($store,{ sinregistro:true })"
+        link
+        to="registro"
+        >Registro
+      </v-btn>
     </div>
-    <!-- :model-config="modelConfig"
-    :masks="{ title: 'MMM YYYY' }"
-    :data= "DD/MM/YYYY"
-    :input="DD/MM/YYYY" -->
 
-    
+    <div v-if="datosUsuario.userlogin===true">
+      <router-link
+        v-show="datosUsuario.idMembresia === ''"
+        to="checkout"
+        class="white--text menu-sec miniMovil"
+        style="text-decoration:none; position:relative;"
+      >
+        <img
+          src="../../static/images/iconos/haztepremium.png"
+          class="menu-sec-anim"
+        />
+        <span class="vMmobilview ">
+          <img
+            src="../../static/images/iconos/haztepremium1.png"
+            style="  left:-100px; 
+                            width:100px; 
+                            position:absolute;"
+        /></span>
+      </router-link>
+      &nbsp;
+      <router-link
+        to="#"
+        class="white--text menu-sec miniMovil"
+        style="text-decoration:none;"
+      >
+        <v-icon class="white--text">mdi-bell</v-icon>
+        &nbsp;
+        <span class="vMmobilview"> Notificaciones</span>
+      </router-link>
+      &nbsp;
 
-    <v-container v-else class="">
-        <!-- MENU DE SELECCION DE DIA -->
-        <!-- <v-card v-if = "dia === ''" class=" mt-7 ">
-            <div class="d-flex flex-column align-center ">
-                <div v-for="(dia, index) in dias" :key="index" class="mt-1">
-                    <v-btn class="purple white--text mb-2" @click=" seleccionarDia(dia)">{{dia}}</v-btn>
-                </div>
-            </div>
-        </v-card> -->
-        <!-- MENU DE SELECCION DE DIA -->
+      <router-link
+        to="/configuracion"
+        class="white--text menu-sec miniMovil"
+        style="text-decoration:none;"
+      >
+        &nbsp;
+        <v-icon class="white--text">mdi-brightness-7</v-icon>
+        &nbsp;
+        <span class="vMmobilview"> Configuración</span>
+      </router-link>
+      &nbsp;
 
-        
-
-        
-
-        <!-- CABECERA DIA, CLASE, HORARIO, VERO OTROS DIAS -->
-        <v-card  class=" mt-7 mx-10 cards" >
-
-       
-    
-            <v-row>
-                <v-col cols="12" md="10" class="primary--text pa-5" > 
-                <h2>Grupo {{datain.nombreGrupo}} </h2>
-            </v-col>
-            <v-col cols="12" md="2" class="primary--text text-right pa-5" > 
-                <v-btn @click="cerrarventana()" class="melon white--text" depressed><b>X</b></v-btn>
-            </v-col>
-                <v-col class="ml-3">
-                    <div>
-                        <h3 class="primary--text ">{{fechaVisual}}</h3>
-                    </div>
-                        <!-- <div class="yellow"> {{nuevoHorario.dia}} </div> -->
-                    <div class="">
-                      <v-switch  
-                      v-model="horarioHoy.clase" :label="horarioHoy.clase ? 'En Clase' : 'Descanso' "
-                      ></v-switch>
-                    </div>
-                    <!-- <div>
-                        <p class="primary--text " v-if="horario.clase">CLASE</p>
-                        <p class="primary--text " v-else>DESCANSO</p>
-                    </div> -->
-                </v-col>
-
-                <v-col class="mr-3">
-                    <div class="orden">
-                        <div>
-                            <p class="primary--text ">Ver otros dias 
-                                <v-icon color="pink darken-4"  @click="diaSeleccionado = false"  style="font-size: 20px;">mdi-chevron-right</v-icon>
-                            </p>
-                        </div>
-                    </div >
-                    <div class="orden">
-                        <div>
-                            <p class="black--text horario">{{diaHoy}} de {{horarioHoy.horaInicio}} a {{horarioHoy.horaFin}} 
-                                <v-icon color="pink darken-4" @click="dialogHorario = true"  style="font-size: 20px;">mdi-pencil</v-icon>
-                            </p>
-                        </div>
-                    </div>
-                </v-col>
-            </v-row>
-        </v-card>
-        <!-- CABECERA DIA, CLASE, HORARIO, VERO OTROS DIAS -->
-
-
-        
-
-
-
-
-
-        <!-- PRUEBAS -->
-        <!-- <v-card v-if = "dia !== ''" class=" tabla  mt-7"  >
-            
-                <div  class=" mr-2  ml-2" >
-
-                    <div class="d-flex">
-                        <div  class="  titulo_nombres d-flex" >
-                            <v-btn text @click="dialogAlumno = true" fab class="blue lighten-3">
-                                <v-icon color="white "  >mdi-plus</v-icon>
-                            </v-btn>
-                            <h3 class="tabla_titulos mt-2">
-                                 Nuevo Alumno
-                            </h3>
-                                
-                        </div>
-
-                        <div v-for="(lista, index) in horario.listas" 
-                        :key="index" class=" d-flex align-center justify-center  mx-10 px-10 titulosLista" >
-                                <h3 class="tabla_titulos">{{lista.nombre}}</h3> 
-                        </div>
-
-                        <div  class="">
-                            <h3 class="tabla_titulos  text-center">
-                                <v-btn text @click="dialogLista = true"   fab x-small class="blue lighten-3">
-                                    <v-icon color="white "  style="font-size: 20px;">mdi-plus</v-icon>
-                                </v-btn>
-                                <p>Nueva lista</p>
-                            </h3>
-                        </div>
-                        
-                    </div>
-                    <v-divider class="mx-4"></v-divider>
-
-
-
-                    <div v-for="(a, index) in horario.alumnos" :key="index"  class="d-flex" >
-                        <div  cols='' class=" py-1  d-flex align-center red px-5 nombres" >
-                                <v-avatar size="35" > 
-                                    <v-img
-                                    :src="a.urlImagen === 'none' || a.urlImage ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : a.urlImagen"
-                                    alt="foto"
-                                    ></v-img>
-                                </v-avatar>
-                                <div class="">
-                                    <p class="mt-3">{{a.nombre}} {{a.apellidos}}</p>
-                                </div>
-                        </div>
-                       
-                        <div class="fila d-flex justify-center Lista mx-10 px-10"  
-                        v-for="(lista, index) in a.listas" :key="index" cols="" >
-                            
-                                <v-btn v-if="lista.tipoLista === 'Semáforo'" class="mx-2" fab text @click="asignarCal(lista, a, lista.nombre)">
-                                    <v-icon 
-                                        v-if="lista.calificacion === '' || lista.calificacion === 'Bien'"
-                                        color="green" style="font-size: 40px;"
-                                    >
-                                        mdi-emoticon-happy
-                                    </v-icon>
-                                    <v-icon 
-                                        v-else-if=" lista.calificacion === 'Regular'"
-                                        color="yellow" style="font-size: 40px;"
-                                    >
-                                        mdi-emoticon-neutral
-                                    </v-icon>
-                                    <v-icon 
-                                        v-else-if=" lista.calificacion === 'Mal'"
-                                        color="red" style="font-size: 40px;"
-                                    >
-                                        mdi-emoticon-sad
-                                    </v-icon>
-                                </v-btn>
-                                <v-btn v-else-if="lista.tipoLista === 'Si/No' || lista.tipoLista === 'ON/OFF' " 
-                                class="mx-2" fab text  :color="lista.calificacion ? 'green' : 'red'" 
-                                @click="asignarCal(lista, a, lista.nombre)">
-                                    <v-icon  v-if="lista.calificacion" style="font-size: 40px;">
-                                        mdi-checkbox-marked-circle
-                                    </v-icon>
-                                    <v-icon  v-else style="font-size: 40px;">
-                                        mdi-close-circle
-
-                                    </v-icon>
-
-                                </v-btn>
-
-                        </div>
-                    </div>
-                </div>
-        </v-card> -->
-        <!-- PRUEBAS -->
-
-        <!-- <v-col v-for="(lista, index) in clase.listas" 
-                        :key="index" class=" d-flex align-center justify-center" cols="2">
-                                <h3 class="tabla_titulos">{{lista.nombre}}</h3> 
-                        </v-col> 
-
-            <v-col cols="3" class="">
-                            <h3 class="tabla_titulo_btn mt-2">
-                                <v-btn text @click="dialogAlumno = true" fab class="btn_add">
-                                    <v-icon class="icon_add" style="font-size: 40px;" >mdi-plus</v-icon>
-                                </v-btn>
-                                 Nuevo Alumno
-                            </h3>
-                                
-                        </v-col>
-                    
-        -->
-        
-        <!-- <v-card class="mx-10 mt-7 cards  scroll_T">
-            <div class="tabla_header d-flex flex-nowrap">
-                <div class="red alumnos_T">
-                    <h3 class="tabla_titulo_btn mt-2">
-                        <v-btn text @click="dialogAlumno = true" fab class="btn_add">
-                            <v-icon class="icon_add" style="font-size: 40px;" >mdi-plus</v-icon>
-                        </v-btn>
-                         Nuevo Alumno
-                    </h3>
-                </div>
-                <div class="listas_T px-3">
-                    <h3>Asistencia</h3>
-                </div>
-                <div class="listas_T px-3">
-                    <h3>Conducta</h3>
-                </div>
-                <div class="listas_T px-3">
-                    <h3>Puntualidad</h3>
-                </div>
-                <div class="listas_T px-3">
-                    <h3>Actvidad 1</h3>
-                </div>
-                <div class="listas_T px-3">
-                    <h3>Actvidad 1</h3>
-                </div>
+      <router-link
+        to="/descargas"
+        class="white--text menu-sec miniMovil"
+        style="text-decoration:none;"
+      >
+        &nbsp;
+        <v-icon class="white--text">mdi-download</v-icon>
+        &nbsp;
+        <span class="vMmobilview"> Descargas</span>
+      </router-link>
+      <!-- &nbsp;
+                      <router-link to="configuracion" class="white--text" style="text-decoration:none;" >
                 
-                <div class="nuevaLista_T">
-                    Nueva Lista
-                </div>
-            </div>
-
-            <div class="tabla_body d-flex flex-nowrap">
-                <div  class="red alumnos_T py-1  d-flex align-center  pl-4">
-                    <v-avatar size="38" > 
-                        <v-img
-                        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                        alt="foto"
-                        ></v-img>
-                    </v-avatar>
-                    <div class="ml-2">
-                        <p class="mt-3 nombre_alumno">Ivan Castro Rubi</p>
-                    </div>
-                </div>
-                <div class="listas_T">
-                    <v-btn  small class="mx-2" fab text >
-                        <v-icon 
-                            color="green" style="font-size: 30px;"
-                        >
-                            mdi-emoticon-happy
-                        </v-icon>
-                    </v-btn>
-                </div>
-                <div class="listas_T">
-                    <v-btn  small class="mx-2" fab text >
-                        <v-icon 
-                            color="green" style="font-size: 30px;"
-                        >
-                            mdi-emoticon-happy
-                        </v-icon>
-                    </v-btn>
-                </div>
-                <div class="listas_T">
-                    <v-btn  small class="mx-2" fab text >
-                        <v-icon 
-                            color="green" style="font-size: 30px;"
-                        >
-                            mdi-emoticon-happy
-                        </v-icon>
-                    </v-btn>
-                </div>
-                <div class="listas_T">
-                    <v-btn  small class="mx-2" fab text >
-                        <v-icon 
-                            color="green" style="font-size: 30px;"
-                        >
-                            mdi-emoticon-happy
-                        </v-icon>
-                    </v-btn>
-                </div>
-                <div class="listas_T">
-                    <v-btn  small class="mx-2" fab text >
-                        <v-icon 
-                            color="green" style="font-size: 30px;"
-                        >
-                            mdi-emoticon-happy
-                        </v-icon>
-                    </v-btn>
-                </div>
-                
-                <div class="nuevaLista_T">
-                    Nueva Lista
-                </div>
-
-            </div>
-        </v-card> -->
-
-
-
-        <!-- <div class="red mx-4"> -->
-        
-        <!-- TABLA DE ALUMNOS -->
-        <!-- <span>{{clase}}</span> -->
-        <v-card v-if = "fecha !== ''" class="mt-7  mx-10 cards scroll_T" >
-            <v-row >
-                <v-col cols="" class=" mr-2  ml-2 " >
-                    <!-- ENCABEZADOS DE TABLA -->
-                    <v-row class="d-flex flex-nowrap">
-                        <v-col cols="3" class="">
-                            <h3 class="tabla_titulo_btn mt-2">
-                                <v-btn text @click="dialogAlumno = true" fab class="btn_add">
-                                    <v-icon class="icon_add" style="font-size: 40px;" >mdi-plus</v-icon>
-                                </v-btn>
-                                 Nuevo Alumno
-                            </h3>
-                                
-                        </v-col>
-
-                        <v-col v-if="clase.listas" v-for="(lista, index) in clase.listas" 
-                        :key="index" class=" d-flex align-center justify-center " cols="2">
-                                <h3 class="tabla_titulos">{{lista.nombre}}</h3> 
-                        </v-col>
-
-                        <v-col cols="3" class="">
-                            <h3 class="tabla_titulos  text-center mt-3">
-                                <v-btn text @click="dialogLista = true"   fab x-small class="btn_add_list">
-                                    <v-icon  class="icon_add"  style="font-size: 25px;">mdi-plus</v-icon>
-                                </v-btn>
-                                Nueva lista
-                            </h3>
-                        </v-col>
-
-                        <!-- <v-col cols="3" class="">
-                            <h3 class="tabla_titulo_btn mt-2">
-                                <v-btn text @click="dialogAlumno = true" fab class="btn_add">
-                                    <v-icon class="icon_add" style="font-size: 40px;" >mdi-plus</v-icon>
-                                </v-btn>
-                                 Nuevo Alumno
-                            </h3>
-                                
-                        </v-col> -->
-                        
-                    </v-row>
-                    <v-divider class="mx-4"></v-divider>
-                    <!-- ENCABEZADOS DE TABLA -->
-
-                    <!-- DATOS DE ALUMNO Y DATOS DE LISTAS -->
-                    <v-row v-for="(a, index) in clase.alumnos" :key="index"  class="d-flex flex-nowrap" >
-                        <v-col  cols='3' class=" py-1  d-flex align-center  pl-4 " >
-                            <!-- <div class="red d-flex align-center"> -->
-                                <v-avatar size="38" > 
-                                    <v-img
-                                    :src="a.urlImagen === 'none' || a.urlImage ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : a.urlImagen"
-                                    alt="foto"
-                                    ></v-img>
-                                </v-avatar>
-                                <div class="ml-2">
-                                    <p class="mt-3 nombre_alumno">{{a.nombre}} {{a.apellidos}}</p>
-                                </div>
-                            <!-- </div> -->
-                        </v-col>
-                        <!-- <div v-if="a.listas"> -->
-                            <!-- <v-col v-for="(lista, index) in horario.listas" :key="index" class="" cols="2"> -->
-                        <!-- <v-col class="fila red"  v-for="(lista, index) in a.listas" :key="index" :cols="index === 'nombre' ? '2' : '2'" > -->
-                        <v-col class="fila d-flex justify-center "  
-                        v-for="(lista, index) in a.listas" :key="index" cols="2" >
-                            <!-- <div class=" blue"> -->
-                                <!-- <p :class="index === 'nombre' ? '' : 'text-center'">{{lista.tipoLista}}</p> -->
-
-                                <v-btn v-if="lista.tipoLista === 'Semáforo'" small class="mx-2" fab text @click.stop="asignarCal(lista, a, lista.nombre, index)">
-                                    <v-icon 
-                                        v-if="lista.calificacion === '' || lista.calificacion === 'Bien'"
-                                        color="green" style="font-size: 30px;"
-                                    >
-                                        mdi-emoticon-happy
-                                    </v-icon>
-                                    <v-icon 
-                                        v-else-if=" lista.calificacion === 'Regular'"
-                                        color="yellow" style="font-size: 30px;"
-                                    >
-                                        mdi-emoticon-neutral
-                                    </v-icon>
-                                    <v-icon 
-                                        v-else-if=" lista.calificacion === 'Mal'"
-                                        color="red" style="font-size: 30px;"
-                                    >
-                                        mdi-emoticon-sad
-                                    </v-icon>
-                                </v-btn>
-                                <v-switch  
-                                    v-model="lista.calificacion"
-                                    v-else-if="lista.tipoLista === 'ON/OFF' "
-                                ></v-switch>
-                                <v-btn v-else-if="lista.tipoLista === 'Si/No'" 
-                                class="mx-2" fab text small  :color="lista.calificacion ? 'green' : 'red'" 
-                                @click.stop="asignarCal(lista, a, lista.nombre)">
-                                    <!-- {{lista.calificacion}} -->
-                                    <v-icon  v-if="lista.calificacion" style="font-size: 30px;">
-                                        mdi-checkbox-marked-circle
-                                    </v-icon>
-                                    <v-icon  v-else style="font-size: 30px;">
-                                        mdi-close-circle
-
-                                    </v-icon>
-
-                                    <!-- <v-icon color="pink darken-4"  style="font-size: 80px;">mdi-plus</v-icon> -->
-                                </v-btn>
-
-                                <v-btn v-else-if="lista.tipoLista === 'Rango 1/10' " 
-                                class="mx-2 " fab text small
-                                @click.stop="asignarCal(lista, a, lista.nombre)" >
-                                <p class="calNumero" v-if="lista.calificacion === ''">0</p>
-                                <p class="calNumero" v-else>{{lista.calificacion}}</p>
-                                    <!-- {{lista.calificacion}} -->
-                                    <!-- <v-icon  v-if="lista.calificacion" style="font-size: 40px;">
-                                        mdi-checkbox-marked-circle
-                                    </v-icon>
-                                    <v-icon  v-else style="font-size: 40px;">
-                                        10
-                                    </v-icon> -->
-
-                                    <!-- <v-icon color="pink darken-4"  style="font-size: 80px;">mdi-plus</v-icon> -->
-                                </v-btn>
-
-                                <!-- <v-btn v-if="lista.calificacion === ''">Asignar</v-btn>
-                                <v-btn v-else>{{lista.tipoLista}}: {{lista.calificacion}}</v-btn> -->
-                                
-                                <!-- <p :class="index === 'nombre' ? '' : 'text-center'">{{lista.tipoLista}}: {{lista.calificacion}}</p> -->
-                            <!-- </div> -->
-                        </v-col>
-                        <v-col cols="3" class=""></v-col>
-    
-                        <!-- </div> -->
-                        <!-- <v-col :cols="index === 0 ? '4' : 'auto'" >
-                            <h3>{{a.nombre}}</h3>
-                        </v-col> -->
-                        <!-- {{Object.keys(a.data)}} -->
-                        <!-- <v-col :cols="index === 0 ? '4' : 'auto'" >
-                            <h3>{{a.conducta}}</h3>
-                        </v-col>
-                        <v-col :cols="index === 0 ? '4' : 'auto'" >
-                            <h3>{{a.asistencia}}</h3>
-                        </v-col>
-                        <v-col :cols="index === 0 ? '4' : 'auto'" >
-                            <h3>{{a.nombre}}</h3>
-                        </v-col> -->
-                        <!-- <v-divider class="mx-4"></v-divider> -->
-    
-                    </v-row>
-                    <!-- DATOS DE ALUMNO Y DATOS DE LISTAS -->
-                    
-    
-                </v-col>
-            </v-row>
-            <!-- <div class="pink"><h1 class="primary--text ml-3">Mis Grupos</h1></div>
-            <div class="blue"><v-btn class="orange mr-3">Ver más</v-btn></div> -->
-        </v-card>
-        <!-- </div> -->
-        <v-btn v-if = "fecha !== ''" class="mt-3  mx-16 success" @click="updateFirebaseGrupo()" >Guardar cambios</v-btn>
-        <!-- TABLA DE ALUMNOS -->
-
-    </v-container>
-    
-    
-
-
-
-
-
-
-        <!-- DIALOG DE REGISTRO DE ALUMNOS -->
-    <v-dialog v-model="dialogAlumno" persistent max-width="755">
-        <!-- {{dialogAlumno}} -->
-      <v-card class="px-10">
-        <v-card-title class=" justify-space-between">
-            <v-btn icon text small color="purple" @click="" >
-                <!-- <v-icon>mdi-arrow-left-bold</v-icon> -->
-            </v-btn>
-            <!-- <h2 class="headline purple--text ">Nuevo Alumno</h2> -->
-            <!-- <h2 class="primary--text ">Nuevo Alumno</h2> -->
-            <h3 class=" primary--text mt-2">Nuevo alumno</h3>
-
-            <v-btn icon text small color="purple" @click="dialogAlumno = false" >
-                <v-icon>mdi-window-close</v-icon>
-            </v-btn>
-        </v-card-title>
-        <div class="">
-         <v-form ref="formAlumno"
-         v-model="esAlumnoValido"
-         lazy-validation>
+                            <img src="images/iconos/haztepremium.png" width="50" class="pa-0 ma-0" /><img src="images/iconos/haztepremium1.png" width="100"  class="pa-0 ma-0" />
+              
+                      </router-link> 
+                      &nbsp;-->
+    </div>
+  </v-card-title>
+  <v-card-text style="max-width:1200px; width:100%; margin:0 auto;">
+<v-main>
+  <v-row>
+    <v-col cols="12" md="12">
+      <v-card>
+        <v-card-text>
           <v-row>
-            <v-col class="" cols="5">
-              <div  hidden>
-                  <input type="file" @change = "changeImagenAlumno" ref="fileupload"/>
-              </div> 
+            <v-col cols="12" md="12" class="text-center">
+            
+            </v-col>
 
-              <!-- BOTON DE PARA ELEGIR FOTO  -->
-              <v-card
-                  class="pa-2 mx-2  d-flex justify-center align-center"
-                  height="150px"
-                  style="background-color: #F2EAF1;"
+            <v-col cols="12" md="6">
+              <h3 class="primary--text"><b>{{formatfecha}}</b></h3>
+            </v-col>
+
+            <v-col cols="12" md="6" class="text-right">
+              <h4
+                class="primary--text"
+                @click="vercalendario=true"
+                style="cursor:pointer;"
               >
-
-                <v-btn text fab dark x-large
-                  class="m-0 p-0 btn_add_img"
-                  @click="seleccionarImagenAlumno"
+                Ver otros días
+                <v-icon class="primary--text" style="font-size:25px;"
+                  >mdi-chevron-right</v-icon
                 >
-                  <div v-if="!imagen" >
-                    <v-icon class="icon_add"  style="font-size: 80px;">mdi-plus</v-icon>
-                  </div>
-                  <div v-else  class="divFoto">
-                    <v-img
-                    :src="urlImagenPrevia"
-                    alt="foto"
-                    class="imagenPre"
-                    contain
-                    ></v-img>
-                  </div>
-                </v-btn>
-
-              </v-card>
-              <p class="text-center sub mt-2">Añadir imagen de alumno</p>
-
-
-              <!-- <div class="  d-flex justify-center align-center ">
-                <v-btn
-                  class=" mt-12"
-                  color=""
-                  height="150" width="85%"
-                  @click="seleccionarImagenAlumno"
-                >
-                  <div v-if="!imagen" >
-                      <v-icon color="pink darken-4"  style="font-size: 120px;">mdi-plus</v-icon>
-                  </div>
-                  <div v-else  class="divFoto">
-                          <v-img
-                          :src="urlImagenPrevia"
-                          alt="foto"
-                          class="imagenPre"
-                          contain
-                          ></v-img>
-                  </div>
-                </v-btn>
-              </div>
-              <p class="text-center sub mt-2">Añadir imagen de alumno</p> -->
+              </h4>
             </v-col>
 
-            <v-col cols="7" class="pr-7">
-              <div class=""> 
-                <v-text-field
-                    v-model="datosNuevoAlumno.nombre"
-                    placeholder="Nombre"
-                    required
-                    outlined
-                    :rules="[v => !!v || 'Nombre es requerido']"
-                    @keyup.enter="validarFormularioAlumno"
-
-                ></v-text-field>
-                <v-text-field
-                    v-model="datosNuevoAlumno.apellidos"
-                    placeholder="Apellidos"
-                    required
-                    outlined
-                    :rules="[v => !!v || 'Apellidos son requeridos']"
-                    @keyup.enter="validarFormularioAlumno"
-
-                ></v-text-field>
-                <v-text-field
-                    v-model="datosNuevoAlumno.fechaNacimiento"
-                    placeholder="Fecha nacimiento"
-                    required
-                    outlined
-                    :rules="[v => !!v || 'Fecha de nacimiento es requerida']"
-                    @keyup.enter="validarFormularioAlumno"
-
-                ></v-text-field>
-                <!-- {{datosNuevoAlumno.sexo}} -->
-                <v-radio-group 
-                    v-model="datosNuevoAlumno.sexo" 
-                    :mandatory="false" row
-                    :rules="[v => !!v || 'Dato equerido']">
-                    <v-radio label="Niña" value="F"></v-radio>
-                    <v-radio label="Niño" value="M"></v-radio>
-                </v-radio-group>
-
-                <v-text-field
-                    v-model="datosNuevoAlumno.telefono"
-                    placeholder="Telefono"
-                    required
-                    outlined
-                    :rules="[v => !!v || 'Telefono es requerido']"
-                    @keyup.enter="validarFormularioAlumno"
-
-                ></v-text-field>
-                <!-- <p class="sub">*Campo obligatorio</p > -->
-              </div>
+            <v-col cols="12" md="6">
+              <v-row>
+                <v-col cols="12" md="6">
+                  <h4 class="primary--text">
+                    <b
+                      ><v-switch
+                        v-model="stclases"
+                        :label="stclases ? 'en Clase' : 'Descanso'"
+                      ></v-switch
+                    ></b>
+                  </h4>
+                </v-col>
+                <v-col cols="12" md="6"> </v-col>
+              </v-row>
             </v-col>
 
+            <v-col cols="12" md="6" class="text-right">
+              <h4 style="cursor:pointer;" @click="fechahorario=true">
+                {{formatfecha}}
+                <v-icon class="primary--text">mdi-lead-pencil</v-icon>
+              </h4>
+            </v-col>
           </v-row>
-          <div class="d-flex justify-center">
-              <v-btn 
-                  :disabled="!esAlumnoValido" dark 
-                  class="red px-10 mb-5 btn_crearG" 
-                  @click="validarFormularioAlumno"  
-              > Crear alumno</v-btn>
-          </div>
-             
-         </v-form>
-
-                    
-                 
-        </div>
+        </v-card-text>
       </v-card>
-    </v-dialog>
-    
-    
-    
-    
-        <!-- DIALOG DE REGISTRO DE ALUMNOS -->
-    <v-dialog v-model="dialogLista" persistent max-width="755">
-        <!-- {{dialogAlumno}} -->
-      <v-card class="">
-        <v-card-title class=" justify-space-between">
-            <v-btn icon text small color="purple" @click="" >
-                <!-- <v-icon>mdi-arrow-left-bold</v-icon> -->
-            </v-btn>
-            <h3 class="primary--text ">Nueva Lista</h3>
-            <v-btn icon text small color="purple" @click="dialogLista = false" >
-                <v-icon>mdi-window-close</v-icon>
-            </v-btn>
-        </v-card-title>
-        <div class="">
-         <v-form ref="formLista"
-         v-model="esListaValido"
-         lazy-validation>
-          <v-row class="mx-8">
-            <v-col cols="12" class="pr-7">
-              <div class=""> 
-                <v-text-field
-                    v-model="datosNuevoLista.nombre"
-                    placeholder="Nombre de la lista"
-                    required
-                    outlined
-                    :rules="[v => !!v || 'Nombre es requerido']"
+    </v-col>
+    <v-col cols="12" md="12">
+      <v-card>
+        <v-card-text>
 
-                ></v-text-field>
-                <div hidden>
-                    <v-text-field
-                            v-model="datosNuevoLista.tipoLista"
-                            placeholder="Datos"
-                            required
-                            outlined
-                            :rules="[v => !!v || 'Nombre es requerido']">
-                    </v-text-field>
-                </div>
-                <label class="span_txt" for="">Seleccione modo</label>
-                <v-card class="mt-2">
-                    
-                    <v-row class="mx-2">
-                    
-                        <v-col v-for="(lis, index) in listasOpciones" :key="index">
-                        <!-- datosNuevoLista -->
-                            
+          <v-data-table  :headers="cabeceraListaAlumnos" :items="cargaalumnos" >
+<!------info de cabecera-->
+    <template v-slot:top='{ item }'>
+      <v-btn @click="addalumno=true" style="text-transform: none;" depressed class="white">              <v-avatar 
+              size="35" 
+              class="cyan" 
+              
+              style="cursor:pointer;"
+              >
+              <v-icon class="white--text">mdi-plus</v-icon>
+                </v-avatar>
+           Nuevo Alumno
+          </v-btn>
+  <v-btn @click="nuevalista=true" style="text-transform: none;" depressed class="white"
+            ><v-avatar class="cyan" size="35"
+              ><v-icon class="white--text">mdi-plus</v-icon></v-avatar
+            >
+            Nueva Lista</v-btn
+          >
+       
+<v-btn style="text-transform: none;"  @click="importaGenerales()" depressed class="white" ><v-avatar class="cyan" size="35"><v-icon class="white--text">mdi-download</v-icon></v-avatar> Lista General</v-btn>
 
-                            <div class="  d-flex justify-center align-center "> 
-                                <v-btn height="100" :class="lis.selected ? 'primary' : ''" width="85%" @click="elegirTipoLista(lis)" >
-                                    <div class="divFoto">
-                                            <v-img
-                                            :src="lis.img"
-                                            alt="foto"
-                                            class="imagenPre"
-                                            contain
-                                            ></v-img>
-                                    </div>
-                                </v-btn>
-                            </div>
-                            <div>
-                               <h5 class="text-center span_txt_titulo mt-2"> {{lis.titulo}}</h5>
-                            </div>
-                        </v-col>
-                </v-row>
-                    <v-alert
-                    v-if="errorTipoLista"
-                        type="error"
-                    >{{errorTipoListaMsg}}</v-alert>
-                        <!-- <div v-if="errorTipoLista">Error: </div> -->
 
-                </v-card>
-                        <!-- <div v-if="errorTipoLista">Error: {{errorTipoListaMsg}}</div> -->
+            </template>
+<!------info de cuerpo----->
+<template v-slot:item.action='{ item }'>
+  <v-btn class="white" depressed><v-icon class="primary--text">mdi-pencil-outline</v-icon></v-btn>
+</template>
 
-    
-                <v-radio-group 
-                    v-model="allDays" 
-                    :mandatory="false" row
-                    :rules="[v => !!v || 'Dato equerido']">
-                    <v-radio label="Solo este día" class="radio_text" value=false></v-radio>
-                    <v-radio label="Todos los días" class="radio_text" value=true></v-radio>
-                </v-radio-group>
-    
-              </div>
-            </v-col>
-    
-          </v-row>
-          <div class="d-flex justify-center">
-              <v-btn 
-                  :disabled="!esListaValido" dark 
-                  class="red px-10 mb-5 btn_crearG" 
-                  @click="validarFormularioLista"  
-              > Crear lista</v-btn>
-          </div>
-             
-         </v-form>
-    
-                    
-                 
-        </div>
+
+<!---------Action Button-------------->
+
+        <template v-slot:item.fotoAlumno='{item}'>
+          <v-avatar size="60">
+            <img :src="item.fotoAlumno"  width="100%" />
+          </v-avatar>
+        </template>
+
+        <template v-slot:item.asistencia='{ item }'>
+         
+          <listasdetareas tipo="Asistencia"  > 
+          </listasdetareas>  
+          
+
+
+        </template>
+
+        <template v-slot:item.conducta='{ item }'>
+          <listasdetareas tipo="Conducta"  > 
+          </listasdetareas>  
+        </template>
+
+
+
+          </v-data-table>
+
+
+
+        </v-card-text>
       </v-card>
-    </v-dialog>
+      <v-btn
+        class="melon white--text"
+        style="text-transform: none;"
+        @click="guardarysalir()"
+        >Guardar y Salir</v-btn
+      >
+    </v-col>
+  </v-row>
 
-    <!-- <v-col cols="5" class="  days">
-                  <v-col cols="12" class=" days">
-                   <div class="d-flex flex-nowrap align-center justify-space-between">
-                     <div class> {{nuevoHorario.dia}} </div>
-                      <div>
-                        <v-switch  
-                        v-model="nuevoHorario.clase" :label="nuevoHorario.clase ? 'Clase' : 'Descanso' "
-                        ></v-switch>
-                      </div>
-                   </div>
+  <v-dialog v-model="fechahorario" max-width="1200px">
+    <v-card>
+      <v-card-text>
+        <v-row class="pa-0">
+          <v-col cols="12" md="12" class="text-center pa-0 pt-10">
+            <h2 class="primary--text" style="font-size: 35px;">
+              Horario de clases
+            </h2>
+          </v-col>
+          <v-col cols="12" md="12" class="text-left pa-0">
+            <label>Guardar cambios en:</label>
+            <v-radio-group v-model="tpghoras" row class="text-center">
+              <v-radio label="General" value="gg"></v-radio>
+              <v-radio label="Solo este día" value="ged"></v-radio>
+            </v-radio-group>
+          </v-col>
+          <v-col
+            cols="12"
+            md="12"
+            class="text-left pa-0"
+            v-for="(key,index) in cargaHoras"
+            :key="'dia'+index"
+          >
+            <v-row class="pa-0">
+              <v-col cols="12" md="12" class="pa-0">
+                <v-row class="pa-0 pl-5">
+                  <v-col cols="12" md="4" class="text-center"
+                    ><v-text-field
+                      v-if="key.sthorario===true"
+                      v-model="key.materias"
+                      label="Materia"
+                      outlined
+                    ></v-text-field>
+                    <h2 v-if="key.sthorario===false" class="mt-4">
+                      {{key.materias}}
+                    </h2>
                   </v-col>
-                  </v-col> -->
-    
-    <v-dialog v-model="dialogHorario" persistent max-width="800">
-        <!-- {{dialogAlumno}} -->
-      <v-card class="">
-        <v-card-title class=" justify-space-between mx-2">
-            <v-btn icon text small color="purple" @click="" >
-                <!-- <v-icon>mdi-arrow-left-bold</v-icon> -->
+
+                  <v-col cols="12" md="3">
+                    <v-row>
+                      <v-col cols="12" md="3">De:</v-col
+                      ><v-col
+                        cols="12"
+                        md="9"
+                        style="border:solid 1px #ccc; border-radius:5px;"
+                      >
+                        <vue-timepicker
+                          v-if="key.sthorario===true"
+                          v-model="key.horaIni"
+                          format="hh:mm A"
+                          input-width="100%"
+                        ></vue-timepicker>
+                        <span v-if="key.sthorario===false"
+                          >{{key.horaIni}}</span
+                        >
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                  <v-col cols="12" md="3">
+                    <v-row>
+                      <v-col cols="12" md="3">A:</v-col
+                      ><v-col
+                        cols="12"
+                        md="9"
+                        style="border:solid 1px #ccc; border-radius:5px;"
+                      >
+                        <vue-timepicker
+                          v-if="key.sthorario===true"
+                          v-model="key.horaFin"
+                          format="hh:mm A"
+                          input-width="100%"
+                        ></vue-timepicker>
+                        <span v-if="key.sthorario===false"
+                          >{{key.horaFin}}</span
+                        >
+                      </v-col>
+                    </v-row>
+                  </v-col>
+
+                  <v-col cols="12" md="2" class="pa-6">
+                    <v-icon
+                      class="primary--text"
+                      style="cursor:pointer;"
+                      v-if="key.sthorario===false"
+                      @click="key.sthorario=true"
+                      >mdi-lead-pencil</v-icon
+                    >
+                    <v-icon
+                      class="primary--text"
+                      style="cursor:pointer;"
+                      v-if="key.sthorario===true"
+                      @click="key.sthorario=false"
+                      >mdi-check-bold</v-icon
+                    >
+                    <v-icon
+                      class="primary--text"
+                      style="cursor:pointer;"
+                      v-if="key.sthorario===true"
+                      @click="deletehorario(index)"
+                      >mdi-delete</v-icon
+                    >
+                    <!---- <v-icon
+                      class="primary--text"
+                      style="cursor:pointer;"
+                      v-if="key.sthorario===false"
+                      >mdi-table-eye</v-icon
+                    >---->
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-col>
+
+          <v-col cols="12" md="12" class="text--left">
+            <v-btn
+              style="border-radius:50%; width:40px; height:60px;"
+              class="cyan pa-0"
+              @click="addhorario"
+              ><v-icon class="white--text">mdi-plus</v-icon>
             </v-btn>
-            <h3 class=" primary--text ">Horarios de clase</h3>
-            <v-btn icon text small color="purple" @click="dialogHorario = false" >
-                <v-icon>mdi-window-close</v-icon>
-            </v-btn>
-        </v-card-title>
-        <div class="mt-5">
-            <!-- HORARIOS CREADOS -->
-            <div class="mx-7 px-2 "  v-for="(hr, index) in materia.horario" :key="index">
-                <!-- <span>{{hr.dia}}</span> -->
-                <v-form :ref="hr.dia"
-                    v-model="esHorarioValido"
-                    lazy-validation
+            <b class="primary--text" @click="addhorario">Nuevo horario</b>
+          </v-col>
+          <v-col cols="12" md="12" class="text-center">
+            <v-btn
+              class="melon white--text rounded-xl"
+              @click="GuardarCambiosHorario()"
+              style="text-transform:none;"
+              >Guardar Cambios</v-btn
+            >
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
+  <v-dialog v-model="addalumno" max-width="750px" >
+    <v-card>
+      <v-card-title class="text-center">
+        <v-row>
+          <v-col cols="12" md="10">
+            <h3 class="primary--text"><b>Nuevo Alumno</b></h3>
+            <v-spacer></v-spacer>
+          </v-col>
+          <v-col cols="12" md="2">
+            <v-btn
+              ><v-icon class="primary--text" @click="addalumno=false"
+                >mdi-close</v-icon
+              ></v-btn
+            >
+          </v-col>
+        </v-row>
+      </v-card-title>
+      <v-card-text>
+        <v-row>
+          <v-col cols="12" md="6" class="text-center">
+            <subirimagen
+              ejecimagen="uploadimg"
+              @updateImg="previewI=$event"
+              titulo="Añadir imagen de alumno "
+            ></subirimagen>
+            <br />
+            <label><b>Modo de registro</b></label>
+            <v-radio-group v-model="alumnoselect.guardaen" row>
+              <v-radio label="General" value="1"> </v-radio>
+              <v-radio label="Solo este día" value="0"> </v-radio>
+            </v-radio-group>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-row>
+              <v-col cols="12" md="12" class="pa-0">
+                <v-text-field
+                  label="Nombre"
+                  outlined
+                  v-model="alumnoselect.Nombre"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="12" class="pa-0">
+                <v-text-field
+                  label="Apellido"
+                  outlined
+                  v-model="alumnoselect.Apellido"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" md="9" class="pa-0">
+                <DatePicker
+                  v-model="alumnoselect.fechaNacimiento"
+                  :masks="masks"
                 >
-                    <v-row  >
-                        <!-- {{index}} -->
-                        <v-col cols="12"  class="days  ">
-                            <v-row class="d-flex justify-center">
-                                <v-col cols="4" class="days ">
-                                    <!-- {{hr.edit}} -->
-                                    <v-select
-                                        v-model="hr.dia"
-                                        :items="dias"
-                                        label="Dia de la semana"
-                                        single-line
-                                        outlined
-                                        :disabled="!hr.edit"
-                                    ></v-select>
-                                </v-col>
-                                <v-col cols="3" class="days">
-                                    <div height="50%" class="d-flex  ">
-                                        <span class="mt-3 mr-2">De: </span>
-                                        <v-text-field
-                                            label="12:00 hrs"
-                                            single-line
-                                            outlined
-                                            v-model="hr.horaInicio"
-                                            :rules="[v => !!v || 'Hora de inicio es requerido']"
-                                            required
-                                            :disabled="!hr.edit"
-                                            @keyup.enter="validarFormularioHorario"
-                                        ></v-text-field>
-                                    </div>
-                                </v-col>
+                  <template v-slot="{ inputValue, inputEvents }">
+                    <input
+                      style="border:rgb(36,35,35)160,155,155) 1px solid; border-radius:5px; padding:10px;"
+                      :value="inputValue"
+                      placeholder="Fecha de nacimiento"
+                      v-on="inputEvents"
+                    />
+                  </template>
+                </DatePicker>
+              </v-col>
+              <v-col cols="12" md="3" class="pt-5">
+                {{calculaedad}}
+              </v-col>
+              <v-col cols="12" md="12" class="pa-0">
+                <v-radio-group v-model="alumnoselect.genero" row>
+                  <v-radio label="Niña" value="niño"></v-radio>
+                  <v-radio label="Niño" value="niña"></v-radio>
+                </v-radio-group>
+              </v-col>
+              <v-col cols="12" md="12" class="pa-0">
+                <v-text-field
+                  label="Teléfono de emergencia"
+                  v-model="alumnoselect.telefono"
+                  outlined
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-col>
+          <v-col cols="12" md="12" class="pa-0 text-center">
+            <v-btn
+              class="melon white--text  rounded-xl "
+              style="text-transform:none; "
+              @click="guardarAlumno('g')"
+              >Guardar</v-btn
+            >
+            <v-btn
+              class="primary white--text rounded-xl text-transform:none;"
+              style="text-transform:none; "
+              @click="guardarAlumno('gc')"
+              >Guardar y crear nuevo</v-btn
+            >
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 
-                                <v-col cols="3" class="days d-flex  aling-center">
+  <v-dialog v-model="vercalendario" mx-width="400px">
+    <DatePicker
+      v-model="fecha"
+      mode="date"
+      :masks="masks"
+      :is-inline="true"
+      is-expanded
+      @input="changeDate"
+      @dblclick="dbclick()"
+    ></DatePicker>
+  </v-dialog>
 
-                                        <span class="mt-3 mr-2">A: </span>
-                                        
-                                        <v-text-field
-                                            single-line
-                                            outlined
-                                            label="10:00 hrs"
-                                            v-model="hr.horaFin"
-                                            :rules="[v => !!v || 'Hora de fin es requerido']"
-                                            :disabled="!hr.edit"
-                                            required
-                                            @keyup.enter="validarFormularioHorario"
-                                        ></v-text-field>
-                                </v-col>
-                                <v-col cols="1" class=" d-flex justify-end days ">
-                                    
-                                    <v-btn
-                                        icon
-                                        small
-                                        color="primary"
-                                        class=" mt-3 "
-                                        @click="hr.edit = true; crearHorario = false; diaEditar= hr.dia;"
-                                    >
-                                        <v-icon>mdi-pencil</v-icon>
-                                    </v-btn>
-                                    <v-btn
-                                        icon
-                                        small
-                                        color="primary"
-                                        class=" mt-3 pl-2"
-                                        @click="eliminarHorario(hr)"
+  <v-dialog v-model="nuevalista" max-width="1000px">
+    <v-card>
+      <v-card-title class="text-center">
+        <v-row>
+          <v-col cols="12" md="10">
+            <h3 class="primary--text"><b>Nuevo Lista</b></h3>
+            <v-spacer></v-spacer>
+          </v-col>
+          <v-col cols="12" md="2">
+            <v-btn
+              ><v-icon class="primary--text" @click="nuevalista=false"
+                >mdi-close</v-icon
+              ></v-btn
+            >
+          </v-col>
+        </v-row>
+      </v-card-title>
+      <v-card-text>
+        <v-row>
+          <v-col cols="12" md="12">
+            <v-text-field outlined label="Nombre de Lista" v-model="crealista.nombreLista" ></v-text-field>
+          </v-col>
+          <v-col cols="12" md="12">
+            <h3>Seleccione modo</h3>
+        </v-col>
+        <v-col cols="12" md="12" style="border:solid #ccc 1px;">
+          <v-item-group
+          v-model="crealista.selectLista"
+          mandatory
+          >
+          <v-row>
+            <v-col cols="12" md="3" class="pa-0 text-center" style="cursor:pointer;" >
+              <v-item v-slot="{ active, toggle }" value="semaforo" >
+                <v-card
+                :color="active ? 'primary white--text' : ''"
+                class="d-flex text-center pa-10"
+                max-width="100%"
+                @click="toggle"
+              >
+             <v-row>
+               <v-col cols="12" md="12">
+              <img src="images/iconos/semaforo.png" width="100%" />
+              
+              </v-col>
+              <v-col cols="12" md="12" style="text-align: center;">
+                <b>Semáforo</b>
+                </v-col>
+              
 
-                                    >
-                                        <v-icon>mdi-delete</v-icon>
-                                    </v-btn>
-                                    
-                                </v-col>
-                            </v-row>
-                        </v-col>
-                    </v-row>
-                </v-form>
-            </div>
-
-
-            <!-- FORMULARIO PARA CREAR NUEVO HOPARIO -->
-            <v-form ref="formHorario"
-            v-model="esHorarioValido"
-            lazy-validation>
-                <div class="mx-7 px-2 ">
-                    <v-row  class="" >
-
-                        <v-col cols="12"  class="days" v-show="crearHorario">
-                            <v-row class="d-flex justify-center">
-                                <v-col cols="4" class="days ">
-                                    <v-select
-                                        :items="dias"
-                                        v-model="nuevoHorario.dia"
-                                        label="Dia de la semana"
-                                        single-line
-                                        outlined
-                                        :rules="[v => !!v || 'Dia es requerido']"
-                                    ></v-select>
-                                </v-col>
-                                <v-col cols="3" class="days">
-                                    <div height="50%" class="d-flex  ">
-                                        <span class="mt-3 mr-2">De: </span>
-                                        <v-text-field
-                                            label="12:00 hrs"
-                                            single-line
-                                            outlined
-                                            v-model="nuevoHorario.horaInicio"
-                                            :rules="[v => !!v || 'Hora de inicio es requerido']"
-                                            required
-                                            
-                                            @keyup.enter="validarFormularioHorario"
-                                        ></v-text-field>
-                                    </div>
-                                </v-col>
-        
-                                <v-col cols="3" class="days d-flex  aling-center">
-
-                                        <span class="mt-3 mr-2">A: </span>
-                                        
-                                        <v-text-field
-                                            single-line
-                                            outlined
-                                            label="10:00 hrs"
-                                            v-model="nuevoHorario.horaFin"
-                                            :rules="[v => !!v || 'Hora de fin es requerido']"
-                                            
-                                            required
-                                            @keyup.enter="validarFormularioHorario"
-                                        ></v-text-field>
-                                </v-col>
-                                <v-col cols="1" class=" d-flex justify-end days ">
-
-                                    <v-btn v-show="false" icon small color="primary" class=" mt-3 "
-                                    >
-                                        <v-icon>mdi-pencil</v-icon>
-                                    </v-btn>
-                                    <v-btn
-                                        icon
-                                        small
-                                        color="primary"
-                                        class=" mt-3 pl-2"
-                                        @click="borrarNuevoHorario"
-
-                                    >
-                                        <v-icon>mdi-delete</v-icon>
-                                    </v-btn>
-                                    
-                                    <!-- <v-btn icon  small color="primary" class=" mt-3 " >
-                                        <v-icon>mdi-pencil</v-icon>
-                                    </v-btn>
-                                    </v-btn icon small color="primary" class=" mt-3 pl-2" >
-                                        <v-icon>mdi-delete</v-icon>
-                                    </v-btn> -->
-                                    
-                                </v-col>
-                                
-                            </v-row>
-                            
-                        </v-col>
-                        <v-col cols="12" class=" pl-10">
-                            <h3 class="tabla_titulos ">
-                                <v-btn text @click="crearHorario = true" fab class="btn_add">
-                                    <v-icon class="icon_add" style="font-size: 50px;">mdi-plus</v-icon>
-                                </v-btn>
-                                <span class="primary--text tabla_titulo_btn">Nuevo Horario</span>
-                            </h3>
-                        </v-col>
-        
-                    </v-row>
-                    <!-- <div>
-                        <h3 class="tabla_titulos mt-2">
-                            <v-btn text @click="dialogAlumno = true" fab class="btn_add">
-                                <v-icon class="icon_add" style="font-size: 50px;">mdi-plus</v-icon>
-                            </v-btn>
-                            <span class="primary--text">Nuevo Alumno</span>
-                        </h3>
-                    </div> -->
-
+                <v-scroll-y-transition>
+                  <div
+                    v-if="active"
+                    class="display-3 flex-grow-1 text-center"
+                  >
                 </div>
-              <!-- <div>
-                <h3 class="tabla_titulos mt-2">
-                    <v-btn text @click="dialogAlumno = true" fab class="btn_add">
-                        <v-icon class="icon_add" style="font-size: 50px;">mdi-plus</v-icon>
-                    </v-btn>
-                     <span class="primary--text">Nuevo Alumno</span>
-                </h3>
-              </div> -->
+              </v-scroll-y-transition>
+           
+            </v-row>
 
-              <div class="d-flex  justify-center">
-                    <v-btn 
-                        :disabled="!esHorarioValido" dark 
-                        v-if="crearHorario"
-                        class="red px-10 mb-5 btn_crearG" 
-                        @click="validarFormularioHorario('formHorario')"  
-                    > Aceptar</v-btn>
+               </v-card>
+              
+              </v-item>
+            </v-col>
+            <v-col cols="12" md="3" class="pa-0 text-center" style="cursor:pointer;" >
+              <v-item v-slot="{ active, toggle }" value="SiNo" >
+                <v-card
+                :color="active ? 'primary white--text' : ''"
+                class="d-flex text-center pa-10"
+                max-width="100%"
+                @click="toggle"
+              >
+             <v-row>
+               <v-col cols="12" md="12">
+              <img src="images/iconos/SiNo.png" width="100%" />
+              
+              </v-col>
+              <v-col cols="12" md="12" style="text-align: center;">
+                <b>Si / No</b>
+                </v-col>
+              
 
-                    <v-btn 
-                        v-else
-                        :disabled="!esHorarioValido" dark 
-                        class="red px-10 mb-5 btn_crearG" 
-                        @click="validarFormularioHorario(diaEditar)"  
-                    > Guarda cambios</v-btn>
+                <v-scroll-y-transition>
+                  <div
+                    v-if="active"
+                    class="display-3 flex-grow-1 text-center"
+                  >
                 </div>
-            </v-form>
-        </div>
-      </v-card>
-    </v-dialog>
-</div>
+              </v-scroll-y-transition>
+           
+            </v-row>
+
+               </v-card>
+              
+              </v-item>
+            </v-col>
+           <v-col cols="12" md="3" class="pa-0 text-center" style="cursor:pointer;" >
+              <v-item v-slot="{ active, toggle }" value="rango" >
+                <v-card
+                :color="active ? 'primary white--text' : ''"
+                class="d-flex text-center pa-10"
+                max-width="100%"
+                @click="toggle"
+              >
+             <v-row>
+               <v-col cols="12" md="12">
+              <img src="images/iconos/rango.png" width="100%" />
+              
+              </v-col>
+              <v-col cols="12" md="12" style="text-align: center;">
+                <b>Rango 1/10</b>
+                </v-col>
+              
+
+                <v-scroll-y-transition>
+                  <div
+                    v-if="active"
+                    class="display-3 flex-grow-1 text-center"
+                  >
+                </div>
+              </v-scroll-y-transition>
+           
+            </v-row>
+
+               </v-card>
+              
+              </v-item>
+            </v-col>
+            <v-col cols="12" md="3" class="pa-0 text-center" style="cursor:pointer;" >
+              <v-item v-slot="{ active, toggle }"  value="OnOff" >
+                <v-card
+                :color="active ? 'primary white--text' : ''"
+                class="d-flex text-center pa-10"
+                max-width="100%"
+                @click="toggle"
+              >
+             <v-row>
+               <v-col cols="12" md="12">
+              <img src="images/iconos/OnOff.png" width="100%" />
+              
+              </v-col>
+              <v-col cols="12" md="12" style="text-align: center;">
+                <b>ON / OFF</b>
+                </v-col>
+              
+
+                <v-scroll-y-transition>
+                  <div
+                    v-if="active"
+                    class="display-3 flex-grow-1 text-center"
+                  >
+                </div>
+              </v-scroll-y-transition>
+           
+            </v-row>
+
+               </v-card>
+              
+              </v-item>
+            </v-col>
+          </v-row>
+            </v-item-group>
+            </v-col>
+            <v-col cols="12" md="12">
+              <v-radio-group row v-model="crealista.guardaen">
+                <v-radio label="Solo este día">
+                </v-radio>
+                <v-radio label="Todos los días"></v-radio>
+              </v-radio-group>
+            </v-col>
+          </v-col>
+          <v-col cols="12" md="12" class="text-center">
+            <v-btn class="melon white--text pa-5 rounded-xl" style="text-transform: none;" @click="creaLista()">Crear Lista</v-btn>
+          </v-col>
+          </v-row>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
+</v-main>
+</v-card-text>
+</v-card>
