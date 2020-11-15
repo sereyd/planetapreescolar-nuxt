@@ -1,0 +1,49 @@
+.card_border{
+    border-radius: .8em;
+}
+
+.fotomini{
+    /* height:"150"; */
+     /* width:calc(100% + 50px); */
+     width: 100%;
+     height: 150px;
+     border-radius: 3em;
+}
+
+.textos > p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12.5px;
+}
+.textos > h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+}
+.texto_mb{
+    margin-bottom:0!important;
+}
+.texto_recurso{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+}
+.btn_crearG{
+    border-radius: 13px;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 0em;
+    text-indent: 0em;
+    text-transform: none;
+}
+
+.texto_comentario{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+}
+
+.texto_usuario{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+}
+.datos_extra{
+    margin-bottom:0!important;
+}

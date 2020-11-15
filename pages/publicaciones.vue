@@ -5,11 +5,11 @@
       <v-col cols="12" md="12">
         <h2>Mis Reflexiones</h2>
 
-        <cargablog tipo="REFLEXIONES"   :listaR="listaRecursos.reflexiones" >
+        <cargablog tipo="REFLEXIONES"   :listaR="reflexiones" >
           <template v-slot:header>
             <editorblog tipo="REFLEXIONES" 
-            @updateListaR="listaRecursos.reflexiones=$event"
-            :listaR="listaRecursos.reflexiones"
+            @updateListaR="reflexiones=$event"
+            :listaR="reflexiones"
             @updatepost="updatepost.reflexiones=$event"  imagen="false" ></editorblog>
           </template>
         </cargablog>
@@ -18,12 +18,11 @@
       <v-col cols="12" md="12">
         <h2>Mis Recomendaciones</h2>
 
-        <cargablog tipo="RECOMENDACION"  :listaR="listaRecursos.recomendacion"  >
+        <cargablog tipo="RECOMENDACION"  :listaR="recomendacion"  >
           <template v-slot:header>
             <editorblog tipo="RECOMENDACION"   
-            @updateListaR="listaRecursos.recomendacion=$event"
-            :listaR="listaRecursos.recomendacion"
-
+            @updateListaR="recomendacion=$event"
+            :listaR="recomendacion"
             @updatepost="updatepost.recomendacion=$event"   ></editorblog>
           </template>
         </cargablog>
@@ -31,20 +30,22 @@
       </v-col>
       <v-col cols="12" md="12">
         <h2>Mis Memorias</h2>
-        <cargablog tipo="MEMORIA"  :listaR="listaRecursos.memorias" >
+        <cargablog tipo="MEMORIA"  :listaR="memorias" >
           <template v-slot:header>
             <editorblog tipo="MEMORIA"  
-            @updateListaR="listaRecursos.memorias=$event"
+            @updateListaR="memorias=$event"
+            :listaR="memorias"
             @updatepost="updatepost.memorias=$event"    ></editorblog>
           </template>
         </cargablog>
       </v-col>  
       <v-col cols="12" md="12">
         <h2>Mi Blog</h2>
-        <cargablog tipo="BLOG"  :listaR="listaRecursos.blog" >
+        <cargablog tipo="BLOG"  :listaR="blog" >
           <template v-slot:header>
             <editorblog tipo="BLOG"  
-            @updateListaR="listaRecursos.blog=$event"
+            @updateListaR="blog=$event"
+            :listaR="blog"
             @updatepost="updatepost.blog=$event"  ></editorblog>
           </template>
         </cargablog>
@@ -67,12 +68,12 @@ export default {
         reflexiones:"",
         recomendacion:""
       },
-      listaRecursos:{
+      // {
         memorias:[],
         blog:[],
         reflexiones:[],
         recomendacion:[],
-      },
+      // },
       datapage: {
         permisos: 1,
         logeado: true

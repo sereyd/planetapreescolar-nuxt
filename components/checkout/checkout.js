@@ -25,8 +25,8 @@ export default {
       // cardSuscripcion: null,
 
       //SELECCIONAR DOMINIO
-      dominio:"https://educadora.cf",
-      // dominio:"https://educadora.cf/",
+      // dominio:"https://educadora.cf",
+      // dominio:"http://localhost:3000",
 
       //DATOS PRA PANTLLA DE PAGO EXITOSO
       tipoSuscripcion: "",
@@ -126,7 +126,7 @@ export default {
     }
   },
   computed:{
-    ...mapState(['datosUsuario']),
+    ...mapState(['datosUsuario','dominio','urlAPI']),
     
   },
   components:{Spinner},
@@ -173,7 +173,7 @@ export default {
 
       //LLAMADA A LA API EXTERNA PARA CREAR UNA SESION DE PAGO
       // fetch("http://localhost:4242/create-checkout-session", {
-      fetch("https://stripe-checkout-api.herokuapp.com/create-checkout-session", {
+      fetch(this.urlAPI+"/create-checkout-session", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -210,10 +210,14 @@ export default {
             sessionId: data.sessionId
           })
           .then( (result) => {
+
             if (result.error) {
               // var displayError = document.getElementById("error-message");
               // displayError.textContent = result.error.message;
               console.log(result.error)
+            }else{
+              localStorage.setItem("result_beta", JSON.stringify(result) );
+
             }
           });
       });

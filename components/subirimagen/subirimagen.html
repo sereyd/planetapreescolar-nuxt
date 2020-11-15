@@ -8,7 +8,9 @@
         fab  dark
         @click="focus" v-if="tpimg==='avatar'">
     <div v-if="!imagen" >
-        <v-icon color="pink darken-4"  style="font-size: 80px;">mdi-plus</v-icon>
+        <v-avatar size="80" color="#48c9d9" >
+            <v-icon color="#3fefdb"  style="font-size: 80px;">mdi-plus</v-icon>
+        </v-avatar>
     </div>
     <div v-else >
         <v-avatar size="80" > 
@@ -17,36 +19,32 @@
             alt="foto"
             ></v-img>
         </v-avatar>
-      
-
-
     </div>
     </v-btn>
 
     <v-btn
-    max-width='210'
-    class="pa-16"
-    color="purple lighten-5"
-      dark
-    @click="focus" v-if="tpimg==='post'" style="overflow: hidden;" >
-<div v-if="!imagen"  >
-    <v-avatar size="80" color="#48c9d9" >
-    <v-icon color="#3fefdb"  style="font-size: 80px;">mdi-plus</v-icon>
-</v-avatar>
-</div>
-<div v-else >
-    <div >
-        <v-img
-        :src="urlImagenPrevia"
-        alt="foto"
-        width="210"
-        ></v-img>
+        max-width='210'
+        class="pa-16"
+        color="purple lighten-5"
+        dark
+        @click="focus" v-if="tpimg==='post'" style="overflow: hidden;" 
+    >
+        <div v-if="!imagen"  >
+            <v-avatar size="80" color="#48c9d9" >
+                <v-icon color="#3fefdb"  style="font-size: 80px;">mdi-plus</v-icon>
+            </v-avatar>
+        </div>
+        <div v-else >
+            <div >
+                <v-img
+                :src="urlImagenPrevia"
+                alt="foto"
+                width="210"
+                ></v-img>
 
-  </div>
-
-
-</div>
-</v-btn>
+            </div>
+        </div>
+    </v-btn>
 
    
 

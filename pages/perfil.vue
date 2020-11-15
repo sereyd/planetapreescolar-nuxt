@@ -19,6 +19,8 @@
 
 
 <v-btn  v-if="editar===false"  class="melon white--text" @click="editar=true"> Editar perfil </v-btn>
+<!-- <p>membresia: {{datosUsuario.idMembresia}}</p> -->
+<!-- <v-btn  v-if="editar===false && datosUsuario.idMembresia"  class="melon white--text" @click="opcMembresia()"> Membresia </v-btn> -->
 
     </v-col>
     <v-col cols="12" md="6" class="pa-10">
@@ -82,7 +84,7 @@ data(){
     }
 },
 computed:{
-    ...mapState(['datosUsuario'])
+    ...mapState(['datosUsuario','dominio','urlAPI'])
 },
 methods:{
     cargadatos(){
@@ -103,7 +105,29 @@ methods:{
             console.log(e)
 
         }
-    }
+    },
+    opcMembresia(){
+        fetch(this.urlAPI+'/customer-portal', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            sessionId: this.datosUsuario.idMembresia,
+            dominio: `${this.dominio}/perfil`
+          }),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data.url);
+          window.location.href = data.url;
+          
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    
+    },
 },
 components:{
     simpleloader

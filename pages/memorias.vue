@@ -28,8 +28,8 @@
         <listablog
           tipo="MEMORIA"
           :userId="this.datosUsuario.id"
-          titulo="Memorias de otras educadoras"
-          subtitulos="Compoarte tus vivencias y experiencias con la comunidad"
+          titulo=""
+          subtitulos="Comparte tus vivencias y experiencias con la comunidad"
           :addslot="true"
         >
           <editorblog
@@ -48,14 +48,20 @@
 
       <div style="width:100%; height:50px;"></div>
 
-      <listablog
-        tipo="MEMORIA"
-        :idexclude="
-          this.datosUsuario.userlogin === true ? this.datosUsuario.id : ''
-        "
-        titulo="Memorias de otras educadoras"
-        subtitulos="Compoarte tus vivencias y experiencias con la comunidad"
-      />
+      <v-col
+        cols="12"
+        md="12"
+      >
+
+        <listablog
+          tipo="MEMORIA"
+          :idexclude="
+            this.datosUsuario.userlogin === true ? this.datosUsuario.id : ''
+          "
+          titulo="Memorias de otras educadoras"
+          subtitulos="Comparte tus vivencias y experiencias con la comunidad"
+        />
+      </v-col>
     </v-row>
   </v-main>
 </template>
