@@ -79,9 +79,26 @@ export default{
             productoQuery.get()
             .then((querySnapshot) => {
                 querySnapshot.forEach( (doc) => {
+                    let data = doc.data();
+
+                    data.grupo = data.grupo ? data.grupo : {};
+                    data.idMembresia = data.idMembresia ? data.idMembresia : "";
+                    data.estadoMembresia = data.estadoMembresia ? data.estadoMembresia : "";
+                    data.idCliente = data.idCliente ? data.idCliente : "";
+                    data.idSuscripcion = data.idSuscripcion ? data.idSuscripcion : "";
+                    data.importeSuscripcion = data.importeSuscripcion ? data.importeSuscripcion : "";
+                    data.tipoSuscripcion = data.tipoSuscripcion ? data.tipoSuscripcion : "";
+
+                    const datos = {
+                        id: doc.id,
+                        // idMembresia:"",
+
+                        // grupo:{},
+                        ...data
+                      }
                 //    console.log(doc.data());
                     // this.previo = doc.data();
-                    this.loginStore(doc.data());
+                    this.loginStore(datos);
                 });
             })
             .catch(function(error) {
