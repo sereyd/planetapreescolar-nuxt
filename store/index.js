@@ -107,13 +107,14 @@ const createStore = () => {
         reflexiones:[],
         recomendacion:[],
       },
+
       //LINKS DE DOMINIO (PRODUCCION Y DESARROLLO)
-      // dominio:"https://educadora.cf",
       dominio:"http://localhost:3000",
+      // dominio:"https://educadora.cf",
 
       //APIS DEVELOP Y PRODUCCION
-      // urlAPI: "http://localhost:4242",
       urlAPI: "https://stripe-checkout-api.herokuapp.com",
+      // urlAPI: "http://localhost:4242",
 
 
     }),
@@ -180,7 +181,7 @@ const createStore = () => {
                   });
 
                   //REVISAR ESTADO DE LA SUSCRIPCIÓN 
-                  await fetch(context.state.urlAPI+"/check-suscripcion?sessionId=" + context.state.datosUsuario.idMembresia)
+                  await fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + context.state.datosUsuario.idSuscripcion)
                   .then((result)=>{
                     return result.json()
                   })
@@ -352,6 +353,15 @@ const createStore = () => {
           state.datosUsuario.nombre = ""
           state.datosUsuario.apellido = ""
           state.datosUsuario.correo = ""
+          state.datosUsuario.id = ""
+
+          state.datosUsuario.grupo =  {};
+          state.datosUsuario.idMembresia = "";
+          state.datosUsuario.estadoMembresia = "";
+          state.datosUsuario.idCliente = "";
+          state.datosUsuario.idSuscripcion = "";
+          state.datosUsuario.importeSuscripcion = "";
+          state.datosUsuario.tipoSuscripcion = "";
         }else{
           state.datosUsuario = data;
         }

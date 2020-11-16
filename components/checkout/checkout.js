@@ -35,6 +35,8 @@ export default {
       //CLAVES DE PAQUETES
       trimestralPriceId: "price_1HcaNeGqO5WLKI2H66t5f2bc",
       anualPriceId: "price_1HcaOZGqO5WLKI2HTm79PBnc",
+      precioTrimenstral: 500,
+      precioAnual: 1500,
 
       spinner: false,
 
@@ -161,7 +163,8 @@ export default {
       this.spinner = true;
 
       this.tipoSuscripcion = priceTipo;
-      this.importe = priceTipo === 'trimestral' ? "$500.00 MX" : "$1500.00 MX";
+      // this.importe = priceTipo === 'trimestral' ? "$500.00 MX" : "$1500.00 MX";
+      this.importe  = priceTipo === 'trimestral' ? this.precioTrimenstral : this.precioAnual;
 
       const locale = "es"
       

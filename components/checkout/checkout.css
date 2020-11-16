@@ -86,6 +86,14 @@
     width: 300px;
     background-color: #ffffff;
   }
+  .v-btn{
+    letter-spacing: 0em;
+    /* justify-content: center; */
+    text-indent: 0em;
+    /* text-transform: uppercase; */
+    text-transform: none;
+    /* align-items: flex-start; */
+  }
   
   /* .price-table-container section:first-of-type {
     border-top-right-radius: 0px;
