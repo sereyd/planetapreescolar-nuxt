@@ -127,7 +127,7 @@ const createStore = () => {
 
       //DATA PARA BUSQUEDA
       datosBusqueda: {
-        clave: "dia",
+        clave: "",
         tipo: ""
       },
       recursosBusqueda: [],
@@ -183,7 +183,7 @@ const createStore = () => {
           // console.log(user)
           if(user)
             {
-
+              let datos = {};
               const usuarioQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
               usuarioQuery.get()
               .then(async (querySnapshot) => {
@@ -198,10 +198,11 @@ const createStore = () => {
                   data.idMembresia = data.idMembresia ? data.idMembresia : "";
                   data.estadoMembresia = data.estadoMembresia ? data.estadoMembresia : "";
                   data.idCliente = data.idCliente ? data.idCliente : "";
+                  data.idSuscripcion = data.idSuscripcion ? data.idSuscripcion : "";
 
                   // console.log(grups);
                     // console.log(doc.id)
-                      const datos = {
+                       datos = {
                         id: doc.id,
                         // idMembresia:"",
 
@@ -209,11 +210,11 @@ const createStore = () => {
                         ...data
                       }
                       // console.log(datos)
-                      context.commit("cambiastatusSesion",datos);
+                      // context.commit("cambiastatusSesion",datos);
                   });
 
                   //REVISAR ESTADO DE LA SUSCRIPCIÓN 
-                  await fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + context.state.datosUsuario.idSuscripcion)
+                  await fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + datos.idSuscripcion)
                   .then((result)=>{
                     return result.json()
                   })
@@ -223,18 +224,22 @@ const createStore = () => {
                     if(suscripcion.error)
                     {
 
-                      // console.log(suscripcion)
+                      console.log(suscripcion)
                       console.log("SUSCRIPCION NO VÁLIDA")
-                      context.state.datosUsuario.estadoMembresia = "canceled";
+                      datos.estadoMembresia = "canceled";
                     }
                     else{
 
-                      context.state.datosUsuario.estadoMembresia = suscripcion.status;
+                      datos.estadoMembresia = suscripcion.status;
                     }
+
                   })
                   .catch((err)=>{
                     console.log('Error al verificar suscripción', err);
                   });
+
+                  context.commit("cambiastatusSesion",datos);
+
               })
               .catch((error) =>{
                   console.log("Error: ", error);
