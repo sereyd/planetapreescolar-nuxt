@@ -71,6 +71,10 @@
     display:none;
 }
 
+.v-application--is-ltr .v-list-item__icon:first-child{
+    margin-right: 12px!important;
+}
+
 /*   vista mobil */
 @media (max-width:959px){
 .vMmobilview{
@@ -84,6 +88,14 @@
 .menu-sec-anim{
     left:-70px; 
 
+}
+
+.datamenu{
+    width: 100%;
+    max-width:115px;
+    border-radius:10px;
+    position:relative;
+ 
 }
 
 }

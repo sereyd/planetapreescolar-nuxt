@@ -1,8 +1,14 @@
 <template>
     <v-main>
-        <h1>Resultados {{datosBusqueda.tipo}}</h1>
+        
         <Spinner v-if="spinner" />
-        <v-row class="mb-6" no-gutters
+        <div v-else-if="datosBusqueda.tipo !== 'TODOS LOS RECURSOS'">
+            <h2 class="pirmary--text" v-if="busquedaFiltrada.length !== 0" >{{tituloResultados}}</h2>
+            <h2 class="pirmary--text" v-else >No se encontraron coincidencias</h2>
+        </div>
+        <v-row 
+            class="mb-6" no-gutters
+            v-if="datosBusqueda.tipo !== 'TODOS LOS RECURSOS'"
         >
             <v-col v-for="(el, index) in busquedaFiltrada" 
             :key="index" cols="12" md="3" sm="6" class=" mb-3">
@@ -22,14 +28,61 @@
                 <div>
                     <div class=" ml-3 textos">
                         <h4>{{el.titulo}}</h4>
-                        <p class="datosGrupo">{{el.fecha}}</p>
-                        <!-- <p class="datosGrupo">{{el.cicloEscolar}}</p>
-                        <p class="datosGrupo">{{el.total}} alumnos</p> -->
+                        <p class="texto_busqueda">{{el.nombreCreador}}</p>
+                        <p 
+                            v-if="datosBusqueda.tipo === 'RECOMENDACION'" 
+                            class="texto_busqueda">{{el.materia}}
+                        </p>
+                        <p 
+                            v-if="datosBusqueda.tipo === 'RECOMENDACION'" 
+                            class="texto_busqueda">{{el.grado}}
+                        </p>
+
+                        <!-- <p class="datosGrupo">{{el.fecha}}</p> -->
+                        <!-- <p class="datosGrupo">{{el.cicloEscolar}}</p>-->
+                        <!--<p class="datosGrupo">{{el.total}} alumnos</p> -->
                     </div>
                 </div>
 
           </v-col>
         </v-row>
+
+        <div v-else-if="datosBusqueda.tipo === 'TODOS LOS RECURSOS' && !spinner">
+            <div>
+                <h2  class="pirmary--text" v-if="!spinner" >Resultados:</h2>
+                <!-- <h2 class="pirmary--text" v-else >No se encontraron coincidencias</h2> -->
+            </div>
+            <!------recomendaciones----->
+            <!-- <div style="width:100%; height:50px;"></div> -->
+            <listablog 
+                :esBusqueda="true" 
+                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+                tipo="RECOMENDACION" 
+                titulo="Recomendaciones" 
+                subtitulos=""   
+            />
+
+            <!-------Blog------------->
+            <!-- <div style="width:100%; height:50px;"></div> -->
+            <listablog 
+                :esBusqueda="true" 
+                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+                tipo="BLOG" 
+                titulo="Blogs" 
+                subtitulos="" 
+            />
+
+            <!---------memorias------------>
+            <!-- <div style="width:100%; height:50px;"></div> -->
+            <listablog 
+                :esBusqueda="true" 
+                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+                tipo="MEMORIA" 
+                titulo="Memorias" 
+                subtitulos=""
+            />
+
+        </div>
 
         <v-dialog v-model="vistaElemento" fullscreen >
             <v-card >
@@ -91,7 +144,19 @@ export default {
         Spinner
     },
     computed: {
-        ...mapState(['datosUsuario','datosBusqueda','recursosBusqueda'])
+        ...mapState(['datosUsuario','datosBusqueda','recursosBusqueda']),
+        tituloResultados(){
+            let tipoM = "";
+            if(this.datosBusqueda.tipo === "REFLEXIONES")
+                tipoM= "Resultados reflexiones";
+            else if(this.datosBusqueda.tipo === "RECOMENDACION")
+                tipoM= "Resultados recomendaciones";
+            else if(this.datosBusqueda.tipo === "MEMORIA")
+                tipoM= "Resultados memorias";
+            else if(this.datosBusqueda.tipo === "BLOG")
+                tipoM= "Resultados blogs";
+            return tipoM;
+        }
     },
     mounted(){
         
@@ -112,16 +177,29 @@ export default {
             // alert("paso3")
         },
         filtarDatos(){
-            const clave = this.datosBusqueda.clave.toLowerCase();
+            const clave = this.datosBusqueda.clave.toLowerCase().normalize("NFD");
             let recursos = [... this.datos];
 
-            this.busquedaFiltrada = recursos.filter( recurso => {
-                return(
-                    recurso.titulo.toLowerCase().includes(clave) ||
-                    recurso.contenido.toLowerCase().includes(clave)
 
-                )
-            })
+            if(this.datosBusqueda.tipo === "RECOMENDACION")
+                this.busquedaFiltrada = recursos.filter( recurso => {
+                    return(
+                        recurso.titulo.toLowerCase().includes(clave) ||
+                        recurso.contenido.toLowerCase().includes(clave) ||
+                        recurso.materia.toLowerCase().includes(clave) ||
+                        recurso.grado.toLowerCase().includes(clave)
+
+                    )
+                })
+            else
+                this.busquedaFiltrada = recursos.filter( recurso => {
+                    return(
+                        recurso.titulo.toLowerCase().includes(clave) ||
+                        recurso.contenido.toLowerCase().includes(clave)
+
+                    )
+                })
+            console.log(this.busquedaFiltrada.length)
 
             console.log(this.busquedaFiltrada);
             this.spinner =false;
@@ -201,5 +279,9 @@ export default {
         text-align: left; 
         max-width:1200px; 
         width:100%; 
+    }
+    .texto_busqueda{
+        margin-bottom:0!important;
+        font-size: 13.5px;
     }
 </style>

@@ -1,16 +1,25 @@
 <v-card>
-    <v-card-text v-if="tipo==='Conducta'">
-        Area de Conducta
+    <v-card-text v-if="tipo==='conducta'" class="text-center" @click="actconducta()">
+        <v-icon v-if="datatrans==='buena'" class="green--text" >
+            mdi-emoticon-happy
+        </v-icon>
+        <v-icon v-if="datatrans==='mala'" class="red--text" >
+            mdi-emoticon-sad
+        </v-icon>
     </v-card-text>
-    <v-card-text v-if="tipo==='Asistencia'">
+    <v-card-text v-if="tipo==='asistencia'">
         Asistencia components
     </v-card-text>
     <v-card-text v-if="tipo==='semaforo'">
+        semaforos
     </v-card-text>
-    <v-card-text v-if="tipo==='si-no'">
+    <v-card-text v-if="tipo==='sino'">
+        sino
     </v-card-text>
     <v-card-text v-if="tipo==='rango'">
+        rango
     </v-card-text>
-    <v-card-text v-if="tipo==='on-off'">
+    <v-card-text v-if="tipo==='onoff'">
+        onoff
     </v-card-text>
 </v-card>

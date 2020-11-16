@@ -86,7 +86,7 @@ export default {
   watch: {
     urlimg() {
    
-      if (this.urlimg && this.previewImg) {
+      if (this.urlimg && this.previewImg!=="") {
         console.log("ejecuta watch urlimg de grupos");
         this.datosNuevoGrupo.urlImagen = this.urlimg;
         this.addgruposquema();
@@ -95,6 +95,7 @@ export default {
         this.tomaDatosActualizados();
         this.cleanImgStore();
         this.datosNuevoGrupo = {};
+        this.previewImg=""
       }
     }
   }

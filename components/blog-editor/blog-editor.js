@@ -3,6 +3,7 @@ import { mapState, mapActions, mapMutations } from "vuex";
 import { VueEditor } from "vue2-editor";
 import subirImagen from "@/components/subirimagen/subirimagen.vue";
 import Spinner from '~/components/spinner.vue'
+// import subirImagen from '~/components/subirimagen.vue"
 import { format } from 'date-fns'
 // import { es } from 'date-fns/locale';
 
@@ -41,17 +42,23 @@ export default {
 
       //DATA PARA CREAR NUEVO RECURSO
       creaRecurso: false,
-      formRecurso: true,
+      // formRecurso: true,
       datosRecurso: {
+        foldercode:"",
         titulo: "",
         fecha: "",
         edopost: "",
         urlImagen: "",
-        user:"",
         contenido:"",
         tipoRecurso:"",
-        urlRecurso:""
+        urlRecurso:"",
+        comentarios:[],
+        idCreador:"",
+        nombreCreador:"",
       },
+      materia: "",
+      grado: "",
+      esUrlimgR: false,
 
       //DATA PARA CARGA DE RECURSOS
       barraProgreso: 0,
@@ -62,6 +69,8 @@ export default {
       completado: false,
       esRecursoValido: true,
       typeFileFull: "",
+      // imagenF: null,
+
       
       //DATA PARA BARRA DE PROGRESO UPLOAD
       cargando: false,
@@ -69,15 +78,31 @@ export default {
       porcentaje: 0,
       bytesTotal: 0,
       bytesTranferidos: 0,
+      updatedCollection: false,
+
+      esBlog: false,
+      
 
   
     };
   },
   computed: {
-    ...mapState(["urlimg", "datosUsuario"])
+    ...mapState(["urlimg", "datosUsuario"]),
+    tituloCrear(){
+      let tipoM = "";
+      if(this.tipo === "REFLEXIONES")
+        tipoM= "Nueva reflexión";
+      else if(this.tipo === "RECOMENDACION")
+        tipoM= "Nueva recomendación";
+      else if(this.tipo === "MEMORIA")
+        tipoM= "Nueva memoria";
+      else if(this.tipo === "BLOG")
+        tipoM= "Nuevo blog";
+      return tipoM;
+    }
   },
   methods: {
-    ...mapMutations(["almacenarFotoStorage"]),
+    ...mapMutations(["almacenarFotoStorage","actualizaurlimg","actualizaImgUpload"]),
     creanuevopost() {
       this.mensajeError1 = "";
       if (this.datablog.titulo && this.datablog.edopost) {
@@ -138,57 +163,47 @@ export default {
 
     //METODOS PARA LA CARGA DE RECURSOS A FIREBASE
     async almacenarRecursoCollection(){
-      // await this.updateFile();
-
+      // console.log("this.completado")
+      // console.log(this.completado)
+      // alert("completadooo");
       if(this.completado)
       {
-        console.log("Vamos a subir el nuevo recurso a FIRESTORE");
 
         //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
-        const {id} = this.datosUsuario;
+        const {id, nombre, apellido} = this.datosUsuario;
         // if(this.tipoFile === "imagen"){
         //   this.datosRecurso.urlRecurso = this.urlFile
         //   this.datosRecurso.tipoRecurso = 
         // }
+        let nuevoRecurso = {};
         
-
-        this.datosRecurso = {
-          ...this.datosRecurso,
-          fecha:  format(new Date(), 'yyyy-MM-dd'),
-          user: id,
-          urlImagen: this.tipoFile === 'image' ? this.urlFile : '',
-          // idRecurso: '',
-          tipoRecurso: this.tipoFile,
-          urlRecurso: this.urlFile,
-        }
+        if(this.tipo === "RECOMENDACION")
+          nuevoRecurso = {
+            ...this.datosRecurso,
+            fecha:  Date.now(),
+            tipoRecurso: this.tipoFile,
+            urlRecurso: this.urlFile,
+            idCreador: id,
+            nombreCreador: `${nombre} ${apellido}`,
+            materia: this.materia,
+            grado: this.grado
+          }
+        else
+          nuevoRecurso = {
+            ...this.datosRecurso,
+            fecha:  Date.now(),
+            tipoRecurso: this.tipoFile,
+            urlRecurso: this.urlFile,
+            idCreador: id,
+            nombreCreador: `${nombre} ${apellido}`,
+          }
 
         try {
-          console.log("HACIENDO PUSH A LA LISTA R")
-          console.log(this.datosRecurso)
-          await this.$fireStore.collection(this.tipo).add(this.datosRecurso);
+          await this.$fireStore.collection(this.tipo).add(nuevoRecurso);
           this.listaR.push(this.datosRecurso)
-          console.log(this.datosRecurso)
-          // alert("antes de reset")
-          // this.$emit('updateListaR',this.listaR)
+          this.$emit('updateListaR',this.listaR)
+          this.resetDatos();
 
-          this.$refs.formRecurso.reset();
-          console.log(this.datosRecurso)
-          // alert("despues de reset con $refs")
-
-          this.datosRecurso= {
-            titulo: "",
-            fecha: "",
-            edopost: "",
-            urlImagen: "",
-            user:"",
-            contenido:"",
-            tipoRecurso:"",
-            urlRecurso:""
-          },
-          this.file = null;
-
-          console.log(this.datosRecurso)
-          // alert("despues de reset con obj")
 
 
           
@@ -198,25 +213,22 @@ export default {
 
         
       }
-      else{
-        console.log("NO SE PUDO SUBIR EL RECURSO")
-      }
+      // else{
+      //   // console.log("NO SE PUDO SUBIR EL RECURSO")
+      // }
 
     },
 
     async changeFile(){
       // this.cargando = true;
       // this.porcentaje = 0;
-      // console.log(this)
-      // console.log(this.$refs)
-      console.log(this.file)
       if(this.file)
       {
 
         //SE CREA URL DEL ARCHIVO QUE SE SUBIRA
         this.urlFile = URL.createObjectURL(this.file);
         // console.log(this.urlFile);
-        console.log(this.file);
+        // console.log(this.file);
 
         //SE OBTIENE EL TIPO DE ARCHIVO
         const res = this.file.type.split("/");
@@ -228,21 +240,32 @@ export default {
         // const r = (6085966 / 1000000).toFixed(2);
         // console.log(r+" MBs")
       }
+      // console.log(this.$refs.formRecurso)
+      // this.$refs.formRecurso.reset();
+
   },
 
   async updateFile(){
-      this.cargando = true
+      // console.log("listaR VALIDACION")
+      // console.log(this.listaR)
+      this.cargando = true;
+      this.updatedCollection = false;
       this.porcentaje = 0;
-      const ubi = `${this.tipo}/${this.tipoFile}s/`;
-      console.log(ubi)
-      // async almacenarFotoStorage(state,ubi){
-      console.log("entra al fotoStorage: "+ this.urlFile)
+      // const ubi = `${this.tipo}/${this.tipoFile}s/`;
+      this.datosRecurso.foldercode =this.$codegenerate();
+      // console.log("folder del recurso: "+this.datosRecurso.foldercode);
+
+      const ubi = `${this.tipo}/${this.datosUsuario.id}/${this.datosRecurso.foldercode}/`;
+      // console.log("UBICACION DE RECURSO: ",ubi)
+      // console.log("entra al fotoStorage: "+ this.urlFile)
 
       const file =  this.file;
       const metadata = {
       contentType: this.typeFileFull
       // contentType: 'video/*'
       };
+      // await this.almacenarFotoStorage(ubi);
+      
 
 
       //VERIFICAR QUE SELECCIONARA UNA FOTO DE PERFIL
@@ -252,7 +275,7 @@ export default {
               //SE AGREGA LA FOTO AL STORAGE DE FIREBASE
 
               let storageRef = this.$fireStorage.ref(ubi);
-              let uploadTask = storageRef.child(file.name).put(file, metadata);
+              let uploadTask = storageRef.child("recurso_"+this.datosRecurso.foldercode).put(file, metadata);
 
               await uploadTask.on('state_changed', // or 'state_changed'
               (snapshot) => {
@@ -267,14 +290,18 @@ export default {
               }, () => {
               // Upload completed successfully, now we can get the download URL
                   uploadTask.snapshot.ref.getDownloadURL()
-                  .then( (downloadURL) => {
+                  .then( async(downloadURL) => {
                       this.urlFile = downloadURL     
                       // console.log('File available at', downloadURL);
-                      console.log("saliendo fotoStorage: "+ this.urlFile)
+                      // console.log("saliendo fotoStorage: "+ this.urlFile)
                       // this.cargando = false;
                       this.completado = true;
+                      // console.log("listaR then de update")
+                      // console.log(this.listaR)
+                      this.almacenarFotoStorage(ubi);
+
                       
-                      this.almacenarRecursoCollection();
+                      // this.almacenarRecursoCollection();
 
                   });
               });
@@ -283,7 +310,10 @@ export default {
               console.log(error)
           }
       }else{
-          this.urlFile= this.urlFile === 'none' ? "" : "none"
+          this.urlFile= this.urlFile === 'none' ? "" : "none";
+          this.porcentaje = 100;
+          this.completado = true;
+          this.almacenarFotoStorage(ubi);
       }
 
 
@@ -292,12 +322,57 @@ export default {
       this.esRecursoValido =this.$refs.formRecurso.validate();
       if(this.esRecursoValido)
         this.updateFile()
-      // console.log("valido")
-  },
+        // console.log("HO HAY ERRORES")
+    },
+    abrirDialog(){
+
+      console.log(this.tipo);
+      if(this.tipo === "RECOMENDACION")
+        this.esBlog = true;
+      else
+        this.esBlog = false;
+
+      this.creaRecurso=true
+    },
+    resetDatos(){
+      // console.log("RESETENADO TODA LA DATA UTILIZADA ")
+      this.$refs.formRecurso.reset();
+      this.datosRecurso= {
+        foldercode:"",
+        titulo: "",
+        fecha: "",
+        edopost: "",
+        urlImagen: "",
+        contenido:"",
+        tipoRecurso:"",
+        urlRecurso:"",
+        comentarios:[],
+        idCreador:"",
+        nombreCreador:"",
+      },
+      this.materia ="";
+      this.grado ="";
+      
+      this.file = null;
+      this.urlFile= null;
+      this.tipoFile="";
+      this.typeFileFull= "";
+      this.updatedCollection = true;
+
+      this.completado = false;
+      this.bytesTotal=0;
+      this.bytesTranferidos=0;
+      this.esUrlimgR = true;
+      this.actualizaImgUpload("");
+    },
+
+
+
+
   },
   mounted() {
     this.datablog.user = this.datosUsuario.id;
-    console.log(this.listaR)
+    // console.log(this.listaR)
 
   },
   components: {
@@ -316,18 +391,29 @@ export default {
     },
     listaR:{
       type: Array,
-      default:[],
+      default: () => []
     },
   },
   watch: {
-    urlimg() {
-      console.log("WATCHHHHH")
-      if (this.urlimg) {
-        if (this.datablog.titulo && this.datablog.edopost) {
-          this.datablog.urlImagen = this.urlimg;
-          this.guardaenstore();
-        }
+    async urlimg() {
+
+      // if (this.urlimg) {
+        // if (this.datablog.titulo && this.datablog.edopost) {
+      // console.log("SE ESTA RESETEANDO LA URL DE LA IMAGEN DE PORTADA: ",this.esUrlimgR)
+
+      if(!this.esUrlimgR)
+      {
+        // console.log("NO SE ESTA RESETEANDO")
+        this.datablog.urlImagen = this.urlimg;
+        this.datosRecurso.urlImagen = this.urlimg
+        await this.almacenarRecursoCollection();
       }
+      else{
+
+        this.esUrlimgR = false;
+      }
+        // }
+      // }
     }
   }
 };

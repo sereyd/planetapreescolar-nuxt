@@ -1,6 +1,74 @@
 <template>
   <v-main class="pa-10">
+
     <v-row>
+      <v-col
+        cols="12"
+        md="12"
+        v-if="
+          $validasesion($store, {
+            sinregistro: false,
+            logeado: true,
+            permisos: 1
+          })
+        "
+      >
+        <h2
+          class="primary--text"
+          v-if="
+            $validasesion($store, {
+              sinregistro: false,
+              logeado: true,
+              permisos: 1
+            })
+          "
+        >
+          Mis Blogs
+        </h2>
+
+        <listablog
+          tipo="BLOG"
+          :userId="this.datosUsuario.id"
+          titulo=""
+          subtitulos=""
+          :addslot="true"
+        >
+          <editorblog
+            tipo="BLOG"
+            v-if="
+              $validasesion($store, {
+                sinregistro: false,
+                logeado: true,
+                permisos: 1
+              })
+            "
+            @updatepost="updatepost.blog = $event"
+          ></editorblog>
+        </listablog>
+      </v-col>
+
+      <div style="width:100%; height:50px;"></div>
+
+      <v-col
+        cols="12"
+        md="12"
+      >
+
+        <listablog
+          tipo="BLOG"
+          :idexclude="
+            this.datosUsuario.userlogin === true ? this.datosUsuario.id : ''
+          "
+          titulo="Conoce lo que pasa en el mundo de la educación inicial"
+          subtitulos=""
+        />
+      </v-col>
+    </v-row>
+
+
+
+
+    <!-- <v-row>
 
       <v-col cols="12" md="12" v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:2 })">
         <h2 class="primary--text"   v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:2 })" >Blog</h2>
@@ -19,8 +87,11 @@
 <listablog tipo="BLOG"  :idexclude="this.datosUsuario.userlogin===true ? this.datosUsuario.id : '' " titulo="Conoce lo que pasa en el mundo de la educación inicial"  />
 
 
-    </v-row>
+    </v-row> -->
   </v-main>
+
+
+  
 </template>
 <script>
 import {mapState} from 'vuex'

@@ -11,10 +11,10 @@
         >
         <!-- v-if="key.urlImagen!==''"  -->
             <v-img
-            :src="key.urlImagen === '' || !key.urlImagen ? 'images/logos/planeta_preescolar_logo.png' : key.urlImagen"
-
+            :src="key.urlImagen === '' || key.urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : key.urlImagen"
+            contain
             class="fotomini"
-            @click=""
+            @click="mostrarRecursoEdit(key)"
             
             ></v-img>
         </v-card>
@@ -23,7 +23,7 @@
             <div class=" ml-3 textos">
                 <h4>{{key.titulo}}</h4>
                 <p :class="key.edopost==='privado' ? 'red--text texto_mb' : 'black--text texto_mb'">{{key.edopost}}</p>
-                <p class="texto_mb">{{key.fecha}}</p>
+                <!-- <p class="texto_mb">{{ fechaVisual(key.fecha) }}</p> -->
 
                 <!-- <p class="datosGrupo">{{el.cicloEscolar}}</p>
                 <p class="datosGrupo">{{el.total}} alumnos</p> -->
@@ -31,6 +31,107 @@
         </div>
 
     </v-col>
+
+
+    <v-dialog v-model="editRecurso" persistent max-width="755">
+        
+        <v-card class=" px-10">
+          <v-card-title class=" justify-space-between">
+              <v-btn icon text small color="purple" @click="" >
+              </v-btn>
+              <h2 class="primary--text ">{{tituloEditar}}</h2>
+              <v-btn icon text small color="purple" @click="editRecurso = false" >
+                  <v-icon>mdi-window-close</v-icon>
+              </v-btn>
+          </v-card-title>
+          <div class="mt-8">
+              <v-form
+                lazy-validation
+                ref="formRecursoEdit"
+                v-model="esRecursoEditValido"
+              >
+                    
+
+                    <v-text-field
+                        v-model="datosRecursoEdit.titulo"
+                        placeholder="Titulo"
+                        required
+                        outlined
+                        :rules="[v => !!v || 'titulo del post es requerida']"
+                        @keyup.enter=""
+                    ></v-text-field>
+
+                    <v-text-field
+                            v-model="datosRecursoEdit.materia"
+                            placeholder="Materia"
+                            required
+                            outlined
+                            :rules="[v => !!v || 'Materia grupo es requerida']"
+                            @keyup.enter=""
+                            v-if="esBlog"
+                    ></v-text-field>
+                    <v-text-field
+                        v-model="datosRecursoEdit.grado"
+                        placeholder="Grado"
+                        required
+                        outlined
+                        :rules="[v => !!v || 'Grado es requerida']"
+                        @keyup.enter=""
+                        v-if="esBlog"
+                    ></v-text-field>
+
+                    <v-textarea
+                        v-model="datosRecursoEdit.contenido"
+                        placeholder="contenido..."
+                        required
+                        outlined
+                        :rules="[v => !!v || 'Contendio del post es requerida']"
+                        @keyup.enter=""
+        
+                    ></v-textarea>
+                    <!-- <VueEditor 
+                        class="elevation-3 rounded-lg" 
+                        v-model="datosRecursoEdit.contenido" 
+                        :editorToolbar="customToolbar"
+                        required
+                        outlined
+                        :rules="[v => !!v || 'Contendio del post es requerida']"
+                    /> -->
+                    
+                    <v-radio-group
+                        v-model="datosRecursoEdit.edopost"
+                        row
+                        :rules="[v => !!v || 'Seleccione privacidad']">
+
+                        <v-radio
+                            label="Publico"
+                            value="publico"
+                        ></v-radio>
+                        <v-radio
+                            label="Privado"
+                            value="privado"
+                        ></v-radio>
+                    </v-radio-group>
+                    <div class="d-flex justify-center">
+                        <v-btn 
+                            :disabled="!esRecursoEditValido" dark 
+                            class="red px-10 mb-5 btn_crearG" 
+                            @click="validarFormularioRecursoEdit"  
+                        >Modificar</v-btn>
+                    </div>
+               
+              </v-form>
+  
+                      
+                   
+          </div>
+        </v-card>
+    </v-dialog>
+
+
+
+
+
 </v-row>
 
 <!-- <v-row>

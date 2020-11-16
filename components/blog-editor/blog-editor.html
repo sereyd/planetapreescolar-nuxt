@@ -9,7 +9,7 @@
         >
           
 
-          <v-btn color="" text  @click="creaRecurso=true" 
+          <v-btn color="" text  @click="abrirDialog()" 
           fab
           dark 
           x-large
@@ -38,7 +38,7 @@
               <v-card-title class=" justify-space-between">
                   <v-btn icon text small color="purple" @click="" >
                   </v-btn>
-                  <h2 class="primary--text ">Nuevo(a) {{tipo}}</h2>
+                  <h2 class="primary--text ">{{tituloCrear}}</h2>
                   <v-btn icon text small color="purple" @click="creaRecurso = false" >
                       <v-icon>mdi-window-close</v-icon>
                   </v-btn>
@@ -49,62 +49,92 @@
                     ref="formRecurso"
                     v-model="esRecursoValido"
                   >
-                    <v-row v-if="!cargando">
-                        <v-col>
-                            <v-file-input
-                                outlined
-                                label="Seleccione archivo"
-                                prepend-icon="mdi-paperclip"
-                                accept="audio/mp3, image/png,image/jpeg , video/mp4"
-                                v-model="file"
-                                @change = "changeFile"
+                    <div class="" v-if="!cargando">
+                        <subirImagen 
+                            titulo=""  
+                            @updateImg="datosRecurso.urlImagen=$event" 
+                            ejecimagen="uploadimg" 
+                            tpimg="post"
+                            class=" d-flex justify-center mb-4"
+                        />
+                        
+                        <v-file-input
+                            outlined
+                            label="Seleccione archivo"
+                            prepend-icon="mdi-paperclip"
+                            accept="audio/mp3, image/png,image/jpeg , video/mp4"
+                            v-model="file"
+                            @change = "changeFile"
     
-                            ></v-file-input>
-                            
+                        ></v-file-input>
+                        
     
-                            <v-text-field
-                                v-model="datosRecurso.titulo"
-                                placeholder="Titulo"
-                                required
-                                outlined
-                                :rules="[v => !!v || 'Nombre grupo es requerida']"
-                                @keyup.enter=""
-                            ></v-text-field>
+                        <v-text-field
+                            v-model="datosRecurso.titulo"
+                            placeholder="Titulo"
+                            required
+                            outlined
+                            :rules="[v => !!v || 'Titulo es requerida']"
+                            @keyup.enter=""
+                        ></v-text-field>
+
+                        <v-text-field
+                            v-model="materia"
+                            placeholder="Materia"
+                            required
+                            outlined
+                            :rules="[v => !!v || 'Materia grupo es requerida']"
+                            @keyup.enter=""
+                            v-if="esBlog"
+                        ></v-text-field>
+                        <v-text-field
+                            v-model="grado"
+                            placeholder="Grado"
+                            required
+                            outlined
+                            :rules="[v => !!v || 'Grado es requerida']"
+                            @keyup.enter=""
+                            v-if="esBlog"
+                        ></v-text-field>
+
     
-                            <v-textarea
-                                v-model="datosRecurso.contenido"
-                                placeholder="contenido..."
-                                required
-                                outlined
-                                :rules="[v => !!v || 'Nombre grupo es requerida']"
-                                @keyup.enter=""
+                        <v-textarea
+                            v-model="datosRecurso.contenido"
+                            placeholder="contenido..."
+                            required
+                            outlined
+                            :rules="[v => !!v || 'Contenido es requerida']"
+                            @keyup.enter=""
             
-                            ></v-textarea>
-                            <v-radio-group
-                                v-model="datosRecurso.edopost"
-                                row
-                                :rules="[v => !!v || 'Seleccione privacidad']">
+                        ></v-textarea>
+                        <v-radio-group
+                            v-model="datosRecurso.edopost"
+                            row
+                            :rules="[v => !!v || 'Seleccione privacidad']">
     
-                                <v-radio
-                                    label="Publico"
-                                    value="publico"
-                                ></v-radio>
-                                <v-radio
-                                    label="Privado"
-                                    value="privado"
-                                ></v-radio>
-                            </v-radio-group>
-                            <div class="d-flex justify-center">
-                                <v-btn 
-                                    :disabled="!esRecursoValido" dark 
-                                    class="red px-10 mb-5 btn_crearG" 
-                                    @click="validarFormularioRecurso"  
-                                >Crear</v-btn>
-                            </div>
-                        </v-col>
-                    </v-row>
-                    <v-row class="d-flex justify-center" v-else>
+                            <v-radio
+                                label="Publico"
+                                value="publico"
+                            ></v-radio>
+                            <v-radio
+                                label="Privado"
+                                value="privado"
+                            ></v-radio>
+                        </v-radio-group>
+                        <div class="d-flex justify-center">
+                            <v-btn 
+                                :disabled="!esRecursoValido" dark 
+                                class="red px-10 mb-5 btn_crearG" 
+                                @click="validarFormularioRecurso"  
+                            >Crear</v-btn>
+                        </div>
+                    </div>
+                        <!-- </v-col> -->
+                    <!-- </v-row>
+                    <v-row class="d-flex justify-center" v-else> -->
+                    <div v-else class="d-flex justify-center">
                         <div>
+
                             <v-progress-circular
                             :rotate="-90"
                             :size="150"
@@ -121,18 +151,24 @@
                                 </v-icon>
                             </v-progress-circular>
                             <h5 class="text-center mb-3"> {{bytesTranferidos}} MBs / {{bytesTotal}} MBs</h5>
-                            <div>
-                                <v-btn
-                                    class="red px-10 mb-5 btn_crearG" 
-                                    @click="cargando = false"
-                                    block
-                                    v-if="porcentaje === 100"
-                                >
-                                    Listo
-                                </v-btn>
-                            </div>
+                        <!-- <div> -->
+                            <v-btn
+                                class="red px-10 mb-5 btn_crearG" 
+                                @click="cargando = false"
+                                block
+                                :disabled="!updatedCollection"
+                            >
+                                <span v-if="updatedCollection">Listo</span>
+                                <span v-else>Cargando...</span>
+                            </v-btn>
+                            <!-- <Spinner class="mb-6" v-else/> -->
+
+                        <!-- </div> -->
                         </div>
-                    </v-row>
+
+                    </div>
+                    <!-- </v-row> -->
+                    <!-- </div> -->
                   </v-form>
       
                           

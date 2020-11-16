@@ -10,12 +10,13 @@ export default {
             //     'Imágenes'
             // ],
             recursos:[
-                // 'Todos los recursos',
+                'TODOS LOS RECURSOS',
                 'BLOG',
                 'MEMORIA',
                 'RECOMENDACION',
                 'REFLEXIONES',
             ],
+            validBusqueda: true,
             // datoBuscar: "ejm",
             // tipoSeleccionado: ""
 
@@ -30,27 +31,13 @@ export default {
             console.log(this.datosBusqueda)
             this.$router.push('/busqueda')
 
-            // const {userlogin, id} = this.datosUsuario;
-
-            // console.log("datosUsuario")
-            // console.log(this.datosUsuario)
-            // console.log("buscando: ", this.datosBusqueda.clave)
-            // console.log("tipo: ", this.datosBusqueda.tipo)
-
-            // if(!userlogin)
-            // {
-            //     console.log("USAURIO SIN REGISTRO")
-            //     // this.buscarPublicas();
-            // }
-            // else
-            // {
-            //     console.log("USUARIO LOEGADO")
-
-            // }
-
-
-
         },
+        validateBusqueda () {
+            const vd = this.$refs.formBusqueda.validate();
+            this.validBusqueda = vd;
+            if(this.validBusqueda)
+              this.buscarDato()
+          },
         
     },
     

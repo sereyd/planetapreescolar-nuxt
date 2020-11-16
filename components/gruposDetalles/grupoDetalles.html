@@ -119,7 +119,7 @@
                   <h4 class="primary--text">
                     <b
                       ><v-switch
-                        v-model="stclases"
+                        v-model="datain.Calendario[fechaselected].stclases"
                         :label="stclases ? 'en Clase' : 'Descanso'"
                       ></v-switch
                     ></b>
@@ -171,28 +171,37 @@
 <template v-slot:item.action='{ item }'>
   <v-btn class="white" depressed><v-icon class="primary--text">mdi-pencil-outline</v-icon></v-btn>
 </template>
-
-
 <!---------Action Button-------------->
-
         <template v-slot:item.fotoAlumno='{item}'>
           <v-avatar size="60">
             <img :src="item.fotoAlumno"  width="100%" />
           </v-avatar>
         </template>
-
         <template v-slot:item.asistencia='{ item }'>
-         
-          <listasdetareas tipo="Asistencia"  > 
+          <listasdetareas tipo="asistencia"  > 
           </listasdetareas>  
-          
-
+        </template>
+        <template v-slot:item.conducta='{ item }'>
+          <listasdetareas tipo="conducta" @respuesta="updateRespuesta($event,item,'conducta')" :datatrans="item.conducta"  > 
+          </listasdetareas>  
+        </template>
+        <template v-slot:item.sino='{ item }'>
+          <listasdetareas tipo="sino"    :datatrans="item.sino"   > 
+          </listasdetareas>  
+        </template>
+        <template v-slot:item.onoff='{ item }'>
+          <listasdetareas tipo="onoff" :datatrans="item.onoff"   > 
+          </listasdetareas>  
+        </template>
+        <template v-slot:item.semaforo='{ item }'>
+          <listasdetareas tipo="semaforo"  :datatrans="item.semaforo"  > 
+          </listasdetareas>  
 
         </template>
 
-        <template v-slot:item.conducta='{ item }'>
-          <listasdetareas tipo="Conducta"  > 
-          </listasdetareas>  
+          <template v-slot:item.rango='{ item }'>
+            <listasdetareas tipo="rango" :datatrans="item.rango"   > 
+            </listasdetareas>  
         </template>
 
 
@@ -522,7 +531,7 @@
               </v-item>
             </v-col>
             <v-col cols="12" md="3" class="pa-0 text-center" style="cursor:pointer;" >
-              <v-item v-slot="{ active, toggle }" value="SiNo" >
+              <v-item v-slot="{ active, toggle }" value="sino" >
                 <v-card
                 :color="active ? 'primary white--text' : ''"
                 class="d-flex text-center pa-10"
@@ -586,7 +595,7 @@
               </v-item>
             </v-col>
             <v-col cols="12" md="3" class="pa-0 text-center" style="cursor:pointer;" >
-              <v-item v-slot="{ active, toggle }"  value="OnOff" >
+              <v-item v-slot="{ active, toggle }"  value="onoff" >
                 <v-card
                 :color="active ? 'primary white--text' : ''"
                 class="d-flex text-center pa-10"

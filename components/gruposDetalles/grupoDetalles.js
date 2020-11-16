@@ -88,22 +88,29 @@ export default {
       return this.nombreGrupo;
     },
     cargaalumnos() {
-      this.listaalumnos=[]
+      if(!this.datain.Calendario[this.fechaselected].listaAlumnos){
+        this.$set(this.datain.Calendario[this.fechaselected],'listaAlumnos',[])
+        }else{
+          this.datain.Calendario[this.fechaselected].listaAlumnos=[]
+        }
       if (
         this.fechaselected &&
         this.datain.Calendario &&
         this.datain.Calendario[this.fechaselected]
       ) {       
       this.datain.Calendario[this.fechaselected].Alumnos.map((al)=>{
-        this.listaalumnos.push({
+        this.datain.Calendario[this.fechaselected].listaAlumnos.push({
           fotoAlumno:al.fotoAlumno,
           Nombre:al.Nombre+" "+al.Apellido
         })
       });
 
-      this.datain.Calendario[this.fechaselected].listasdetareas=this.listadetareas=this.listadetareas
+      /////carga el horario gral 
+      if(this.datain.Calendario[this.fechaselected].Horario.length===0){
+        this.datain.Calendario[this.fechaselected].Horario=this.datain.Horario
+      }
 
-        return this.listaalumnos;
+        return this.datain.Calendario[this.fechaselected].listaAlumnos
       }
     },
     cargaHoras() {
@@ -165,6 +172,21 @@ export default {
 
       this.nuevalista=false
     },
+
+    updateRespuesta(e,arr,t){
+      let resp=""
+      switch(t){
+        case 'conducta':
+          if(e==='mala'){
+            resp='buena'
+          }else{
+            resp='mala'
+          }
+          break;
+      }
+      arr.conducta=resp 
+      console.log(arr)
+    },
     schemavalidador(f) {
       if (!this.datain.Calendario) {
         console.log("data cal");
@@ -210,6 +232,7 @@ export default {
     GuardarCambiosHorario() {
       this.fechahorario = false;
       if (this.tpghoras === "gg") {
+        console.log('Guarda Horario en general')
         this.datain.Horario = this.listahoras;
       }
       this.datain.Calendario[this.fechaselected].Horario = this.listahoras;
