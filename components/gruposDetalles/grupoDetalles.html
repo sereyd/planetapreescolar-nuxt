@@ -22,7 +22,6 @@
         >Registro
       </v-btn>
     </div>
-
     <div v-if="datosUsuario.userlogin===true">
       <router-link
         v-show="datosUsuario.idMembresia === ''"
@@ -65,7 +64,6 @@
         <span class="vMmobilview"> Configuración</span>
       </router-link>
       &nbsp;
-
       <router-link
         to="/descargas"
         class="white--text menu-sec miniMovil"
@@ -146,10 +144,10 @@
           <v-data-table  :headers="cabeceraListaAlumnos" :items="cargaalumnos" >
 <!------info de cabecera-->
     <template v-slot:top='{ item }'>
-      <v-btn @click="addalumno=true" style="text-transform: none;" depressed class="white">              <v-avatar 
+      <v-btn @click="addalumno=true" style="text-transform: none;" depressed class="white">              
+        <v-avatar 
               size="35" 
               class="cyan" 
-              
               style="cursor:pointer;"
               >
               <v-icon class="white--text">mdi-plus</v-icon>
@@ -177,29 +175,29 @@
             <img :src="item.fotoAlumno"  width="100%" />
           </v-avatar>
         </template>
-        <template v-slot:item.asistencia='{ item }'>
-          <listasdetareas tipo="asistencia"  > 
+        <template v-slot:item.asistencia='{ item }' >
+          <listasdetareas tipo="asistencia" @respuesta="updateRespuesta($event,item,'asistencia')" :datatrans="item.asistencia"   > 
           </listasdetareas>  
         </template>
-        <template v-slot:item.conducta='{ item }'>
+        <template v-slot:item.conducta='{ item } ' >
           <listasdetareas tipo="conducta" @respuesta="updateRespuesta($event,item,'conducta')" :datatrans="item.conducta"  > 
           </listasdetareas>  
         </template>
-        <template v-slot:item.sino='{ item }'>
-          <listasdetareas tipo="sino"    :datatrans="item.sino"   > 
+        <template v-slot:item.sino='{ item }' >
+          <listasdetareas tipo="sino"   @respuesta="updateRespuesta($event,item,'sino')" :datatrans="item.sino"    > 
           </listasdetareas>  
         </template>
-        <template v-slot:item.onoff='{ item }'>
-          <listasdetareas tipo="onoff" :datatrans="item.onoff"   > 
+        <template v-slot:item.onoff='{ item }' >
+          <listasdetareas tipo="onoff"  @respuesta="updateRespuesta($event,item,'onoff')" :datatrans="item.onoff"    > 
           </listasdetareas>  
         </template>
-        <template v-slot:item.semaforo='{ item }'>
-          <listasdetareas tipo="semaforo"  :datatrans="item.semaforo"  > 
+        <template v-slot:item.semaforo='{ item }' >
+          <listasdetareas tipo="semaforo"   @respuesta="updateRespuesta($event,item,'semaforo')" :datatrans="item.semaforo"   > 
           </listasdetareas>  
 
         </template>
 
-          <template v-slot:item.rango='{ item }'>
+          <template v-slot:item.rango='{ item }' >
             <listasdetareas tipo="rango" :datatrans="item.rango"   > 
             </listasdetareas>  
         </template>

@@ -90,20 +90,26 @@ export default {
     cargaalumnos() {
       if(!this.datain.Calendario[this.fechaselected].listaAlumnos){
         this.$set(this.datain.Calendario[this.fechaselected],'listaAlumnos',[])
+
+        var num=0
+               
+      this.datain.Calendario[this.fechaselected].Alumnos.map((al)=>{
+        this.datain.Calendario[this.fechaselected].listaAlumnos.push({
+          pos:num++,
+          fotoAlumno:al.fotoAlumno,
+          Nombre:al.Nombre+" "+al.Apellido
+        })
+      });
+
         }else{
-          this.datain.Calendario[this.fechaselected].listaAlumnos=[]
+          //this.datain.Calendario[this.fechaselected].listaAlumnos=[]
         }
       if (
         this.fechaselected &&
         this.datain.Calendario &&
         this.datain.Calendario[this.fechaselected]
-      ) {       
-      this.datain.Calendario[this.fechaselected].Alumnos.map((al)=>{
-        this.datain.Calendario[this.fechaselected].listaAlumnos.push({
-          fotoAlumno:al.fotoAlumno,
-          Nombre:al.Nombre+" "+al.Apellido
-        })
-      });
+      ) {
+        
 
       /////carga el horario gral 
       if(this.datain.Calendario[this.fechaselected].Horario.length===0){
@@ -174,18 +180,7 @@ export default {
     },
 
     updateRespuesta(e,arr,t){
-      let resp=""
-      switch(t){
-        case 'conducta':
-          if(e==='mala'){
-            resp='buena'
-          }else{
-            resp='mala'
-          }
-          break;
-      }
-      arr.conducta=resp 
-      console.log(arr)
+      this.$set(this.datain.Calendario[this.fechaselected].listaAlumnos[arr.pos],[t],e)
     },
     schemavalidador(f) {
       if (!this.datain.Calendario) {
@@ -331,8 +326,6 @@ export default {
         if (!this.alumnoselect.listatareas) {
           this.alumnoselect.listatareas = this.listatareas;
         }
-      
-
         if (this.alumnoselect.guardaen === "1") {
           ////// agrega alumno a general
           this.datain.Alumnos.push(this.alumnoselect);
