@@ -192,9 +192,11 @@ export default {
                     datosUsuario.lvluser = lvl;
                     datosUsuario.idMembresia =sessionId;
                     datosUsuario.idCliente = this.idCliente;
-                    datosUsaurios.idSuscripcion= session.subscription;
+                    datosUsuario.idSuscripcion= session.subscription;
                     datosUsuario.tipoSuscripcion= this.tipoSuscripcion;
                     datosUsuario.importeSuscripcion= this.importe;
+                    datosUsuario.estadoMembresia = session.payment_status === 'paid' ? 'active' : '';
+
                     this.guardaDatosUsuarioStore(datosUsuario);
                   })
                   .catch((error) => {
