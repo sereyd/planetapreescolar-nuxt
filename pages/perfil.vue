@@ -20,7 +20,7 @@
 
 <v-btn  v-if="editar===false"  class="melon white--text" @click="editar=true"> Editar perfil </v-btn>
 <!-- <p>membresia: {{datosUsuario.idMembresia}}</p> -->
-<!-- <v-btn  v-if="editar===false && datosUsuario.idMembresia"  class="melon white--text" @click="opcMembresia()"> Membresia </v-btn> -->
+<v-btn  v-if="editar===false && datosUsuario.idMembresia"  class="melon white--text" @click="opcMembresia()"> Membresia </v-btn>
 
     </v-col>
     <v-col cols="12" md="6" class="pa-10">
@@ -69,6 +69,14 @@
 .inputTextView{
     margin-top:20px;
 }
+.v-btn{
+    letter-spacing: 0em;
+    /* justify-content: center; */
+    text-indent: 0em;
+    /* text-transform: uppercase; */
+    text-transform: none;
+    /* align-items: flex-start; */
+  }
 </style>
 <script>
 
@@ -107,6 +115,7 @@ methods:{
         }
     },
     opcMembresia(){
+
         fetch(this.urlAPI+'/customer-portal', {
           method: 'POST',
           headers: {
@@ -119,7 +128,6 @@ methods:{
         })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data.url);
           window.location.href = data.url;
           
         })
