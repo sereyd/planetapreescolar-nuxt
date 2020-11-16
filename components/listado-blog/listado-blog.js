@@ -51,6 +51,7 @@ export default{
         }
     },
     methods:{
+      
       muestrapost(p){
         // console.log(p)
         this.viewpost=true
@@ -338,7 +339,7 @@ export default{
 
     },
     computed: {
-      ...mapState(['datosUsuario']),
+      ...mapState(['datosUsuario','itemsmenu']),
       fechaVisualC(vm, payload){
         console.log(vm)
         console.log(payload)

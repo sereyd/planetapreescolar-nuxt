@@ -213,11 +213,7 @@ const createStore = () => {
                   });
 
                   //REVISAR ESTADO DE LA SUSCRIPCIÓN 
-<<<<<<< HEAD
-                   fetch(context.state.urlAPI+"/check-suscripcion?sessionId=" + context.state.datosUsuario.idMembresia)
-=======
                   await fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + context.state.datosUsuario.idSuscripcion)
->>>>>>> IvanDevelop
                   .then((result)=>{
                     return result.json()
                   })
@@ -418,18 +414,6 @@ const createStore = () => {
       actualizaImgUpload(state, data) {
         state.imgupload = data;
       },
-<<<<<<< HEAD
-      cambiastatusSesion(state, data) {
-        console.log(data);
-
-        if (data.salida === true) {
-          state.datosUsuario.userlogin = data.login;
-          state.datosUsuario.lvluser = data.lvl;
-          state.datosUsuario.nombre = "";
-          state.datosUsuario.apellido = "";
-          state.datosUsuario.correo = "";
-        } else {
-=======
       cambiastatusSesion(state,data){
         console.log(data)
 
@@ -449,7 +433,6 @@ const createStore = () => {
           state.datosUsuario.importeSuscripcion = "";
           state.datosUsuario.tipoSuscripcion = "";
         }else{
->>>>>>> IvanDevelop
           state.datosUsuario = data;
         }
         console.log(state.datosUsuario);

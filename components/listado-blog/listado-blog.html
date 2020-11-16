@@ -154,25 +154,45 @@
 
 <v-dialog v-model="viewpost" fullscreen >
     <v-card >
+        <v-card-title class="primary white--text"> 
+            <span class="viewmobil">  <v-icon  class="white--text"  @click.stop="drawer = !drawer" > mdi-menu </v-icon>
+            </span>
+    
+          
+              <img src="  images/logos/planeta_preescolar_bco.png" width="55" class="miniMovil" />
+        
+              &nbsp;  &nbsp; 
+              
+              <div class="menu-sec datamenu" v-if="datosUsuario.userlogin===true"  >
+                <div class="primary white--text pa-1 " style="border-radius:10px; width:100%; max-width:210px;" >
+                <v-avatar
+          color="secondary"
+          size="36" 
+        >
+         <img 
+          v-if="datosUsuario.urlImagen" 
+          :src="datosUsuario.urlImagen === 'none' || datosUsuario.urlImagen==='' ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : datosUsuario.urlImagen" width="100%" 
+        />
+        </v-avatar>
+    
+               <span class="vMmobilview" >{{ (datosUsuario.nombre+" "+ datosUsuario.apellido).substr(0,13) }}</span> 
+    
+             
+           
+              
+              </div>
+    
+              </div>
+              <v-spacer></v-spacer>
+              <v-btn class="melon white--text" @click="viewpost=false" style="text-transform: none;">Cerrar</v-btn>
+        </v-card-title>
         <v-card-text style="text-align: right; ">
     
 
-            <div  max-width="100%" style="height:100px; "></div>
+            <div  max-width="100%" style="height:20px; "></div>
             <v-container class="ma-auto elevation-3 rounded-ml" style="background-image:url('images/back/backstart.jpg'); background-position:top; background-size: 100%; background-repeat: repeat-x; text-align: left; max-width:1200px; width:100%; ">
-<<<<<<< HEAD
-                
-                <div  max-width="100%" style="height:80px; text-align:right;">
-                    <span class="primary--text" style="font-weight: bold; text-align: right; cursor:pointer;" @click="viewpost=false"><b>X</b></span>
-                </div>
-            
-                <h2 class="primary--text pa-5"><b>{{vistapost.titulo}}</b> </h2>
-            <span >{{vistapost.nombre}} {{vistapost.apellido}}</span>
-
-                <section class="pa-5" v-html="vistapost.contenido"  >
-                </section>
-=======
         
-                <div  max-width="100%" style="height:90px; " ></div>
+         
                 <h2 class="primary--text pl-5"><b>{{vistapost.titulo}}</b> </h2>
                 <div class=" d-flex flex-column mb-5 texto_recurso">
                     <span class="pl-5" >Por {{vistapost.nombreCreador}}</span>
@@ -182,7 +202,6 @@
                 <v-section class="pl-5" v-html="vistapost.contenido"  >
                     
                 </v-section>
->>>>>>> 295efdf47d10f43ba05f1e32b35a2318b47fab66
 
                 <!-- :src="vistapost.urlImagen!=='' ? vistapost.urlImagen : 'images/logos/planeta_preescolar_logo.png'"  -->
 
