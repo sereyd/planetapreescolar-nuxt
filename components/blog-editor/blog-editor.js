@@ -3,6 +3,7 @@ import { mapState, mapActions, mapMutations } from "vuex";
 import { VueEditor } from "vue2-editor";
 import subirImagen from "@/components/subirimagen/subirimagen.vue";
 import Spinner from '~/components/spinner.vue'
+import InputTag from 'vue-input-tag'
 // import subirImagen from '~/components/subirimagen.vue"
 import { format } from 'date-fns'
 // import { es } from 'date-fns/locale';
@@ -55,6 +56,7 @@ export default {
         comentarios:[],
         idCreador:"",
         nombreCreador:"",
+        tags:[]
       },
       materia: "",
       grado: "",
@@ -81,6 +83,11 @@ export default {
       updatedCollection: false,
 
       esBlog: false,
+      tagsValido: null,
+      msjTag: "",
+
+      tipoRecursoFile: "",
+      labelFile:"",
       
 
   
@@ -91,13 +98,47 @@ export default {
     tituloCrear(){
       let tipoM = "";
       if(this.tipo === "REFLEXIONES")
+      {
         tipoM= "Nueva reflexión";
+        this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg , video/mp4"
+        this.labelFile="Seleccione archivo"
+      }
       else if(this.tipo === "RECOMENDACION")
+      {
         tipoM= "Nueva recomendación";
+        this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg , video/mp4"
+        this.labelFile="Seleccione archivo"
+      }
       else if(this.tipo === "MEMORIA")
+      {
         tipoM= "Nueva memoria";
+        this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg , video/mp4"
+        this.labelFile="Seleccione archivo"
+      }
       else if(this.tipo === "BLOG")
+      {
         tipoM= "Nuevo blog";
+        this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg , video/mp4"
+        this.labelFile="Seleccione archivo"
+      }
+      else if(this.tipo === "AUDIOS")
+      {
+        tipoM= "Nuevo audio";
+        this.tipoRecursoFile = "audio/*"
+        this.labelFile="Seleccione audio"
+      }
+      else if(this.tipo === "VIDEOS")
+      {
+        tipoM= "Nuevo video";
+        this.tipoRecursoFile = "video/mp4"
+        this.labelFile="Seleccione video"
+      }
+      else if(this.tipo === "IMAGENES")
+      {
+        tipoM= "Nueva imagen";
+        this.tipoRecursoFile = "image/*"
+        this.labelFile="Seleccione imagen"
+      }
       return tipoM;
     }
   },
@@ -170,7 +211,7 @@ export default {
       {
 
         //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
-        const {id, nombre, apellido} = this.datosUsuario;
+        const {id, nombre, apellido, lvluser} = this.datosUsuario;
         // if(this.tipoFile === "imagen"){
         //   this.datosRecurso.urlRecurso = this.urlFile
         //   this.datosRecurso.tipoRecurso = 
@@ -186,7 +227,9 @@ export default {
             idCreador: id,
             nombreCreador: `${nombre} ${apellido}`,
             materia: this.materia,
-            grado: this.grado
+            grado: this.grado,
+            tipoCreador: lvluser === 2 ? 'administrador' : 'usuario',
+            // tags: this.tags
           }
         else
           nuevoRecurso = {
@@ -196,6 +239,8 @@ export default {
             urlRecurso: this.urlFile,
             idCreador: id,
             nombreCreador: `${nombre} ${apellido}`,
+            tipoCreador: lvluser === 2 ? 'administrador' : 'usuario',
+            // tags: this.tags
           }
 
         try {
@@ -320,9 +365,38 @@ export default {
     },
     validarFormularioRecurso () {
       this.esRecursoValido =this.$refs.formRecurso.validate();
-      if(this.esRecursoValido)
+
+      if(this.esRecursoValido && this.datosRecurso.tags.length > 0)
+      {
+        this.tagsValido = true;
+        this.msjTag = ""
+        console.log("tags validos")
         this.updateFile()
+      }
+
+      if(this.datosRecurso.tags.length === 0)
+      {
+        this.tagsValido = false;
+        console.log("tags NO validos")
+
+        this.msjTag = "Necesita agregar por lo menos un tag"
+      }
         // console.log("HO HAY ERRORES")
+    },
+    verificarTags(){
+      if(this.datosRecurso.tags.length === 0)
+      {
+        this.tagsValido = false;
+        console.log("tags NO validos")
+
+        this.msjTag = "Necesita agregar por lo menos un tag"
+      }
+      else{
+        this.tagsValido = true;
+        console.log("tags NO validos")
+
+        this.msjTag = ""
+      }
     },
     abrirDialog(){
 
@@ -378,7 +452,8 @@ export default {
   components: {
     subirImagen,
     VueEditor,
-    Spinner
+    Spinner,
+    InputTag,
   },
     props: {
     tipo: {

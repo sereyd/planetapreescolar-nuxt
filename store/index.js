@@ -54,7 +54,7 @@ const createStore = () => {
         {
           title: "Cuenta",
           icon: "mdi-account",
-          link: "perfil",
+          link: "/perfil",
           logeado: true,
           permisos: 0,
           visible: false
@@ -62,7 +62,7 @@ const createStore = () => {
         {
           title: "Mis Memorias",
           icon: "mdi-table-edit",
-          link: "memorias",
+          link: "/memorias",
           logeado: true,
           permisos: 1,
           visible: false
@@ -78,11 +78,20 @@ const createStore = () => {
         {
           title: "Administrador",
           icon: "mdi-speedometer",
-          link: "administrador",
+          link: "/administrador",
           logeado: true,
           permisos: 2,
           visible: true
-        } /*
+        },
+        {
+          title: "Recursos",
+          icon: "mdi-cloud",
+          link: "/recursos",
+          logeado: true,
+          permisos: 2,
+          visible: true
+        } 
+        /*
         {
           title: "Checkout",
           icon: "mdi-speedometer",
@@ -251,12 +260,13 @@ const createStore = () => {
 
       async obtenerRecursos(context) {
         context.state.recursosBusqueda = [];
+        let datos = {};
         try {
           console.log(context.state.datosBusqueda);
 
-          if (context.state.datosBusqueda.tipo === "Todos los recursos") {
+          if (context.state.datosBusqueda.tipo === "TODOS LOS RECURSOS") {
             // console.log("obtener Todos los Recursos")
-            context.state.recursos.map(async recu => {
+            context.state.recursos.map(async (recu) => {
               // console.log("santes de then")
               await this.$fireStore
                 .collection(recu)
@@ -266,32 +276,60 @@ const createStore = () => {
 
                   // console.log(data);
                   data.forEach(doc => {
-                    context.state.recursosBusqueda.push(doc.data());
+                    let data = doc.data();
+                    //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
+                    data.tags = data.tags ? data.tags : [];
+                    data.favoritos = data.favoritos ? data.favoritos : [];
+
+                    datos = {
+                      idRecurso: doc.id,
+                      ...data
+                    }
+                    context.state.recursosBusqueda.push(datos);
                     // console.log("context.state.recursosBusqueda")
                     // console.log(context.state.recursosBusqueda)
                     // alert("averrr")
                   });
+                  // console.log("context.state.recursosBusqueda")
+                  // console.log(context.state.recursosBusqueda)
                 });
             });
+          // return context.state.recursosBusqueda;
+
           } else {
             await this.$fireStore
               .collection(context.state.datosBusqueda.tipo)
               .get()
               .then(data => {
-                // console.log(data);
+                console.log(data);
                 data.forEach(doc => {
-                  context.state.recursosBusqueda.push(doc.data());
+                  let data = doc.data();
+                    //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
+                  data.tags = data.tags ? data.tags : [];
+                  data.favoritos = data.favoritos ? data.favoritos : [];
+
+
+                  datos = {
+                    idRecurso: doc.id,
+                    ...data
+                  }
+                  context.state.recursosBusqueda.push(datos);
                   // console.log("context.state.recursosBusqueda")
                   // console.log(context.state.recursosBusqueda)
                   // alert("averrr")
                 });
               });
+              // console.log("context.state.recursosBusqueda")
+              // console.log(context.state.recursosBusqueda)
+          // return context.state.recursosBusqueda;
+
           }
 
-          return context.state.recursosBusqueda;
+          // return context.state.recursosBusqueda;
         } catch (e) {
           console.log(e);
         }
+        return context.state.recursosBusqueda;
       },
       obtenerTodosRecursos(context) {
         // console.log("obtenerRecursos")

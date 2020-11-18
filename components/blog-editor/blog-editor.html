@@ -60,9 +60,9 @@
                         
                         <v-file-input
                             outlined
-                            label="Seleccione archivo"
+                            :label="labelFile"
                             prepend-icon="mdi-paperclip"
-                            accept="audio/mp3, image/png,image/jpeg , video/mp4"
+                            :accept="tipoRecursoFile"
                             v-model="file"
                             @change = "changeFile"
     
@@ -121,6 +121,15 @@
                                 value="privado"
                             ></v-radio>
                         </v-radio-group>
+                        <!-- :class="[tagsValido ? 'mb-2 mt-2' : 'errorTagsBorder mb-2 mt-2']" -->
+                        <input-tag 
+                            v-model="datosRecurso.tags" 
+                            class="mb-2 mt-2"
+                        >
+                        </input-tag>
+                        <div v-if="tagsValido === false" >
+                            <p :class="[tagsValido ? '' : 'errorTags']">{{msjTag}}</p>
+                        </div>
                         <div class="d-flex justify-center">
                             <v-btn 
                                 :disabled="!esRecursoValido" dark 

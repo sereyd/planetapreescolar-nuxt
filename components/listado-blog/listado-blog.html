@@ -39,7 +39,35 @@
                 class="fotomini"
                 @click="muestrapost(key)"
                 
-                ></v-img>
+                >
+                <!-- <v-fab-transition class="pb-5">
+                    <v-btn
+                        :key="index"
+                        
+                        fab
+                        x-small
+                        absolute
+                        top
+                        right
+                        class="v-btn--example mt-5"
+                    >
+                        <v-icon 
+                            v-if="key.favoritos.includes(datosUsuario.id)" 
+                            color="red accent-4"
+                            
+                            @click.stop="changeFavorito('remove',key)"
+                        >mdi-heart</v-icon>
+                        <v-icon 
+                            v-else 
+                            color="red accent-4"
+                            
+                            @click.stop="changeFavorito('add',key)"
+                        >mdi-heart-outline</v-icon>
+                    </v-btn>
+                  </v-fab-transition> -->
+            
+                </v-img>
+                
             </v-card>
     
             <div>
@@ -51,7 +79,10 @@
                     <p class="datosGrupo">{{el.total}} alumnos</p> -->
                 </div>
 
-                <div v-if="tipo==='BLOG'" class=" ml-3 textos">
+                <div 
+                    v-if="tipo==='BLOG' || tipo==='AUDIOS' || tipo==='IMAGENES' || tipo==='VIDEOS'" 
+                    class=" ml-3 textos"
+                >
                     <h4>{{key.titulo}}</h4>
                 </div>
 
@@ -227,6 +258,16 @@
                     >
                         <source :src="vistapost.urlRecurso" />
                     </audio-player>
+                    <!-- <v-file-input
+                            outlined
+                            label="Seleccione archivo"
+                            prepend-icon="mdi-paperclip"
+                            accept="audio/mp3, image/png,image/jpeg , video/mp4"
+                            v-model="file"
+    
+                    ></v-file-input>
+
+                    <v-btn sm @click="descargarRecurso(vistapost.urlRecurso)">Descargar</v-btn> -->
                 </div>
 
                 <!-- SECCION DE COMENTARIOS -->

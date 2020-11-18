@@ -1,6 +1,7 @@
 import { VueEditor } from "vue2-editor";
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale';
+import InputTag from 'vue-input-tag';
 
 export default {
   data() {
@@ -20,7 +21,8 @@ export default {
         // user:"",
         contenido:"",
         tipoRecurso:"",
-        urlRecurso:""
+        urlRecurso:"",
+        tags:[]
         },
         customToolbar: [
           [{ 'font': [] }],
@@ -40,10 +42,14 @@ export default {
         ],
 
         esBlog: false,
+
+        tagsValido: null,
+        msjTag: "",
     };
   },
   components: {
-    VueEditor
+    VueEditor,
+    InputTag
   },
   computed: {
     fechaVisual(payload){
@@ -63,6 +69,13 @@ export default {
         tipoM= "Editar memoria";
       else if(this.tipo === "BLOG")
         tipoM= "Editar blog";
+      else if(this.tipo === "AUDIOS")
+        tipoM= "Editar recurso";
+      else if(this.tipo === "VIDEOS")
+        tipoM= "Editar recurso";
+      else if(this.tipo === "IMAGENES")
+        tipoM= "Editar recurso";
+          
       return tipoM;
     }
   },
@@ -86,12 +99,14 @@ export default {
           .then((data) => {
             data.forEach((doc) => {
               let data = doc.data();
-              datos = {
-                id: doc.id,
+              data.tags = data.tags ? data.tags : [];
+              data.favoritos = data.favoritos ? data.favoritos : [];
 
-                // grupo:{},
+              datos = {
+                idRecurso: doc.id,
                 ...data
               }
+
               this.listaR.push(datos);
                 // console.log("Carga tipo: "+this.tipo)
                 // console.log(doc.data())
@@ -108,7 +123,7 @@ export default {
 
 
     mostrarRecursoEdit(post){
-
+      console.log(post)
       console.log(this.tipo);
       if(this.tipo === "RECOMENDACION")
         this.esBlog = true;
@@ -124,14 +139,14 @@ export default {
 
     },
     modificarRecurso(){
-      const {id, titulo, contenido, edopost} = this.datosRecursoEdit;
+      const {id, titulo, contenido, edopost, tags} = this.datosRecursoEdit;
 
       //SE OBTIENE EL RECURSO POR MEDIO DEL ID
       let usuarioRecursosRef =  this.$fireStore.collection(this.tipo).doc(id);
       
       //SE ACTUALIZA EN FIREBASE EL RECURSO SELECCIONADO
       usuarioRecursosRef.update({
-        titulo, contenido, edopost
+        titulo, contenido, edopost,tags
       })
       .then(() => {
           // console.log(this.grupo);
@@ -149,6 +164,7 @@ export default {
               lista.titulo = titulo;
               lista.contenido = contenido ;
               lista.edopost = edopost;
+              lista.tags = tags;
               
             }
           })
@@ -168,8 +184,23 @@ export default {
     validarFormularioRecursoEdit(){
       // console.log("revision")
       this.esRecursoEditValido =this.$refs.formRecursoEdit.validate();
-      if(this.esRecursoEditValido)
-        this.modificarRecurso();
+
+      if(this.esRecursoEditValido && this.datosRecursoEdit.tags.length > 0)
+      {
+        this.tagsValido = true;
+        this.msjTag = ""
+        console.log("tags validos")
+        this.modificarRecurso()
+      }
+
+      if(this.datosRecursoEdit.tags.length === 0)
+      {
+        this.tagsValido = false;
+        console.log("tags NO validos")
+
+        this.msjTag = "Necesita agregar por lo menos un tag"
+      }
+      
         // console.log("biennnn")
     }
   },

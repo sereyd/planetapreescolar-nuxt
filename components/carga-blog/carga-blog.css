@@ -12,3 +12,64 @@
 .texto_mb{
     margin-bottom:0!important;
 }
+
+.vue-input-tag-wrapper .input-tag .remove {
+    color: white!important;
+}
+
+.errorTags{
+    color: #ff5252 !important;
+    font-size: 12px;
+}
+.errorTagsBorder{
+    /* color: #ff5252 !important; */
+    /* border: #ff5252 !important; */
+    border: 1px solid #ff5252!important;
+    background-color: #fff;
+    overflow: hidden;
+    padding-left: 4px;
+    padding-top: 4px;
+    cursor: text;
+    text-align: left;
+    -webkit-appearance: textfield;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.v-btn{
+    letter-spacing: 0em;
+    /* justify-content: center; */
+    text-indent: 0em;
+    /* text-transform: uppercase; */
+    text-transform: none;
+    /* align-items: flex-start; */
+  }
+
+.vue-input-tag-wrapper
+.input-tag {
+
+    background-color: #ad227d!important;
+
+    border-radius: 2px;
+    border: 1px solid white!important;
+    color: white!important;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 400;
+    margin-bottom: 4px;
+    margin-right: 4px;
+    padding: 3px;
+
+    /* background-color: #ad227d!important;
+    border: 1px solid white!important;
+    color: white!important; */
+}
+
+.tags_input .input-tag{
+    background-color: #ad227d!important;
+    border: 1px solid white!important;
+    color: white!important;
+}

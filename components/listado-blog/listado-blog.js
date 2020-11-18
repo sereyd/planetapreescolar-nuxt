@@ -10,6 +10,7 @@ import { format } from 'date-fns'
 import { es } from 'date-fns/locale';
 
 
+
 export default{
     data(){
         return {
@@ -47,13 +48,16 @@ export default{
               comentario:"",
               nombreUsuario:"",
               urlImagen:""
-            }
+            },
+
+            //PARA DESCARGAR RECURSO
+            file: null,
         }
     },
     methods:{
       
       muestrapost(p){
-        // console.log(p)
+        console.log(p)
         this.viewpost=true
         // var d = new Date("2015-03-25");
         // console.log(d);
@@ -64,6 +68,23 @@ export default{
         this.vistapost.urlRecurso = p.urlRecurso ? p.urlRecurso : p.urlImagen;
         // console.log(this.vistapost);
         this.fechaVisual = format(this.vistapost.fecha , "dd  MMMM yyyy", {locale: es});
+
+        // this.file = new File(p.urlRecurso);
+
+        // var xhr = new XMLHttpRequest();
+        // xhr.responseType = 'blob';
+        // xhr.onload = function(event) {
+        //   var blob = xhr.response;
+        //   console.log(blob)
+        // };
+        // xhr.open('GET', p.urlRecurso);
+        // xhr.send();
+
+
+        // xhr.send()
+
+        // console.log("this.file")
+        // console.log(this.file)
       },
       editapost(t){
         this.edit=true
@@ -78,6 +99,9 @@ export default{
               .then((data) => {
                 data.forEach((doc) => {
                   let data = doc.data();
+                  data.tags = data.tags ? data.tags : [];
+                  data.favoritos = data.favoritos ? data.favoritos : [];
+
                   const datos = {
                       idRecurso: doc.id,
                       ...data
@@ -94,6 +118,9 @@ export default{
                 .then((data) => {
                   data.forEach((doc) => {
                     let data = doc.data();
+                    data.tags = data.tags ? data.tags : [];
+                    data.favoritos = data.favoritos ? data.favoritos : [];
+
                     const datos = {
                         idRecurso: doc.id,
                         ...data
@@ -107,6 +134,8 @@ export default{
             console.log(e);
           }
         },
+
+
     async  cargabaseUser(){
       try { 
         if(!this.esCompleto)
@@ -119,6 +148,9 @@ export default{
             .then((data) => {
               data.forEach((doc) => {
                 let data = doc.data();
+                data.tags = data.tags ? data.tags : [];
+                data.favoritos = data.favoritos ? data.favoritos : [];
+
                 const datos = {
                     idRecurso: doc.id,
                     ...data
@@ -138,6 +170,9 @@ export default{
           .then((data) => {
             data.forEach((doc) => {
               let data = doc.data();
+              data.tags = data.tags ? data.tags : [];
+              data.favoritos = data.favoritos ? data.favoritos : [];
+
               const datos = {
                   idRecurso: doc.id,
                   ...data
@@ -152,6 +187,8 @@ export default{
                 console.log(e);
               }
             },
+
+
             async  cargabaseExclude(){
                 try {
                   if(!this.esCompleto)
@@ -162,6 +199,9 @@ export default{
                       .then((data) => {
                         data.forEach((doc) => {
                           let data = doc.data();
+                          data.tags = data.tags ? data.tags : [];
+                          data.favoritos = data.favoritos ? data.favoritos : [];
+
                           const datos = {
                               idRecurso: doc.id,
                               ...data
@@ -178,6 +218,9 @@ export default{
                       .then((data) => {
                         data.forEach((doc) => {
                           let data = doc.data();
+                          data.tags = data.tags ? data.tags : [];
+                          data.favoritos = data.favoritos ? data.favoritos : [];
+
                           const datos = {
                               idRecurso: doc.id,
                               ...data
@@ -234,6 +277,22 @@ export default{
         if(this.esComentarioValido)
           this.agregarComentario();
         // console.log("biennnn")
+      },
+      descargarRecurso(link){
+
+      },
+
+      //AGREGAR O QUITAR DE FAVORITOS
+      changeFavorito(estado, recurso){
+
+
+        if(estado === "add")
+          recurso.favoritos.push(this.datosUsuario.id);
+        else
+          recurso.favoritos = recurso.favoritos.filter( r => this.datosUsuario.id !== r)
+        
+
+
       }
     },
     props:{
@@ -294,7 +353,7 @@ export default{
     async mounted(){
         // console.log("this.blogpost")
         
-        console.log("Es completo: "+this.esCompleto);
+        // console.log("Es completo: "+this.esCompleto);
         if(this.userId==='' && this.idexclude===''){
            await this.cargabaseGral()
         }
@@ -305,35 +364,45 @@ export default{
            await this.cargabaseExclude()    
         }
 
-        console.log(this.esBusqueda)
-        console.log(this.blogpost)
+        // console.log(this.esBusqueda)
+        // console.log(this.blogpost)
         if(this.esBusqueda)
         {
-          console.log("dato a buscar en todas las listas")
+          // console.log(this.titulo)
+          // console.log("dato a buscar en todas las listas")
           const clave = this.datoBuscar.toLowerCase().normalize("NFD");
-          console.log(clave)
+          // console.log(clave)
           let recursos = [... this.blogpost];
+          // console.log("RECURSOS")
+          // console.log(recursos)
+          this.blogpost = [...recursos.filter(recurso =>
+            recurso.tags.includes(clave) 
+          )]
 
-          if(this.tipo === "RECOMENDACION")
-            this.blogpost = recursos.filter( recurso => {
-                return(
-                    recurso.titulo.toLowerCase().includes(clave) ||
-                    recurso.contenido.toLowerCase().includes(clave) ||
-                    recurso.materia.toLowerCase().includes(clave) ||
-                    recurso.grado.toLowerCase().includes(clave)
+          // console.log("FILTRADOS")
+          // console.log(this.blogpost)
+            
+            // alert("alto ahi ")
+          // if(this.tipo === "RECOMENDACION")
+          //   this.blogpost = recursos.filter( recurso => {
+          //       return(
+          //           recurso.titulo.toLowerCase().includes(clave) ||
+          //           recurso.contenido.toLowerCase().includes(clave) ||
+          //           recurso.materia.toLowerCase().includes(clave) ||
+          //           recurso.grado.toLowerCase().includes(clave)
 
-                )
-            })
-          else
-            this.blogpost = recursos.filter( recurso => {
-                return(
-                    recurso.titulo.toLowerCase().includes(clave) ||
-                    recurso.contenido.toLowerCase().includes(clave)
+          //       )
+          //   })
+          // else
+          //   this.blogpost = recursos.filter( recurso => {
+          //       return(
+          //           recurso.titulo.toLowerCase().includes(clave) ||
+          //           recurso.contenido.toLowerCase().includes(clave)
 
-                )
-            })
-          if(this.blogpost.length === 0)
-            this.titulo = ""
+          //       )
+          //   })
+          // if(this.blogpost.length === 0)
+          //   this.titulo = ""
         }
         
 
