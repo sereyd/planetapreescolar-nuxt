@@ -19,6 +19,20 @@
 <div style="width:100%; height:50px;"></div>
 <listablog :esCompleto="false" tipo="MEMORIA" titulo="Memorias de la educadora" subtitulos="Compoarte tus vivencias y experiencias con la comunidad"  linkmas="memorias" />
 
+  <!---------audios------------>
+<div style="width:100%; height:50px;"></div>
+<listablog :esCompleto="false" tipo="AUDIOS" titulo="Audios de la educadora" subtitulos="Audios o música para tus rutinas o clases"  linkmas="audios" />
+
+  <!---------imagenes------------>
+<div style="width:100%; height:50px;"></div>
+<listablog :esCompleto="false" tipo="IMAGENES" titulo="Imagenes de la educadora" subtitulos="fotos o imágenes de apoyo para clases"  linkmas="imagenes" />
+
+  <!---------videos------------>
+<div style="width:100%; height:50px;"></div>
+<listablog :esCompleto="false" tipo="VIDEOS" titulo="Videos de la educadora" subtitulos="videos para complementar clases o informativos"  linkmas="videos" />
+
+
+
 </v-main>
 </template>
 

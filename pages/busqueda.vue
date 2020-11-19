@@ -6,7 +6,19 @@
             <h2 class="pirmary--text" v-if="busquedaFiltrada.length !== 0" >{{tituloResultados}}</h2>
             <h2 class="pirmary--text" v-else >No se encontraron coincidencias</h2>
         </div>
-        <v-row 
+
+        <div v-if="datosBusqueda.tipo !== 'TODOS LOS RECURSOS'">
+            <listablog 
+                :esBusqueda="true" 
+                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+                :tipo="this.datosBusqueda.tipo" 
+                titulo="" 
+                subtitulos=""
+                
+            />
+        </div>
+
+        <!-- <v-row 
             class="mb-6" no-gutters
             v-if="datosBusqueda.tipo !== 'TODOS LOS RECURSOS'"
         >
@@ -38,14 +50,11 @@
                             class="texto_busqueda">{{el.grado}}
                         </p>
 
-                        <!-- <p class="datosGrupo">{{el.fecha}}</p> -->
-                        <!-- <p class="datosGrupo">{{el.cicloEscolar}}</p>-->
-                        <!--<p class="datosGrupo">{{el.total}} alumnos</p> -->
                     </div>
                 </div>
 
           </v-col>
-        </v-row>
+        </v-row> -->
 
         <div v-else-if="datosBusqueda.tipo === 'TODOS LOS RECURSOS' && !spinner">
             <div>
@@ -82,9 +91,39 @@
                 subtitulos=""
             />
 
+            <!-- RECURSOS TIPO FILE -->
+            <listablog 
+                :esBusqueda="true" 
+                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+                tipo="AUDIOS" 
+                titulo="Audios" 
+                subtitulos=""
+            />
+            <listablog 
+                :esBusqueda="true" 
+                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+                tipo="VIDEOS" 
+                titulo="Videos" 
+                subtitulos=""
+            />
+            <listablog 
+                :esBusqueda="true" 
+                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+                tipo="IMAGENES" 
+                titulo="Imagenes" 
+                subtitulos=""
+            />
+            <!-- <listablog 
+            :esCompleto="false" 
+            tipo="IMAGENES" 
+            titulo="Imagenes de la educadora" 
+            subtitulos="fotos o imágenes de apoyo para clases"  
+            linkmas="imagenes" /> -->
+
+
         </div>
 
-        <v-dialog v-model="vistaElemento" fullscreen >
+        <!-- <v-dialog v-model="vistaElemento" fullscreen >
             <v-card >
                 <v-card-text style="text-align: right; ">
                     <span class="primary--text" style="font-weight: bold; text-align: right;" @click="vistaElemento=false">X</span>
@@ -108,7 +147,7 @@
                     </v-container>
                 </v-card-text>
             </v-card>
-        </v-dialog>
+        </v-dialog> -->
 
         <!-- {{mostrando}} -->
 
@@ -158,50 +197,43 @@ export default {
             return tipoM;
         }
     },
-    mounted(){
+    async mounted(){
         
         
-        this.initProceso();
+        await this.initProceso();
 
     },
     methods: {
         ...mapActions(['obtenerRecursos']),
         async initProceso(){
             // this.buscandoDatos();
-            this.datos = await this.obtenerRecursos()
+            await this.obtenerRecursos()
             // alert("paso1")
 
-            // console.log(this.datos);
-            // alert("paso2")
+            
             this.filtarDatos();
             // alert("paso3")
         },
         filtarDatos(){
+            console.log(this.recursosBusqueda);
+
+            this.datos = [...this.recursosBusqueda]
+            // console.log(this.datos);
+            // alert("aqui 1")
+
             const clave = this.datosBusqueda.clave.toLowerCase().normalize("NFD");
             let recursos = [... this.datos];
+            // console.log("clave")
+            // console.log(clave)
 
+            this.busquedaFiltrada = recursos.filter(recurso =>
+                     recurso.tags.includes(clave) 
+            )
 
-            if(this.datosBusqueda.tipo === "RECOMENDACION")
-                this.busquedaFiltrada = recursos.filter( recurso => {
-                    return(
-                        recurso.titulo.toLowerCase().includes(clave) ||
-                        recurso.contenido.toLowerCase().includes(clave) ||
-                        recurso.materia.toLowerCase().includes(clave) ||
-                        recurso.grado.toLowerCase().includes(clave)
+            
+            // console.log(this.busquedaFiltrada.length)
 
-                    )
-                })
-            else
-                this.busquedaFiltrada = recursos.filter( recurso => {
-                    return(
-                        recurso.titulo.toLowerCase().includes(clave) ||
-                        recurso.contenido.toLowerCase().includes(clave)
-
-                    )
-                })
-            console.log(this.busquedaFiltrada.length)
-
-            console.log(this.busquedaFiltrada);
+            // console.log(this.busquedaFiltrada);
             this.spinner =false;
 
         },
@@ -210,58 +242,7 @@ export default {
             this.elementoSeleccionado = elemento
         },
         
-        // buscandoDatos(){
-        //     const {userlogin, id} = this.datosUsuario;
-        //     console.log("datosUsuario")
-        //     console.log(this.datosUsuario)
-        //     console.log("buscando: ", this.datosBusqueda.clave)
-        //     console.log("tipo: ", this.datosBusqueda.tipo)
-            
-        //     if(!userlogin)
-        //     {
-        //         console.log("USAURIO SIN REGISTRO")
-        //         this.buscarPublicas();
-        //     }
-        //     else
-        //     {
-        //         console.log("USUARIO LOEGADO")
-
-        //     }
-
-
-
-        // },
-
-        // async buscarPublicas(){
-        //     try {
-        //         await this.$fireStore.collection(this.datosBusqueda.tipo)
-        //         .where("user","==",this.userId)  
-        //         .get()
-        //           .then((data) => {
-        //             data.map((doc) => {
-        //               this.blogpost.push(doc.data());
-        //             });
-        //           });
-        //       } 
-        //       catch (e) {
-        //         console.log(e);
-        //       }
-        // },
-        // buscarPrivadas(){
-        //      try { 
-        //         await this.$fireStore
-        //         .collection(this.tipo)  
-        //         .where("user","==",this.userId)  
-        //         .get()
-        //         .then((data) => {
-        //             data.forEach((doc) => {
-        //                 this.blogpost.push(doc.data());
-        //             });
-        //         });
-        //     } catch (e) {
-        //         console.log(e);
-        //     }
-        // }
+        
     },
 }
 </script>
