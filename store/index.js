@@ -150,6 +150,8 @@ const createStore = () => {
         recomendacion:[],
       },
 
+      recursosFavoritos:[],
+
       //LINKS DE DOMINIO (PRODUCCION Y DESARROLLO)
       dominio:"http://localhost:3000",
       // dominio:"https://educadora.cf",
@@ -258,6 +260,47 @@ const createStore = () => {
         return true;
       },
 
+      changeRecursosFavoritos({state}, dato)
+      {
+          const {idRecurso} = dato.key;
+          // console.log(dato)
+          // alert("antes")
+          if(dato.estado === "add")
+            dato.key.favoritos.push(state.datosUsuario.id);
+          else
+            dato.key.favoritos = dato.key.favoritos.filter( r => state.datosUsuario.id !== r)
+
+          let recursoListo = {...dato.key};
+          // console.log(recursoListo)
+
+          recursoListo.idRecurso = "";
+
+          let recursoRef = this.$fireStore.collection(dato.tipo).doc(idRecurso);
+        
+          //SE ACTUALIZA EN FIREBASE EL CAMPO DE COMENTARIOS
+          recursoRef.update(recursoListo)
+          .then(() => {
+            state.recursosFavoritos.push(recursoListo);
+            // this.datosComentario.idUsuario = "";
+            // this.datosComentario.nombreUsuario = "";
+            // this.datosComentario.urlImagen = "";
+            // // this.datosComentario.comentario = "";
+            // // this.esComentarioValido = true;
+            // this.$refs.formComentario.reset();
+    
+            // console.log("reset data")
+     
+          })
+          .catch((error) => {
+              console.error("ErroR al agregar nuevo comentario: ", error);
+          });
+
+        console.log(dato)
+
+
+        
+      },
+
       async obtenerRecursos(context) {
         context.state.recursosBusqueda = [];
         let datos = {};
@@ -280,6 +323,7 @@ const createStore = () => {
                     //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
                     data.tags = data.tags ? data.tags : [];
                     data.favoritos = data.favoritos ? data.favoritos : [];
+                    delete data['idRecurso'];
 
                     datos = {
                       idRecurso: doc.id,
@@ -418,6 +462,8 @@ const createStore = () => {
         state.vistaValida = data;
         // alert("Cambnio"+ state.vistaValida)
       },
+      
+
       async almacenarFotoStorage(state, ubi) {
         console.log("entra al fotoStorage: " + state.imgupload);
         let urlimagen=""

@@ -40,7 +40,7 @@
                 @click="muestrapost(key)"
                 
                 >
-                <!-- <v-fab-transition class="pb-5">
+                <v-fab-transition class="pb-5" v-if ="!esFavoritos">
                     <v-btn
                         :key="index"
                         
@@ -55,16 +55,16 @@
                             v-if="key.favoritos.includes(datosUsuario.id)" 
                             color="red accent-4"
                             
-                            @click.stop="changeFavorito('remove',key)"
+                            @click.stop="changeRecursosFavoritos({estado: 'remove',key, tipo})"
                         >mdi-heart</v-icon>
                         <v-icon 
                             v-else 
                             color="red accent-4"
                             
-                            @click.stop="changeFavorito('add',key)"
+                            @click.stop="changeRecursosFavoritos({estado: 'add',key, tipo})"
                         >mdi-heart-outline</v-icon>
                     </v-btn>
-                  </v-fab-transition> -->
+                  </v-fab-transition>
             
                 </v-img>
                 
