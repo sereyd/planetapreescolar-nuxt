@@ -55,7 +55,7 @@ export default{
         }
     },
     methods:{
-      
+      ...mapActions(['changeRecursosFavoritos']),
       muestrapost(p){
         console.log(p)
         this.viewpost=true
@@ -101,6 +101,8 @@ export default{
                   let data = doc.data();
                   data.tags = data.tags ? data.tags : [];
                   data.favoritos = data.favoritos ? data.favoritos : [];
+                  delete data['idRecurso'];
+
 
                   const datos = {
                       idRecurso: doc.id,
@@ -120,6 +122,8 @@ export default{
                     let data = doc.data();
                     data.tags = data.tags ? data.tags : [];
                     data.favoritos = data.favoritos ? data.favoritos : [];
+                    delete data['idRecurso'];
+
 
                     const datos = {
                         idRecurso: doc.id,
@@ -150,6 +154,8 @@ export default{
                 let data = doc.data();
                 data.tags = data.tags ? data.tags : [];
                 data.favoritos = data.favoritos ? data.favoritos : [];
+                delete data['idRecurso'];
+
 
                 const datos = {
                     idRecurso: doc.id,
@@ -172,6 +178,8 @@ export default{
               let data = doc.data();
               data.tags = data.tags ? data.tags : [];
               data.favoritos = data.favoritos ? data.favoritos : [];
+              delete data['idRecurso'];
+
 
               const datos = {
                   idRecurso: doc.id,
@@ -201,6 +209,8 @@ export default{
                           let data = doc.data();
                           data.tags = data.tags ? data.tags : [];
                           data.favoritos = data.favoritos ? data.favoritos : [];
+                          delete data['idRecurso'];
+
 
                           const datos = {
                               idRecurso: doc.id,
@@ -220,6 +230,8 @@ export default{
                           let data = doc.data();
                           data.tags = data.tags ? data.tags : [];
                           data.favoritos = data.favoritos ? data.favoritos : [];
+                          delete data['idRecurso'];
+
 
                           const datos = {
                               idRecurso: doc.id,
@@ -283,17 +295,19 @@ export default{
       },
 
       //AGREGAR O QUITAR DE FAVORITOS
-      changeFavorito(estado, recurso){
+      // changeFavorito(estado, recurso){
 
 
-        if(estado === "add")
-          recurso.favoritos.push(this.datosUsuario.id);
-        else
-          recurso.favoritos = recurso.favoritos.filter( r => this.datosUsuario.id !== r)
+      //   if(estado === "add")
+      //     recurso.favoritos.push(this.datosUsuario.id);
+      //   else
+      //     recurso.favoritos = recurso.favoritos.filter( r => this.datosUsuario.id !== r)
+
+        
         
 
 
-      }
+      // }
     },
     props:{
         tipo:{
@@ -340,6 +354,10 @@ export default{
           type: Boolean,
           default: false,
         },
+        esFavoritos:{
+          type: Boolean,
+          default: false,
+        },
         datoBuscar:{
           type:String,
           default:""
@@ -382,27 +400,19 @@ export default{
           // console.log("FILTRADOS")
           // console.log(this.blogpost)
             
-            // alert("alto ahi ")
-          // if(this.tipo === "RECOMENDACION")
-          //   this.blogpost = recursos.filter( recurso => {
-          //       return(
-          //           recurso.titulo.toLowerCase().includes(clave) ||
-          //           recurso.contenido.toLowerCase().includes(clave) ||
-          //           recurso.materia.toLowerCase().includes(clave) ||
-          //           recurso.grado.toLowerCase().includes(clave)
+           
+        }
 
-          //       )
-          //   })
-          // else
-          //   this.blogpost = recursos.filter( recurso => {
-          //       return(
-          //           recurso.titulo.toLowerCase().includes(clave) ||
-          //           recurso.contenido.toLowerCase().includes(clave)
+        if(this.esFavoritos)
+        {
 
-          //       )
-          //   })
-          // if(this.blogpost.length === 0)
-          //   this.titulo = ""
+          //const favs = recetas.data.filter( receta =>(receta.votantes.includes(usuario.correo)) );
+          let recursos = [... this.blogpost];
+          this.blogpost = [...recursos.filter(recurso =>
+            recurso.favoritos.includes(this.datosUsuario.id) 
+          )]
+          // console.log("FAVORITOS DE: "+this.tipo);
+          // console.log(this.blogpost);
         }
         
 
