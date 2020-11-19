@@ -141,10 +141,14 @@ export default {
 
     },
     modificarRecurso(){
-      const {id, titulo, contenido, edopost, tags} = this.datosRecursoEdit;
+
+      console.log(this.datosRecursoEdit);
+      // alert("altooo");
+      const {idRecurso, titulo, contenido, edopost, tags} = this.datosRecursoEdit;
+      
 
       //SE OBTIENE EL RECURSO POR MEDIO DEL ID
-      let usuarioRecursosRef =  this.$fireStore.collection(this.tipo).doc(id);
+      let usuarioRecursosRef =  this.$fireStore.collection(this.tipo).doc(idRecurso);
       
       //SE ACTUALIZA EN FIREBASE EL RECURSO SELECCIONADO
       usuarioRecursosRef.update({
@@ -161,7 +165,7 @@ export default {
           this.listaR.map( (lista) => {
             // console.log(lista.id +"==="+ id)
             // console.log(lista)
-            if(lista.id === id)
+            if(lista.idRecurso === idRecurso)
             {
               lista.titulo = titulo;
               lista.contenido = contenido ;

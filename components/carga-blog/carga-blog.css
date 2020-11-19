@@ -48,7 +48,24 @@
     /* align-items: flex-start; */
   }
 
-.vue-input-tag-wrapper
+  .tags_input .input-tag {
+    background-color: #ad227d!important;
+    border: 1px solid white!important;
+    color: white!important;
+  }
+  .vue-input-tag-wrapper .input-tag > span{
+    background-color: #ad227d!important;
+    border: 1px solid white!important;
+    color: white!important;
+  }
+  
+  .vue-input-tag-wrapper .input-tag .remove {
+    cursor: pointer;
+    font-weight: bold;
+    color: #638421;
+  }
+
+/* .vue-input-tag-wrapper
 .input-tag {
 
     background-color: #ad227d!important;
@@ -62,11 +79,7 @@
     margin-bottom: 4px;
     margin-right: 4px;
     padding: 3px;
-
-    /* background-color: #ad227d!important;
-    border: 1px solid white!important;
-    color: white!important; */
-}
+} */
 
 .tags_input .input-tag{
     background-color: #ad227d!important;

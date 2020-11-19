@@ -2,7 +2,7 @@
   <v-main class="pa-10">
       <h1 class="primary--text">Favoritos</h1>
       <!------recomendaciones----->
-    <div style="width:100%; height:50px;"></div>
+    <!-- <div style="width:100%; height:50px;"></div>
     <listablog  
         tipo="RECOMENDACION" 
         titulo="Recomendaciones" 
@@ -10,7 +10,7 @@
         :esFavoritos="true"
     />
 
-    <!-------Blog------------->
+    <!-------Blog-------------
     <div style="width:100%; height:50px;"></div>
     <listablog  
         tipo="BLOG" 
@@ -19,7 +19,7 @@
         :esFavoritos="true"
     />
 
-    <!---------memorias------------>
+    <!---------memorias------------
     <div style="width:100%; height:50px;"></div>
     <listablog  
         tipo="MEMORIA" 
@@ -28,7 +28,7 @@
         :esFavoritos="true"
     />
 
-    <!---------audios------------>
+    <!---------audios------------
     <div style="width:100%; height:50px;"></div>
     <listablog  
         tipo="AUDIOS" 
@@ -37,7 +37,7 @@
         :esFavoritos="true"
     />
 
-    <!---------imagenes------------>
+    <!---------imagenes------------
     <div style="width:100%; height:50px;"></div>
     <listablog  
         tipo="IMAGENES" 
@@ -46,14 +46,14 @@
         :esFavoritos="true"
     />
 
-    <!---------videos------------>
+    <!---------videos------------
     <div style="width:100%; height:50px;"></div>
     <listablog  
         tipo="VIDEOS" 
         titulo="Videos" 
         subtitulos=""  
         :esFavoritos="true"
-    />
+    /> -->
 
     
   </v-main>
