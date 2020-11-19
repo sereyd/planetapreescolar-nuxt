@@ -141,71 +141,27 @@
       <v-card>
         <v-card-text>
 
-          <v-data-table  :headers="cabeceraListaAlumnos" :items="cargaalumnos" >
-<!------info de cabecera-->
-    <template v-slot:top='{ item }'>
-      <v-btn @click="addalumno=true" style="text-transform: none;" depressed class="white">              
-        <v-avatar 
-              size="35" 
-              class="cyan" 
-              style="cursor:pointer;"
+          <v-btn @click="addalumno=true" style="text-transform: none;" depressed class="white">              
+            <v-avatar 
+                  size="35" 
+                  class="cyan" 
+                  style="cursor:pointer;"
+                  >
+                  <v-icon class="white--text">mdi-plus</v-icon>
+                    </v-avatar>
+               Nuevo Alumno
+              </v-btn>
+      <v-btn @click="nuevalista=true" style="text-transform: none;" depressed class="white"
+                ><v-avatar class="cyan" size="35"
+                  ><v-icon class="white--text">mdi-plus</v-icon></v-avatar
+                >
+                Nueva Lista</v-btn
               >
-              <v-icon class="white--text">mdi-plus</v-icon>
-                </v-avatar>
-           Nuevo Alumno
-          </v-btn>
-  <v-btn @click="nuevalista=true" style="text-transform: none;" depressed class="white"
-            ><v-avatar class="cyan" size="35"
-              ><v-icon class="white--text">mdi-plus</v-icon></v-avatar
-            >
-            Nueva Lista</v-btn
-          >
-       
-<v-btn style="text-transform: none;"  @click="importaGenerales()" depressed class="white" ><v-avatar class="cyan" size="35"><v-icon class="white--text">mdi-download</v-icon></v-avatar> Lista General</v-btn>
-
-
-            </template>
-<!------info de cuerpo----->
-<template v-slot:item.action='{ item }'>
-  <v-btn class="white" depressed><v-icon class="primary--text">mdi-pencil-outline</v-icon></v-btn>
-</template>
-<!---------Action Button-------------->
-        <template v-slot:item.fotoAlumno='{item}'>
-          <v-avatar size="60">
-            <img :src="item.fotoAlumno"  width="100%" />
-          </v-avatar>
-        </template>
-        <template v-slot:item.asistencia='{ item }' >
-          <listasdetareas tipo="asistencia" @respuesta="updateRespuesta($event,item,'asistencia')" :datatrans="item.asistencia"   > 
-          </listasdetareas>  
-        </template>
-        <template v-slot:item.conducta='{ item } ' >
-          <listasdetareas tipo="conducta" @respuesta="updateRespuesta($event,item,'conducta')" :datatrans="item.conducta"  > 
-          </listasdetareas>  
-        </template>
-        <template v-slot:item.sino='{ item }' >
-          <listasdetareas tipo="sino"   @respuesta="updateRespuesta($event,item,'sino')" :datatrans="item.sino"    > 
-          </listasdetareas>  
-        </template>
-        <template v-slot:item.onoff='{ item }' >
-          <listasdetareas tipo="onoff"  @respuesta="updateRespuesta($event,item,'onoff')" :datatrans="item.onoff"    > 
-          </listasdetareas>  
-        </template>
-        <template v-slot:item.semaforo='{ item }' >
-          <listasdetareas tipo="semaforo"   @respuesta="updateRespuesta($event,item,'semaforo')" :datatrans="item.semaforo"   > 
-          </listasdetareas>  
-
-        </template>
-
-          <template v-slot:item.rango='{ item }' >
-            <listasdetareas tipo="rango" :datatrans="item.rango"   > 
-            </listasdetareas>  
-        </template>
-
-
-
-          </v-data-table>
-
+           
+    <v-btn style="text-transform: none;"  @click="importaGenerales()" depressed class="white" ><v-avatar class="cyan" size="35"><v-icon class="white--text">mdi-download</v-icon></v-avatar> Lista General</v-btn>
+    
+    <v-chip>Total alumnos: {{datain.totalAlumnos}}</v-chip>
+              <tablaAlumnos :dataAlumnos="datain.Calendario[fechaselected]" ></tablaAlumnos>
 
 
         </v-card-text>

@@ -1,10 +1,10 @@
 export default{
     data(){
         return {
-            respuesta:""
+
         }
     },
-
+  
     methods:{
         actconducta(){
             this.datatrans==='buena' ? this.$emit('respuesta','mala') : this.$emit('respuesta','buena')

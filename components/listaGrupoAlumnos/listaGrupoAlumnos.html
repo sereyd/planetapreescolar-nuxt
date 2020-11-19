@@ -1,0 +1,55 @@
+<v-card>
+  <v-card-text>
+  <v-data-table  :headers="cabeceraListaAlumnos" :items="cargaalumnos" >
+    <!------info de cabecera-->
+
+    <!------info de cuerpo----->
+    <template v-slot:item.action='{ item }'>
+      <v-btn class="white" depressed><v-icon class="primary--text">mdi-pencil-outline</v-icon></v-btn>
+    </template>
+    <!---------Action Button-------------->
+            <template v-slot:item.fotoAlumno='{item}'>
+              <v-avatar size="60">
+                <img :src="item.fotoAlumno"  width="100%" />
+              </v-avatar>
+            </template>
+            <template v-slot:item.asistencia='{ item }' >
+              <v-icon @click="item.asistencia='0'" v-if="item.asistencia==='1'" class="green--text" >
+                mdi-check-bold
+            </v-icon>
+            <v-icon  @click="item.asistencia='1'" v-if="item.asistencia==='0'" class="red--text" >
+                mdi-close
+            </v-icon>
+            </template>
+            <template v-slot:item.conducta='{ item } ' >
+             
+              <v-icon @click="item.conducta='mala'" v-if="item.conducta==='buena'" class="green--text" >
+                mdi-emoticon-happy
+            </v-icon>
+            <v-icon  @click="item.conducta='buena'" v-if="item.conducta==='mala'" class="red--text" >
+                mdi-emoticon-sad
+            </v-icon>
+    
+    
+            </template>
+            <template v-slot:item.sino='{ item }' >
+    
+    
+            </template>
+            <template v-slot:item.onoff='{ item }' >
+    
+     
+            </template>
+            <template v-slot:item.semaforo='{ item }' >
+    
+    
+            </template>
+    
+              <template v-slot:item.rango='{ item }' >
+                <listasdetareas tipo="rango" :datatrans="item.rango"   > 
+                </listasdetareas>  
+            </template>
+
+              </v-data-table>
+            </v-card-text>
+            </v-card>

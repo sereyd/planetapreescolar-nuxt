@@ -7,6 +7,8 @@ import { es } from "date-fns/locale";
 import "vue2-timepicker/dist/VueTimepicker.css";
 import subirimagen from "~/components/subirimagen/subirimagen.vue";
 import listasdetareas from "~/components/listasdetareas/listasdetareas.vue";
+import tablaAlumnos from "~/components/listaGrupoAlumnos/listaGrupoAlumnos.vue"
+
 export default {
   data() {
     return {
@@ -53,31 +55,11 @@ export default {
 
       listatareas: [],
       nombreGrupo: "",
-      cabeceraListaAlumnos:[
-        {
-          text:'Edit',
-          value:'action'
-          },
-        {
-          text:'Imagen',
-          value:'fotoAlumno'
-          },
-        {
-          text:'Nombre Apellido',
-          value:"Nombre"
-        },
-        {
-          text: "Conducta",
-          value: "conducta"
-        },
-        {
-          text: "Asistencia",
-          value: "asistencia"
-        }
-      ],
+    
       crealista:{},
       nuevalista:false,
-      selectLista:[]
+      selectLista:[],
+ 
     }
   },
   computed: {
@@ -87,38 +69,7 @@ export default {
       this.nombreGrupo = this.datain.nombreGrupo;
       return this.nombreGrupo;
     },
-    cargaalumnos() {
-      if(!this.datain.Calendario[this.fechaselected].listaAlumnos){
-        this.$set(this.datain.Calendario[this.fechaselected],'listaAlumnos',[])
-
-        var num=0
-               
-      this.datain.Calendario[this.fechaselected].Alumnos.map((al)=>{
-        this.datain.Calendario[this.fechaselected].listaAlumnos.push({
-          pos:num++,
-          fotoAlumno:al.fotoAlumno,
-          Nombre:al.Nombre+" "+al.Apellido
-        })
-      });
-
-        }else{
-          //this.datain.Calendario[this.fechaselected].listaAlumnos=[]
-        }
-      if (
-        this.fechaselected &&
-        this.datain.Calendario &&
-        this.datain.Calendario[this.fechaselected]
-      ) {
-        
-
-      /////carga el horario gral 
-      if(this.datain.Calendario[this.fechaselected].Horario.length===0){
-        this.datain.Calendario[this.fechaselected].Horario=this.datain.Horario
-      }
-
-        return this.datain.Calendario[this.fechaselected].listaAlumnos
-      }
-    },
+  
     cargaHoras() {
       if (
         this.fechaselected &&
@@ -177,10 +128,6 @@ export default {
       })
 
       this.nuevalista=false
-    },
-
-    updateRespuesta(e,arr,t){
-      this.$set(this.datain.Calendario[this.fechaselected].listaAlumnos[arr.pos],[t],e)
     },
     schemavalidador(f) {
       if (!this.datain.Calendario) {
@@ -373,7 +320,8 @@ export default {
     Calendar,
     VueTimepicker,
     subirimagen,
-    listasdetareas
+    listasdetareas,
+    tablaAlumnos
   },
 
   destroyed() {

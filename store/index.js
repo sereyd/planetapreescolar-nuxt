@@ -142,8 +142,8 @@ const createStore = () => {
       },
 
       //LINKS DE DOMINIO (PRODUCCION Y DESARROLLO)
-      dominio:"http://localhost:3000",
-      // dominio:"https://educadora.cf",
+      ///dominio:"http://localhost:3000",
+       dominio:"https://educadora.cf",
 
       //APIS DEVELOP Y PRODUCCION
       urlAPI: "https://stripe-checkout-api.herokuapp.com",
