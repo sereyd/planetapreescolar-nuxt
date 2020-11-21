@@ -8,6 +8,8 @@ import 'vue-md-player/dist/vue-md-player.css'
 import { mapState, mapActions, mapMutations } from "vuex";
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale';
+import Spinner from '~/components/spinner.vue'
+
 
 
 
@@ -51,12 +53,19 @@ export default{
             },
 
             //PARA DESCARGAR RECURSO
-            file: null,
+            nombreFile: "",
+            urlFileB: "",
+            spinner:true,
+
+            linkembed:"",
         }
     },
     methods:{
       ...mapActions(['changeRecursosFavoritos']),
       muestrapost(p){
+        this.linkembed = "";
+
+        this.spinner = true;
         console.log(p)
         this.viewpost=true
         // var d = new Date("2015-03-25");
@@ -65,20 +74,48 @@ export default{
         // console.log(g);
         this.vistapost=p
         this.vistapost.tipoRecurso = p.tipoRecurso ? p.tipoRecurso : 'image';
-        this.vistapost.urlRecurso = p.urlRecurso ? p.urlRecurso : p.urlImagen;
+        this.vistapost.urlRecurso = p.urlRecurso ? p.urlRecurso : "none";
         // console.log(this.vistapost);
         this.fechaVisual = format(this.vistapost.fecha , "dd  MMMM yyyy", {locale: es});
 
         // this.file = new File(p.urlRecurso);
+        // this.urlImagenPrevia = URL.createObjectURL(
+        //   this.$refs.fileupload.files[0]
+        // );
 
-        // var xhr = new XMLHttpRequest();
-        // xhr.responseType = 'blob';
-        // xhr.onload = function(event) {
-        //   var blob = xhr.response;
-        //   console.log(blob)
-        // };
-        // xhr.open('GET', p.urlRecurso);
-        // xhr.send();
+       if(this.vistapost.tipoRecurso !== 'none' && this.vistapost.tipoRecurso !== 'link')
+       {
+         const xhr = new XMLHttpRequest();
+         xhr.responseType = 'blob';
+         xhr.onload = (event) => {
+           // console.log(xhr.response);
+           const blob = xhr.response;
+           console.log(blob)
+           const res = blob.type.split("/");
+           const typeFile = res[1];
+           this.nombreFile = this.vistapost.titulo+'.'+typeFile;
+ 
+           this.urlFileB = URL.createObjectURL(blob, {
+             type: blob.type
+           });
+           this.spinner = false;
+ 
+           // console.log( this.urlFileB);
+           // const fileB = new File([blob], "filename")
+           // console.log(fileB);
+         };
+         xhr.open('GET', p.urlRecurso);
+         xhr.send();
+       }
+       else if(this.vistapost.tipoRecurso === 'link')
+       {
+         let {urlRecurso} = this.vistapost;
+        const embed = urlRecurso.replace("watch?v=", "embed/");
+        this.linkembed = embed;
+        // this.linkembed = "https://www.youtube.com/embed/Y-HIJFxM264";
+        //                   https://www.youtube.com/watch?v=Y-HIJFxM264
+        console.log(this.linkembed)
+       }
 
 
         // xhr.send()
@@ -367,6 +404,7 @@ export default{
       VueEditor,
       videoPlayer,
       audioPlayer,
+      Spinner,
     },
     async mounted(){
         // console.log("this.blogpost")
@@ -394,7 +432,13 @@ export default{
           // console.log("RECURSOS")
           // console.log(recursos)
           this.blogpost = [...recursos.filter(recurso =>
-            recurso.tags.includes(clave) 
+            (
+              recurso.tags.includes(clave) && 
+              ( 
+                recurso.edopost === "publico" || 
+                ( recurso.edopost === "privado" && recurso.idCreador === this.datosUsuario.id ) 
+              ) 
+            )
           )]
 
           // console.log("FILTRADOS")

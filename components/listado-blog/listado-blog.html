@@ -40,7 +40,7 @@
                 @click="muestrapost(key)"
                 
                 >
-                <!-- <v-fab-transition class="pb-5" v-if ="!esFavoritos">
+                <v-fab-transition class="pb-5" v-if ="!esFavoritos">
                     <v-btn
                         :key="index"
                         
@@ -64,7 +64,7 @@
                             @click.stop="changeRecursosFavoritos({estado: 'add',key, tipo})"
                         >mdi-heart-outline</v-icon>
                     </v-btn>
-                  </v-fab-transition> -->
+                  </v-fab-transition>
             
                 </v-img>
                 
@@ -217,7 +217,7 @@
               <v-spacer></v-spacer>
               <v-btn class="melon white--text" @click="viewpost=false" style="text-transform: none;">Cerrar</v-btn>
         </v-card-title>
-        <v-card-text style="text-align: right; ">
+        <v-card-text style="text-align: right; " v-if="datosUsuario.userlogin">
     
 
             <div  max-width="100%" style="height:20px; "></div>
@@ -237,6 +237,8 @@
                 <!-- :src="vistapost.urlImagen!=='' ? vistapost.urlImagen : 'images/logos/planeta_preescolar_logo.png'"  -->
 
                 <div class="d-flex justify-center mt-5">
+                    
+
 
                     <v-img 
                         v-if="vistapost.tipoRecurso==='image'" 
@@ -245,19 +247,34 @@
                     ></v-img>
     
     
-                    <video-player 
-                        v-else-if="vistapost.tipoRecurso==='video'" 
-                        style="max-width:50%; width:50%; background-color:azure; "
-                    >
-                        <source :src="vistapost.urlRecurso" />
-                    </video-player>
-    
+                    
                     <audio-player 
                         v-else-if="vistapost.tipoRecurso==='audio'"
                         style="max-width:50%; width:50%; background-color:azure; "
-                    >
+                        >
                         <source :src="vistapost.urlRecurso" />
                     </audio-player>
+                    <div  v-else-if="tipo==='VIDEOS'" class="d-flex justify-center">
+                        
+                        <video-player 
+                            v-if="vistapost.tipoRecurso !=='link' && vistapost.tipoRecurso !=='none' && vistapost.tipoRecurso !==''"
+                            style="max-width:50%; width:50%; background-color:azure; "
+                        >
+                            <source :src="vistapost.urlRecurso" />
+                        </video-player>
+                        
+                        <iframe 
+                            v-else-if="vistapost.tipoRecurso ==='link'"
+                            width="560" height="315" 
+                            :src="linkembed" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                    
+
+                    
                     <!-- <v-file-input
                             outlined
                             label="Seleccione archivo"
@@ -268,6 +285,20 @@
                     ></v-file-input>
 
                     <v-btn sm @click="descargarRecurso(vistapost.urlRecurso)">Descargar</v-btn> -->
+                </div>
+                <div class="d-flex justify-center" 
+                    v-if="vistapost.tipoRecurso !=='link' && vistapost.tipoRecurso !=='none' && vistapost.tipoRecurso !==''">
+
+                    <Spinner v-if="spinner" />
+                    <a 
+                        v-else
+                        :href="urlFileB" 
+                        :download="nombreFile"
+                        target="_blank"
+                        class="v-btn v-btn--contained theme--light v-size--default primary mt-3"
+                    >
+                        <span>Descargar</span>
+                    </a>
                 </div>
 
                 <!-- SECCION DE COMENTARIOS -->
@@ -331,6 +362,29 @@
 
 
         </v-container>
+        </v-card-text>
+        <v-card-text v-else>
+            <v-container>
+                <div class="d-flex justify-center">
+                     <v-img
+                         src="images/registrate.png"
+                         contain
+                         class=""
+                         style="width: 100%; height: 380px;"
+                         >
+                     </v-img>
+                </div>
+                <div class="d-flex justify-center">
+                    <v-btn
+                        class="melon white--text mr-2 "
+                        @click="$router.push('/login')"
+                    >Iniciar sesión</v-btn>
+                    <v-btn
+                        class="melon white--text "
+                        @click="$router.push('/registro')"
+                    >Registro</v-btn>
+                </div>
+            </v-container>
         </v-card-text>
     </v-card>
 </v-dialog>

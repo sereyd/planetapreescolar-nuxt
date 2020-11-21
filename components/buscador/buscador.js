@@ -31,7 +31,7 @@ export default {
     methods: {
         ...mapActions(['obtenerRecursos']),
         buscarDato(){
-            console.log(this.datosBusqueda)
+            // console.log(this.datosBusqueda)
             this.$router.push('/busqueda')
 
         },

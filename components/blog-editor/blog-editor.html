@@ -57,6 +57,15 @@
                             tpimg="post"
                             class=" d-flex justify-center mb-4"
                         />
+
+                        <v-select
+                            :items="tiposVideoList"
+                            label="Tipo de video"
+                            solo
+                            outlined
+                            v-model="tipoVideo"
+                            v-if="tipo ==='VIDEOS'"
+                        ></v-select>
                         
                         <v-file-input
                             outlined
@@ -65,8 +74,20 @@
                             :accept="tipoRecursoFile"
                             v-model="file"
                             @change = "changeFile"
+                            v-if="tipoVideo === 'file'"
     
                         ></v-file-input>
+
+                        <v-text-field
+                            v-model="datosRecurso.urlRecurso"
+                            placeholder="Link del video"
+                            required
+                            outlined
+                            :rules="[v => !!v || 'Link del video es requerida']"
+                            @keyup.enter=""
+                            v-else-if="tipoVideo === 'link'"
+                        ></v-text-field>
+
                         
     
                         <v-text-field

@@ -215,7 +215,7 @@ export default {
             // alert("paso3")
         },
         filtarDatos(){
-            console.log(this.recursosBusqueda);
+            // console.log(this.recursosBusqueda);
 
             this.datos = [...this.recursosBusqueda]
             // console.log(this.datos);
@@ -227,8 +227,11 @@ export default {
             // console.log(clave)
 
             this.busquedaFiltrada = recursos.filter(recurso =>
-                     recurso.tags.includes(clave) 
+                (recurso.tags.includes(clave) && recurso.edopost === "publico")
             )
+
+            // console.log(this.tipo)
+            // console.log(this.busquedaFiltrada)
 
             
             // console.log(this.busquedaFiltrada.length)
