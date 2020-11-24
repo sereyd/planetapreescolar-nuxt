@@ -173,6 +173,27 @@ const createStore = () => {
       actualizarAlumnos(context, data) {
         context.state.datosUsuario.alumnos = data;
       },
+
+  async eliminarImagen(context,data){
+        let nombreArchivo=data
+        let dirsep=nombreArchivo.split("/")
+        let dirsep2=dirsep[7].split('?')
+        let respdir1=dirsep2[0].replace(/%2F/gi,'/')
+        let respdir2=respdir1.replace(/%20/gi,' ')
+        console.log(respdir2)
+        let desertRef =  await this.$fireStorage.ref().child(respdir2);
+
+        // Delete the file
+       desertRef.delete().then(function() {
+          console.log('imagen eliminada')
+
+          return true;
+        }).catch(function(error) {
+          console.error('imagen no eliminada')
+          return false;
+        });
+
+      },
       async autenticarUsuario(context) {
         console.log("Verificando si hay sesion abierta");
 
@@ -393,7 +414,7 @@ const createStore = () => {
         });
       },
       async fotostorageAsync({state},ubi){
-        console.log("entra al fotoStorage: " + state.imgupload);
+        console.log("entra al fotoStorage fotostorageAsyng: " + state.imgupload);
         let urlimagen=""
         const file = state.imgupload;
         const metadata = {
@@ -465,7 +486,7 @@ const createStore = () => {
       
 
       async almacenarFotoStorage(state, ubi) {
-        console.log("entra al fotoStorage: " + state.imgupload);
+        console.log("entra al fotoStorage almacenarFotoStorage: " + state.imgupload);
         let urlimagen=""
         const file = state.imgupload;
         const metadata = {
@@ -529,6 +550,7 @@ const createStore = () => {
       async  tomaDatosActualizados(state){
         await this.$fireStore.collection('usuarios').where('id','==',state.datosUsuario.id).get()
         .then((data)=>{
+          console.log('update store con firebase')
          state.datosUsuario=data.docs[0].data()
         })
      },

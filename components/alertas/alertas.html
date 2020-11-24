@@ -1,19 +1,12 @@
-<v-alert
-border="top"
+<v-snackbar
 :color="tpalert+' lighten-2'"
-dark
 v-model="staleras"
-style="position:fixed; bottom:0px; left:0px; z-index:99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999;"
 >
 <v-row>
-   
-    <v-col cols="12" md="12" class="text-right">
-        <v-btn class="melon" @click="cerraralerta"><v-icon class=" white--text">mdi-close-circle</v-icon></v-btn>
-    </v-col>
-    <v-col cols="12" md="12" v-html="mensajealerta">
+    <v-col cols="12" md="12" class="text-center" v-html="mensajealerta">
     </v-col>
 </v-row>
 
 
 
-</v-alert>
+</v-snackbar>

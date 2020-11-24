@@ -1,60 +1,54 @@
+import listasdetareas from "~/components/listasdetareas/listasdetareas.vue";
 export default{
     data(){
         return {
-          cabeceraListaAlumnos:[
-            {
-              text:'Edit',
-              value:'action'
-              },
-            {
-              text:'Imagen',
-              value:'fotoAlumno'
-              },
-            {
-              text:'Nombre Apellido',
-              value:"Nombre"
-            },
-            {
-              text: "Conducta",
-              value: "conducta"
-            },
-            {
-              text: "Asistencia",
-              value: "asistencia"
-            }
-          ],
-          listaalumnos:[]
-
+          edit:false,
+          editlista:false,
+          editalumno:false
         }
     },
-    mounted(){
-      this.cargaalumnos()
+    computed:{
+      listadoAlumnos() {
+        var num = 0
+            this.dataAlumnos.map((al)=>{
+              var datos=Object.keys(al)
+              if(datos.indexOf('conducta')===-1){
+               al.conducta='buena'
+               console.log('ingresa conducta')
+              }
+              if(datos.indexOf('asistencia')===-1){
+               al.asistencia="1"
+               console.log('carga asistencia')
+              } 
+
+              al.pos=num++
+
+               })
+
+                 return this.dataAlumnos
+             }
     },
     methods:{
-        cargaalumnos() {
-            this.dataAlumnos.Alumnos.map((al)=>{
-              if(!al.conducta){
-               al.conducta='buena'
-              }
-              if(!al.asistencia){
-               al.asistencia="1"
-              }
-               })
-         
-               if (    
-                 this.dataAlumnos
-               ) {
-         
-               /////carga el horario gral 
-               if(this.dataAlumnos.Horario.length===0){
-                 this.dataAlumnos.Horario=this.datain.Horario
-               }
-              this.listaalumnos=this.dataAlumnos.Alumnos
-                 return this.listaalumnos
-               }
-             },
+      updatedata(item,val,tipo){
+        this.dataAlumnos[item.pos][tipo]=val
+      },
+      deleteCabecera(item,pos){
+        this.cabecera.splice(pos,1)
+      },
+      editarAlumno(item){
+        var payload={
+          item:item,
+          edit:true
+        }
+        this.$emit('editarAlumno',payload)
+
+      }
+    },
+    components:{
+      listasdetareas
     },
     props:{
-        dataAlumnos:{}
+        dataAlumnos:{},
+        cabecera:{}
     }
 }

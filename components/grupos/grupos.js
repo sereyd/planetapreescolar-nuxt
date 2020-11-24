@@ -1,6 +1,7 @@
-import { mapState, mapMutations, mapActions } from "vuex";
-import grupoDetalles from "~/components/gruposDetalles/grupoDetalles.vue";
-import subirImagen from "~/components/subirimagen/subirimagen.vue";
+import { mapState, mapMutations, mapActions } from "vuex"
+import grupoDetalles from "~/components/gruposDetalles/grupoDetalles.vue"
+import subirImagen from "~/components/subirimagen/subirimagen.vue"
+
 export default {
   data() {
     return {
@@ -12,30 +13,31 @@ export default {
       dialog: false,
       faseFormulario: 0,
       esGrupoValido: false,
-      viewGroup: false
+      viewGroup: false,
+      guardar: 0
     };
   },
   computed: {
-    ...mapState(["datosUsuario", "urlimg"])
+    ...mapState(["datosUsuario", "urlimg"]),
+    listagrupos() {
+      this.grupos = this.datosUsuario.grupo;
+      return this.grupos;
+    }
   },
-  mounted() {
-    this.iniciaCargadeGrupos();
-  },
+
   methods: {
     ...mapMutations([
+      "alertconfig",
       "almacenarFotoStorage",
       "cleanImgStore",
       "tomaDatosActualizados"
     ]),
     gruposelect(p) {
-      this.selectGrupo = p;
       this.viewGroup = true;
-    },
-    updateListado() {},
-    iniciaCargadeGrupos() {
-      this.grupos = { ...this.datosUsuario.grupo };
+      this.selectGrupo = p;
     },
     guardarGrupo() {
+      this.guardar = 1;
       if (this.previewImg) {
         this.almacenarFotoStorage(
           "grupos/" +
@@ -47,17 +49,37 @@ export default {
         this.addgruposquema();
         this.dialog = false;
         this.updateGrupo();
-        this.tomaDatosActualizados()
+        this.tomaDatosActualizados();
         this.datosNuevoGrupo = {};
+        this.guardar = 0;
       }
     },
     GuardarCambiosAlumnos(p) {
-        this.viewGroup = p;
+      if (p === "gs" || p === "c") {
+        this.viewGroup = false;
+      }
+      if (p === "gs" || p === "g") {
         this.updateGrupo();
         this.tomaDatosActualizados();
+        this.cleanImgStore();
+        var payload = {
+          st: true,
+          tp: "green",
+          mensaje: "Cambios guardados"
+        };
+        this.alertconfig(payload);
+        setTimeout(() => {
+          var payload = {
+            st: false,
+            tp: "red",
+            mensaje: ""
+          };
+          this.alertconfig(payload);
+        }, 3400);
+      }
+      if (p === "gs" || p === "c") {
         this.selectGrupo = {};
-        this.cleanImgStore()
-        this.selectGrupo={} 
+      }
     },
     addgruposquema() {
       this.$set(
@@ -84,9 +106,13 @@ export default {
   },
   created() {},
   watch: {
+    viewGroup() {
+      if (this.viewGroup === false) {
+        this.selectGrupo = {};
+      }
+    },
     urlimg() {
-   
-      if (this.urlimg && this.previewImg!=="") {
+      if (this.urlimg && this.previewImg !== "" && this.guardar === 1) {
         console.log("ejecuta watch urlimg de grupos");
         this.datosNuevoGrupo.urlImagen = this.urlimg;
         this.addgruposquema();
@@ -95,7 +121,8 @@ export default {
         this.tomaDatosActualizados();
         this.cleanImgStore();
         this.datosNuevoGrupo = {};
-        this.previewImg=""
+        this.previewImg = "";
+        this.guardar = 0;
       }
     }
   }

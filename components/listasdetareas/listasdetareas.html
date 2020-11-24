@@ -1,25 +1,55 @@
-<v-card>
-    <v-card-text v-if="tipo==='conducta'" class="text-center" @click="actconducta()">
-        <v-icon v-if="datatrans==='buena'" class="green--text" >
+<v-card class="pa-0 elevation-0">
+    <v-card-text v-if="tipo==='conducta'" class="text-left pa-0"  >
+        <v-icon @click="val='mala';cambios()" v-if="cargaValor==='buena' || cargaValor===''" class="green--text" >
             mdi-emoticon-happy
         </v-icon>
-        <v-icon v-if="datatrans==='mala'" class="red--text" >
+        <v-icon @click="val='buena';cambios()" v-if="cargaValor==='mala' " class="red--text" >
             mdi-emoticon-sad
         </v-icon>
     </v-card-text>
-    <v-card-text v-if="tipo==='asistencia'">
-        Asistencia components
+    <v-card-text v-if="tipo==='asistencia'" class="text-left pa-0">
+        <v-icon @click="val='0';cambios()" v-if="cargaValor==='1' || cargaValor==='' " class="green--text" >
+            mdi-check-bold
+        </v-icon>
+        <v-icon  @click="val='1';cambios()" v-if="cargaValor==='0' " class="red--text" >
+            mdi-close
+        </v-icon>
     </v-card-text>
-    <v-card-text v-if="tipo==='semaforo'">
-        semaforos
+    <v-card-text v-if="tipo==='semaforo'" class="pa-0">
+
+        <v-avatar @click="val='0';cambios()" size="30" style="cursor:pointer;"  :class="val==='0' ? ' elevation-10 ' : ' elevation-0 '" :color="val==='0' ? 'green' : '#8DF573'" >
+      
+        </v-avatar>
+        <v-avatar  @click="val='1';cambios()" size="30" style="cursor:pointer;" :class="val==='1' ? ' elevation-10 ' : ' elevation-0 '"   :color="val==='1' ? 'yellow' : '#E9F573'">
+
+        </v-avatar>
+
+        <v-avatar  @click="val='2';cambios()" size="30" style="cursor:pointer;" :class="val==='2' ? ' elevation-10 ' : ' elevation-0 '"   :color="val==='2' ? 'red' : '#F57373'" >
+
+        </v-avatar>
+
+
     </v-card-text>
     <v-card-text v-if="tipo==='sino'">
-        sino
+
+        <v-icon @click="val='no';cambios()" v-if="cargaValor==='si' || cargaValor==='' || !cargaValor" class="green--text" >
+            mdi-checkbox-marked-circle
+        </v-icon>
+        <v-icon  @click="val='si';cambios()" v-if="cargaValor==='no' " class="red--text" >
+            mdi-close-circle
+        </v-icon>
+
     </v-card-text>
-    <v-card-text v-if="tipo==='rango'">
-        rango
+    <v-card-text   v-if="tipo==='rango'" class="text-left pa-0">
+
+        <v-select @change="cambios()" :items="rango" style="width:100%; max-width: 80px;" dense outlined filled v-model="val" >
+        </v-select>
+
     </v-card-text>
     <v-card-text v-if="tipo==='onoff'">
-        onoff
+    <v-switch
+      v-model="val"
+            >
+        </v-switch>
     </v-card-text>
 </v-card>

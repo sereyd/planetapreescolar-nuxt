@@ -1,13 +1,25 @@
 <template>
 <v-row >
 <v-col cols="12" md="6" class="text-center pa-10">
+    <subirimagen
+              ejecimagen="uploadimg"
+              v-if="editar===true && datosuser.urlImagen==='' "
+              @updateImg="previewIedit=$event"
+              titulo="Subir imagen de pefil "
+            ></subirimagen>
+
+
 
     <v-avatar color="primary"
     size="300"
+    v-if="datosuser.urlImagen!==''"
     >
-    <img :src="datosuser.urlImagen" />
+    <img  :src="datosuser.urlImagen" />
     </v-avatar>
+<br />
 
+<v-btn class="primary white--text" v-if="editar===true && datosuser.urlImagen===''" @click="subirImg()">Subir Imagen</v-btn>
+<v-btn class="red white--text" v-if="editar===true && datosuser.urlImagen!==''" @click="delimagen()">Eliminar Imagen</v-btn>
 
 <h1 v-if="editar===false">{{datosuser.nombre}} {{datosuser.apellido}}</h1>
     <div v-if="editar===true">
@@ -80,21 +92,26 @@
 </style>
 <script>
 
-import {mapState} from 'vuex'
+import {mapState,mapActions, mapMutations} from 'vuex'
 import simpleloader from '~/components/simpleloader/simpleloader.vue'
+import subirimagen from "~/components/subirimagen/subirimagen.vue"
 export default {
     
 data(){
     return {
         datosuser:{},
         loader:false,
-        editar:false
+        editar:false,
+        previewIedit:"",
+        uploadimg:false
     }
 },
 computed:{
-    ...mapState(['datosUsuario','dominio','urlAPI'])
+    ...mapState(['datosUsuario','dominio','urlAPI','urlimg'])
 },
 methods:{
+    ...mapActions(['eliminarImagen','fotostorageAsync']),
+    ...mapMutations(['almacenarFotoStorage']),
     cargadatos(){
         this.datosuser=this.datosUsuario
     },
@@ -136,9 +153,25 @@ methods:{
         });
     
     },
+   async delimagen(){
+  
+            await this.eliminarImagen(this.datosuser.urlImagen)
+            .then(()=>{
+               this.datosuser.urlImagen=""
+               this.guardarCambios()
+            })
+       
+    },
+ async subirImg(){
+          if(this.previewIedit){
+ var fotoAlumno= await this.fotostorageAsync("fotos_perfil/"+this.datosuser.id)
+     this.$set(this.datosuser,'urlImagen',fotoAlumno)                
+    }
+ }
 },
 components:{
-    simpleloader
+    simpleloader,
+    subirimagen
 },
 mounted(){
         this.cargadatos()

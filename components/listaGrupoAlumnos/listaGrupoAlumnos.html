@@ -1,55 +1,108 @@
 <v-card>
   <v-card-text>
-  <v-data-table  :headers="cabeceraListaAlumnos" :items="cargaalumnos" >
-    <!------info de cabecera-->
 
-    <!------info de cuerpo----->
-    <template v-slot:item.action='{ item }'>
-      <v-btn class="white" depressed><v-icon class="primary--text">mdi-pencil-outline</v-icon></v-btn>
-    </template>
-    <!---------Action Button-------------->
+    <v-switch
+    v-model="edit"
+    :label="edit===true ? 'Terminar edición' : 'Editar'"
+  ></v-switch>
+
+
+    <v-btn v-if="edit===true" class="melon white--text" @click="editlista=true"  ><v-icon>mdi-playlist-edit</v-icon>Editar Listado</v-btn>
+   <!----<v-btn v-if="edit===true" class="melon white--text" @click="editalumno=true"  ><v-icon>mdi-playlist-edit</v-icon>Editar Alumnos Generales</v-btn>--->
+
+    <v-dialog v-model="editlista" max-width="700">
+      <v-card>
+        <v-card-text>
+          <v-list dense>
+            <v-list-item-group>
+
+
+                <v-list-item v-for="(key,index) in cabecera" :key="'lis'+index" >
+                  <v-row>
+
+                    <v-col cols="12" md="1">
+                      {{index+1}}.- 
+                    </v-col>
+                    <v-col cols="12" md="5" class="pa-0">
+                     <v-text-field v-model="key.text" ></v-text-field> 
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      {{key.value}}
+                  </v-col>
+                  <v-col cols="12" md="2">
+
+                    <v-btn v-if="key.value!=='fotoAlumno' && key.value!=='Nombre' && key.value!='conducta' && key.value!=='asistencia'" class="red white--text" @click="deleteCabecera(key,index)"><v-icon>mdi-close</v-icon></v-btn>
+                  
+                  </v-col>
+                </v-row>
+                </v-list-item>
+            </v-list-item-group>  
+          </v-list>
+          <v-row>
+            <v-col cols="12" md="12" class="text-center">
+              <v-btn class="primary white--text" @click="editlista=false">Finalizar</v-btn>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+
+
+  <v-data-table  :headers="cabecera" :items="listadoAlumnos" >
+    <!------info de cabecera-->
+   
+
+     <!---------Action Button-------------->
             <template v-slot:item.fotoAlumno='{item}'>
-              <v-avatar size="60">
+
+              <v-avatar v-if="edit===false" size="60">
                 <img :src="item.fotoAlumno"  width="100%" />
               </v-avatar>
+
+              <v-avatar v-if="edit===true" size="60" @click="editarAlumno(item)"> 
+                <v-btn class="white"    depressed ><v-icon class="primary--text" >mdi-account-edit</v-icon>
+                </v-btn>
+              </v-avatar>
+             
             </template>
+
+            <template v-slot:item.Nombre='{ item }'>
+              
+              {{item.Nombre}} {{item.Apellido}}
+
+            </template>
+
             <template v-slot:item.asistencia='{ item }' >
-              <v-icon @click="item.asistencia='0'" v-if="item.asistencia==='1'" class="green--text" >
-                mdi-check-bold
-            </v-icon>
-            <v-icon  @click="item.asistencia='1'" v-if="item.asistencia==='0'" class="red--text" >
-                mdi-close
-            </v-icon>
+              <listasdetareas tipo="asistencia" @respuesta="updatedata(item,$event,'asistencia')" :valor="item.asistencia"></listasdetareas>
             </template>
             <template v-slot:item.conducta='{ item } ' >
-             
-              <v-icon @click="item.conducta='mala'" v-if="item.conducta==='buena'" class="green--text" >
-                mdi-emoticon-happy
-            </v-icon>
-            <v-icon  @click="item.conducta='buena'" v-if="item.conducta==='mala'" class="red--text" >
-                mdi-emoticon-sad
-            </v-icon>
-    
+
+             <listasdetareas tipo="conducta" @respuesta="updatedata(item,$event,'conducta')"  :valor="item.conducta" ></listasdetareas>
     
             </template>
             <template v-slot:item.sino='{ item }' >
-    
+              <listasdetareas tipo="sino" @respuesta="updatedata(item,$event,'sino')"  :valor="item.sino"></listasdetareas>
     
             </template>
             <template v-slot:item.onoff='{ item }' >
-    
-     
+  
+              <listasdetareas tipo="onoff" @respuesta="updatedata(item,$event,'onoff')"  :valor="item.onoff"></listasdetareas>
             </template>
             <template v-slot:item.semaforo='{ item }' >
     
-    
+              <listasdetareas tipo="semaforo" @respuesta="updatedata(item,$event,'semaforo')"  :valor="item.semaforo"></listasdetareas>
             </template>
     
               <template v-slot:item.rango='{ item }' >
-                <listasdetareas tipo="rango" :datatrans="item.rango"   > 
-                </listasdetareas>  
+                <listasdetareas tipo="rango" @respuesta="updatedata(item,$event,'rango')"  :valor="item.rango"></listasdetareas>
             </template>
 
               </v-data-table>
+
+
+              
+
+
             </v-card-text>
             </v-card>
