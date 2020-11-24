@@ -1,4 +1,5 @@
 import Vuex from "vuex";
+// import router from '@/router/index'
 // var correoglobal=""
 const createStore = () => {
   return new Vuex.Store({
@@ -153,8 +154,8 @@ const createStore = () => {
       recursosFavoritos:[],
 
       //LINKS DE DOMINIO (PRODUCCION Y DESARROLLO)
-      ///dominio:"http://localhost:3000",
-       dominio:"https://educadora.cf",
+      // dominio:"http://localhost:3000",
+      dominio:"https://educadora.cf",
 
       //APIS DEVELOP Y PRODUCCION
       urlAPI: "https://stripe-checkout-api.herokuapp.com",
@@ -283,40 +284,41 @@ const createStore = () => {
 
       changeRecursosFavoritos({state}, dato)
       {
-          // const {idRecurso} = dato.key;
-          // // console.log(dato)
-          // // alert("antes")
-          // if(dato.estado === "add")
-          //   dato.key.favoritos.push(state.datosUsuario.id);
-          // else
-          //   dato.key.favoritos = dato.key.favoritos.filter( r => state.datosUsuario.id !== r)
+        if(!state.datosUsuario.userlogin)
+        {
+          console.log("necesitas iniciar sesión")
+          this.$router.push("/login");
+        }
+        else
+        {
 
-          // let recursoListo = {...dato.key};
-          // // console.log(recursoListo)
+          const {idRecurso} = dato.key;
+          // console.log(dato)
+          // alert("antes")
+          if(dato.estado === "add")
+            dato.key.favoritos.push(state.datosUsuario.id);
+          else
+            dato.key.favoritos = dato.key.favoritos.filter( r => state.datosUsuario.id !== r)
 
-          // recursoListo.idRecurso = "";
+          let recursoListo = {...dato.key};
+          // console.log(recursoListo)
 
-          // let recursoRef = this.$fireStore.collection(dato.tipo).doc(idRecurso);
+          recursoListo.idRecurso = "";
+
+          let recursoRef = this.$fireStore.collection(dato.tipo).doc(idRecurso);
         
-          // //SE ACTUALIZA EN FIREBASE EL CAMPO DE COMENTARIOS
-          // recursoRef.update(recursoListo)
-          // .then(() => {
-          //   state.recursosFavoritos.push(recursoListo);
-          //   // this.datosComentario.idUsuario = "";
-          //   // this.datosComentario.nombreUsuario = "";
-          //   // this.datosComentario.urlImagen = "";
-          //   // // this.datosComentario.comentario = "";
-          //   // // this.esComentarioValido = true;
-          //   // this.$refs.formComentario.reset();
-    
-          //   // console.log("reset data")
+          //SE ACTUALIZA EN FIREBASE EL CAMPO DE FAVORITOS
+          recursoRef.update(recursoListo)
+          .then(() => {
+            state.recursosFavoritos.push(recursoListo);
      
-          // })
-          // .catch((error) => {
-          //     console.error("ErroR al agregar nuevo comentario: ", error);
-          // });
+          })
+          .catch((error) => {
+              console.error("ErroR al agregar nuevo comentario: ", error);
+          });
+        }
 
-        console.log(dato)
+        // console.log(dato)
 
 
         
@@ -326,7 +328,7 @@ const createStore = () => {
         context.state.recursosBusqueda = [];
         let datos = {};
         try {
-          console.log(context.state.datosBusqueda);
+          // console.log(context.state.datosBusqueda);
 
           if (context.state.datosBusqueda.tipo === "TODOS LOS RECURSOS") {
             // console.log("obtener Todos los Recursos")

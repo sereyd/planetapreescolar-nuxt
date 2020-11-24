@@ -47,3 +47,11 @@
 .datos_extra{
     margin-bottom:0!important;
 }
+.v-btn{
+    letter-spacing: 0em;
+    /* justify-content: center; */
+    text-indent: 0em;
+    /* text-transform: uppercase; */
+    text-transform: none;
+    /* align-items: flex-start; */
+  }

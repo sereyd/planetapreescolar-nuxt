@@ -85,10 +85,14 @@ export default {
       esBlog: false,
       tagsValido: null,
       msjTag: "",
-
+      
       tipoRecursoFile: "",
       labelFile:"",
       
+      //TIPO DE VIDEO
+      // esVideo: false,
+      tipoVideo: "",
+      tiposVideoList: ["link","file"],
 
   
     };
@@ -265,6 +269,8 @@ export default {
     },
 
     async changeFile(){
+      this.typeFileFull = "none";
+
       // this.cargando = true;
       // this.porcentaje = 0;
       if(this.file)
@@ -293,14 +299,15 @@ export default {
   async updateFile(){
       // console.log("listaR VALIDACION")
       // console.log(this.listaR)
+      this.datosRecurso.foldercode =this.$codegenerate();
+      const ubi = `${this.tipo}/${this.datosUsuario.id}/${this.datosRecurso.foldercode}/`;
+
       this.cargando = true;
       this.updatedCollection = false;
       this.porcentaje = 0;
       // const ubi = `${this.tipo}/${this.tipoFile}s/`;
-      this.datosRecurso.foldercode =this.$codegenerate();
       // console.log("folder del recurso: "+this.datosRecurso.foldercode);
 
-      const ubi = `${this.tipo}/${this.datosUsuario.id}/${this.datosRecurso.foldercode}/`;
       // console.log("UBICACION DE RECURSO: ",ubi)
       // console.log("entra al fotoStorage: "+ this.urlFile)
 
@@ -355,7 +362,22 @@ export default {
               console.log(error)
           }
       }else{
-          this.urlFile= this.urlFile === 'none' ? "" : "none";
+          // tipoFile
+          if(this.tipoVideo === "link")
+          {
+            const {urlRecurso} = this.datosRecurso;
+            this.urlFile = urlRecurso;
+            this.tipoFile = "link";
+          }
+          else
+          {
+
+            this.urlFile = "none";
+            this.tipoFile = "none";
+          }
+
+          // this.urlFile = "none";
+          // this.urlFile= this.urlFile === 'none' ? "" : "none";
           this.porcentaje = 100;
           this.completado = true;
           this.almacenarFotoStorage(ubi);
@@ -365,6 +387,18 @@ export default {
     },
     validarFormularioRecurso () {
       this.esRecursoValido =this.$refs.formRecurso.validate();
+      console.log("this.esRecursoValido")
+      console.log(this.esRecursoValido)
+      console.log("this.datosRecurso.tags.length")
+      console.log(this.datosRecurso.tags.length)
+      
+      if(this.datosRecurso.tags.length === 0)
+      {
+        this.tagsValido = false;
+        console.log("tags NO validos")
+
+        this.msjTag = "Necesita agregar por lo menos un tag"
+      }
 
       if(this.esRecursoValido && this.datosRecurso.tags.length > 0)
       {
@@ -374,13 +408,6 @@ export default {
         this.updateFile()
       }
 
-      if(this.datosRecurso.tags.length === 0)
-      {
-        this.tagsValido = false;
-        console.log("tags NO validos")
-
-        this.msjTag = "Necesita agregar por lo menos un tag"
-      }
         // console.log("HO HAY ERRORES")
     },
     verificarTags(){
@@ -406,11 +433,19 @@ export default {
       else
         this.esBlog = false;
 
+      // if(TtipoVideo === 'file')
+      
+      if(this.tipo === "VIDEOS")
+        this.tipoVideo = "";
+      else
+        this.tipoVideo = "file";
+
       this.creaRecurso=true
     },
     resetDatos(){
       // console.log("RESETENADO TODA LA DATA UTILIZADA ")
       this.$refs.formRecurso.reset();
+      // this.datosRecurso.tags.length
       this.datosRecurso= {
         foldercode:"",
         titulo: "",
@@ -421,11 +456,13 @@ export default {
         tipoRecurso:"",
         urlRecurso:"",
         comentarios:[],
+        tags: [],
         idCreador:"",
         nombreCreador:"",
       },
       this.materia ="";
       this.grado ="";
+      this.tipoVideo = "";
       
       this.file = null;
       this.urlFile= null;
@@ -437,6 +474,7 @@ export default {
       this.bytesTotal=0;
       this.bytesTranferidos=0;
       this.esUrlimgR = true;
+
       this.actualizaImgUpload("");
     },
 
