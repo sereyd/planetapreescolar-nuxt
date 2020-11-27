@@ -68,7 +68,7 @@
 
         <div v-if="datosUsuario.userlogin===true" >
           <!-- <p>{{datosUsuario.estadoMembresia}}</p> -->
-          <router-link v-show="datosUsuario.estadoMembresia !== 'active'" to="checkout" class="white--text menu-sec miniMovil" style="text-decoration:none; position:relative;" > 
+          <router-link v-show="datosUsuario.estadoMembresia !== 'active' && datosUsuario.lvluser === 1" to="checkout" class="white--text menu-sec miniMovil" style="text-decoration:none; position:relative;" > 
             <img src="../../static/images/iconos/haztepremium.png" class="menu-sec-anim"  />
             <span class="vMmobilview "> <img src="../../static/images/iconos/haztepremium1.png" style="  left:-100px; 
               width:100px; 

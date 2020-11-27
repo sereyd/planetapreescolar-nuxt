@@ -161,6 +161,8 @@ const createStore = () => {
       urlAPI: "https://stripe-checkout-api.herokuapp.com",
       // urlAPI: "http://localhost:4242",
 
+      descargarFree: 3,
+
 
     }),
     actions: {
@@ -199,7 +201,7 @@ const createStore = () => {
               const usuarioQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
               usuarioQuery.get()
               .then(async (querySnapshot) => {
-                querySnapshot.forEach( (doc) => {
+                querySnapshot.forEach( async(doc) => {
                   let data = doc.data();
                   // console.log(doc.data());
                   // console.log(doc.data);
@@ -211,6 +213,7 @@ const createStore = () => {
                   data.estadoMembresia = data.estadoMembresia ? data.estadoMembresia : "";
                   data.idCliente = data.idCliente ? data.idCliente : "";
                   data.idSuscripcion = data.idSuscripcion ? data.idSuscripcion : "";
+                  
 
                   // console.log(grups);
                     // console.log(doc.id)
@@ -225,30 +228,56 @@ const createStore = () => {
                       // context.commit("cambiastatusSesion",datos);
                   });
 
-                  //REVISAR ESTADO DE LA SUSCRIPCIÓN 
-                  await fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + datos.idSuscripcion)
-                  .then((result)=>{
-                    return result.json()
-                  })
-                  .then((suscripcion)=>{
+                  datos.estadoMembresia = datos.lvluser === 2 ? "active" : "";
 
-                    // console.log(suscripcion)
-                    if(suscripcion.error)
-                    {
+                  //REVISAR ESTADO DE LA SUSCRIPCIÓN MIENTRAS NO SEA USUARIO ADMIN
+                  if(datos.lvluser === 1)
+                    await fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + datos.idSuscripcion)
+                    .then((result)=>{
+                      return result.json()
+                    })
+                    .then(async(suscripcion)=>{
 
-                      console.log(suscripcion)
-                      console.log("SUSCRIPCION NO VÁLIDA")
-                      datos.estadoMembresia = "canceled";
-                    }
-                    else{
+                      // console.log(suscripcion)
+                      if(suscripcion.error)
+                      {
 
-                      datos.estadoMembresia = suscripcion.status;
-                    }
+                        console.log(suscripcion)
+                        console.log("SUSCRIPCION NO VÁLIDA")
+                        datos.estadoMembresia = "canceled";
+                        console.log(datos)
+                  
+                        const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
+                        
 
-                  })
-                  .catch((err)=>{
-                    console.log('Error al verificar suscripción', err);
-                  });
+                        const d = await response.json();
+                        console.log(d)
+
+                        if(!datos.descargasDia)
+                        {
+                          datos.descargasDia = 
+                          {
+                            disponibles: context.state.descargarFree,
+                            usadas: [],
+                            fecha: d.fecha
+                          }
+                        }
+                        else if(d.fecha !== datos.descargasDia.fecha)
+                        {
+                          console.log("el dia cambiooooooo")
+                          datos.descargasDia.usadas = [];
+                          datos.descargasDia.fecha = d.fecha;
+                        }
+                      }
+                      else{
+
+                        datos.estadoMembresia = suscripcion.status;
+                      }
+
+                    })
+                    .catch((err)=>{
+                      console.log('Error al verificar suscripción', err);
+                    });
 
                   context.commit("cambiastatusSesion",datos);
 

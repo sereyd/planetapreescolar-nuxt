@@ -62,6 +62,33 @@ export default{
     },
     methods:{
       ...mapActions(['changeRecursosFavoritos']),
+      contadorDescargar(descargasDia){
+        console.log(descargasDia);
+        console.log(this.vistapost)
+        const {idRecurso} = this.vistapost;
+        const {id} = this.datosUsuario;
+
+        descargasDia.usadas.push(idRecurso);
+
+
+        //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
+        let descargasFreeRef = this.$fireStore.collection("usuarios").doc(id);
+        
+        //SE ACTUALIZA EN FIREBASE EL CAMPO DE COMENTARIOS
+        descargasFreeRef.update({
+          descargasDia
+        })
+        .then(() => {
+         
+
+          console.log("UPDATE DESCARGAR LIMITE")
+ 
+        })
+        .catch((error) => {
+            console.error("ErroR al agregar nuevo comentario: ", error);
+        });
+        
+      },
       muestrapost(p){
         this.linkembed = "";
 
@@ -75,7 +102,7 @@ export default{
         this.vistapost=p
         this.vistapost.tipoRecurso = p.tipoRecurso ? p.tipoRecurso : 'image';
         this.vistapost.urlRecurso = p.urlRecurso ? p.urlRecurso : "none";
-        // console.log(this.vistapost);
+        console.log(this.vistapost);
         this.fechaVisual = format(this.vistapost.fecha , "dd  MMMM yyyy", {locale: es});
 
         // this.file = new File(p.urlRecurso);
@@ -411,12 +438,16 @@ export default{
         
         // console.log("Es completo: "+this.esCompleto);
         if(this.userId==='' && this.idexclude===''){
+          console.log("aqui1")
            await this.cargabaseGral()
         }
         if(this.userId){
+          console.log("aqui2")
+
             await this.cargabaseUser()
         }
         if(this.idexclude){
+          console.log("aqui3")
            await this.cargabaseExclude()    
         }
 

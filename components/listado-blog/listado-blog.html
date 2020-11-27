@@ -287,18 +287,25 @@
                     <v-btn sm @click="descargarRecurso(vistapost.urlRecurso)">Descargar</v-btn> -->
                 </div>
                 <div class="d-flex justify-center" 
-                    v-if="vistapost.tipoRecurso !=='link' && vistapost.tipoRecurso !=='none' && vistapost.tipoRecurso !==''">
+                    v-if="vistapost.tipoRecurso !=='link' && vistapost.tipoRecurso !=='none' && vistapost.tipoRecurso !==''"
+                >
 
                     <Spinner v-if="spinner" />
-                    <a 
-                        v-else
-                        :href="urlFileB" 
-                        :download="nombreFile"
-                        target="_blank"
-                        class="v-btn v-btn--contained theme--light v-size--default primary mt-3"
-                    >
-                        <span>Descargar</span>
-                    </a>
+                    <div v-else>
+                        <!-- :download="nombreFile" -->
+                        <a 
+                            v-if="datosUsuario.estadoMembresia === 'active' 
+                            || datosUsuario.descargasDia.usadas.length < datosUsuario.descargasDia.disponibles  "
+                            :href="urlFileB" 
+                            
+                            target="_blank"
+                            class="v-btn v-btn--contained theme--light v-size--default primary mt-3"
+                            @click="contadorDescargar(datosUsuario.descargasDia)"
+                        >
+                            <span>Descargar</span>
+                        </a>
+                        <span v-else>Has alcanzado el limite de descargas diario</span>
+                    </div>
                 </div>
 
                 <!-- SECCION DE COMENTARIOS -->
