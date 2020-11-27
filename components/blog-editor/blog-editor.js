@@ -101,48 +101,48 @@ export default {
     ...mapState(["urlimg", "datosUsuario"]),
     tituloCrear(){
       let tipoM = "";
-      if(this.tipo === "REFLEXIONES")
+      if(this.subtipo === "planeacion")
       {
         tipoM= "Nueva reflexión";
         this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg , video/mp4"
         this.labelFile="Seleccione archivo"
       }
-      else if(this.tipo === "RECOMENDACION")
+      else if(this.subtipo === "recurso")
       {
         tipoM= "Nueva recomendación";
         this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg , video/mp4"
         this.labelFile="Seleccione archivo"
       }
-      else if(this.tipo === "MEMORIA")
+      else if(this.subtipo === "memoria")
       {
         tipoM= "Nueva memoria";
-        this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg , video/mp4"
+        this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg"
         this.labelFile="Seleccione archivo"
       }
-      else if(this.tipo === "BLOG")
+      else if(this.subtipo === "blog")
       {
         tipoM= "Nuevo blog";
-        this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg , video/mp4"
+        this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg"
         this.labelFile="Seleccione archivo"
       }
-      else if(this.tipo === "AUDIOS")
-      {
-        tipoM= "Nuevo audio";
-        this.tipoRecursoFile = "audio/*"
-        this.labelFile="Seleccione audio"
-      }
-      else if(this.tipo === "VIDEOS")
-      {
-        tipoM= "Nuevo video";
-        this.tipoRecursoFile = "video/mp4"
-        this.labelFile="Seleccione video"
-      }
-      else if(this.tipo === "IMAGENES")
-      {
-        tipoM= "Nueva imagen";
-        this.tipoRecursoFile = "image/*"
-        this.labelFile="Seleccione imagen"
-      }
+      // else if(this.tipo === "AUDIOS")
+      // {
+      //   tipoM= "Nuevo audio";
+      //   this.tipoRecursoFile = "audio/*"
+      //   this.labelFile="Seleccione audio"
+      // }
+      // else if(this.tipo === "VIDEOS")
+      // {
+      //   tipoM= "Nuevo video";
+      //   this.tipoRecursoFile = "video/mp4"
+      //   this.labelFile="Seleccione video"
+      // }
+      // else if(this.tipo === "IMAGENES")
+      // {
+      //   tipoM= "Nueva imagen";
+      //   this.tipoRecursoFile = "image/*"
+      //   this.labelFile="Seleccione imagen"
+      // }
       return tipoM;
     }
   },
@@ -495,6 +495,10 @@ export default {
   },
     props: {
     tipo: {
+      type: String,
+      default: "BLOG"
+    },
+    subtipo: {
       type: String,
       default: "BLOG"
     },

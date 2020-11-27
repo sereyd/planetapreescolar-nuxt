@@ -94,6 +94,7 @@ export default {
         await this.$fireStore
           .collection(this.tipo)
           .where("idCreador", "==",this.$store.state.datosUsuario.id)
+          .where("tipo", "==",this.subtipo)
           // .where("tipo","==",this.tipo)  
           .get()
           .then((data) => {
@@ -219,6 +220,10 @@ export default {
   },
   props: {
     tipo: {
+      type: String,
+      default: "BLOG"
+    },
+    subtipo: {
       type: String,
       default: "BLOG"
     },
