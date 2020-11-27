@@ -22,7 +22,6 @@
         >Registro
       </v-btn>
     </div>
-
     <div v-if="datosUsuario.userlogin===true">
       <router-link
         v-show="datosUsuario.idMembresia === ''"
@@ -65,7 +64,6 @@
         <span class="vMmobilview"> Configuración</span>
       </router-link>
       &nbsp;
-
       <router-link
         to="/descargas"
         class="white--text menu-sec miniMovil"
@@ -143,81 +141,56 @@
       <v-card>
         <v-card-text>
 
-          <v-data-table  :headers="cabeceraListaAlumnos" :items="cargaalumnos" >
-<!------info de cabecera-->
-    <template v-slot:top='{ item }'>
-      <v-btn @click="addalumno=true" style="text-transform: none;" depressed class="white">              <v-avatar 
-              size="35" 
-              class="cyan" 
-              
-              style="cursor:pointer;"
+          <v-btn @click="addalumno=true" style="text-transform: none;" depressed class="white">              
+            <v-avatar 
+                  size="35" 
+                  class="cyan" 
+                  style="cursor:pointer;"
+                  >
+                  <v-icon class="white--text">mdi-plus</v-icon>
+                    </v-avatar>
+               Nuevo Alumno
+              </v-btn>
+      <v-btn @click="nuevalista=true" style="text-transform: none;" depressed class="white"
+                ><v-avatar class="cyan" size="35"
+                  ><v-icon class="white--text">mdi-plus</v-icon></v-avatar
+                >
+                Nueva Lista</v-btn
               >
-              <v-icon class="white--text">mdi-plus</v-icon>
-                </v-avatar>
-           Nuevo Alumno
-          </v-btn>
-  <v-btn @click="nuevalista=true" style="text-transform: none;" depressed class="white"
-            ><v-avatar class="cyan" size="35"
-              ><v-icon class="white--text">mdi-plus</v-icon></v-avatar
-            >
-            Nueva Lista</v-btn
-          >
-       
-<v-btn style="text-transform: none;"  @click="importaGenerales()" depressed class="white" ><v-avatar class="cyan" size="35"><v-icon class="white--text">mdi-download</v-icon></v-avatar> Lista General</v-btn>
-
-
-            </template>
-<!------info de cuerpo----->
-<template v-slot:item.action='{ item }'>
-  <v-btn class="white" depressed><v-icon class="primary--text">mdi-pencil-outline</v-icon></v-btn>
-</template>
-<!---------Action Button-------------->
-        <template v-slot:item.fotoAlumno='{item}'>
-          <v-avatar size="60">
-            <img :src="item.fotoAlumno"  width="100%" />
-          </v-avatar>
-        </template>
-        <template v-slot:item.asistencia='{ item }'>
-          <listasdetareas tipo="asistencia"  > 
-          </listasdetareas>  
-        </template>
-        <template v-slot:item.conducta='{ item }'>
-          <listasdetareas tipo="conducta" @respuesta="updateRespuesta($event,item,'conducta')" :datatrans="item.conducta"  > 
-          </listasdetareas>  
-        </template>
-        <template v-slot:item.sino='{ item }'>
-          <listasdetareas tipo="sino"    :datatrans="item.sino"   > 
-          </listasdetareas>  
-        </template>
-        <template v-slot:item.onoff='{ item }'>
-          <listasdetareas tipo="onoff" :datatrans="item.onoff"   > 
-          </listasdetareas>  
-        </template>
-        <template v-slot:item.semaforo='{ item }'>
-          <listasdetareas tipo="semaforo"  :datatrans="item.semaforo"  > 
-          </listasdetareas>  
-
-        </template>
-
-          <template v-slot:item.rango='{ item }'>
-            <listasdetareas tipo="rango" :datatrans="item.rango"   > 
-            </listasdetareas>  
-        </template>
-
-
-
-          </v-data-table>
-
+           
+    <v-btn style="text-transform: none;"  @click="importaGenerales()" depressed class="white" ><v-avatar class="cyan" size="35"><v-icon class="white--text">mdi-download</v-icon></v-avatar> Lista General</v-btn>
+    
+    <v-chip>Total alumnos: {{datain.totalAlumnos}}</v-chip>
+              <tablaAlumnos :dataAlumnos="datain.Calendario[fechaselected].Alumnos" @editarAlumno="editarAlumno($event)" :cabecera="datain.Calendario[fechaselected].cabeceratabla" ></tablaAlumnos>
 
 
         </v-card-text>
       </v-card>
-      <v-btn
-        class="melon white--text"
+      <v-card>
+        <v-card-text class="text-center">
+          <v-btn
+          class="primary white--text"
+          style="text-transform: none;"
+          @click="guardarysalir('gs')"
+          >Guardar y Salir</v-btn
+        >
+  
+        <v-btn
+        class="primary white--text"
         style="text-transform: none;"
-        @click="guardarysalir()"
-        >Guardar y Salir</v-btn
+        @click="guardarysalir('g')"
+        >Guardar</v-btn
       >
+      <v-btn
+      class="melon white--text"
+      style="text-transform: none;"
+      @click="guardarysalir('c')"
+      >Cancelar</v-btn
+    >
+
+        </v-card-text>
+      </v-card>
+     
     </v-col>
   </v-row>
 
@@ -372,8 +345,14 @@
           </v-col>
         </v-row>
       </v-card-title>
-      <v-card-text>
-        <v-row>
+      <v-card-text class="text-center">
+        <v-progress-circular v-if="nuevoalumno===false"
+      :size="70"
+      :width="7"
+      color="purple"
+      indeterminate
+    ></v-progress-circular>
+        <v-row v-if="nuevoalumno===true">
           <v-col cols="12" md="6" class="text-center">
             <subirimagen
               ejecimagen="uploadimg"
@@ -641,9 +620,91 @@
             <v-btn class="melon white--text pa-5 rounded-xl" style="text-transform: none;" @click="creaLista()">Crear Lista</v-btn>
           </v-col>
           </v-row>
+
+         
       </v-card-text>
     </v-card>
   </v-dialog>
 </v-main>
+
+<v-dialog v-model="editAlumno" max-width="800" >
+             <v-card>
+               <v-card-text>
+                <v-row>
+                  <v-col cols="12" md="6" class="text-center">
+                   
+                     <img width="90%" v.if="datosEditAlumno.fotoAlumno" :src="datosEditAlumno.fotoAlumno" />
+                    <br />
+                    <v-btn class="red white--text" v-if="datosEditAlumno.fotoAlumno!==''" @click="EliminarFoto()">Eliminar Foto</v-btn>
+              
+                    <subirimagen
+              ejecimagen="uploadimg"
+              v-if="datosEditAlumno.fotoAlumno===''" 
+              @updateImg="previewIedit=$event"
+              titulo="Añadir imagen de alumno "
+            ></subirimagen>
+
+            <v-btn class="primary white--text"  v-if="datosEditAlumno.fotoAlumno===''"  @click="SubirFoto()">Subir Imagen</v-btn>
+
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <b>Nombre</b>
+                    <v-text-field v-model="datosEditAlumno.Nombre" ></v-text-field>
+                    <b>Apellido</b>
+                    <v-text-field  v-model="datosEditAlumno.Apellido"></v-text-field>
+
+                    <b>Fecha de Nacimiento</b>
+                   
+                      <DatePicker
+                        v-model="datosEditAlumno.fechaNacimiento"
+                        :masks="masks"
+                      >
+                        <template v-slot="{ inputValue, inputEvents }">
+                          <input
+                            style="border:rgb(36,35,35)160,155,155) 1px solid; border-radius:5px; padding:10px;"
+                            :value="inputValue"
+                            placeholder="Fecha de nacimiento"
+                            v-on="inputEvents"
+                          />
+                        </template>
+                      </DatePicker>
+            
+                
+                      {{calculaedadedit}}
+                <br />
+                    <b>Teléfono</b>
+                    <v-text-field  v-model="datosEditAlumno.telefono"></v-text-field>
+
+
+
+                    </v-col>
+                    <v-col cols="12" md="12" class="text-center">
+
+                      <v-btn class="red white--text" style="text-transform: none;" @click="delteAl=true">Eliminar Alumno</v-btn>
+
+
+                        <v-btn class="primary white--text" style="text-transform: none;" @click="guardaEditAlumno()">Guardar</v-btn>
+                    
+<v-dialog v-model="delteAl" max-width="550">
+  <v-card>
+    <v-card-text class="text-center">
+      <h3>¿Seguro que desea eliminar al Alumno</h3> <h2>{{datosEditAlumno.Nombre}} {{datosEditAlumno.Apellido}}</h2>
+      <hr /><br />
+      Para aceptar escriba el nombre del alumno en el siguiente campo
+      <br />
+      <v-text-field v-model="textDelete" :label="datosEditAlumno.Nombre" class="red--text" ></v-text-field>
+      <v-btn class="red white--text" @click="deleteAlumno()">Eliminar</v-btn> <v-btn class="melon white--text">Cancelar</v-btn>
+
+    </v-card-text>
+  </v-card>
+</v-dialog>
+
+                    </v-col>
+                </v-row>
+              
+               </v-card-text>
+             </v-card>     
+</v-dialog>
+
 </v-card-text>
 </v-card>

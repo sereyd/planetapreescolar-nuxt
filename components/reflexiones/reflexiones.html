@@ -4,15 +4,20 @@
         <br />
         <v-row>
         <v-col cols="12" md="11">
-            <p v-if="reflexion[0]" style="font-size:18px; text-align:left;" v-html="reflexion[0].contenido">
+            <p v-if="reflexion[0]" style="font-size:18px; text-align:left;" v-html="cargarecomendacion">
                 
             </p>
         </v-col>
         <v-col cols="12" md="1">
          <img src="/images/iconos/globo-estrellas.png" width="100%" />
             </v-col>
-            <v-col cols="12" md="1"  v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:2 })"  >
-                <v-btn class="melon white--text rounded-pill" to="/reflexiones"  >Administrar</v-btn> 
+
+            <v-col cols="12" md="12"  class="text-right"  >
+
+                <v-btn class="melon white--text rounded-pill text-right" to="/reflexiones" style="text-transform: none;"  >Ver más</v-btn> 
+
+
+                <!---<v-btn class="melon white--text rounded-pill" to="/reflexiones"  >Administrar</v-btn>-->
             </v-col>
 </v-row>
     </v-card-text>
