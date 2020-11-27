@@ -118,7 +118,7 @@
                             v-if="esBlog"
                         ></v-text-field>
 
-    
+    <!---
                         <v-textarea
                             v-model="datosRecurso.contenido"
                             placeholder="contenido..."
@@ -127,7 +127,13 @@
                             :rules="[v => !!v || 'Contenido es requerida']"
                             @keyup.enter=""
             
-                        ></v-textarea>
+                        ></v-textarea>-->
+
+                        <VueEditor class="elevation-3 rounded-lg" v-model="datosRecurso.contenido" :editorToolbar="customToolbar"></VueEditor>
+            
+
+
+
                         <v-radio-group
                             v-model="datosRecurso.edopost"
                             row
@@ -263,7 +269,6 @@
                     
                     <v-row>
                         <v-col cols="12" md="12">
-                    <VueEditor class="elevation-3 rounded-lg" v-model="datablog.contenido" :editorToolbar="customToolbar"></VueEditor>
                 </v-col>
                 <v-col cols="12" md="3">
                     

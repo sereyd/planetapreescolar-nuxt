@@ -405,12 +405,13 @@ export default {
         switch (p) {
           case "g":
             this.addalumno = false;
-          
+            
             break;
           case "gc":
-            this.nuevoalumno=true
+           
             break;
         }
+        this.nuevoalumno=true
         this.alumnoselect={}
       } else {
         this.alerta = true;

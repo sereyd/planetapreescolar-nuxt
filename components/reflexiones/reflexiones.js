@@ -4,6 +4,18 @@ export default{
             reflexion:[]
         }
     },
+    computed:{
+        cargarecomendacion(){
+            var limit=350
+            var loncadena=this.reflexion[0].contenido.length
+            var suspensivos="..."
+            var contenido=this.reflexion[0].contenido.substr(1,limit)
+            if(loncadena<limit){
+                suspensivos=""
+            }
+            return contenido+suspensivos
+        }   
+    },
     methods:{
        async cargaref(){
             try{
