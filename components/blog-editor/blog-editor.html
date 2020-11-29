@@ -117,17 +117,6 @@
                             v-if="esBlog || (subtipo === 'recurso' || subtipo === 'planeacion')"
                         ></v-text-field>
 
-    <!---
-                        <v-textarea
-                            v-model="datosRecurso.contenido"
-                            placeholder="contenido..."
-                            required
-                            outlined
-                            :rules="[v => !!v || 'Contenido es requerida']"
-                            @keyup.enter=""
-            
-                        ></v-textarea>-->
-
                         <VueEditor class="elevation-3 rounded-lg" v-model="datosRecurso.contenido" :editorToolbar="customToolbar"></VueEditor>
             
 

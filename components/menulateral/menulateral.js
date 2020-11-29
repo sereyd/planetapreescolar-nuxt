@@ -1,11 +1,10 @@
 
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 
 export default {
   data() {
     return {
       drawer: null,
-      menufix:false,
       menuoculto:true,
       devtest:false,  //// para realizar pruebas de sesiones
       itemsmenumni:[
@@ -17,22 +16,15 @@ export default {
   },
 
   computed: {
-    ...mapState(["datosUsuario","itemsmenu"])
+    ...mapState(["datosUsuario","itemsmenu","menufix"])
   },
   methods:{
     ...mapMutations(['abrirRegistro']),
-    scrollmenu(){
-
-    if(window.scrollY>200){ 
-      this.menufix=true 
-
-    }else{ 
-        this.menufix=false
-  
-      }
-     
+    ...mapActions(['scrollmenu']),
+    openMenu(){
+console.log('abre menu')
+      this.$emit('abremenu',true)
     }
-
   }
   
 };
