@@ -9,7 +9,7 @@
     absolute
     temporary
     class="secondary"
-    :class="menufix===true ? ' primary menufixednavmovil ' : ' primary  menunormal ' " 
+    :class="menufix===true ? ' primary menufixednavmovil ' : '' " 
   >
 
     <v-list dense >
@@ -38,7 +38,7 @@
   
 <v-col cols="12" md="2" v-show="vistaValida"   class="viewmobil primary"  >   
   <!----Menu lateral------>
-  <v-list dense > 
+  <v-list dense class="primary" :class="menufix===true ? ' primary menufixed ' : '' " > 
 
       <v-list-item
         v-for="item in itemsmenu"
@@ -46,7 +46,7 @@
         link
         :to="item.link"
         v-if="$validasesion($store,item) && item.visible===true"
-        :class="menufix===true ? ' primary menufixed ' : ' primary  menunormal ' " 
+        
       >
         <v-list-item-icon >
           <v-icon class="white--text">{{ item.icon }}</v-icon>
@@ -85,6 +85,7 @@
 
 .menufixed{
   position:fixed;  
+  top:90px;
   z-index:1; 
 }
 
@@ -92,7 +93,6 @@
 .menufixednavmovil{
   position:fixed;  
   z-index:10;
-  top:120px; 
 }
 .menunormal{
   width:100%;
@@ -106,7 +106,7 @@
 
 }
 
-@media  (min-width:1024px) and (max-width:1439px){
+@media  (min-width:1020px) and (max-width:1439px){
   .menufixed{
     width:100%; 
     max-width:160px;
