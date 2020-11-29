@@ -1,8 +1,8 @@
-<div v-scroll="scrollmenu"> 
+<div v-scroll="scrollmenu" :class="menufix===true ? ' menufixedtop' : '' "> 
     <v-card >
         <v-card-title class="secondary white--text">
         
-        <span class="viewmobil">  <v-icon  class="white--text"  @click.stop="drawer = !drawer" > mdi-menu </v-icon>
+        <span class="viewmobil">  <v-icon  class="white--text"  @click="openMenu()" > mdi-menu </v-icon>
         </span>
 
       
@@ -61,7 +61,7 @@
         <v-spacer class="miniMovil"></v-spacer>
 
         <div class="minimovil"></div>
-        <div v-if="datosUsuario.userlogin===false" class="miniMovil">
+        <div v-if="datosUsuario.userlogin===false" >
         <router-link to="login" v-if="$validasesion($store,{ sinregistro:true })" class="white--text" style="text-decoration:none;  font-size:15px;">Iniciar sesión</router-link> &nbsp;&nbsp;&nbsp;
         <v-btn class="melon white--text pa-5"  style="border-radius: 30px; font-size:14px; text-transform:none;" v-if="$validasesion($store,{ sinregistro:true })" link to="registro">Registro </v-btn>
         </div>
@@ -116,29 +116,5 @@
     <v-icon class="white--text">mdi-email</v-icon> Su correo aun no esta confirmado
       </v-card-title>
     </v-card>
-    <v-navigation-drawer
-    v-model="drawer"
-    absolute
-    temporary
-    class="secondary"
-  >
 
-    <v-list dense>
-      <v-list-item
-        v-for="item in itemsmenu"
-        :key="item.title"
-        link
-        :to="item.link"
-        v-if="$validasesion($store,item) && item.visible===true"
-      >
-        <v-list-item-icon >
-          <v-icon class="white--text space_elements">{{ item.icon }}</v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-title class="white--text">{{ item.title }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
-  </v-navigation-drawer>
 </div>

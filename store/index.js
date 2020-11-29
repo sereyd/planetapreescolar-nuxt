@@ -91,15 +91,7 @@ const createStore = () => {
           logeado: true,
           permisos: 2,
           visible: true
-        } 
-        /*
-        {
-          title: "Checkout",
-          icon: "mdi-speedometer",
-          link: "checkout",
-          logeado: true,
-          permisos: 0
-        },*/,
+        }, 
         {
           title: "Salir",
           icon: "mdi-exit-to-app",
@@ -130,7 +122,7 @@ const createStore = () => {
       urlimg: "",
       stripeObj: null,
       linktienda: "https://tiendasereyd.ml",
-
+      
       vistaValida: true,
       grupo: {},
       clasesCreadas: [],
@@ -151,6 +143,9 @@ const createStore = () => {
         recomendacion:[],
       },
 
+      /// menu flotante
+
+      menufix:false,
       recursosFavoritos:[],
 
       //LINKS DE DOMINIO (PRODUCCION Y DESARROLLO)
@@ -167,6 +162,17 @@ const createStore = () => {
       async loginStore(context, data) {
         context.commit("cambiastatusSesion", data);
       },
+      scrollmenu({state}){
+
+        if(window.scrollY>200){ 
+          state.menufix=true 
+          
+        }else{ 
+          state.menufix=false
+      
+          }
+          console.log(state.menufix)
+        },
 
       actualizarGrupos(context, data) {
         context.state.grupo = data;
