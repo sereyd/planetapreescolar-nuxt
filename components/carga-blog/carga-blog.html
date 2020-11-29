@@ -80,7 +80,7 @@
                         v-if="esBlog"
                     ></v-text-field>
 
-                    <v-textarea
+                    <!-- <v-textarea
                         v-model="datosRecursoEdit.contenido"
                         placeholder="contenido..."
                         required
@@ -88,7 +88,16 @@
                         :rules="[v => !!v || 'Contendio del post es requerida']"
                         @keyup.enter=""
         
-                    ></v-textarea>
+                    ></v-textarea> -->
+                    <VueEditor 
+                        class="elevation-3 rounded-lg" 
+                        v-model="datosRecursoEdit.contenido" 
+                        :editorToolbar="customToolbar"
+                        required
+                        outlined
+                        :rules="[v => !!v || 'Contendio del post es requerida']"
+                    ></VueEditor>
+
                     <!-- <VueEditor 
                         class="elevation-3 rounded-lg" 
                         v-model="datosRecursoEdit.contenido" 

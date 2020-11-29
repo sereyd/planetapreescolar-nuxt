@@ -16,6 +16,8 @@ export default {
         urlImagen: "",
         fecha:"",
         edopost: "",
+        premium: false,
+        recomendado: false,
         titulo: "",
         contenido: "",
         user: ""
@@ -49,6 +51,8 @@ export default {
         titulo: "",
         fecha: "",
         edopost: "",
+        premium: false,
+        recomendado: false,
         urlImagen: "",
         contenido:"",
         tipoRecurso:"",
@@ -91,8 +95,8 @@ export default {
       
       //TIPO DE VIDEO
       // esVideo: false,
-      tipoVideo: "",
-      tiposVideoList: ["link","file"],
+      tipoRecursoSelect: "",
+      tiposRecursoList: ["link","file"],
 
   
     };
@@ -101,48 +105,54 @@ export default {
     ...mapState(["urlimg", "datosUsuario"]),
     tituloCrear(){
       let tipoM = "";
-      if(this.tipo === "REFLEXIONES")
+      if(this.subtipo === "reflexion")
       {
         tipoM= "Nueva reflexión";
-        this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg , video/mp4"
+        this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg "
         this.labelFile="Seleccione archivo"
       }
-      else if(this.tipo === "RECOMENDACION")
+      if(this.subtipo === "planeacion")
       {
-        tipoM= "Nueva recomendación";
-        this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg , video/mp4"
+        tipoM= "Nueva planeación";
+        this.tipoRecursoFile = ".doc, .docx, .pdf"
         this.labelFile="Seleccione archivo"
       }
-      else if(this.tipo === "MEMORIA")
+      else if(this.subtipo === "recurso")
+      {
+        tipoM= "Nueva actividad";
+        this.tipoRecursoFile = "audio/mp3, image/png, image/jpg, .ppt, .pptx, .pdf"
+        this.labelFile="Seleccione archivo"
+      }
+      else if(this.subtipo === "memoria")
       {
         tipoM= "Nueva memoria";
-        this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg , video/mp4"
+        this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg"
         this.labelFile="Seleccione archivo"
       }
-      else if(this.tipo === "BLOG")
+      else if(this.subtipo === "blog")
       {
         tipoM= "Nuevo blog";
-        this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg , video/mp4"
+        this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg"
         this.labelFile="Seleccione archivo"
       }
-      else if(this.tipo === "AUDIOS")
-      {
-        tipoM= "Nuevo audio";
-        this.tipoRecursoFile = "audio/*"
-        this.labelFile="Seleccione audio"
-      }
-      else if(this.tipo === "VIDEOS")
-      {
-        tipoM= "Nuevo video";
-        this.tipoRecursoFile = "video/mp4"
-        this.labelFile="Seleccione video"
-      }
-      else if(this.tipo === "IMAGENES")
-      {
-        tipoM= "Nueva imagen";
-        this.tipoRecursoFile = "image/*"
-        this.labelFile="Seleccione imagen"
-      }
+      // else if(this.tipo === "AUDIOS")
+      // {
+      //   tipoM= "Nuevo audio";
+      //   this.tipoRecursoFile = "audio/*"
+      //   this.labelFile="Seleccione audio"
+      // }
+      // else if(this.tipo === "VIDEOS")
+      // {
+      //   tipoM= "Nuevo video";
+      //   this.tipoRecursoFile = "video/mp4"
+      //   this.labelFile="Seleccione video"
+      // }
+      // else if(this.tipo === "IMAGENES")
+      // {
+      //   tipoM= "Nueva imagen";
+      //   this.tipoRecursoFile = "image/*"
+      //   this.labelFile="Seleccione imagen"
+      // }
       return tipoM;
     }
   },
@@ -221,8 +231,9 @@ export default {
         //   this.datosRecurso.tipoRecurso = 
         // }
         let nuevoRecurso = {};
+        console.log("subtipo", this.subtipo)
         
-        if(this.tipo === "RECOMENDACION")
+        if(this.subtipo === "recurso" || this.subtipo === "planeacion")
           nuevoRecurso = {
             ...this.datosRecurso,
             fecha:  Date.now(),
@@ -233,6 +244,7 @@ export default {
             materia: this.materia,
             grado: this.grado,
             tipoCreador: lvluser === 2 ? 'administrador' : 'usuario',
+            tipo: this.subtipo,
             // tags: this.tags
           }
         else
@@ -244,6 +256,7 @@ export default {
             idCreador: id,
             nombreCreador: `${nombre} ${apellido}`,
             tipoCreador: lvluser === 2 ? 'administrador' : 'usuario',
+            tipo: this.subtipo,
             // tags: this.tags
           }
 
@@ -300,7 +313,7 @@ export default {
       // console.log("listaR VALIDACION")
       // console.log(this.listaR)
       this.datosRecurso.foldercode =this.$codegenerate();
-      const ubi = `${this.tipo}/${this.datosUsuario.id}/${this.datosRecurso.foldercode}/`;
+      const ubi = `${this.subtipo}/${this.datosUsuario.id}/${this.datosRecurso.foldercode}/`;
 
       this.cargando = true;
       this.updatedCollection = false;
@@ -363,7 +376,7 @@ export default {
           }
       }else{
           // tipoFile
-          if(this.tipoVideo === "link")
+          if(this.tipoRecursoSelect === "link")
           {
             const {urlRecurso} = this.datosRecurso;
             this.urlFile = urlRecurso;
@@ -433,12 +446,12 @@ export default {
       else
         this.esBlog = false;
 
-      // if(TtipoVideo === 'file')
+      // if(TtipoRecursoSelect === 'file')
       
       if(this.tipo === "VIDEOS")
-        this.tipoVideo = "";
+        this.tipoRecursoSelect = "";
       else
-        this.tipoVideo = "file";
+        this.tipoRecursoSelect = "file";
 
       this.creaRecurso=true
     },
@@ -462,7 +475,7 @@ export default {
       },
       this.materia ="";
       this.grado ="";
-      this.tipoVideo = "";
+      this.tipoRecursoSelect = "";
       
       this.file = null;
       this.urlFile= null;
@@ -498,6 +511,10 @@ export default {
       type: String,
       default: "BLOG"
     },
+    subtipo: {
+      type: String,
+      default: "BLOG"
+    },
     imagen: {
       type: String,
       default: "true"
@@ -523,7 +540,7 @@ export default {
       }
       else{
 
-        this.esUrlimgR = false;
+        this.esUrlimgR = false; 
       }
         // }
       // }

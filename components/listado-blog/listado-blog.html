@@ -2,7 +2,7 @@
 
 <v-col cols="12" md="10" >
     <h2 class="primary--text">{{titulo}}</h2>
-    <p>{{subtitulos}}</p>
+    <p v-if="subtitulos !== ''">{{subtitulos}}</p>
 </v-col>
 
 <v-col cols="12" md="2"  style="text-align: right;" >
@@ -27,7 +27,6 @@
             class=" mb-3" 
             v-if="key.edopost === 'publico' || datosUsuario.id === key.idCreador"
         >
-    
             <v-card
                 class=" grey lighten-3 d-flex justify-center align-center mx-2"
                 height="150px"
@@ -71,7 +70,7 @@
             </v-card>
     
             <div>
-                <div v-if="tipo==='MEMORIA'" class=" ml-3 textos">
+                <div v-if="subtipo==='memoria'" class=" ml-3 textos">
                     <h4>{{key.titulo}}</h4>
                     <p>{{key.nombreCreador}}</p>
                     <!-- <p class="texto_mb">{{ fechaVisual(key.fecha) }}</p> -->
@@ -80,22 +79,23 @@
                 </div>
 
                 <div 
-                    v-if="tipo==='BLOG' || tipo==='AUDIOS' || tipo==='IMAGENES' || tipo==='VIDEOS'" 
+                    v-if="subtipo==='blog'" 
                     class=" ml-3 textos"
                 >
                     <h4>{{key.titulo}}</h4>
+                    <p class="datos_extra">{{key.nombreCreador}}</p>
+                    <p class="datos_extra">{{key.fecha}}</p>
                 </div>
 
-                <div v-if="tipo==='RECOMENDACION'" class=" ml-3 textos">
+                <div v-if="subtipo==='planeacion' || subtipo==='recurso' || subtipo==='recomendacion'" class=" ml-3 textos">
                     <h4>{{key.titulo}}</h4>
                     <p class="datos_extra">{{key.materia}}</p>
                     <p class="datos_extra">{{key.grado}}</p>
-
                 </div>
 
-                <div v-if="tipo==='REFLEXIONES'" class=" ml-3 textos">
+                <!-- <div v-if="subtipo==='REFLEXIONES'" class=" ml-3 textos">
                     <h3>{{key.titulo}} <br />{{key.fecha}}</h3>
-                </div>
+                </div> -->
 
                 
 
@@ -187,6 +187,35 @@
                     <span class="pl-5" >{{ fechaVisual }}</span>
                 </div>
 
+                <!-- :loading="loading3"
+                :disabled="loading3" -->
+                <!-- :href="urlFileB"  -->
+                <Spinner v-if="spinner && ( subtipo !== 'blog' && subtipo !== 'memoria' )" />
+                <div v-else-if ="!spinner && ( subtipo !== 'blog' && subtipo !== 'memoria' )">
+                    <a 
+                        v-if="datosUsuario.estadoMembresia === 'active' 
+                        || datosUsuario.descargasDia.usadas.length < datosUsuario.descargasDia.disponibles  "
+                        :download="nombreFile"
+                        ref="downloadFile"
+                        target="_blank"
+                        class="v-btn v-btn--contained theme--light v-size--default primary mt-3"
+                    >
+                        <span>Descargar</span>
+                    </a>
+                    <v-btn
+                        v-if="datosUsuario.estadoMembresia === 'active' 
+                        || datosUsuario.descargasDia.usadas.length < datosUsuario.descargasDia.disponibles  "
+                        color="primary"
+                        class="ma-2 white--text"
+                        @click="contadorDescargar(datosUsuario.descargasDia)"
+                    >
+                        <v-icon rigth dark> mdi-download </v-icon>
+                        Descargar
+                    </v-btn>
+                    <span v-else>Has alcanzado el limite de descargas diario</span>
+                </div>
+
+
                 <v-section class="pl-5" v-html="vistapost.contenido"  >
                     
                 </v-section>
@@ -211,10 +240,11 @@
                         >
                         <source :src="vistapost.urlRecurso" />
                     </audio-player>
-                    <div  v-else-if="tipo==='VIDEOS'" class="d-flex justify-center">
+                    <div  class="d-flex justify-center">
                         
                         <video-player 
-                            v-if="vistapost.tipoRecurso !=='link' && vistapost.tipoRecurso !=='none' && vistapost.tipoRecurso !==''"
+                            v-if="vistapost.tipoRecurso !=='link' && vistapost.tipoRecurso !=='none' 
+                            && vistapost.tipoRecurso !=='' && vistapost.tipoRecurso !=='audio'"
                             style="max-width:50%; width:50%; background-color:azure; "
                         >
                             <source :src="vistapost.urlRecurso" />
@@ -247,10 +277,10 @@
                     v-if="vistapost.tipoRecurso !=='link' && vistapost.tipoRecurso !=='none' && vistapost.tipoRecurso !==''"
                 >
 
-                    <Spinner v-if="spinner" />
-                    <div v-else>
-                        <!-- :download="nombreFile" -->
-                        <a 
+                    <!-- <Spinner v-if="spinner && ( subtipo !== 'blog' && subtipo !== 'memoria' )" />
+                    <div v-else-if ="!spinner && ( subtipo !== 'blog' && subtipo !== 'memoria' )">
+                        :download="nombreFile"
+                         <a 
                             v-if="datosUsuario.estadoMembresia === 'active' 
                             || datosUsuario.descargasDia.usadas.length < datosUsuario.descargasDia.disponibles  "
                             :href="urlFileB" 
@@ -260,9 +290,9 @@
                             @click="contadorDescargar(datosUsuario.descargasDia)"
                         >
                             <span>Descargar</span>
-                        </a>
-                        <span v-else>Has alcanzado el limite de descargas diario</span>
-                    </div>
+                        </a> 
+                         <span v-else>Has alcanzado el limite de descargas diario</span> 
+                    </div> -->
                 </div>
 
                 <!-- SECCION DE COMENTARIOS -->
@@ -294,7 +324,7 @@
                             </v-form>
                         </v-container>
                     </v-card>
-
+ 
                     <v-card class="card_border mt-4">
                         <!-- :key="'post_'+index" -->
                         <v-row v-for="(comentario, index) in vistapost.comentarios" :key="'comentario_'+index">

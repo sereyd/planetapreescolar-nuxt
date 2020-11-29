@@ -16,14 +16,14 @@ const createStore = () => {
           title: "Actividades",
           icon: "mdi-human",
           link: "/actividades",
-          visible: false
+          visible: true
         },
         {
           title: "Foro",
           icon: "mdi-forum",
           link: "",
           link: "/foro",
-          visible: false
+          visible: true
         },
         {
           title: "Tienda",
@@ -44,13 +44,13 @@ const createStore = () => {
           title: "Directorio",
           icon: "mdi-book-multiple",
           link: "/directorio",
-          visible: false
+          visible: true
         },
         {
           title: "Calendario",
           icon: "mdi-calendar",
           link: "/calendario",
-          visible: false
+          visible: true
         },
         {
           title: "Cuenta",
@@ -90,7 +90,7 @@ const createStore = () => {
           link: "/recursos",
           logeado: true,
           permisos: 2,
-          visible: true
+          visible: false
         } 
         /*
         {

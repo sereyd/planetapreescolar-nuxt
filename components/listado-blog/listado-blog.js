@@ -16,7 +16,7 @@ import Spinner from '~/components/spinner.vue'
 export default{
     data(){
         return {
-            blogpost:[],
+            // blogpost:[],
             editpost:{},
             edit:false,
             customToolbar: [
@@ -80,6 +80,9 @@ export default{
         })
         .then(() => {
          
+          console.log(this.$refs.downloadFile)
+          // this.$refs.downloadFile.click();
+          // this.$refs.downloadFile.download();
 
           console.log("UPDATE DESCARGAR LIMITE")
  
@@ -379,6 +382,16 @@ export default{
                 return 'BLOG'
             }
         },
+        subtipo:{
+          default:()=>{
+              return 'BLOG'
+          }
+        },
+        
+        blogpost:{
+          type: Array,
+          default: () => []
+        },
         titulo:{
             default:()=>{
                 return "titulo";
@@ -434,28 +447,31 @@ export default{
       Spinner,
     },
     async mounted(){
+      // this.blogpost = [...this.listaCategorias];
+      console.log(this.subtipo)
+      console.log(this.blogpost)
         // console.log("this.blogpost")
         
-        // console.log("Es completo: "+this.esCompleto);
-        if(this.userId==='' && this.idexclude===''){
-          console.log("aqui1")
-           await this.cargabaseGral()
-        }
-        if(this.userId){
-          console.log("aqui2")
+        // // console.log("Es completo: "+this.esCompleto);
+        // if(this.userId==='' && this.idexclude===''){
+        //   console.log("aqui1")
+        //    await this.cargabaseGral()
+        // }
+        // if(this.userId){
+        //   console.log("aqui2")
 
-            await this.cargabaseUser()
-        }
-        if(this.idexclude){
-          console.log("aqui3")
-           await this.cargabaseExclude()    
-        }
+        //     await this.cargabaseUser()
+        // }
+        // if(this.idexclude){
+        //   console.log("aqui3")
+        //    await this.cargabaseExclude()    
+        // }
 
         // console.log(this.esBusqueda)
         // console.log(this.blogpost)
         if(this.esBusqueda)
         {
-          // console.log(this.titulo)
+          console.log("BUACANDOOOO")
           // console.log("dato a buscar en todas las listas")
           const clave = this.datoBuscar.toLowerCase().normalize("NFD");
           // console.log(clave)
@@ -478,17 +494,19 @@ export default{
            
         }
 
-        if(this.esFavoritos)
-        {
-
-          //const favs = recetas.data.filter( receta =>(receta.votantes.includes(usuario.correo)) );
-          let recursos = [... this.blogpost];
-          this.blogpost = [...recursos.filter(recurso =>
-            recurso.favoritos.includes(this.datosUsuario.id) 
-          )]
-          // console.log("FAVORITOS DE: "+this.tipo);
-          // console.log(this.blogpost);
-        }
+        // if(this.esFavoritos)
+        // {
+        //   console.log("FAVORITO")
+        //   //const favs = recetas.data.filter( receta =>(receta.votantes.includes(usuario.correo)) );
+        //   // let recursos = [... this.blogpost];
+        //   const recursos = [...this.blogpost.filter(recurso =>
+        //     recurso.favoritos.includes(this.datosUsuario.id) 
+        //   )]
+        //   console.log(recursos)
+        //   this.$emit('updateBlogpost',recursos)
+        //   // console.log("FAVORITOS DE: "+this.tipo);
+        //   // console.log(this.blogpost);
+        // }
         
 
     },

@@ -214,7 +214,7 @@ export default {
     // console.log("this.listaR")
     // console.log(this.listaR)
     // alert("cargando ListaR")
-    this.cargaPost();
+    // this.cargaPost();
 
   },
   props: {
