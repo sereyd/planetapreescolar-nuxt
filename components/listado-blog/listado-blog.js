@@ -35,9 +35,12 @@ export default{
               [{ 'direction': 'rtl' }],
               ['clean'],
             ],
+            dialogPost:false,
             viewpost:false,
+            viewothers: false,
             vistapost:{
               comentarios:[],
+              urlRecurso:[],
               // creador:{}
             },
             fechaVisual:"",
@@ -70,28 +73,32 @@ export default{
         const {idRecurso} = this.vistapost;
         const {id} = this.datosUsuario;
 
-        descargasDia.usadas.push(idRecurso);
+        if(this.vistapost.premium === true && this.datosUsuario.estadoMembresia !== 'active')
+        {
+          descargasDia.usadas.push(idRecurso);
+          descargasDia.disponibles= this.descargarFree;
+          //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
+          let descargasFreeRef = this.$fireStore.collection("usuarios").doc(id);
+          
+          //SE ACTUALIZA EN FIREBASE EL CAMPO DE COMENTARIOS
+          descargasFreeRef.update({
+            descargasDia
+          })
+          .then(() => {
+           
+            console.log(this.$refs.downloadFile)
+            // this.$refs.downloadFile.click();
+            // this.$refs.downloadFile.download();
+  
+            console.log("UPDATE DESCARGAR LIMITE")
+   
+          })
+          .catch((error) => {
+              console.error("ErroR al agregar nuevo comentario: ", error);
+          });
+        }
 
 
-        //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
-        let descargasFreeRef = this.$fireStore.collection("usuarios").doc(id);
-        
-        //SE ACTUALIZA EN FIREBASE EL CAMPO DE COMENTARIOS
-        descargasFreeRef.update({
-          descargasDia
-        })
-        .then(() => {
-         
-          console.log(this.$refs.downloadFile)
-          // this.$refs.downloadFile.click();
-          // this.$refs.downloadFile.download();
-
-          console.log("UPDATE DESCARGAR LIMITE")
- 
-        })
-        .catch((error) => {
-            console.error("ErroR al agregar nuevo comentario: ", error);
-        });
         
       },
       muestrapost(p){
@@ -99,7 +106,8 @@ export default{
 
         this.spinner = true;
         console.log(p)
-        this.viewpost=true
+        this.dialogPost=true;
+        this.viewothers = true;
         // var d = new Date("2015-03-25");
         // console.log(d);
         // var g = new Date(this.vistapost.fecha);
@@ -125,7 +133,10 @@ export default{
            console.log(blob)
            const res = blob.type.split("/");
            const typeFile = res[1];
-           this.nombreFile = this.vistapost.titulo+'.'+typeFile;
+           if(this.vistapost.tipoRecurso !== "audio" && this.vistapost.tipoRecurso !== "image" )
+            this.nombreFile = this.vistapost.titulo+'.'+this.vistapost.tipoRecurso;
+           else
+            this.nombreFile = this.vistapost.titulo+'.'+typeFile;
  
            this.urlFileB = URL.createObjectURL(blob, {
              type: blob.type
@@ -159,161 +170,161 @@ export default{
         this.edit=true
         this.editpost=t
       },
-      async  cargabaseGral(){
-        try {
-          if(!this.esCompleto)
-            await this.$fireStore
-              .collection(this.tipo).orderBy("fecha", "desc").limit(4)
-              .get()
-              .then((data) => {
-                data.forEach((doc) => {
-                  let data = doc.data();
-                  data.tags = data.tags ? data.tags : [];
-                  data.favoritos = data.favoritos ? data.favoritos : [];
-                  delete data['idRecurso'];
+    //   async  cargabaseGral(){
+    //     try {
+    //       if(!this.esCompleto)
+    //         await this.$fireStore
+    //           .collection(this.tipo).orderBy("fecha", "desc").limit(4)
+    //           .get()
+    //           .then((data) => {
+    //             data.forEach((doc) => {
+    //               let data = doc.data();
+    //               data.tags = data.tags ? data.tags : [];
+    //               data.favoritos = data.favoritos ? data.favoritos : [];
+    //               // delete data['idRecurso'];
 
 
-                  const datos = {
-                      idRecurso: doc.id,
-                      ...data
-                    }
-                  this.blogpost.push(datos);
-                });
-                  // this.blogpost = [...this.blogpost].slice(0,4);
-                // console.log(this.blogpost);
-              });
-            else
-              await this.$fireStore
-                .collection(this.tipo).orderBy("fecha", "desc")
-                .get()
-                .then((data) => {
-                  data.forEach((doc) => {
-                    let data = doc.data();
-                    data.tags = data.tags ? data.tags : [];
-                    data.favoritos = data.favoritos ? data.favoritos : [];
-                    delete data['idRecurso'];
+    //               const datos = {
+    //                   idRecurso: doc.id,
+    //                   ...data
+    //                 }
+    //               this.blogpost.push(datos);
+    //             });
+    //               // this.blogpost = [...this.blogpost].slice(0,4);
+    //             // console.log(this.blogpost);
+    //           });
+    //         else
+    //           await this.$fireStore
+    //             .collection(this.tipo).orderBy("fecha", "desc")
+    //             .get()
+    //             .then((data) => {
+    //               data.forEach((doc) => {
+    //                 let data = doc.data();
+    //                 data.tags = data.tags ? data.tags : [];
+    //                 data.favoritos = data.favoritos ? data.favoritos : [];
+    //                 // delete data['idRecurso'];
 
 
-                    const datos = {
-                        idRecurso: doc.id,
-                        ...data
-                      }
-                    this.blogpost.push(datos);
-                  });
-                    // this.blogpost = [...this.blogpost].slice(0,4);
-                  // console.log(this.blogpost);
-                });
-          } catch (e) {
-            console.log(e);
-          }
-        },
+    //                 const datos = {
+    //                     idRecurso: doc.id,
+    //                     ...data
+    //                   }
+    //                 this.blogpost.push(datos);
+    //               });
+    //                 // this.blogpost = [...this.blogpost].slice(0,4);
+    //               // console.log(this.blogpost);
+    //             });
+    //       } catch (e) {
+    //         console.log(e);
+    //       }
+    //     },
 
 
-    async  cargabaseUser(){
-      try { 
-        if(!this.esCompleto)
-        {
-          console.log("no completo")
-          await this.$fireStore
-            .collection(this.tipo)
-            .where("idCreador","==",this.userId)
-            .get()  
-            .then((data) => {
-              data.forEach((doc) => {
-                let data = doc.data();
-                data.tags = data.tags ? data.tags : [];
-                data.favoritos = data.favoritos ? data.favoritos : [];
-                delete data['idRecurso'];
+    // async  cargabaseUser(){
+    //   try { 
+    //     if(!this.esCompleto)
+    //     {
+    //       console.log("no completo")
+    //       await this.$fireStore
+    //         .collection(this.tipo)
+    //         .where("idCreador","==",this.userId)
+    //         .get()  
+    //         .then((data) => {
+    //           data.forEach((doc) => {
+    //             let data = doc.data();
+    //             data.tags = data.tags ? data.tags : [];
+    //             data.favoritos = data.favoritos ? data.favoritos : [];
+    //             // delete data['idRecurso'];
 
 
-                const datos = {
-                    idRecurso: doc.id,
-                    ...data
-                  }
-                this.blogpost.push(datos);
-              });
-                // this.blogpost = [...this.blogpost].slice(0,4);
-            });
-        }
-        else{
-          console.log(" completo")
+    //             const datos = {
+    //                 idRecurso: doc.id,
+    //                 ...data
+    //               }
+    //             this.blogpost.push(datos);
+    //           });
+    //             // this.blogpost = [...this.blogpost].slice(0,4);
+    //         });
+    //     }
+    //     else{
+    //       console.log(" completo")
 
-          await this.$fireStore
-          .collection(this.tipo)
-          .where("idCreador","==",this.userId)
-          .get()  
-          .then((data) => {
-            data.forEach((doc) => {
-              let data = doc.data();
-              data.tags = data.tags ? data.tags : [];
-              data.favoritos = data.favoritos ? data.favoritos : [];
-              delete data['idRecurso'];
-
-
-              const datos = {
-                  idRecurso: doc.id,
-                  ...data
-                }
-              this.blogpost.push(datos);
-            });
-              // this.blogpost = [...this.blogpost].slice(0,4);
-          });
-        }
-
-          } catch (e) {
-                console.log(e);
-              }
-            },
+    //       await this.$fireStore
+    //       .collection(this.tipo)
+    //       .where("idCreador","==",this.userId)
+    //       .get()  
+    //       .then((data) => {
+    //         data.forEach((doc) => {
+    //           let data = doc.data();
+    //           data.tags = data.tags ? data.tags : [];
+    //           data.favoritos = data.favoritos ? data.favoritos : [];
+    //           // delete data['idRecurso'];
 
 
-            async  cargabaseExclude(){
-                try {
-                  if(!this.esCompleto)
-                    await this.$fireStore
-                      .collection(this.tipo)
-                      .where("idCreador","!=",this.idexclude)
-                      .get()
-                      .then((data) => {
-                        data.forEach((doc) => {
-                          let data = doc.data();
-                          data.tags = data.tags ? data.tags : [];
-                          data.favoritos = data.favoritos ? data.favoritos : [];
-                          delete data['idRecurso'];
+    //           const datos = {
+    //               idRecurso: doc.id,
+    //               ...data
+    //             }
+    //           this.blogpost.push(datos);
+    //         });
+    //           // this.blogpost = [...this.blogpost].slice(0,4);
+    //       });
+    //     }
+
+    //       } catch (e) {
+    //             console.log(e);
+    //           }
+    //         },
 
 
-                          const datos = {
-                              idRecurso: doc.id,
-                              ...data
-                            }
-                          this.blogpost.push(datos);
-                        });
-                          // this.blogpost = [...this.blogpost].slice(0,4);
-                      });
-                    else
-                      await this.$fireStore
-                      .collection(this.tipo)
-                      .where("idCreador","!=",this.idexclude)
-                      .get()
-                      .then((data) => {
-                        data.forEach((doc) => {
-                          let data = doc.data();
-                          data.tags = data.tags ? data.tags : [];
-                          data.favoritos = data.favoritos ? data.favoritos : [];
-                          delete data['idRecurso'];
+    //         async  cargabaseExclude(){
+    //             try {
+    //               if(!this.esCompleto)
+    //                 await this.$fireStore
+    //                   .collection(this.tipo)
+    //                   .where("idCreador","!=",this.idexclude)
+    //                   .get()
+    //                   .then((data) => {
+    //                     data.forEach((doc) => {
+    //                       let data = doc.data();
+    //                       data.tags = data.tags ? data.tags : [];
+    //                       data.favoritos = data.favoritos ? data.favoritos : [];
+    //                       // delete data['idRecurso'];
 
 
-                          const datos = {
-                              idRecurso: doc.id,
-                              ...data
-                            }
-                          this.blogpost.push(datos);
-                        });
-                          // this.blogpost = [...this.blogpost].slice(0,4);
-                      });
-                  } catch (e) {
-                    console.log(e);
-                  }
-                },
+    //                       const datos = {
+    //                           idRecurso: doc.id,
+    //                           ...data
+    //                         }
+    //                       this.blogpost.push(datos);
+    //                     });
+    //                       // this.blogpost = [...this.blogpost].slice(0,4);
+    //                   });
+    //                 else
+    //                   await this.$fireStore
+    //                   .collection(this.tipo)
+    //                   .where("idCreador","!=",this.idexclude)
+    //                   .get()
+    //                   .then((data) => {
+    //                     data.forEach((doc) => {
+    //                       let data = doc.data();
+    //                       data.tags = data.tags ? data.tags : [];
+    //                       data.favoritos = data.favoritos ? data.favoritos : [];
+    //                       // delete data['idRecurso'];
+
+
+    //                       const datos = {
+    //                           idRecurso: doc.id,
+    //                           ...data
+    //                         }
+    //                       this.blogpost.push(datos);
+    //                     });
+    //                       // this.blogpost = [...this.blogpost].slice(0,4);
+    //                   });
+    //               } catch (e) {
+    //                 console.log(e);
+    //               }
+    //             },
 
       //  METODOS PARA COMENTARIOS
       async agregarComentario(){
@@ -477,18 +488,28 @@ export default{
           // console.log("dato a buscar en todas las listas")
           const clave = this.datoBuscar.toLowerCase().normalize("NFD");
           // console.log(clave)
-          let recursos = [... this.blogpost];
-          // console.log("RECURSOS")
-          // console.log(recursos)
-          this.blogpost = [...recursos.filter(recurso =>
+          // let recursos = [... this.blogpost];
+          console.log("CLAVE")
+          console.log(clave)
+          console.log("this.blogpost")
+          console.log(this.blogpost)
+          console.log("this.subtipo")
+          console.log(this.subtipo)
+          let recursos = [...this.blogpost.filter(recurso =>
             (
               recurso.tags.includes(clave) && 
               ( 
-                recurso.edopost === "publico" || 
-                ( recurso.edopost === "privado" && recurso.idCreador === this.datosUsuario.id ) 
+                (recurso.edopost === "publico" || 
+                ( recurso.edopost === "privado" && recurso.idCreador === this.datosUsuario.id ) )&&
+                recurso.tipo === this.subtipo
               ) 
             )
           )]
+          console.log("FILTRADOS")
+          console.log(recursos)  
+
+          this.$emit('updateBlogpost',recursos)
+
 
           // console.log("FILTRADOS")
           // console.log(this.blogpost)
@@ -513,13 +534,25 @@ export default{
 
     },
     computed: {
-      ...mapState(['datosUsuario','itemsmenu']),
+      ...mapState(['datosUsuario','itemsmenu','descargarFree']),
       fechaVisualC(vm, payload){
         console.log(vm)
         console.log(payload)
         // const fecha = format(payload, "dd 'de' MMMM 'de' yyyy", {locale: es});
         // console.log(fecha)
         return vm;
-      }
+      },
+      cargarecomendacion(){
+        let limit=150
+        let loncadena=this.vistapost.contenido.length
+        let suspensivos=" ..."
+        let contenido=this.vistapost.contenido.substr(0,limit)
+        // console.log(this.vistapost.contenido)
+        // console.log(contenido)
+        if(loncadena<limit){
+            suspensivos=""
+        }
+        return contenido+suspensivos
+    }
     },
 }

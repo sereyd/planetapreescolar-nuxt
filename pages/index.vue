@@ -1,8 +1,13 @@
 <template>
-<v-main>
+<v-main  v-if="bandera">
   <!-----Buscador------>
-
-<buscador />
+<v-card class="secondary ma-3  modbuscador" >
+    <v-card-text class="backbuscador text-center white--text pa-12 rounded-2">
+        <h1 class="medidah1">¡Muchos recursos para ti!</h1>
+        <p class="medidap">Encuentra cantos, imágenes, planeaciones, todo para ti, educadora</p>
+        <buscador />
+    </v-card-text>
+</v-card>
   <!------reflexiones------>
   
 <reflexiones  />
@@ -71,6 +76,7 @@ export default {
       recomendaciones:[],
       blog:[],
       memorias:[],
+      bandera: false,
     };
   },
   // methods:{
@@ -78,8 +84,12 @@ export default {
   // },
   async mounted() {
       console.log("HOME")
+      console.log(this.bandera)
       // this.guardarVistaValida(true); 
       await this.cargabaseGral()
+      this.bandera = true
+      console.log("HOME")
+      console.log(this.bandera)
   },
   computed: {
     ...mapState(['datosUsuario']),
@@ -137,12 +147,12 @@ export default {
                 this.blog = this.blog.slice(0, 4);
                 this.memorias = this.memorias.slice(0, 4);
                 this.recomendaciones = this.recomendaciones.slice(0, 4);
-                // console.log("this.blog solo 4 elelemntos")
-                // console.log(this.blog)
-                // console.log("this.memorias solo 4 elelemntos")
-                // console.log(this.memorias);
-                // console.log("this.RECOMENDAIONES solo 4 elelemntos")
-                // console.log(this.recomendaciones);
+                console.log("this.blog solo 4 elelemntos")
+                console.log(this.blog)
+                console.log("this.memorias solo 4 elelemntos")
+                console.log(this.memorias);
+                console.log("this.RECOMENDAIONES solo 4 elelemntos")
+                console.log(this.recomendaciones);
                 
                   // this.blogpost = [...this.blogpost].slice(0,4);
                 // console.log(this.blogpost);

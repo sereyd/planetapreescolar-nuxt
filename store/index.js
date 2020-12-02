@@ -157,7 +157,7 @@ const createStore = () => {
       // urlAPI: "http://localhost:4242",
 
 
-      descargarFree: 3,
+      descargarFree: 1,
 
       // data para ver lista completa de post
       misPost:[],
@@ -297,6 +297,7 @@ const createStore = () => {
                         else if(d.fecha !== datos.descargasDia.fecha)
                         {
                           console.log("el dia cambiooooooo")
+                          datos.descargasDia.disponibles= context.state.descargarFree,
                           datos.descargasDia.usadas = [];
                           datos.descargasDia.fecha = d.fecha;
                         }
@@ -370,42 +371,67 @@ const createStore = () => {
         try {
           // console.log(context.state.datosBusqueda);
 
-          if (context.state.datosBusqueda.tipo === "TODOS LOS RECURSOS") {
-            // console.log("obtener Todos los Recursos")
-            context.state.recursos.map(async (recu) => {
-              // console.log("santes de then")
-              await this.$fireStore
-                .collection(recu)
-                .get()
-                .then(data => {
-                  // console.log("santes de foreach")
-
-                  // console.log(data);
-                  data.forEach(doc => {
-                    let data = doc.data();
+          if (context.state.datosBusqueda.tipo === "todos") {
+            console.log(context.state.datosBusqueda.tipo)
+            await this.$fireStore
+              .collection("CATEGORIAS")
+              .get()
+              .then(data => {
+                console.log(data);
+                data.forEach(doc => {
+                  let data = doc.data();
                     //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
-                    data.tags = data.tags ? data.tags : [];
-                    data.favoritos = data.favoritos ? data.favoritos : [];
-                    delete data['idRecurso'];
+                  data.tags = data.tags ? data.tags : [];
+                  data.favoritos = data.favoritos ? data.favoritos : [];
 
-                    datos = {
-                      idRecurso: doc.id,
-                      ...data
-                    }
-                    context.state.recursosBusqueda.push(datos);
-                    // console.log("context.state.recursosBusqueda")
-                    // console.log(context.state.recursosBusqueda)
-                    // alert("averrr")
-                  });
-                  // console.log("context.state.recursosBusqueda")
-                  // console.log(context.state.recursosBusqueda)
+
+                  datos = {
+                    idRecurso: doc.id,
+                    ...data
+                  }
+                  context.state.recursosBusqueda.push(datos);
+                  
                 });
-            });
+              });
+
+            // // console.log("obtener Todos los Recursos")
+            // context.state.recursos.map(async (recu) => {
+            //   // console.log("santes de then")
+            //   await this.$fireStore
+            //     .collection(recu)
+            //     .get()
+            //     .then(data => {
+            //       // console.log("santes de foreach")
+
+            //       // console.log(data);
+            //       data.forEach(doc => {
+            //         let data = doc.data();
+            //         //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
+            //         data.tags = data.tags ? data.tags : [];
+            //         data.favoritos = data.favoritos ? data.favoritos : [];
+            //         delete data['idRecurso'];
+
+            //         datos = {
+            //           idRecurso: doc.id,
+            //           ...data
+            //         }
+            //         context.state.recursosBusqueda.push(datos);
+            //         // console.log("context.state.recursosBusqueda")
+            //         // console.log(context.state.recursosBusqueda)
+            //         // alert("averrr")
+            //       });
+            //       // console.log("context.state.recursosBusqueda")
+            //       // console.log(context.state.recursosBusqueda)
+            //     });
+            // });
           // return context.state.recursosBusqueda;
 
           } else {
+            // context.state.datosBusqueda.tipo
+            console.log(context.state.datosBusqueda.tipo)
             await this.$fireStore
-              .collection(context.state.datosBusqueda.tipo)
+              .collection("CATEGORIAS")
+              .where('tipo','==',context.state.datosBusqueda.tipo)
               .get()
               .then(data => {
                 console.log(data);

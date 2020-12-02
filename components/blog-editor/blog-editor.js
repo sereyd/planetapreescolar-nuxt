@@ -300,9 +300,23 @@ export default {
         // console.log(this.file);
 
         //SE OBTIENE EL TIPO DE ARCHIVO
-        const res = this.file.type.split("/");
-        this.tipoFile = res[0];
-        this.typeFileFull = this.file.type;
+        let res = this.file.type.split("/");
+        
+
+        // let res = this.currFiles[0].type.split("/");
+        if(res[0] === "application")
+        {
+          console.log("appl")
+          res = this.file.name.split(".");
+          console.log(res)
+          res[0] = res[1];
+        }
+          this.tipoFile = res[0];
+          this.typeFileFull = this.file.type; 
+        
+
+        console.log(this.tipoFile)
+        console.log(this.typeFileFull)
 
         //SE OBTIENE EL TAMAÑO DE ARCHIVO Y SE DIVIDE DE MANERA QUE SE OBTENGA EN MB
         this.bytesTranferidos = (this.file.size / 1000000).toFixed(2);

@@ -23,8 +23,8 @@ export default {
         tipoRecurso:"",
         urlRecurso:"",
         tags:[],
-        premium: null,
-        recomendado: null,
+        premium: false,
+        recomendado: false,
         },
         customToolbar: [
           [{ 'font': [] }],
@@ -133,6 +133,8 @@ export default {
       this.editRecurso = true;
       // console.log(post);
       this.datosRecursoEdit = {...post};
+      this.datosRecursoEdit.premium = !this.datosRecursoEdit.premium ? false : this.datosRecursoEdit.premium;
+      this.datosRecursoEdit.recomendado = !this.datosRecursoEdit.recomendado ? false : this.datosRecursoEdit.recomendado;
       // console.log(this.datosRecursoEdit)
       // console.log(this.tipo)
 

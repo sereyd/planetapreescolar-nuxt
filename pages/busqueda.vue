@@ -1,155 +1,95 @@
 <template>
-    <v-main>
+    <v-main >
+        <div class="mx-3 text-center" >
+            <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/>
+        </div>
         
-        <Spinner v-if="spinner" />
-        <div v-else-if="datosBusqueda.tipo !== 'TODOS LOS RECURSOS'">
-            <h2 class="pirmary--text" v-if="busquedaFiltrada.length !== 0" >{{tituloResultados}}</h2>
-            <h2 class="pirmary--text" v-else >No se encontraron coincidencias</h2>
-        </div>
-
-        <div v-if="datosBusqueda.tipo !== 'TODOS LOS RECURSOS'">
-            <listablog 
-                :esBusqueda="true" 
-                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
-                :tipo="this.datosBusqueda.tipo" 
-                titulo="" 
-                subtitulos=""
-                
-            />
-        </div>
-
-        <!-- <v-row 
-            class="mb-6" no-gutters
-            v-if="datosBusqueda.tipo !== 'TODOS LOS RECURSOS'"
-        >
-            <v-col v-for="(el, index) in busquedaFiltrada" 
-            :key="index" cols="12" md="3" sm="6" class=" mb-3">
-
-                <v-card
-                    class=" grey lighten-3 d-flex justify-center align-center mx-2"
-                    height="150px"
-                >
-                    <v-img
-                    :src="el.urlImagen"
-                    class="fotomini"
-                    @click="mostrarElemento(el)"
-                    
-                    ></v-img>
-                </v-card>
-
-                <div>
-                    <div class=" ml-3 textos">
-                        <h4>{{el.titulo}}</h4>
-                        <p class="texto_busqueda">{{el.nombreCreador}}</p>
-                        <p 
-                            v-if="datosBusqueda.tipo === 'RECOMENDACION'" 
-                            class="texto_busqueda">{{el.materia}}
-                        </p>
-                        <p 
-                            v-if="datosBusqueda.tipo === 'RECOMENDACION'" 
-                            class="texto_busqueda">{{el.grado}}
-                        </p>
-
-                    </div>
-                </div>
-
-          </v-col>
-        </v-row> -->
-
-        <div v-else-if="datosBusqueda.tipo === 'TODOS LOS RECURSOS' && !spinner">
-            <div>
-                <h2  class="pirmary--text" v-if="!spinner" >Resultados:</h2>
-                <!-- <h2 class="pirmary--text" v-else >No se encontraron coincidencias</h2> -->
+        <div v-if="verResultados">
+            <Spinner v-if="spinner" />
+            <div v-else-if="datosBusqueda.tipo !== 'todos'">
+                <h2 class="pirmary--text" v-if="busquedaFiltrada.length !== 0" >{{tituloResultados}}</h2>
+                <h2 class="pirmary--text" v-else >No se encontraron coincidencias</h2>
             </div>
-            <!------recomendaciones----->
-            <!-- <div style="width:100%; height:50px;"></div> -->
-            <listablog 
-                :esBusqueda="true" 
-                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
-                tipo="RECOMENDACION" 
-                titulo="Recomendaciones" 
-                subtitulos=""   
-            />
 
-            <!-------Blog------------->
-            <!-- <div style="width:100%; height:50px;"></div> -->
-            <listablog 
-                :esBusqueda="true" 
-                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
-                tipo="BLOG" 
-                titulo="Blogs" 
-                subtitulos="" 
-            />
+            <div v-if="datosBusqueda.tipo !== 'todos'">
+                <listablog 
+                    :blogpost="busquedaFiltrada" @updateBlogpost="busquedaFiltrada=$event"
+                    tipo="CATEGORIAS"  :subtipo="this.datosBusqueda.tipo" 
+                    titulo="" 
+                    subtitulos=""
+                />
 
-            <!---------memorias------------>
-            <!-- <div style="width:100%; height:50px;"></div> -->
-            <listablog 
-                :esBusqueda="true" 
-                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
-                tipo="MEMORIA" 
-                titulo="Memorias" 
-                subtitulos=""
-            />
+            </div>
 
-            <!-- RECURSOS TIPO FILE -->
-            <listablog 
-                :esBusqueda="true" 
-                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
-                tipo="AUDIOS" 
-                titulo="Audios" 
-                subtitulos=""
-            />
-            <listablog 
-                :esBusqueda="true" 
-                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
-                tipo="VIDEOS" 
-                titulo="Videos" 
-                subtitulos=""
-            />
-            <listablog 
-                :esBusqueda="true" 
-                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+            
+
+            <div v-else-if="datosBusqueda.tipo === 'todos' && !spinner">
+                <div>
+                    <h2  class="pirmary--text" v-if="!spinner" >Resultados:</h2>
+                    <!-- <h2 class="pirmary--text" v-else >No se encontraron coincidencias</h2> -->
+                </div>
+                <!------planeaciones----->
+                <!-- <div style="width:100%; height:50px;"></div> -->
+                <listablog 
+                    :blogpost="planeaciones" @updateBlogpost="planeaciones=$event"
+                    tipo="CATEGORIAS"  subtipo="planeacion"  
+                    :datoBuscar= "this.datosBusqueda.clave.toLowerCase()" 
+                    titulo="Planeaciones" 
+                    subtitulos=""   
+                />
+
+                <!------actividades----->
+                <!-- <div style="width:100%; height:50px;"></div> -->
+                <listablog 
+                    :blogpost="actividades" @updateBlogpost="actividades=$event"
+                    tipo="CATEGORIAS"  subtipo="recurso"  
+                    :datoBuscar= "this.datosBusqueda.clave.toLowerCase()" 
+                    titulo="Actividades" 
+                    subtitulos=""   
+                />
+
+                <!-------Blog------------->
+                <!-- <div style="width:100%; height:50px;"></div> -->
+                <listablog 
+                    :blogpost="blogs" @updateBlogpost="blogs=$event"
+                    tipo="CATEGORIAS"  subtipo="blog"  
+                    :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+                    titulo="Blogs" 
+                    subtitulos="" 
+                />
+
+                
+
+                <!---------memorias------------>
+                <!-- <div style="width:100%; height:50px;"></div> -->
+                <listablog 
+                    :blogpost="memorias" @updateBlogpost="memorias=$event"
+                    tipo="CATEGORIAS"  subtipo="memoria"  
+                    :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+                    titulo="Memorias" 
+                    subtitulos=""
+                />
+
+                <!-- Reflexion -->
+                <listablog 
+                    :blogpost="reflexiones" @updateBlogpost="reflexiones=$event"
+                    tipo="CATEGORIAS"  subtipo="reflexion"  
+                    :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+                    titulo="Reflexiones" 
+                    subtitulos=""
+                />
+                
+                <!-- <listablog 
+                :esCompleto="false" 
                 tipo="IMAGENES" 
-                titulo="Imagenes" 
-                subtitulos=""
-            />
-            <!-- <listablog 
-            :esCompleto="false" 
-            tipo="IMAGENES" 
-            titulo="Imagenes de la educadora" 
-            subtitulos="fotos o imágenes de apoyo para clases"  
-            linkmas="imagenes" /> -->
+                titulo="Imagenes de la educadora" 
+                subtitulos="fotos o imágenes de apoyo para clases"  
+                linkmas="imagenes" /> -->
 
 
+            </div>
         </div>
 
-        <!-- <v-dialog v-model="vistaElemento" fullscreen >
-            <v-card >
-                <v-card-text style="text-align: right; ">
-                    <span class="primary--text" style="font-weight: bold; text-align: right;" @click="vistaElemento=false">X</span>
-
-                    <div  max-width="100%" style="height:100px; "></div>
-                    <v-container class="ma-auto elevation-3 rounded-ml fondo">
-                
-                        <div  max-width="100%" style="height:90px; "></div>
-                        <h2 class="primary--text pa-5"><b>{{elementoSeleccionado.titulo}}</b> </h2>
-                        <span >{{elementoSeleccionado.nombre}} {{elementoSeleccionado.apellido}}</span>
-
-                        <v-section class="pa-5" v-html="elementoSeleccionado.contenido"  >
-                            
-                        </v-section>
-
-                        <v-img  
-                            :src="elementoSeleccionado.urlImagen!=='' ? elementoSeleccionado.urlImagen : 'images/logos/planeta_preescolar_logo.png'" 
-                            style="max-width:100%;  width:100%; background-color:azure; " >
-                        </v-img> 
-
-                    </v-container>
-                </v-card-text>
-            </v-card>
-        </v-dialog> -->
-
-        <!-- {{mostrando}} -->
 
     </v-main>
 </template>
@@ -158,6 +98,8 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
 import listablog from '~/components/listado-blog/listado-blog.vue'
 import Spinner from '~/components/spinner.vue'
+import buscador from '~/components/buscador/buscador.vue'
+
 
 
 
@@ -170,44 +112,69 @@ export default {
             elementoSeleccionado: {},
             spinner: true,
             datos: [],
-            // recursos:[
-            //     'BLOG',
-            //     'MEMORIA',
-            //     'RECOMENDACION',
-            //     'REFLEXIONES',
-            // ],
+            subtipo:"",
+            reflexiones:[],
+            blogs:[],
+            memorias:[],
+            planeaciones:[],
+            actividades:[],
+            recursos:[
+                'todos',
+                'blog',
+                'memoria',
+                'reflexion',
+                'planeacion',
+                'recurso',
+            ],
+            validBusqueda: true,
+            buscando: false,
+            verResultados: true,
+            tipoCat: null,
+            cont: 0,
         }
     },
     components:{
         listablog,
-        Spinner
+        Spinner,
+        buscador
     },
     computed: {
         ...mapState(['datosUsuario','datosBusqueda','recursosBusqueda']),
         tituloResultados(){
+            console.log("this.datosBusqueda.tipo")
+            if(this.cont !== 0)
+                this.tipoCat = this.datosBusqueda.tipo;
+            else
+                this.cont++;
+            console.log(this.datosBusqueda.tipo)
             let tipoM = "";
-            if(this.datosBusqueda.tipo === "REFLEXIONES")
+            if(this.datosBusqueda.tipo === "reflexion")
                 tipoM= "Resultados reflexiones";
-            else if(this.datosBusqueda.tipo === "RECOMENDACION")
-                tipoM= "Resultados recomendaciones";
-            else if(this.datosBusqueda.tipo === "MEMORIA")
+            else if(this.datosBusqueda.tipo === "'planeacion")
+                tipoM= "Resultados planeaciones";
+            else if(this.datosBusqueda.tipo === "recurso")
+                tipoM= "Resultados recursos";
+            else if(this.datosBusqueda.tipo === "memoria")
                 tipoM= "Resultados memorias";
-            else if(this.datosBusqueda.tipo === "BLOG")
+            else if(this.datosBusqueda.tipo === "blog")
                 tipoM= "Resultados blogs";
+            
             return tipoM;
         }
     },
-    async mounted(){
+     mounted(){
         
         
-        await this.initProceso();
+        this.buscando = !this.buscando;
+        console.log(this.tipoCat)
+        // this.tipoCat = this.datosBusqueda.tipo
 
     },
     methods: {
         ...mapActions(['obtenerRecursos']),
         async initProceso(){
-            // this.buscandoDatos();
             await this.obtenerRecursos()
+            console.log(this.recursosBusqueda)
             // alert("paso1")
 
             
@@ -223,30 +190,80 @@ export default {
 
             const clave = this.datosBusqueda.clave.toLowerCase().normalize("NFD");
             let recursos = [... this.datos];
-            // console.log("clave")
-            // console.log(clave)
 
-            this.busquedaFiltrada = recursos.filter(recurso =>
-                (recurso.tags.includes(clave) && recurso.edopost === "publico")
-            )
+            if(this.datosBusqueda.tipo !== "todos")
+            {
+                this.busquedaFiltrada = recursos.filter(recurso =>
+                    (recurso.tags.includes(clave) && recurso.edopost === "publico")
+                )
+            }
+            else
+            {
+                this.memorias = recursos.filter(recurso =>
+                    (recurso.tags.includes(clave) && recurso.edopost === "publico") &&
+                    recurso.tipo === "memoria"
+                )
+               this.blogs = recursos.filter(recurso =>
+                    (recurso.tags.includes(clave) && recurso.edopost === "publico") &&
+                    recurso.tipo === "blog"
+                )
+                this.reflexiones = recursos.filter(recurso =>
+                    (recurso.tags.includes(clave) && recurso.edopost === "publico") &&
+                    recurso.tipo === "reflexion"
+                )
+                this.actividades = recursos.filter(recurso =>
+                    (recurso.tags.includes(clave) && recurso.edopost === "publico") &&
+                    recurso.tipo === "recurso"
+                )
+                this.planeaciones = recursos.filter(recurso =>
+                    (recurso.tags.includes(clave) && recurso.edopost === "publico") &&
+                    recurso.tipo === "planeacion"
+                )
+            }
+
 
             // console.log(this.tipo)
-            // console.log(this.busquedaFiltrada)
+            console.log(this.busquedaFiltrada)
 
             
             // console.log(this.busquedaFiltrada.length)
 
             // console.log(this.busquedaFiltrada);
             this.spinner =false;
+            this.verResultados= true;
+
 
         },
         mostrarElemento(elemento){
             this.vistaElemento = true
             this.elementoSeleccionado = elemento
         },
+        buscarDato(){
+            // console.log(this.datosBusqueda)
+            this.$router.push('/busqueda')
+
+        },
+        validateBusqueda () {
+            const vd = this.$refs.formBusqueda.validate();
+            this.validBusqueda = vd;
+            if(this.validBusqueda)
+              this.buscarDato()
+          },
         
         
     },
+    watch: {
+    async buscando() {
+        // this.verResultados= false;
+        await this.initProceso();
+    },
+    async tipoCat(){
+        console.log("BUSQUEDA CAMBIO")
+        this.verResultados= false;
+
+    }
+
+  }
 }
 </script>
 
@@ -268,4 +285,25 @@ export default {
         margin-bottom:0!important;
         font-size: 13.5px;
     }
+
+    /* ESTILOS DE BUSCADOR */
+    /*css de buscador */
+.backbuscador{
+    background-image:url('/images/nubes.png');
+    background-size: 100%;
+    background-position: bottom;
+}
+
+.v-input__slot{
+    background-color:#fff;
+}
+
+.modbuscador{
+    border-radius:15px;
+}
+
+.btn{
+    cursor: pointer;
+}
+
 </style>
