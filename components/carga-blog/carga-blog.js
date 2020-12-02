@@ -22,7 +22,9 @@ export default {
         contenido:"",
         tipoRecurso:"",
         urlRecurso:"",
-        tags:[]
+        tags:[],
+        premium: null,
+        recomendado: null,
         },
         customToolbar: [
           [{ 'font': [] }],
@@ -61,19 +63,15 @@ export default {
     },
     tituloEditar(){
       let tipoM = "";
-      if(this.tipo === "REFLEXIONES")
+      if(this.subtipo === "reflexion")
         tipoM= "Editar reflexión";
-      else if(this.tipo === "RECOMENDACION")
-        tipoM= "Editar recomendación";
-      else if(this.tipo === "MEMORIA")
+      else if(this.subtipo === "memoria")
         tipoM= "Editar memoria";
-      else if(this.tipo === "BLOG")
+      else if(this.subtipo === "blog")
         tipoM= "Editar blog";
-      else if(this.tipo === "AUDIOS")
-        tipoM= "Editar recurso";
-      else if(this.tipo === "VIDEOS")
-        tipoM= "Editar recurso";
-      else if(this.tipo === "IMAGENES")
+      else if(this.subtipo === "planeacion")
+        tipoM= "Editar planeación";
+      else if(this.subtipo === "recurso")
         tipoM= "Editar recurso";
           
       return tipoM;
@@ -144,15 +142,15 @@ export default {
 
       console.log(this.datosRecursoEdit);
       // alert("altooo");
-      const {idRecurso, titulo, contenido, edopost, tags} = this.datosRecursoEdit;
+      const {idRecurso, titulo, contenido, edopost, tags, premium, recomendado} = this.datosRecursoEdit;
       
 
       //SE OBTIENE EL RECURSO POR MEDIO DEL ID
-      let usuarioRecursosRef =  this.$fireStore.collection(this.tipo).doc(idRecurso);
+      let usuarioRecursosRef =  this.$fireStore.collection("CATEGORIAS").doc(idRecurso);
       
       //SE ACTUALIZA EN FIREBASE EL RECURSO SELECCIONADO
       usuarioRecursosRef.update({
-        titulo, contenido, edopost,tags
+        titulo, contenido, edopost,tags, premium, recomendado
       })
       .then(() => {
           // console.log(this.grupo);
@@ -171,6 +169,8 @@ export default {
               lista.contenido = contenido ;
               lista.edopost = edopost;
               lista.tags = tags;
+              lista.premium = premium;
+              lista.recomendado = recomendado;
               
             }
           })
@@ -219,6 +219,10 @@ export default {
   },
   props: {
     tipo: {
+      type: String,
+      default: "BLOG"
+    },
+    subtipo: {
       type: String,
       default: "BLOG"
     },

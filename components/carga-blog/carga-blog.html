@@ -107,7 +107,7 @@
                         :rules="[v => !!v || 'Contendio del post es requerida']"
                     /> -->
                     
-                    <v-radio-group
+                    <!-- <v-radio-group
                         v-model="datosRecursoEdit.edopost"
                         row
                         :rules="[v => !!v || 'Seleccione privacidad']">
@@ -120,7 +120,42 @@
                             label="Privado"
                             value="privado"
                         ></v-radio>
-                    </v-radio-group>
+                    </v-radio-group> -->
+
+                    <div 
+                            class="d-flex flex-column flex-sm-column flex-md-row flex-lg-row flex-xl-row  justify-space-between" >
+
+                            <v-radio-group
+                                v-model="datosRecursoEdit.edopost"
+                                row
+                                :rules="[v => !!v || 'Seleccione privacidad']">
+        
+                                <v-radio
+                                    label="Publico"
+                                    value="publico"
+                                    small
+                                ></v-radio>
+                                <v-radio
+                                    label="Privado"
+                                    value="privado"
+                                    small
+                                ></v-radio>
+                            </v-radio-group>
+    
+                            <v-switch
+                                v-model="datosRecursoEdit.premium"
+                                inset
+                                label="Premium"
+                                small
+                            ></v-switch>
+    
+                            <v-switch
+                                v-model="datosRecursoEdit.recomendado"
+                                inset
+                                label="Recomendado"
+                                small
+                            ></v-switch>
+                        </div>
 
                     <input-tag 
                             v-model="datosRecursoEdit.tags" 

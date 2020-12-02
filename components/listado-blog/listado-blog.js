@@ -58,6 +58,8 @@ export default{
             spinner:true,
 
             linkembed:"",
+
+            dialogPlanes:false,
         }
     },
     methods:{
@@ -104,7 +106,7 @@ export default{
         // console.log(g);
         this.vistapost=p
         this.vistapost.tipoRecurso = p.tipoRecurso ? p.tipoRecurso : 'image';
-        this.vistapost.urlRecurso = p.urlRecurso ? p.urlRecurso : "none";
+        this.vistapost.urlRecurso = p.urlRecurso ? p.urlRecurso : [];
         console.log(this.vistapost);
         this.fechaVisual = format(this.vistapost.fecha , "dd  MMMM yyyy", {locale: es});
 
@@ -134,13 +136,13 @@ export default{
            // const fileB = new File([blob], "filename")
            // console.log(fileB);
          };
-         xhr.open('GET', p.urlRecurso);
+         xhr.open('GET', p.urlRecurso[0]);
          xhr.send();
        }
        else if(this.vistapost.tipoRecurso === 'link')
        {
          let {urlRecurso} = this.vistapost;
-        const embed = urlRecurso.replace("watch?v=", "embed/");
+        const embed = urlRecurso[0].replace("watch?v=", "embed/");
         this.linkembed = embed;
         // this.linkembed = "https://www.youtube.com/embed/Y-HIJFxM264";
         //                   https://www.youtube.com/watch?v=Y-HIJFxM264

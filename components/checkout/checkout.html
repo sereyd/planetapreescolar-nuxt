@@ -1,279 +1,86 @@
 
-<div>
-
-  <h1 v-if="!spinner" class="text-center">Selcciona el tipo de paquete</h1>
-  <h1 v-else class="text-center">Redireccionando...</h1>
+<div class="mx-15">
+  <div v-if="!spinner">
+    <h2 class="text-center primary--text">¡Conoce nuestros planes!</h2>
+    <p style="font-size:14px;">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Animi, porro? Quisquam nihil esse minus a eum est enim, ullam officiis voluptatibus at accusamus consequuntur ad! Nisi qui beatae porro iusto!. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil aspernatur, dolorum ipsum esse, fuga numquam molestias optio iste error, culpa facere tempore quae ab veritatis alias illo saepe porro ratione.</p>
+  </div>
+  <h2 v-else class="text-center">Redireccionando...</h2>
 
     <v-container>
       <Spinner v-if="spinner" />
-      <v-card v-else>
-      <v-row class="price-table-container">
-        <v-col class=" d-flex justify-center">
-          <section>
-            <img
-              src="../../static/images/logo-planeta.png"
-              width="120"
-              height="120"
-            />
-            <div class="name">Trimestral</div>
+      <div v-else>
+      <v-row class="price-table-container ">
+        <v-col class="" cols="12" md="4" sm="6" >
+          <v-card >
+            <div class="d-flex justify-center flex-column">
+              <div class="d-flex justify-center mt-4">
+                <img
+                  src="../../static/images/logo-planeta.png"
+                  width="120"
+                  height="120"
+                  class=""
+                />
+              </div>
+              <div class="name">
+                <h4>Plan</h4>
+                <h4>trimestral</h4>
+              </div>
             <div class="price">${{precioTrimenstral}} MXN</div>
-            <!-- <div class="duration">Trimestral</div> -->
-            <!-- <button id="basic-plan-btn">Select</button> -->
-            <v-btn color="primary" @click="crearSesionSuscripcion('trimestral')">Seleccionar</v-btn>
-          </section>
+            </div>
+            <div class="d-flex justify-center">
+              <v-btn class="melon white--text mb-5 btn_crearG" @click="crearSesionSuscripcion('trimestral')">¡Lo quiero!</v-btn>
+            </div>
+          </v-card>
         </v-col>
-        <v-col class=" d-flex justify-center">
-          <section>
-            <img
-              src="../../static/images/logo-planeta.png"
-              width="120"
-              height="120"
-            />
-            <div class="name">Anual</div>
-            <div class="price">${{precioAnual}} MXN</div>
-            <!-- <div class="duration">Anual</div> -->
-            <!-- <button id="pro-plan-btn">Select</button> -->
-            <v-btn color="primary" @click="crearSesionSuscripcion('anual')">Seleccionar</v-btn>
 
-          </section>
+        <v-col class="" cols="12" md="4" sm="6" >
+          <v-card >
+            <div class="d-flex justify-center flex-column">
+              <div class="d-flex justify-center mt-4">
+                <img
+                  src="../../static/images/logo-planeta.png"
+                  width="120"
+                  height="120"
+                  class=""
+                />
+              </div>
+              <div class="name">
+                <h4>Plan</h4>
+                <h4>semestral</h4>
+              </div>
+            <div class="price">${{precioSemestral}} MXN</div>
+            </div>
+            <div class="d-flex justify-center">
+              <v-btn class="melon white--text mb-5 btn_crearG" @click="crearSesionSuscripcion('semestral')">¡Lo quiero!</v-btn>
+            </div>
+          </v-card>
         </v-col>
+
+        <v-col class="" cols="12" md="4" sm="6" >
+          <v-card >
+            <div class="d-flex justify-center flex-column">
+              <div class="d-flex justify-center mt-4">
+                <img
+                  src="../../static/images/logo-planeta.png"
+                  width="120"
+                  height="120"
+                  class=""
+                />
+              </div>
+              <div class="name">
+                <h4>Plan</h4>
+                <h4>anual</h4>
+              </div>
+            <div class="price">${{precioAnual}} MXN</div>
+            </div>
+            <div class="d-flex justify-center">
+              <v-btn class="melon white--text mb-5 btn_crearG" @click="crearSesionSuscripcion('anual')">¡Lo quiero!</v-btn>
+            </div>
+          </v-card>
+        </v-col>
+        
       </v-row>
-      </v-card>
+      </div>
     </v-container>
 
-        <!-- <div class="price-table-container">
-          <section>
-            <img
-              src="../../static/images/logo-planeta.png"
-              width="120"
-              height="120"
-            />
-            <div class="name">Starter</div>
-            <div class="price">$500 MXN</div>
-            <div class="duration">Trimestral</div>
-            <button id="basic-plan-btn">Select</button>
-          </section>
-
-          <section>
-            <img
-              src="../../static/images/logo-planeta.png"
-              width="120"
-              height="120"
-            />
-            <div class="name">Professional</div>
-            <div class="price">$1500 MXN</div>
-            <div class="duration">Anual</div>
-            <button id="pro-plan-btn">Select</button>
-          </section>
-        </div>
-        <div id="error-message"></div> -->
-
-  <!-- <form id="signup-form">
-    <div>
-      <input id="email" type="text" placeholder="Email address" required />
-    </div>
-​
-    <v-btn id="email-submit" color="primary" @click="crearCliente">
-      <span id="button-text">Sign up</span>
-    </v-btn>
-  </form> -->
-
- <!-- <div v-show="clienteCreado">
-    <div>
-      
-
-    </div>
-    <form id="subscription-form">
-      <div id="card-element" class="MyCardElement">
-        Elements will create input elements here
-      </div>
-  
-      We'll put the error messages in this element
-      <div id="card-errors" role="alert"></div>
-      <button type="submit">Subscribe</button>
-    </form>
-  </div> -->
-
-  <!-- <div class='credit-card-inputs' :class='{ complete }'>
-    <card-number class='stripe-element card-number'
-      ref='cardNumber'
-      stripe='pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx'
-      :options='stripeOptions'
-      @change='number = $event.complete'
-    />
-    <card-expiry class='stripe-element card-expiry'
-      ref='cardExpiry'
-      stripe='pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx'
-      :options='stripeOptions'
-      @change='expiry = $event.complete'
-    />
-    <card-cvc class='stripe-element card-cvc'
-      ref='cardCvc'
-      stripe='pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx'
-      :options='stripeOptions'
-      @change='cvc = $event.complete'
-    />
-  </div> -->
-
-
-  <!-- <div>
-    <div id='payment_form'>
-      <h2>Please give us your payment details:</h2>
-      <p>4000000000009995</p>
-      <p>08/24 123  94107</p>
-      <card id="card-element" class=' '
-        :class='{ complete }'
-        stripe='pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx'
-        :options='stripeOptions'
-        @change='complete = $event.complete'
-      />
-      <v-btn block class='pay-with-stripe primary mt-2' @click='pay' :disabled='!complete'>Pagar</v-btn>
-    </div>
-  </div> -->
-
-    <!-- Display a payment form -->
-    <!-- <h3>Tarjeta ejemplo:</h3>
-    <p>pago exitoso: 4242424242424242</p>
-    <p>pago declinado: 4000000000009995</p>
-    <p>08/24 cvc: 123  zip: 94107</p> -->
-
-    <!-- <v-container>
-      <v-card height="400px d-flex justify-stretch">
-        <div height="400px" class="red detalles_compra" >
-
-        </div>
-  
-        <div height="400px" class="blue detalles_tarjeta" >
-  
-        </div>
-      </v-card>
-    </v-container> -->
-
-
-    <!-- FORMULARIO BUENO -->
-
-    <!-- <v-container class=" lighten-5">
-      <v-card>
-      <v-row no-gutters >
-        <v-col  cols="12" md="5" sm="12"  xs="12">
-          <div class=" grey lighten-4 detalles_compra d-flex align-center justify-center">
-            
-            <div
-              class="  lighten-3 d-flex flex-column justify-center align-center"
-              width="100%" 
-            >
-              <img
-                src="../../static/images/logo-planeta.png"
-
-                class="fotomini"
-              ></img>
-              <div class="mt-4">
-                <span>Membresia Planeta Preescolar</span>
-                <h1 class="text-center" >$500 MX</h1>
-              </div>
-            </div>  
-
-          </div>
-        </v-col>
-
-        <v-col class="  detalles_compra" cols="12" md="7" sm="12" xs="12">
-          <div class=" px-3 d-flex align-center justify-center">
-            <v-form id="payment_form" ref="formTarjeta" v-model="valid"
-            lazy-validation class="">
-              <h3 class="text-center mb-4">Pagar con tarjeta</h3>
-      
-              <label for="">Correo:</label>
-              <v-text-field v-model="correo" 
-                class="stripe-element mb-6" 
-                type="text" id="name"  placeholder="Nombre" 
-                required
-                solo
-                :rules=correoReglas
-                
-              ></v-text-field>
-              
-              
-              <label for="" >Datos de tarjeta:</label>
-              
-              <div id='payment_form mb-6'>
-                
-              </div>
-
-              <label for="" >Nombre en la tarjeta:</label>
-              <v-text-field v-model="nombre" 
-                class="stripe-element mb-8" 
-                type="text" id="name"  placeholder="Nombre" 
-                required
-                solo
-                :rules=nombreReglas
-                
-              ></v-text-field>
-              
-              
-              <v-btn class="boton_checkout primary mt-2" 
-                v-show="(!spinner && !pagoHecho ) "  
-                @click="validatarDatosTarjeta"
-              >
-                <span id="button-text">Pagar</span>
-              </v-btn >
-        
-              
-            </v-form>
-          </div>
-        </v-col>
-        
-      </v-row>
-      </v-card>
-    </v-container> -->
-    <!-- FORMULARIO BUENO -->
-
-
-    <!-- FORMULARIO 2 -->
-    <!-- <div class="d-flex justify-center mt-5 mb-5"> 
-
-      <v-card class="product  lighten-3   " width="auto" >
-
-        <div
-          class="  lighten-3 d-flex justify-center align-center mx-16 px-16"
-          width="70%" 
-        >
-          <img
-            src="../../static/images/PlanetaEscolar.jpg"
-
-            class="fotomini"
-          ></img>
-        </div> 
-
-        <div class="description mx-16 px-16 mb-4">
-          <h3>Membresia Planeta Escolar</h3>
-          <h5>$500.00</h5>
-          <v-btn block @click="pagarConTarjeta" class="primary">Comprar membresia</v-btn>
-        </div>
-
-      </v-card>
-    </div> -->
-
-
-    <!-- DIALOG DE REGISTRO DE GRUPOS -->
-    <!-- <v-dialog v-model="modalPago" persistent max-width="400">
-        
-      <v-card class="">
-        <v-card-title class=" justify-center">
-            <h2 class="headline purple--text ">PROCESANDO PAGO</h2>
-
-        </v-card-title>
-        <v-container class="blue pb-2">
-          <Spinner v-if="spinner" />
-          <v-alert v-if="error === true" type="error" class="">
-            {{errorMensaje}}
-          </v-alert>
-          <v-alert v-if="error === false" type="success" class="">
-            {{errorMensaje}}
-          </v-alert>
-        
-          <v-btn v-if="error === false " :disabled="spinner"  to="/"    color="primary" block   >Aceptar</v-btn>
-          <v-btn v-else-if=" error === true " :disabled="spinner"  color="primary" block  @click="cerrarModal"  >Reintentar</v-btn>
-        </v-container>
-      </v-card>
-    </v-dialog> -->
 </div>

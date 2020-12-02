@@ -45,7 +45,7 @@ export default {
       await this.cargabaseGral()
   },
   computed: {
-
+    ...mapState(['datosUsuario']),
   },
   components: {
     buscador,
@@ -75,10 +75,12 @@ export default {
                   // if(datos.tipo === "reflexion")
                   //   this.reflexiones.push(datos)
 
-                  if(datos.tipo === "planeacion")
+                  if(datos.tipo === "planeacion"  && 
+                    ( datos.edopost === "publico" || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) ) )
                     this.planeaciones.push(datos)
 
-                  else if(datos.tipo === "recurso")
+                  else if(datos.tipo === "recurso"  && 
+                    (datos.edopost === "publico" || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id)) )
                     this.recursos.push(datos)
 
                 
@@ -90,10 +92,10 @@ export default {
                 // console.log(this.recursos)
                 this.planeaciones = this.planeaciones.slice(0, 4);
                 this.recursos = this.recursos.slice(0, 4);
-                console.log("this.planeaciones")
-                console.log(this.planeaciones)
-                console.log("this.recursos")
-                console.log(this.recursos)
+                // console.log("this.planeaciones")
+                // console.log(this.planeaciones)
+                // console.log("this.recursos")
+                // console.log(this.recursos)
                   // this.blogpost = [...this.blogpost].slice(0,4);
                 // console.log(this.blogpost);
               });

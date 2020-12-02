@@ -65,7 +65,7 @@
                             v-model="tipoRecursoSelect"
                             v-if="subtipo ==='recurso'"
                         ></v-select>
-                        
+                        <!-- <h1>{{subtipo}}</h1> -->
                         <v-file-input
                             outlined
                             :label="labelFile"
@@ -74,8 +74,35 @@
                             v-model="file"
                             @change = "changeFile"
                             v-if="tipoRecursoSelect === 'file'"
-    
                         ></v-file-input>
+        <!--
+            PARA VALIDAR MULTIPLES ARCHIVOS 
+            v-if="tipoRecursoSelect === 'file' && (subtipo !== 'recurso' && subtipo !== 'planeacion')" 
+        -->
+                        
+        <!-- <v-file-input v-model="currFiles" 
+            outlined
+            label="Agregar archivos"
+            prepend-icon="mdi-paperclip"
+            :accept="tipoRecursoFile"
+            small-chips 
+            show-size 
+            multiple 
+            clearable 
+            v-else-if="tipoRecursoSelect === 'file' && (subtipo === 'recurso' || subtipo === 'planeacion')"
+            @change="inputChanged">
+            <template v-slot:selection="{ text, index, file }">
+                <v-chip small text-color="white" color="#295671" close @click:close="remove(index)">
+                    {{ text }}
+                </v-chip>
+            </template>
+        </v-file-input>
+        <div v-if="files.length">
+            <h5>Archivos:</h5>
+            <v-chip v-for="(f,index) in files" :key="'filename_'+index" class="mr-1">
+                {{ f.name }}
+            </v-chip>
+        </div> -->
 
                         <v-text-field
                             v-model="datosRecurso.urlRecurso"

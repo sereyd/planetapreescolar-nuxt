@@ -137,32 +137,37 @@ export default {
                   esFav = datos.favoritos.includes(this.datosUsuario.id) 
                   // )]
 
-                  if(datos.tipo === "reflexion" && esFav)
+                  if(datos.tipo === "reflexion" && esFav  && 
+                    ( datos.edopost === "publico" || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) ) )
                     this.reflexiones.push(datos)
 
-                  else if(datos.tipo === "blog" && esFav)
+                  else if(datos.tipo === "blog" && esFav  && 
+                    ( datos.edopost === "publico" || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) ) )
                     this.blog.push(datos)
 
 
-                  else if(datos.tipo === "memoria" && esFav)
+                  else if(datos.tipo === "memoria" && esFav  && 
+                    ( datos.edopost === "publico" || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) ) )
                     this.memorias.push(datos)
 
-                  else if(datos.tipo === "recurso" && esFav)
-                    this.planeaciones.push(datos)
-
-                  else if(datos.tipo === "planeacion" && esFav)
+                  else if(datos.tipo === "recurso" && esFav  && 
+                    ( datos.edopost === "publico" || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) ) )
                     this.recursos.push(datos)
+
+                  else if(datos.tipo === "planeacion" && esFav  && 
+                    ( datos.edopost === "publico" || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) ) )
+                    this.planeaciones.push(datos)
                 
                   // this.blogpost.push(datos);
                 });
-                console.log("this.planeaciones")
-                console.log(this.planeaciones)
-                console.log("this.recursos")
-                console.log(this.recursos)
-                console.log("this.blog")
-                console.log(this.blog)
-                console.log("this.memorias")
-                console.log(this.memorias)
+                // console.log("this.planeaciones")
+                // console.log(this.planeaciones)
+                // console.log("this.recursos")
+                // console.log(this.recursos)
+                // console.log("this.blog")
+                // console.log(this.blog)
+                // console.log("this.memorias")
+                // console.log(this.memorias)
                   // this.blogpost = [...this.blogpost].slice(0,4);
                 // console.log(this.blogpost);
               });

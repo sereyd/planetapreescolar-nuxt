@@ -41,7 +41,7 @@
                 >
                 <v-fab-transition class="pb-5" v-if ="!esFavoritos">
                     <v-btn
-                        :key="index"
+                        :key="'fav_'+index"
                         
                         fab
                         x-small
@@ -63,6 +63,45 @@
                             @click.stop="changeRecursosFavoritos({estado: 'add',key, tipo})"
                         >mdi-heart-outline</v-icon>
                     </v-btn>
+
+                    <!-- <v-btn
+                        :key="edo_+'index'"
+                        
+                        fab
+                        x-small
+                        absolute
+                        top
+                        left
+                        class="v-btn--example mt-5"
+                    >
+                        Free
+                    </v-btn> -->
+                  </v-fab-transition>
+                  <v-fab-transition class="pb-5">
+                    <v-btn
+                        :key="'edo_'+index"
+                        color="primary"
+                        x-small
+                        absolute
+                        bottom
+                        left
+                        class="v-btn--example mt-5"
+                        v-if="key.premium === true"
+                    >
+                        <span>Premium</span>
+                    </v-btn> 
+                    <!-- <v-btn
+                        :key="edo_+'index'"
+                        color="primary"
+                        x-small
+                        absolute
+                        bottom
+                        left
+                        class="v-btn--example mt-5"
+                        v-else
+                    >
+                        <span>Free</span>
+                    </v-btn> -->
                   </v-fab-transition>
             
                 </v-img>
@@ -190,30 +229,38 @@
                 <!-- :loading="loading3"
                 :disabled="loading3" -->
                 <!-- :href="urlFileB"  -->
-                <Spinner v-if="spinner && ( subtipo !== 'blog' && subtipo !== 'memoria' )" />
-                <div v-else-if ="!spinner && ( subtipo !== 'blog' && subtipo !== 'memoria' )">
+                <Spinner 
+                    v-if="spinner && ( subtipo !== 'blog' && subtipo !== 'memoria' ) && 
+                    (vistapost.tipoRecurso !== 'link' && vistapost.urlRecurso !== 'none' && vistapost.urlRecurso !== '' )" 
+                />
+                <div 
+                    v-else-if ="!spinner && ( subtipo !== 'blog' && subtipo !== 'memoria' ) && 
+                    (vistapost.tipoRecurso !== 'link' && vistapost.urlRecurso !== 'none' && vistapost.urlRecurso !== '' )"
+                >
                     <a 
                         v-if="datosUsuario.estadoMembresia === 'active' 
                         || datosUsuario.descargasDia.usadas.length < datosUsuario.descargasDia.disponibles  "
                         :download="nombreFile"
-                        ref="downloadFile"
+                        :href="urlFileB" 
+                        @click="contadorDescargar(datosUsuario.descargasDia)"
                         target="_blank"
                         class="v-btn v-btn--contained theme--light v-size--default primary mt-3"
                     >
-                        <span>Descargar</span>
+                        <v-icon rigth dark> mdi-download </v-icon>
+                        Descargar
                     </a>
                     <v-btn
-                        v-if="datosUsuario.estadoMembresia === 'active' 
-                        || datosUsuario.descargasDia.usadas.length < datosUsuario.descargasDia.disponibles  "
+                        v-else
                         color="primary"
                         class="ma-2 white--text"
-                        @click="contadorDescargar(datosUsuario.descargasDia)"
+                        @click="dialogPlanes=true"
                     >
                         <v-icon rigth dark> mdi-download </v-icon>
                         Descargar
                     </v-btn>
-                    <span v-else>Has alcanzado el limite de descargas diario</span>
+                    <!-- <span v-else>Has alcanzado el limite de descargas diario</span> -->
                 </div>
+                
 
 
                 <v-section class="pl-5" v-html="vistapost.contenido"  >
@@ -228,7 +275,7 @@
 
                     <v-img 
                         v-if="vistapost.tipoRecurso==='image'" 
-                        :src="vistapost.urlRecurso"
+                        :src="vistapost.urlRecurso[0]"
                         style="max-width:50%; width:50%; background-color:azure; "
                     ></v-img>
     
@@ -259,40 +306,13 @@
                             allowfullscreen>
                         </iframe>
                     </div>
-                    
-
-                    
-                    <!-- <v-file-input
-                            outlined
-                            label="Seleccione archivo"
-                            prepend-icon="mdi-paperclip"
-                            accept="audio/mp3, image/png,image/jpeg , video/mp4"
-                            v-model="file"
-    
-                    ></v-file-input>
-
-                    <v-btn sm @click="descargarRecurso(vistapost.urlRecurso)">Descargar</v-btn> -->
+                   
+                
                 </div>
                 <div class="d-flex justify-center" 
                     v-if="vistapost.tipoRecurso !=='link' && vistapost.tipoRecurso !=='none' && vistapost.tipoRecurso !==''"
                 >
 
-                    <!-- <Spinner v-if="spinner && ( subtipo !== 'blog' && subtipo !== 'memoria' )" />
-                    <div v-else-if ="!spinner && ( subtipo !== 'blog' && subtipo !== 'memoria' )">
-                        :download="nombreFile"
-                         <a 
-                            v-if="datosUsuario.estadoMembresia === 'active' 
-                            || datosUsuario.descargasDia.usadas.length < datosUsuario.descargasDia.disponibles  "
-                            :href="urlFileB" 
-                            
-                            target="_blank"
-                            class="v-btn v-btn--contained theme--light v-size--default primary mt-3"
-                            @click="contadorDescargar(datosUsuario.descargasDia)"
-                        >
-                            <span>Descargar</span>
-                        </a> 
-                         <span v-else>Has alcanzado el limite de descargas diario</span> 
-                    </div> -->
                 </div>
 
                 <!-- SECCION DE COMENTARIOS -->
@@ -380,6 +400,31 @@
                 </div>
             </v-container>
         </v-card-text>
+    </v-card>
+</v-dialog>
+
+<v-dialog v-model="dialogPlanes" persistent max-width="755">
+        
+    <v-card class=" px-10">
+      <v-card-title class=" justify-space-between">
+          <v-btn icon text small color="purple" @click="" >
+          </v-btn>
+          <h2 class="primary--text ">¿Te gustó la planeación?</h2>
+          <v-btn icon text small color="purple" @click="dialogPlanes = false" >
+              <v-icon>mdi-window-close</v-icon>
+          </v-btn>
+      </v-card-title>
+      <div class="mt-4">
+            <p class="text-center">
+                Descarga nuestro material de forma ilimitada suscribiendote a nuestros planes
+            </p>
+            <div class="d-flex justify-center">
+                <v-btn 
+                    class="melon white--text rounded-pill mb-5 btn_crearG" to="/checkout" >Ver planes</v-btn> 
+            </div>
+                  
+               
+      </div>
     </v-card>
 </v-dialog>
 

@@ -84,14 +84,14 @@ const createStore = () => {
           permisos: 2,
           visible: true
         },
-        {
-          title: "Recursos",
-          icon: "mdi-cloud",
-          link: "/recursos",
-          logeado: true,
-          permisos: 2,
-          visible: true
-        }, 
+        // {
+        //   title: "Recursos",
+        //   icon: "mdi-cloud",
+        //   link: "/recursos",
+        //   logeado: true,
+        //   permisos: 2,
+        //   visible: true
+        // }, 
         {
           title: "Salir",
           icon: "mdi-exit-to-app",
@@ -156,7 +156,12 @@ const createStore = () => {
       urlAPI: "https://stripe-checkout-api.herokuapp.com",
       // urlAPI: "http://localhost:4242",
 
+
       descargarFree: 3,
+
+      // data para ver lista completa de post
+      misPost:[],
+      otrosPost:[],
 
 
     }),
@@ -485,7 +490,68 @@ const createStore = () => {
         ///console.log("entra al fotoStorage: " + state.urlimg);
         //// limpia todos los datos 
         return urlimagen
-        }
+        },
+        
+        //CARGA DE POST POR TIPO DE POST PARA LA VISTA DE VER MAS
+        async  cargaBasePost({state},tipoPost){
+          let postG = [];
+          try {
+              await this.$fireStore
+                .collection("CATEGORIAS").orderBy("fecha", "desc")
+                .get()
+                .then((data) => {
+                  data.forEach((doc) => {
+                    let data = doc.data();
+                    data.tags = data.tags ? data.tags : [];
+                    data.favoritos = data.favoritos ? data.favoritos : [];
+                    delete data['idRecurso'];
+  
+  
+                    const datos = {
+                        idRecurso: doc.id,
+                        ...data
+                    }
+                    postG.push(datos);
+  
+                    
+  
+                  });
+                  console.log(postG);
+                  if(tipoPost === "actividades")
+                  {
+                    console.log("RECOMENDADOS")
+                    state.misPost = postG.filter( 
+                      post  => (post.tipo === "planeacion" && (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)))
+                    )
+  
+                    state.otrosPost = postG.filter( 
+                      post  => 
+                        ( post.tipo === "recurso" && (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)) )
+                    )
+                  }
+                  else
+                  {
+
+                    state.misPost = postG.filter( 
+                      post  => (post.tipo === tipoPost && post.idCreador === state.datosUsuario.id)
+                    )
+  
+                    state.otrosPost = postG.filter( 
+                      post  => 
+                        ( post.tipo === tipoPost && (post.idCreador !== state.datosUsuario.id && post.edopost !== "privado") )
+                    )
+                  }
+                  console.log("state.misPost")
+                  console.log(state.misPost)
+                  console.log("state.otrosPost")
+                  console.log(state.otrosPost)
+                    // this.blogpost = [...this.blogpost].slice(0,4);
+                  // console.log(this.blogpost);
+                });
+            } catch (e) {
+              console.log(e);
+            }
+      },
     },
     mutations: {
       cleanImgStore(state){

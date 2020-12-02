@@ -120,18 +120,18 @@
   }
   
   .price-table-container .name {
-    color: #7F7F7F;
+    color:black;
     font-size: large;
-    margin-top: 8px;
+    margin-top: 12px;
     text-align: center;
   }
   
   .price-table-container .price {
     color: #000000;
-    font-size: xx-large;
+    font-size: 20px;
     font-weight: 600;
     margin-bottom: 8px;
-    margin-top: 8px;
+    margin-top: 12px;
     text-align: center;
   }
   
