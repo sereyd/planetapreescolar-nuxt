@@ -52,30 +52,7 @@
         :esFavoritos="true"
     />
     <div style="width:100%; height:10px;" v-if="reflexiones.length > 0"></div>
-    <!---------audios------------>
-    <!-- <div style="width:100%; height:50px;"></div>
-    <listablog  
-        tipo="AUDIOS" 
-        titulo="Audios/Música" 
-        subtitulos=""  
-        :esFavoritos="true"
-    />
-
-    <div style="width:100%; height:50px;"></div>
-    <listablog  
-        tipo="IMAGENES" 
-        titulo="Imagenes" 
-        subtitulos=""  
-        :esFavoritos="true"
-    />
-
-    <div style="width:100%; height:50px;"></div>
-    <listablog  
-        tipo="VIDEOS" 
-        titulo="Videos" 
-        subtitulos=""  
-        :esFavoritos="true"
-    /> -->
+    
 
     
   </v-main>
