@@ -1,6 +1,6 @@
 
 import { mapState, mapMutations, mapActions } from "vuex";
-
+import notificaciones from '@/components/notificaciones/notificaciones.vue'
 export default {
   data() {
     return {
@@ -10,7 +10,6 @@ export default {
       itemsmenumni:[
         { title: 'Ver perfil',link:"perfil" },
         { title: 'Cerrar sesión', link:"exit" },
-
       ]
     }
   },
@@ -25,6 +24,10 @@ export default {
 console.log('abre menu')
       this.$emit('abremenu',true)
     }
+  },
+  components:{
+    notificaciones
   }
+
   
 };

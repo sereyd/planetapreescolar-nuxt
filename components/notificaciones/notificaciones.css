@@ -1,0 +1,18 @@
+.bntstyle{
+    cursor:pointer;
+    font-size: 14px;
+}
+
+
+/*   vista mobil */
+@media (max-width:959px){
+    .vMmobilview{
+        display:none;
+    }
+    
+    .viewmobil{
+        display: block;
+    }
+    
+    
+    }

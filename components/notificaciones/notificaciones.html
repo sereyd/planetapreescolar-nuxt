@@ -1,0 +1,36 @@
+<span class="bntstyle">
+
+  
+   <v-menu offset-y>
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn
+      color="secondary"
+      v-bind="attrs"
+      v-on="on"
+      class="elevation-0"
+      style="text-transform: none;"
+      >
+        <v-badge
+        color="melon"
+        :content="noticount"
+        class="white--text"
+        overlap
+      >
+    
+          <v-icon class="white--text">mdi-bell</v-icon>   <span class="vMmobilview">  Notificaciones</span>
+     
+      </v-badge>
+
+    </v-btn>
+
+    </template>
+    <v-list  style="width:100%; max-width:500px;" >
+      <v-list-item
+        v-for="(item, index) in itemsnotifi"
+        :key="index"
+      >
+        <v-list-item-title ><router-link class="linkmenuuser" :to="item.link"><v-icon class="primary--text">{{item.icon}}</v-icon>{{ item.title }} <span class="flechalink"> > </span></router-link></v-list-item-title>
+      </v-list-item>
+    </v-list>
+  </v-menu>
+</span>

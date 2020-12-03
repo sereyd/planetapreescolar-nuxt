@@ -1,3 +1,4 @@
+let observer
 import Vuex from "vuex";
 // import router from '@/router/index'
 // var correoglobal=""
@@ -122,7 +123,7 @@ const createStore = () => {
       urlimg: "",
       stripeObj: null,
       linktienda: "https://tiendasereyd.ml",
-      
+
       vistaValida: true,
       grupo: {},
       clasesCreadas: [],
@@ -142,6 +143,10 @@ const createStore = () => {
         reflexiones:[],
         recomendacion:[],
       },
+      ///  notificaciones
+      itemsnotifi:[
+        //{ icon:'mdi-alert', title: 'Alerta de Mensaje', link:"#" }
+    ],
 
       /// menu flotante
 
@@ -180,7 +185,26 @@ const createStore = () => {
       actualizarAlumnos(context, data) {
         context.state.datosUsuario.alumnos = data;
       },
+  async creaNotificacion({state},data){
+      var addnotificacion= await this.$fireStore.collection('Notificaciones/').doc(state.datosUsuario.id).collection('notify').add({
+        icon:data.icon, 
+        title: data.text,
+        link:data.link,
+        date:new Date()
+        
+      })
+ 
 
+  },    
+  async tomanotificaciones({state}){
+     
+    let tomaNotifi=this.$fireStore.collection('Notificaciones').doc(state.datosUsuario.id).collection('notify')
+    tomaNotifi.onSnapshot((data)=>{
+      
+      state.itemsnotifi=data.docs
+    
+    })
+  },    
   async eliminarImagen(context,data){
         let nombreArchivo=data
         let dirsep=nombreArchivo.split("/")
@@ -456,6 +480,10 @@ const createStore = () => {
         ///console.log("entra al fotoStorage: " + state.urlimg);
         //// limpia todos los datos 
         return urlimagen
+        },
+        cerrarconexion(){
+          console.log('action close conexion')
+          observer()
         }
     },
     mutations: {

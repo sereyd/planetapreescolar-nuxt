@@ -60,6 +60,15 @@
 
 <br /><br />
             <v-btn  v-if="editar===true" class="melon white--text" @click="guardarCambios()">Guardar Cambios</v-btn>
+
+
+
+
+
+    boton de notificaciones
+    <v-btn class="melon white--text" @click="creaNotificacion({icon:'mdi-account',text:'mensaje de prueba',link:'#'})">Prueba notificación</v-btn>
+
+
     </v-col>
 
 <simpleloader :stload="loader" ></simpleloader>
@@ -110,12 +119,12 @@ computed:{
     ...mapState(['datosUsuario','dominio','urlAPI','urlimg'])
 },
 methods:{
-    ...mapActions(['eliminarImagen','fotostorageAsync']),
+    ...mapActions(['eliminarImagen','fotostorageAsync','creaNotificacion']),
     ...mapMutations(['almacenarFotoStorage']),
     cargadatos(){
         this.datosuser=this.datosUsuario
     },
-    async guardarCambios(){
+    async guardarCambios(){ 
         try{
             this.loader=true
             await this.$fireStore.collection('usuarios').doc(this.datosUsuario.id).update(this.datosuser)
@@ -127,7 +136,7 @@ methods:{
 
             })
         }catch(e){
-            console.log(e)
+            console.log(e)  
 
         }
     },
