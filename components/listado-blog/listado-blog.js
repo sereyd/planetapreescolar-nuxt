@@ -12,6 +12,7 @@ import postGeneral from '~/components/postGeneral/postGeneral.vue'
 
 export default{
     data(){
+        // name:"listablog",
         return {
             // blogpost:[],
             // editpost:{},
@@ -258,9 +259,9 @@ export default{
       videoPlayer,
       audioPlayer,
       Spinner,
-      postSeleccionado,
-      postGeneral,
       fechaComponent,
+      postSeleccionado: () => import('~/components/postSeleccionado/postSeleccionado.vue'),
+      postGeneral: () => import('~/components/postGeneral/postGeneral.vue'),
     },
     async mounted(){
       console.log(this.subtipo)

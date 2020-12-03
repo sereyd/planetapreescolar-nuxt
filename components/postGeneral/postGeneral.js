@@ -43,16 +43,33 @@ export default{
                           ...data
                       }
                       console.log(this.subtipo)
-                      if(
-                            datos.tipo === this.subtipo  && 
-                            ( datos.edopost === "publico" || 
-                                (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) 
-                            ) &&
-                            this.vistapost.idRecurso !== datos.idRecurso
-                        )
-                        this.relacionados = [
-                          ...this.relacionados,
-                          datos]
+                      if(this.subtipo === "recomendacion")
+                      {
+                          if(
+                             ( datos.tipo === "planeacion" || datos.tipo === "recurso" )  && 
+                              ( datos.edopost === "publico" || 
+                                  (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) 
+                              ) &&
+                              this.vistapost.idRecurso !== datos.idRecurso
+                          )
+                          this.relacionados = [
+                            ...this.relacionados,
+                            datos]
+                      }
+                      else{
+
+                        if(
+                              datos.tipo === this.subtipo  && 
+                              ( datos.edopost === "publico" || 
+                                  (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) 
+                              ) &&
+                              this.vistapost.idRecurso !== datos.idRecurso
+                          )
+                          this.relacionados = [
+                            ...this.relacionados,
+                            datos]
+                      }
+
     
                     
                       // this.blogpost.push(datos);
@@ -89,7 +106,8 @@ export default{
         },
     },
     components:{
-        listablog
+        listablog: () => import('~/components/listado-blog/listado-blog.vue')
+        // TreeFolderContents: () => import('./tree-folder-contents.vue')
     },
     
     computed: {

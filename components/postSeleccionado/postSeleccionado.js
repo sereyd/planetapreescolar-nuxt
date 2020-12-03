@@ -24,7 +24,7 @@ export default{
             },
 
 
-            linkembed:"",
+            // linkembed:"",
 
             dialogPlanes:false,
         }
@@ -137,6 +137,11 @@ export default{
           }
         },
         nombreFile:{
+          default:()=>{
+            return 'BLOG'
+          }
+        },
+        linkembed:{
           default:()=>{
             return 'BLOG'
           }
