@@ -23,9 +23,6 @@ export default{
               urlImagen:""
             },
 
-            //PARA DESCARGAR RECURSO
-            nombreFile: "",
-            urlFileB: "",
 
             linkembed:"",
 
@@ -134,6 +131,17 @@ export default{
                 return 'BLOG'
             }
         },
+        urlFileB:{
+          default:()=>{
+            return 'BLOG'
+          }
+        },
+        nombreFile:{
+          default:()=>{
+            return 'BLOG'
+          }
+        },
+        
 
         
         

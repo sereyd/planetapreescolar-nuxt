@@ -93,6 +93,7 @@ export default{
         
       // },
       muestrapost(p){
+        console.log(p);
         this.linkembed = "";
 
         this.spinner = true;
@@ -118,11 +119,16 @@ export default{
             this.nombreFile = this.vistapost.titulo+'.'+this.vistapost.tipoRecurso;
            else
             this.nombreFile = this.vistapost.titulo+'.'+typeFile;
+
+          console.log(this.nombreFile);
+
  
            this.urlFileB = URL.createObjectURL(blob, {
              type: blob.type
            });
+           console.log(this.urlFileB)
            this.spinner = false;
+
  
          };
          xhr.open('GET', p.urlRecurso[0]);

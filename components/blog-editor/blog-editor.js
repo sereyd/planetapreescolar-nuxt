@@ -48,13 +48,13 @@ export default {
       // formRecurso: true,
       datosRecurso: {
         foldercode:"",
-        titulo: "ss",
+        titulo: "",
         fecha: "",
         edopost: "",
         premium: false,
         recomendado: false,
         urlImagen: "",
-        contenido:"ss",
+        contenido:"",
         tipoRecurso:"",
         urlRecurso:[],
         comentarios:[],
@@ -317,6 +317,7 @@ export default {
 
         console.log(this.tipoFile)
         console.log(this.typeFileFull)
+        console.log(this.urlFile)
 
         //SE OBTIENE EL TAMAÑO DE ARCHIVO Y SE DIVIDE DE MANERA QUE SE OBTENGA EN MB
         this.bytesTranferidos = (this.file.size / 1000000).toFixed(2);
@@ -423,8 +424,9 @@ export default {
               // Upload completed successfully, now we can get the download URL
                   uploadTask.snapshot.ref.getDownloadURL()
                   .then( async(downloadURL) => {
-                      this.urlFile.push(downloadURL);
-                      // console.log('File available at', downloadURL);
+                      this.urlFile = [downloadURL];
+                      console.log('File available at', downloadURL);
+                      console.log('URLFILE', this.urlFile);
                       // console.log("saliendo fotoStorage: "+ this.urlFile)
                       // this.cargando = false;
                       this.completado = true;
@@ -610,16 +612,16 @@ export default {
           //   console.log("DESDE VALIDACION")
             console.log(files)
             console.log(ubi)
-            this.updateFile(files, ubi)
+            await this.updateFile(files, ubi)
   
           // })
         // )
-        .then((url) => {
-          console.log(`All success`)
-          console.log("DESPUES DE MAP")
-          this.completado = true;
-          this.almacenarFotoStorage(ubi);
-        })
+        // .then((url) => {
+        //   console.log(`All success`)
+        //   console.log("DESPUES DE MAP")
+        //   this.completado = true;
+        //   this.almacenarFotoStorage(ubi);
+        // })
         // files.map(async(file) => {
 
         //   console.log("DESDE VALIDACION")
