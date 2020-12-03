@@ -57,16 +57,15 @@
                             tpimg="post"
                             class=" d-flex justify-center mb-4"
                         />
-
                         <v-select
-                            :items="tiposVideoList"
+                            :items="tiposRecursoList"
                             label="Tipo de video"
                             solo
                             outlined
-                            v-model="tipoVideo"
-                            v-if="tipo ==='VIDEOS'"
+                            v-model="tipoRecursoSelect"
+                            v-if="subtipo ==='recurso'"
                         ></v-select>
-                        
+                        <!-- <h1>{{subtipo}}</h1> -->
                         <v-file-input
                             outlined
                             :label="labelFile"
@@ -74,9 +73,36 @@
                             :accept="tipoRecursoFile"
                             v-model="file"
                             @change = "changeFile"
-                            v-if="tipoVideo === 'file'"
-    
+                            v-if="tipoRecursoSelect === 'file'"
                         ></v-file-input>
+        <!--
+            PARA VALIDAR MULTIPLES ARCHIVOS 
+            v-if="tipoRecursoSelect === 'file' && (subtipo !== 'recurso' && subtipo !== 'planeacion')" 
+        -->
+                        
+        <!-- <v-file-input v-model="currFiles" 
+            outlined
+            label="Agregar archivos"
+            prepend-icon="mdi-paperclip"
+            :accept="tipoRecursoFile"
+            small-chips 
+            show-size 
+            multiple 
+            clearable 
+            v-else-if="tipoRecursoSelect === 'file' && (subtipo === 'recurso' || subtipo === 'planeacion')"
+            @change="inputChanged">
+            <template v-slot:selection="{ text, index, file }">
+                <v-chip small text-color="white" color="#295671" close @click:close="remove(index)">
+                    {{ text }}
+                </v-chip>
+            </template>
+        </v-file-input>
+        <div v-if="files.length">
+            <h5>Archivos:</h5>
+            <v-chip v-for="(f,index) in files" :key="'filename_'+index" class="mr-1">
+                {{ f.name }}
+            </v-chip>
+        </div> -->
 
                         <v-text-field
                             v-model="datosRecurso.urlRecurso"
@@ -85,7 +111,7 @@
                             outlined
                             :rules="[v => !!v || 'Link del video es requerida']"
                             @keyup.enter=""
-                            v-else-if="tipoVideo === 'link'"
+                            v-else-if="tipoRecursoSelect === 'link'"
                         ></v-text-field>
 
                         
@@ -106,7 +132,7 @@
                             outlined
                             :rules="[v => !!v || 'Materia grupo es requerida']"
                             @keyup.enter=""
-                            v-if="esBlog"
+                            v-if="esBlog || (subtipo === 'recurso' || subtipo === 'planeacion')"
                         ></v-text-field>
                         <v-text-field
                             v-model="grado"
@@ -115,28 +141,47 @@
                             outlined
                             :rules="[v => !!v || 'Grado es requerida']"
                             @keyup.enter=""
-                            v-if="esBlog"
+                            v-if="esBlog || (subtipo === 'recurso' || subtipo === 'planeacion')"
                         ></v-text-field>
 
                         <VueEditor class="elevation-3 rounded-lg" v-model="datosRecurso.contenido" :editorToolbar="customToolbar"></VueEditor>
             
 
 
+                        <div 
+                            class="d-flex flex-column flex-sm-column flex-md-row flex-lg-row flex-xl-row  justify-space-between" >
 
-                        <v-radio-group
-                            v-model="datosRecurso.edopost"
-                            row
-                            :rules="[v => !!v || 'Seleccione privacidad']">
+                            <v-radio-group
+                                v-model="datosRecurso.edopost"
+                                row
+                                :rules="[v => !!v || 'Seleccione privacidad']">
+        
+                                <v-radio
+                                    label="Publico"
+                                    value="publico"
+                                    small
+                                ></v-radio>
+                                <v-radio
+                                    label="Privado"
+                                    value="privado"
+                                    small
+                                ></v-radio>
+                            </v-radio-group>
     
-                            <v-radio
-                                label="Publico"
-                                value="publico"
-                            ></v-radio>
-                            <v-radio
-                                label="Privado"
-                                value="privado"
-                            ></v-radio>
-                        </v-radio-group>
+                            <v-switch
+                                v-model="datosRecurso.premium"
+                                inset
+                                label="Premium"
+                                small
+                            ></v-switch>
+    
+                            <v-switch
+                                v-model="datosRecurso.recomendado"
+                                inset
+                                label="Recomendado"
+                                small
+                            ></v-switch>
+                        </div>
                         <!-- :class="[tagsValido ? 'mb-2 mt-2' : 'errorTagsBorder mb-2 mt-2']" -->
                         <input-tag 
                             v-model="datosRecurso.tags" 

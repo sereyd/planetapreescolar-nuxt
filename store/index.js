@@ -17,14 +17,14 @@ const createStore = () => {
           title: "Actividades",
           icon: "mdi-human",
           link: "/actividades",
-          visible: false
+          visible: true
         },
         {
           title: "Foro",
           icon: "mdi-forum",
           link: "",
           link: "/foro",
-          visible: false
+          visible: true
         },
         {
           title: "Tienda",
@@ -45,13 +45,13 @@ const createStore = () => {
           title: "Directorio",
           icon: "mdi-book-multiple",
           link: "/directorio",
-          visible: false
+          visible: true
         },
         {
           title: "Calendario",
           icon: "mdi-calendar",
           link: "/calendario",
-          visible: false
+          visible: true
         },
         {
           title: "Cuenta",
@@ -85,14 +85,14 @@ const createStore = () => {
           permisos: 2,
           visible: true
         },
-        {
-          title: "Recursos",
-          icon: "mdi-cloud",
-          link: "/recursos",
-          logeado: true,
-          permisos: 2,
-          visible: true
-        }, 
+        // {
+        //   title: "Recursos",
+        //   icon: "mdi-cloud",
+        //   link: "/recursos",
+        //   logeado: true,
+        //   permisos: 2,
+        //   visible: true
+        // }, 
         {
           title: "Salir",
           icon: "mdi-exit-to-app",
@@ -160,6 +160,13 @@ const createStore = () => {
       //APIS DEVELOP Y PRODUCCION
       urlAPI: "https://stripe-checkout-api.herokuapp.com",
       // urlAPI: "http://localhost:4242",
+
+
+      descargarFree: 1,
+
+      // data para ver lista completa de post
+      misPost:[],
+      otrosPost:[],
 
 
     }),
@@ -250,7 +257,7 @@ const createStore = () => {
               const usuarioQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
               usuarioQuery.get()
               .then(async (querySnapshot) => {
-                querySnapshot.forEach( (doc) => {
+                querySnapshot.forEach( async(doc) => {
                   let data = doc.data();
                   // console.log(doc.data());
                   // console.log(doc.data);
@@ -262,6 +269,7 @@ const createStore = () => {
                   data.estadoMembresia = data.estadoMembresia ? data.estadoMembresia : "";
                   data.idCliente = data.idCliente ? data.idCliente : "";
                   data.idSuscripcion = data.idSuscripcion ? data.idSuscripcion : "";
+                  
 
                   // console.log(grups);
                     // console.log(doc.id)
@@ -276,30 +284,57 @@ const createStore = () => {
                       // context.commit("cambiastatusSesion",datos);
                   });
 
-                  //REVISAR ESTADO DE LA SUSCRIPCIÓN 
-                  await fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + datos.idSuscripcion)
-                  .then((result)=>{
-                    return result.json()
-                  })
-                  .then((suscripcion)=>{
+                  datos.estadoMembresia = datos.lvluser === 2 ? "active" : "";
 
-                    // console.log(suscripcion)
-                    if(suscripcion.error)
-                    {
+                  //REVISAR ESTADO DE LA SUSCRIPCIÓN MIENTRAS NO SEA USUARIO ADMIN
+                  if(datos.lvluser === 1)
+                    await fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + datos.idSuscripcion)
+                    .then((result)=>{
+                      return result.json()
+                    })
+                    .then(async(suscripcion)=>{
 
-                      console.log(suscripcion)
-                      console.log("SUSCRIPCION NO VÁLIDA")
-                      datos.estadoMembresia = "canceled";
-                    }
-                    else{
+                      // console.log(suscripcion)
+                      if(suscripcion.error)
+                      {
 
-                      datos.estadoMembresia = suscripcion.status;
-                    }
+                        console.log(suscripcion)
+                        console.log("SUSCRIPCION NO VÁLIDA")
+                        datos.estadoMembresia = "canceled";
+                        console.log(datos)
+                  
+                        const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
+                        
 
-                  })
-                  .catch((err)=>{
-                    console.log('Error al verificar suscripción', err);
-                  });
+                        const d = await response.json();
+                        console.log(d)
+
+                        if(!datos.descargasDia)
+                        {
+                          datos.descargasDia = 
+                          {
+                            disponibles: context.state.descargarFree,
+                            usadas: [],
+                            fecha: d.fecha
+                          }
+                        }
+                        else if(d.fecha !== datos.descargasDia.fecha)
+                        {
+                          console.log("el dia cambiooooooo")
+                          datos.descargasDia.disponibles= context.state.descargarFree,
+                          datos.descargasDia.usadas = [];
+                          datos.descargasDia.fecha = d.fecha;
+                        }
+                      }
+                      else{
+
+                        datos.estadoMembresia = suscripcion.status;
+                      }
+
+                    })
+                    .catch((err)=>{
+                      console.log('Error al verificar suscripción', err);
+                    });
 
                   context.commit("cambiastatusSesion",datos);
 
@@ -360,42 +395,67 @@ const createStore = () => {
         try {
           // console.log(context.state.datosBusqueda);
 
-          if (context.state.datosBusqueda.tipo === "TODOS LOS RECURSOS") {
-            // console.log("obtener Todos los Recursos")
-            context.state.recursos.map(async (recu) => {
-              // console.log("santes de then")
-              await this.$fireStore
-                .collection(recu)
-                .get()
-                .then(data => {
-                  // console.log("santes de foreach")
-
-                  // console.log(data);
-                  data.forEach(doc => {
-                    let data = doc.data();
+          if (context.state.datosBusqueda.tipo === "todos") {
+            console.log(context.state.datosBusqueda.tipo)
+            await this.$fireStore
+              .collection("CATEGORIAS")
+              .get()
+              .then(data => {
+                console.log(data);
+                data.forEach(doc => {
+                  let data = doc.data();
                     //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
-                    data.tags = data.tags ? data.tags : [];
-                    data.favoritos = data.favoritos ? data.favoritos : [];
-                    delete data['idRecurso'];
+                  data.tags = data.tags ? data.tags : [];
+                  data.favoritos = data.favoritos ? data.favoritos : [];
 
-                    datos = {
-                      idRecurso: doc.id,
-                      ...data
-                    }
-                    context.state.recursosBusqueda.push(datos);
-                    // console.log("context.state.recursosBusqueda")
-                    // console.log(context.state.recursosBusqueda)
-                    // alert("averrr")
-                  });
-                  // console.log("context.state.recursosBusqueda")
-                  // console.log(context.state.recursosBusqueda)
+
+                  datos = {
+                    idRecurso: doc.id,
+                    ...data
+                  }
+                  context.state.recursosBusqueda.push(datos);
+                  
                 });
-            });
+              });
+
+            // // console.log("obtener Todos los Recursos")
+            // context.state.recursos.map(async (recu) => {
+            //   // console.log("santes de then")
+            //   await this.$fireStore
+            //     .collection(recu)
+            //     .get()
+            //     .then(data => {
+            //       // console.log("santes de foreach")
+
+            //       // console.log(data);
+            //       data.forEach(doc => {
+            //         let data = doc.data();
+            //         //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
+            //         data.tags = data.tags ? data.tags : [];
+            //         data.favoritos = data.favoritos ? data.favoritos : [];
+            //         delete data['idRecurso'];
+
+            //         datos = {
+            //           idRecurso: doc.id,
+            //           ...data
+            //         }
+            //         context.state.recursosBusqueda.push(datos);
+            //         // console.log("context.state.recursosBusqueda")
+            //         // console.log(context.state.recursosBusqueda)
+            //         // alert("averrr")
+            //       });
+            //       // console.log("context.state.recursosBusqueda")
+            //       // console.log(context.state.recursosBusqueda)
+            //     });
+            // });
           // return context.state.recursosBusqueda;
 
           } else {
+            // context.state.datosBusqueda.tipo
+            console.log(context.state.datosBusqueda.tipo)
             await this.$fireStore
-              .collection(context.state.datosBusqueda.tipo)
+              .collection("CATEGORIAS")
+              .where('tipo','==',context.state.datosBusqueda.tipo)
               .get()
               .then(data => {
                 console.log(data);

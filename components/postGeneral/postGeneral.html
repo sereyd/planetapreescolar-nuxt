@@ -1,0 +1,54 @@
+<v-card-text>
+    <v-container>
+        <v-card style="border-radius: 14px;">
+        <v-row>
+            <v-col cols="12" md="5" sm="5" class="" >
+                <v-img
+                    :src="vistapost.urlImagen === '' || vistapost.urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : vistapost.urlImagen"
+                    contain
+                    class="fotomd "
+                    
+                />
+            </v-col>
+            <v-col cols="12" md="7" sm="7" class="" >
+                <div>
+                    <div v-if="subtipo==='memoria'" class=" ml-3 textos">
+                        <h4>{{vistapost.titulo}}</h4>
+                        <p>{{vistapost.nombreCreador}}</p>
+                        <div class="mt-4" style="font-size:15px;" v-html="cargarecomendacion"></div>
+                        <!-- <p class="texto_mb">{{ fechaVisual(vistapost.fecha) }}</p> -->
+                        <!-- <p class="datosGrupo">{{el.cicloEscolar}}</p>
+                        <p class="datosGrupo">{{el.total}} alumnos</p> -->
+                    </div>
+    
+                    <div 
+                        v-if="subtipo==='blog'" 
+                        class=" ml-3 textos"
+                    >
+                        <h4>{{vistapost.titulo}}</h4>
+                        <p class="datos_extra">{{vistapost.nombreCreador}}</p>
+                        <p class="datos_extra">{{vistapost.fecha}}</p>
+                        <div class="mt-4" style="font-size:13px;" v-html="cargarecomendacion"></div>
+                    </div>
+    
+                    <div v-if="subtipo==='planeacion' || subtipo==='recurso' || subtipo==='recomendacion'" class=" ml-3 textos">
+                        <h4>{{vistapost.titulo}}</h4>
+                        <p class="datos_extra">{{vistapost.materia}}</p>
+                        <p class="datos_extra">{{vistapost.grado}}</p>
+                        <div class="mt-4" style="font-size:13px;" v-html="cargarecomendacion"></div>
+                    </div>
+                    
+                    
+                </div>
+                <v-btn class="melon white--text" @click="verRecurso" style="text-transform: none; border-radius: 14px;">Ver recurso</v-btn>
+            </v-col>
+        </v-row>
+        </v-card>
+        
+        <listablog 
+            :blogpost="relacionados" :esCompleto="false" @updateBlogpost="relacionados=$event"
+            tipo="CATEGORIAS" :subtipo="subtipo" 
+            titulo="Relacionados" subtitulos=""  
+        />
+    </v-container>
+</v-card-text>

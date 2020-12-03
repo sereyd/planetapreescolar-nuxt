@@ -1,0 +1,222 @@
+<div>   
+    <v-card-text style="text-align: right; " v-if="datosUsuario.userlogin">
+
+        <div  max-width="100%" style="height:20px; "></div>
+        <v-container class="ma-auto elevation-3 rounded-ml" style="background-image:url('images/back/backstart.jpg'); background-position:top; background-size: 100%; background-repeat: repeat-x; text-align: left; max-width:1200px; width:100%; ">
+    
+     
+            <h2 class="primary--text pl-5"><b>{{vistapost.titulo}}</b> </h2>
+            <div class=" d-flex flex-column mb-5 texto_recurso">
+                <span class="pl-5" >Por {{vistapost.nombreCreador}}</span>
+                <span class="pl-5" >{{ fechaVisual }}</span>
+            </div>
+
+            <!-- :loading="loading3"
+            :disabled="loading3" -->
+            <!-- :href="urlFileB"  -->
+            <div 
+                v-if="vistapost.tipoRecurso !== 'link' && vistapost.urlRecurso.length !== 0 &&
+                (vistapost.urlRecurso[0] !== '' && vistapost.urlRecurso[0] !== 'none') &&
+                ( subtipo !== 'blog' && subtipo !== 'memoria' )"
+            >
+                <Spinner 
+                    v-if="spinner" 
+                />
+                <div 
+                    v-else-if ="!spinner"
+                >
+                    <a 
+                        v-if="datosUsuario.estadoMembresia === 'active' 
+                        || 
+                        (datosUsuario.descargasDia.usadas.length < datosUsuario.descargasDia.disponibles
+                            || vistapost.premium === false
+                        )"
+                        :download="nombreFile"
+                        :href="urlFileB" 
+                        @click="contadorDescargar(datosUsuario.descargasDia)"
+                        target="_blank"
+                        class="v-btn v-btn--contained theme--light v-size--default primary mt-3"
+                    >
+                        <v-icon rigth dark> mdi-download </v-icon>
+                        Descargar
+                    </a>
+                    <v-btn
+                        v-else
+                        color="primary"
+                        class="ma-2 white--text"
+                        @click="dialogPlanes=true"
+                    >
+                        <v-icon rigth dark> mdi-download </v-icon>
+                        Descargar
+                    </v-btn>
+                    <!-- <span v-else>Has alcanzado el limite de descargas diario</span> -->
+                </div>
+            </div>
+            
+            
+
+
+            <v-section class="pl-5" v-html="vistapost.contenido"  >
+                
+            </v-section>
+
+            <!-- :src="vistapost.urlImagen!=='' ? vistapost.urlImagen : 'images/logos/planeta_preescolar_logo.png'"  -->
+
+            <div class="d-flex justify-center mt-5">
+                
+
+
+                <v-img 
+                    v-if="vistapost.tipoRecurso==='image'" 
+                    :src="vistapost.urlRecurso[0]"
+                    style="max-width:50%; width:50%; background-color:azure; "
+                ></v-img>
+
+
+                
+                <audio-player 
+                    v-else-if="vistapost.tipoRecurso==='audio'"
+                    style="max-width:50%; width:50%; background-color:azure; "
+                    >
+                    <source :src="vistapost.urlRecurso" />
+                </audio-player>
+                <div  class="d-flex justify-center">
+                    
+                    <video-player 
+                        v-if="vistapost.tipoRecurso !=='link' && vistapost.tipoRecurso !=='none' 
+                        && vistapost.tipoRecurso !=='' && vistapost.tipoRecurso !=='audio'"
+                        style="max-width:50%; width:50%; background-color:azure; "
+                    >
+                        <source :src="vistapost.urlRecurso" />
+                    </video-player>
+                    
+                    <iframe 
+                        v-else-if="vistapost.tipoRecurso ==='link'"
+                        width="560" height="315" 
+                        :src="linkembed" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+               
+            
+            </div>
+            <div class="d-flex justify-center" 
+                v-if="vistapost.tipoRecurso !=='link' && vistapost.tipoRecurso !=='none' && vistapost.tipoRecurso !==''"
+            >
+
+            </div>
+
+            <!-- SECCION DE COMENTARIOS -->
+            <div>
+                <h3 class="primary--text mt-3 mb-3"> {{vistapost.comentarios.length}} comentarios</h3>
+                <v-card class="card_border">
+                    <v-container>
+
+                        <v-form
+                            lazy-validation
+                            ref="formComentario"
+                            v-model="esComentarioValido"
+                        >
+                    
+                            <v-textarea
+                            v-model="datosComentario.comentario"
+                            placeholder="comenta aqui"
+                            required
+                            outlined
+                            :rules="[v => !!v || 'Comentario vacio']"
+                            @keyup.enter=""
+            
+                        ></v-textarea>
+                        <v-btn 
+                            v-if = "esComentarioValido" 
+                            class="mt-1 melon white--text  btn_crearG" 
+                            @click="validarFormularioComentario()" 
+                        >Comentar</v-btn>
+                        </v-form>
+                    </v-container>
+                </v-card>
+
+                <v-card class="card_border mt-4">
+                    <!-- :key="'post_'+index" -->
+                    <v-row v-for="(comentario, index) in vistapost.comentarios" :key="'comentario_'+index">
+                        <v-col cols="3" class="">
+                            <div class="pl-7">
+                                <v-avatar size="38" > 
+                                    <!-- :src="a.urlImagen === 'none' || a.urlImage ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : a.urlImagen" -->
+                                    <v-img
+                                    :src=" comentario.urlImagen === 'none' || comentario.urlImagen==='' ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : comentario.urlImagen"
+                                    alt="foto"
+                                    ></v-img>
+                                </v-avatar>
+                            </div>
+                            <div class="pl-5 texto_usuario">
+                                <span>{{comentario.nombreUsuario}}</span>
+                            </div>
+                        </v-col>
+                        <v-col cols="9" class=" d-flex  texto_comentario ">
+                            <div class="pr-1">
+                                <span >{{comentario.comentario}}</span>
+                            </div>
+                        </v-col>
+                        <v-divider  class=" black mt-4"/> 
+                        
+                    </v-row>
+                </v-card>
+            </div>
+
+
+
+    </v-container>
+    </v-card-text>
+    <v-card-text v-else>
+        <v-container>
+            <div class="d-flex justify-center">
+                 <v-img
+                     src="images/registrate.png"
+                     contain
+                     class=""
+                     style="width: 100%; height: 380px;"
+                     >
+                 </v-img>
+            </div>
+            <div class="d-flex justify-center">
+                <v-btn
+                    class="melon white--text mr-2 "
+                    @click="$router.push('/login')"
+                >Iniciar sesión</v-btn>
+                <v-btn
+                    class="melon white--text "
+                    @click="$router.push('/registro')"
+                >Registro</v-btn>
+            </div>
+        </v-container>
+    </v-card-text>
+
+
+    <v-dialog v-model="dialogPlanes" persistent max-width="755">
+            
+        <v-card class=" px-10">
+          <v-card-title class=" justify-space-between">
+              <v-btn icon text small color="purple" @click="" >
+              </v-btn>
+              <h2 class="primary--text ">¿Te gustó la planeación?</h2>
+              <v-btn icon text small color="purple" @click="dialogPlanes = false" >
+                  <v-icon>mdi-window-close</v-icon>
+              </v-btn>
+          </v-card-title>
+          <div class="mt-4">
+                <p class="text-center">
+                    Descarga nuestro material de forma ilimitada suscribiendote a nuestros planes
+                </p>
+                <div class="d-flex justify-center">
+                    <v-btn 
+                        class="melon white--text rounded-pill mb-5 btn_crearG" to="/checkout" >Ver planes</v-btn> 
+                </div>
+                      
+                   
+          </div>
+        </v-card>
+    </v-dialog>
+</div>

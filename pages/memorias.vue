@@ -1,5 +1,5 @@
 <template>
-  <v-main class="pa-10">
+  <v-main class="pa-10" v-if="bandera">
     <v-row>
       <v-col
         cols="12"
@@ -26,14 +26,15 @@
         </h2>
 
         <listablog
-          tipo="MEMORIA"
+          :blogpost="misPost" @updateBlogpost="misPost=$event"
+          tipo="CATEGORIAS"  subtipo="memoria"
           :userId="this.datosUsuario.id"
           titulo=""
           subtitulos="Comparte tus vivencias y experiencias con la comunidad"
           :addslot="true"
         >
-          <editorblog
-            tipo="MEMORIA"
+          <!-- <editorblog
+            tipo="CATEGORIAS"
             v-if="
               $validasesion($store, {
                 sinregistro: false,
@@ -41,8 +42,8 @@
                 permisos: 1
               })
             "
-            @updatepost="updatepost.memorias = $event"
-          ></editorblog>
+            @updatepost="updatepost.misMemorias = $event"
+          ></editorblog> -->
         </listablog>
       </v-col>
 
@@ -54,10 +55,8 @@
       >
 
         <listablog
-          tipo="MEMORIA"
-          :idexclude="
-            this.datosUsuario.userlogin === true ? this.datosUsuario.id : ''
-          "
+          :blogpost="otrosPost" @updateBlogpost="otrosPost=$event"
+          tipo="CATEGORIAS"  subtipo="memoria"
           titulo="Memorias de otras educadoras"
           subtitulos="Comparte tus vivencias y experiencias con la comunidad"
         />
@@ -66,7 +65,7 @@
   </v-main>
 </template>
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import listablog from "~/components/listado-blog/listado-blog.vue";
 import validasitio from "@/mixins/validasitio.js";
 import editorblog from "~/components/blog-editor/blog-editor.vue";
@@ -85,22 +84,34 @@ export default {
       datapage: {
         permisos: 0,
         logeado: false
-      }
+      },
+      misMemorias:[],
+      otrasMemorias:[],
+      bandera: false,
     };
   },
   computed: {
-    ...mapState(["datosUsuario"])
+    ...mapState(["datosUsuario","misPost","otrosPost"])
   },
-  mounted() {
-    if (this.datosUsuario.userlogin === true) {
-      this.idnext = this.datosUsuario.id;
-    }
+  async created() {
+
+    await this.inialProceso();
+    this.bandera = true;
   },
   components: {
     editorblog,
     cargablog,
     listablog
   },
-  mixins: [validasitio]
+  mixins: [validasitio],
+  methods: {
+    ...mapActions(['cargaBasePost']),
+    async inialProceso(){
+      await this.cargaBasePost("memoria");
+
+    },
+    
+
+  },
 };
 </script>

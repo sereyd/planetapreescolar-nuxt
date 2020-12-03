@@ -1,15 +1,16 @@
 export default{
     data(){
         return {
-            reflexion:[]
+            reflexion:[],
+            reflexionSeleccionada:{},
         }
     },
     computed:{
         cargarecomendacion(){
             var limit=350
-            var loncadena=this.reflexion[0].contenido.length
+            var loncadena= this.reflexionSeleccionada.contenido.length
             var suspensivos="..."
-            var contenido=this.reflexion[0].contenido.substr(1,limit)
+            var contenido= this.reflexionSeleccionada.contenido.substr(0,limit)
             if(loncadena<limit){
                 suspensivos=""
             }
@@ -21,15 +22,20 @@ export default{
             try{
                 await this.$fireStore
                 .collection('REFLEXIONES')
-                .where("edopost","==","publico") 
-                .limit(1)
+                .where("edopost","==","publico")
                 .get()
                 .then((data)=>{
                     data.forEach((doc) => {
                         this.reflexion.push(doc.data());
-                      });
+                    });
+                    let ran = Math.floor(Math.random() * this.reflexion.length)
+                    console.log(ran);
+                    console.log(this.reflexion.length);
+                    this.reflexionSeleccionada = this.reflexion[ran]
+
          ////this.reflexion=data
-                })   
+                }) 
+
             }catch(e){
                 console.error(e)
             }
