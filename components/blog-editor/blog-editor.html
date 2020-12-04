@@ -180,6 +180,8 @@
                                 inset
                                 label="Recomendado"
                                 small
+                                v-if="subtipo === 'recurso' || subtipo === 'planeacion' "
+
                             ></v-switch>
                         </div>
                         <!-- :class="[tagsValido ? 'mb-2 mt-2' : 'errorTagsBorder mb-2 mt-2']" -->

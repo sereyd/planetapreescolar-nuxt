@@ -1,63 +1,106 @@
 <template>
-  <v-main class="pa-10">
+  <v-main class="pa-10" v-if="bandera">
     <v-row>
+      <v-col
+        cols="12"
+        md="12"
+        v-if="
+          $validasesion($store, {
+            sinregistro: false,
+            logeado: true,
+            permisos: 1
+          })
+        "
+      >
+        <h2
+          class="primary--text"
+          v-if="
+            $validasesion($store, {
+              sinregistro: false,
+              logeado: true,
+              permisos: 1
+            })
+          "
+        >
+          Mis reflexiones
+        </h2>
 
-      <v-col cols="12" md="12" v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:2 })">
-        <h2 class="primary--text"   v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:2 })" >Administrar Reflexiones</h2>
-        
-        <listablog tipo="REFLEXIONES" imagen="false"  :userId="this.datosUsuario.id"  titulo="" subtitulos="Administrar reflexiones"  :addslot="true"  >
-
-            <editorblog tipo="REFLEXIONES" v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:1 })"  @updatepost="updatepost.memorias=$event" imagen="false"   ></editorblog>
-      
+        <listablog
+          :blogpost="misPost" @updateBlogpost="misPost=$event"
+          tipo="CATEGORIAS"  subtipo="reflexion"
+          :userId="this.datosUsuario.id"
+          titulo=""
+          subtitulos="Comparte tus reflexiones con la comunidad"
+          :addslot="true"
+        >
         </listablog>
+      </v-col>
 
-      </v-col>  
+      <div style="width:100%; height:50px;"></div>
 
+      <v-col
+        cols="12"
+        md="12"
+      >
 
-
-
-
-
+        <listablog
+          :blogpost="otrosPost" @updateBlogpost="otrosPost=$event"
+          tipo="CATEGORIAS"  subtipo="reflexion"
+          titulo="Reflexiones de otras educadoras"
+          subtitulos="Comparte tus relexiones con la comunidad"
+        />
+      </v-col>
     </v-row>
   </v-main>
 </template>
 <script>
-import {mapState} from 'vuex'
-import listablog from '~/components/listado-blog/listado-blog.vue'
+import { mapState, mapActions } from "vuex";
+import listablog from "~/components/listado-blog/listado-blog.vue";
 import validasitio from "@/mixins/validasitio.js";
 import editorblog from "~/components/blog-editor/blog-editor.vue";
 import cargablog from "~/components/carga-blog/carga-blog.vue";
 export default {
   data() {
     return {
-      updatepost:{
-        memorias:"",
-        blog:"",
-        reflexiones:"",
-        recomendacion:"",
-       
+      updatepost: {
+        memorias: "",
+        blog: "",
+        reflexiones: "",
+        recomendacion: ""
       },
-       idnext:"",
-     
+      idnext: "",
+
       datapage: {
         permisos: 0,
         logeado: false
-      }
+      },
+      misMemorias:[],
+      otrasMemorias:[],
+      bandera: false,
     };
   },
-   computed:{
-        ...mapState(['datosUsuario'])
-      },
-  mounted(){
-    if(this.datosUsuario.userlogin===true){
-      this.idnext=this.datosUsuario.id
-    }
+  computed: {
+    ...mapState(["datosUsuario","misPost","otrosPost"])
+  },
+  async created() {
+
+    await this.inialProceso();
+    this.bandera = true;
   },
   components: {
     editorblog,
     cargablog,
     listablog
   },
-mixins: [validasitio]
+  mixins: [validasitio],
+  methods: {
+    ...mapActions(['cargaBasePost']),
+    async inialProceso(){
+      await this.cargaBasePost("reflexion");
+
+    },
+    
+
+  },
 };
 </script>

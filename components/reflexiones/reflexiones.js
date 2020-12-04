@@ -21,8 +21,9 @@ export default{
        async cargaref(){
             try{
                 await this.$fireStore
-                .collection('REFLEXIONES')
+                .collection('CATEGORIAS')
                 .where("edopost","==","publico")
+                .where("tipo","==","reflexion")
                 .get()
                 .then((data)=>{
                     data.forEach((doc) => {

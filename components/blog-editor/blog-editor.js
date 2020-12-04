@@ -268,7 +268,8 @@ export default {
         try {
           await this.$fireStore.collection(this.tipo).add(nuevoRecurso);
           this.listaR.push(this.datosRecurso)
-          this.$emit('updateListaR',this.listaR)
+          // this.$emit('updateListaR',this.listaR)
+          this.$emit('updateRefresh',!this.refreshPost)
           this.resetDatos();
 
 
@@ -735,6 +736,10 @@ export default {
     listaR:{
       type: Array,
       default: () => []
+    },
+    refreshPost:{
+      type: Boolean,
+      default: false,
     },
   },
   watch: {
