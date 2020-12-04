@@ -63,36 +63,72 @@ export default{
                 ],
             nivelReglas: [
                 v =>  (v >= 0 && v < 3) || 'Seleccione un nivel'
-            ]
+            ],
+            abrenot:false,
+            optionUsuarios:[],
+            usernotselect:{},
+            iconos:[
+                {
+                  text:'delete',
+                  value:'mdi-delete'
+                },
+                {
+                    text:'alerta',
+                    value:'mdi-alert'
+                  },
+                  {
+                    text:'cuenta',
+                    value:'mdi-account'
+                  },
+                  {
+                    text:'correo',
+                    value:'mdi-email'
+                  }
+                
+                ]
 
             
         }
+      
     },
     computed:{
         // ...mapState(['datosUsuario']),
         ...mapState(['datosUsuario']),
     },
     methods:{
-        // ...mapActions(['cambiarStatusOpenAdmin']),
+        ...mapActions(['creaNotificacion']),
         ...mapMutations(['cambiarStatusOpenAdmin']),
+        enviarNotificacion(){
+            this.creaNotificacion(this.usernotselect)
 
+            this.usernotselect={}
+        },
         async getElement(){ 
             try{
                 this.usuarios=[]
+                this.optionUsuarios=[]
                 const dtuser=await this.$fireStore.collection('usuarios').get();
                 //DESPUES DE OBTENER A LOS USUARIOS LOS ALMACENAMOS EN THIS.UUSUARIOS
                 this.usuarios = dtuser.docs.map(doc=>{
+                    this.optionUsuarios.push({
+                        text:doc.data().nombre+" "+doc.data().apellido,
+                        value:doc.id
+                    })
+
                 return {
                     id: doc.id, //SE LES AGREGA EL ID DEL USAURIO PARA REALIZAR LA BUSQUEDA POR SU ID
                     ...doc.data()
                     }
                 });
-
+                console.log(this.optionUsuarios)
             }catch(error){
               console.log(error)
             }
-        },
 
+        },
+        abreNotificaciones(){
+
+        },
         abrirVentana (usuario) {
           this.usuarioEditable = usuario;
           this.dialog = true

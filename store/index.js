@@ -193,7 +193,14 @@ const createStore = () => {
         context.state.datosUsuario.alumnos = data;
       },
   async creaNotificacion({state},data){
-      var addnotificacion= await this.$fireStore.collection('Notificaciones/').doc(state.datosUsuario.id).collection('notify').add({
+    
+    var idnot=state.datosUsuario.id
+
+    if(data.user!==''){
+      idnot=data.user
+    }
+
+      var addnotificacion= await this.$fireStore.collection('Notificaciones').doc(idnot).collection('notify').add({
         icon:data.icon, 
         title: data.text,
         link:data.link,

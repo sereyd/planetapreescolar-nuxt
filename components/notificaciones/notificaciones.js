@@ -26,9 +26,8 @@ methods:{
         })
     },
     async abrirLink(p){
-       
-
-        console.log(p)
+        this.$router.push(p.data().link)
+        this.notivisto(p)
     }
     }    
 

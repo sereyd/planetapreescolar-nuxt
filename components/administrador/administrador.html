@@ -2,6 +2,47 @@
 <div class="grey lighten-5 mx-16 mt-5">
     <!-- <v-btn @click="fullScreenUsuarios = true">Gestionar usuarios</v-btn> -->
     <v-row no-gutters>
+      <v-col cols="12" md="12"  v-if="$validasesion($store,{permisos:2,logeado:true})" class="pa-10">
+          <v-btn 
+            class="melon white--text" 
+            @click="abrenot=true"
+            >
+            Notificaciones
+          </v-btn>
+      <v-dialog v-model="abrenot" max-width="850">
+        <v-card>
+          <v-card-title class="primary white--text">
+            Crea Notificaciones
+          </v-card-title>
+          <v-card-text>
+          <v-row>
+            <v-col cols="12" md="12">
+            <v-select v-model="usernotselect.user" :items="optionUsuarios" >
+            </v-select>
+          </v-col>
+          <v-col cols="12" md="12">
+            <v-text-field v-model="usernotselect.text" label="mensaje de notificación" ></v-text-field>
+           </v-col>
+           <v-col cols="12" md="8">
+            <v-select v-model="usernotselect.icon" :items="iconos"></v-select>
+          </v-col>
+          <v-col cols="12" md="4">
+              <v-icon>{{usernotselect.icon}}</v-icon>
+          </v-col>
+          <v-col cols="12" md="12">
+            <v-text-field v-model="usernotselect.link" label="http:// | https:// | /enlacedelsitio"></v-text-field>
+          </v-col>
+          <v-col cols="12" md="12">
+            <v-btn class="melon white--text" style="text-transform: none;" @click="enviarNotificacion()">Enviar</v-btn>
+          </v-col>
+          
+        </v-row>
+          </v-card-text>
+
+        </v-card>
+      </v-dialog>
+    
+      </v-col>
       <v-col cols="12" :class="fullScreenUsuarios ? 'principal ' : 'p'   ">
         <div  >
           <div class="nav primary">

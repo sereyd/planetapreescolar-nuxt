@@ -63,12 +63,9 @@
 
 
 
+<hr />
 
-
-    boton de notificaciones
-    <v-btn class="melon white--text" @click="creaNotificacion({icon:'mdi-account',text:'mensaje de prueba',link:'#'})">Prueba notificación</v-btn>
-
-
+  
     </v-col>
 
 <simpleloader :stload="loader" ></simpleloader>
