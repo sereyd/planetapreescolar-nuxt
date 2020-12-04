@@ -17,10 +17,10 @@
         overlap
       >
     
-          <v-icon class="white--text">mdi-bell</v-icon>   <span class="vMmobilview">  Notificaciones</span>
+          <v-icon class="white--text">mdi-bell</v-icon>  
      
       </v-badge>
-
+          <span class="vMmobilview">  Notificaciones</span>
     </v-btn>
 
     </template>
@@ -29,7 +29,33 @@
         v-for="(item, index) in itemsnotifi"
         :key="index"
       >
-        <v-list-item-title ><router-link class="linkmenuuser" :to="item.link"><v-icon class="primary--text">{{item.icon}}</v-icon>{{ item.title }} <span class="flechalink"> > </span></router-link></v-list-item-title>
+        <v-list-item-title >
+<v-row>
+
+
+          <v-col cols="12" md="1" class="text-center">
+            <v-icon class="primary--text">{{item.Ad.Ze.proto.mapValue.fields.icon.stringValue }}</v-icon>
+          </v-col>
+
+
+          <v-col cols="12" md="7"  class="text-center">
+            {{ item.Ad.Ze.proto.mapValue.fields.title.stringValue }}  
+          </v-col>
+
+
+            <v-col cols="12" md="2"  class="text-center">           
+            <v-btn class="white text-center" @click="notivisto(item)" depressed>
+              <v-icon class="primary--text text-center" >mdi-close-circle-outline</v-icon>
+            </v-btn>
+            </v-col>
+
+
+            <v-col cols="12" md="1"  class="text-center  text-center">
+              <v-btn class="white  text-center" depressed  v-if="item.Ad.Ze.proto.mapValue.fields.link" @click="abrirLink(item)"> <v-icon class="primary--text">mdi-play</v-icon></v-btn>
+          </v-col>
+
+        </v-row>
+        </v-list-item-title>
       </v-list-item>
     </v-list>
   </v-menu>

@@ -197,7 +197,8 @@ const createStore = () => {
         icon:data.icon, 
         title: data.text,
         link:data.link,
-        date:new Date()
+        date:new Date(),
+        status:0
         
       })
  
@@ -205,7 +206,7 @@ const createStore = () => {
   },    
   async tomanotificaciones({state}){
      
-    let tomaNotifi=this.$fireStore.collection('Notificaciones').doc(state.datosUsuario.id).collection('notify')
+    let tomaNotifi=this.$fireStore.collection('Notificaciones').doc(state.datosUsuario.id).collection('notify').where('status','==',0)
     tomaNotifi.onSnapshot((data)=>{
       
       state.itemsnotifi=data.docs
