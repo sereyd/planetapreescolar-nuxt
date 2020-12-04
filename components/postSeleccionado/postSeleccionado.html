@@ -81,17 +81,15 @@
                     <source :src="vistapost.urlRecurso" />
                 </audio-player>
                 <div  class="d-flex justify-center">
-                    
-                    <video-player 
+                    <!-- <video-player 
                         v-if="vistapost.tipoRecurso !=='link' && vistapost.tipoRecurso !=='none' 
                         && vistapost.tipoRecurso !=='' && vistapost.tipoRecurso !=='audio'"
                         style="max-width:50%; width:50%; background-color:azure; "
                     >
                         <source :src="vistapost.urlRecurso" />
-                    </video-player>
-                    
+                    </video-player> -->
                     <iframe 
-                        v-else-if="vistapost.tipoRecurso ==='link'"
+                        v-if="vistapost.tipoRecurso ==='link'"
                         width="560" height="315" 
                         :src="linkembed" 
                         frameborder="0" 
