@@ -10,6 +10,7 @@
             <editorblog tipo="CATEGORIAS" subtipo="reflexion" 
             @updateListaR="reflexiones=$event"
             :listaR="reflexiones"
+            :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
             @updatepost="updatepost.reflexiones=$event"  imagen="false" ></editorblog>
           </template>
         </cargablog>
@@ -23,6 +24,7 @@
             <editorblog tipo="CATEGORIAS" subtipo="planeacion"   
             @updateListaR="planeaciones=$event"
             :listaR="planeaciones"
+            :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
             @updatepost="updatepost.planeaciones=$event"   ></editorblog>
           </template>
         </cargablog>
@@ -37,6 +39,7 @@
             <editorblog tipo="CATEGORIAS" subtipo="recurso"   
             @updateListaR="recursos=$event"
             :listaR="recursos"
+            :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
             @updatepost="updatepost.actividades=$event"   ></editorblog>
           </template>
         </cargablog>
@@ -50,6 +53,7 @@
             <editorblog tipo="CATEGORIAS" subtipo="memoria"  
             @updateListaR="memorias=$event"
             :listaR="memorias"
+            :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
             @updatepost="updatepost.memorias=$event"    ></editorblog>
           </template>
         </cargablog>
@@ -61,6 +65,7 @@
             <editorblog tipo="CATEGORIAS" subtipo="blog"  
             @updateListaR="blog=$event"
             :listaR="blog"
+            :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
             @updatepost="updatepost.blog=$event"  ></editorblog>
           </template>
         </cargablog>
@@ -95,7 +100,8 @@ export default {
       datapage: {
         permisos: 1,
         logeado: true
-      }
+      },
+      refreshPost: false,
     };
   },
   components: {
@@ -110,6 +116,11 @@ export default {
   },
   methods:{
     async cargaPost() {
+        this.memorias=[];
+        this.blog=[];
+        this.reflexiones=[];
+        this.planeaciones=[];
+        this.recursos=[];
     // console.log(this.tipo)
     // console.log(this.$store.state.datosUsuario.id)
     let datos = {};
@@ -185,6 +196,14 @@ export default {
 
   
     },
+  },
+  watch: {
+  async refreshPost() {
+        // this.verResultados= false;
+        console.log("REFRESH LISTA DE RECURSOS")
+        await this.cargaPost();
+    },
+
   },
   mixins: [validasitio]
 };

@@ -3,22 +3,73 @@
         <h1 ><b>Reflexion de la semana</b></h1>
         <br />
         <v-row>
-        <v-col cols="12" md="11">
-            <p v-if="reflexion[0]" style="font-size:18px; text-align:left;" v-html="cargarecomendacion">
-                
-            </p>
-        </v-col>
-        <v-col cols="12" md="1">
-         <img src="/images/iconos/globo-estrellas.png" width="100%" />
+            <v-col cols="12" md="11" sm="11">
+                <p v-if="reflexion[0]" style="font-size:18px; text-align:left;" v-html="cargarecomendacion">
+                    
+                </p>
+            </v-col>
+            <v-col cols="12" md="1" sm="1">
+                <img src="/images/iconos/globo-estrellas.png" width="100%" />
             </v-col>
 
-            <v-col cols="12" md="12"  class="text-right"  >
+            <v-col cols="12" md="12" sm="12" class="text-right"  >
 
+                <!-- <v-btn class="melon white--text rounded-pill text-right" style="text-transform: none;" @click="muestrapost(reflexionSeleccionada)"  >Ver</v-btn>  -->
                 <v-btn class="melon white--text rounded-pill text-right" to="/reflexiones" style="text-transform: none;"  >Ver más</v-btn> 
 
-
-                <!---<v-btn class="melon white--text rounded-pill" to="/reflexiones"  >Administrar</v-btn>-->
             </v-col>
-</v-row>
+        </v-row>
     </v-card-text>
+
+    <!-- <v-dialog v-model="dialogPost" fullscreen >
+        <v-card >
+        <v-card-title class="primary white--text"> 
+            <span class="viewmobil">  
+                <v-icon  class="white--text"  @click.stop="drawer = !drawer" > mdi-menu </v-icon>
+            </span>
+    
+          
+            <img src="  images/logos/planeta_preescolar_bco.png" width="55" class="miniMovil" />
+        
+              &nbsp;  &nbsp; 
+              
+            <div class="menu-sec datamenu" v-if="datosUsuario.userlogin===true"  >
+                <div class="primary white--text pa-1 " style="border-radius:10px; width:100%; max-width:210px;" >
+                    <v-avatar
+                        color="secondary"
+                        size="36" 
+                    >
+                    <img 
+                        v-if="datosUsuario.urlImagen" 
+                        :src="datosUsuario.urlImagen === 'none' || datosUsuario.urlImagen==='' ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : datosUsuario.urlImagen" width="100%" 
+                    />
+                    </v-avatar>
+        
+                    <span class="vMmobilview" >{{ (datosUsuario.nombre+" "+ datosUsuario.apellido).substr(0,13) }}</span> 
+    
+                </div>
+            </div>
+            <v-spacer></v-spacer>
+            <v-btn class="melon white--text" @click="dialogPost=false; viewpost = false; viewothers = false;" style="text-transform: none;">Cerrar</v-btn>
+        </v-card-title>
+        
+        <postSeleccionado 
+            v-if="viewpost" 
+            :vistapost="reflexionSeleccionada"
+            :fechaVisual="fechaVisual"
+            :subtipo="subtipo"
+            :spinner="spinner"
+        />
+        VISTA RELACIONADOS 
+        <postGeneral 
+            v-if="viewothers" 
+            :vistapost="reflexionSeleccionada"
+            :subtipo="subtipo"
+            :viewothers ="viewothers" @updateviewO="viewothers=$event"
+            :viewpost="viewpost" @updateviewP="viewpost=$event"
+        />
+        
+            
+        </v-card>
+    </v-dialog> -->
 </v-card>
