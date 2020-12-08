@@ -45,7 +45,7 @@ export default {
       await this.cargabaseGral()
   },
   computed: {
-    ...mapState(['datosUsuario']),
+    ...mapState(['datosUsuario','categorias']),
   },
   components: {
     buscador,
@@ -53,8 +53,12 @@ export default {
     listablog
   },
   methods: {
-    ...mapMutations(['guardarVistaValida']),
+    ...mapMutations(['guardarVistaValida','actualizarCategorias']),
     async  cargabaseGral(){
+      let cat = [];
+
+      if(this.categorias.length === 0)
+      {
         try {
           // if(!this.esCompleto)
             await this.$fireStore
@@ -65,6 +69,8 @@ export default {
                   let data = doc.data();
                   data.tags = data.tags ? data.tags : [];
                   data.favoritos = data.favoritos ? data.favoritos : [];
+                  data.sinopsis= data.sinopsis ? data.sinopsis : "";
+
                   delete data['idRecurso'];
 
 
@@ -72,38 +78,53 @@ export default {
                       idRecurso: doc.id,
                       ...data
                   }
-                  // if(datos.tipo === "reflexion")
-                  //   this.reflexiones.push(datos)
+                  cat.push(datos);
 
-                  if(datos.tipo === "planeacion"  && 
-                    ( datos.edopost === "publico" || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) ) )
-                    this.planeaciones.push(datos)
-
-                  else if(datos.tipo === "recurso"  && 
-                    (datos.edopost === "publico" || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id)) )
-                    this.recursos.push(datos)
+                  
+                });
+                this.updateCategoriasInicio(cat);
+                this.actualizarCategorias(cat);
+                this.sliceCategoriasInicio();
 
                 
-                  // this.blogpost.push(datos);
-                });
-                // console.log("this.planeaciones")
-                // console.log(this.planeaciones)
-                // console.log("this.recursos")
-                // console.log(this.recursos)
-                this.planeaciones = this.planeaciones.slice(0, 4);
-                this.recursos = this.recursos.slice(0, 4);
-                // console.log("this.planeaciones")
-                // console.log(this.planeaciones)
-                // console.log("this.recursos")
-                // console.log(this.recursos)
-                  // this.blogpost = [...this.blogpost].slice(0,4);
-                // console.log(this.blogpost);
               });
             
           } catch (e) {
             console.log(e);
           }
-        },
+      }
+      else
+      {
+        console.log("BUSCAR DE STORE")
+        console.log(this.categorias)
+
+        this.updateCategoriasInicio([...this.categorias])
+        this.sliceCategoriasInicio();
+        console.log(this.planeaciones)
+        console.log(this.recursos)
+      }
+    },
+
+    updateCategoriasInicio(datos){
+      console.log(datos)
+      datos.map(cat => {
+
+        if(cat.tipo === "planeacion"  && 
+          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
+          this.planeaciones.push(cat)
+  
+        else if(cat.tipo === "recurso"  && 
+          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+          this.recursos.push(cat)
+      })
+
+        console.log(this.planeaciones)
+        console.log(this.recursos)
+    },
+    sliceCategoriasInicio(){
+      this.planeaciones = this.planeaciones.slice(0, 4);
+      this.recursos = this.recursos.slice(0, 4);
+    }
   },
 };
 </script>

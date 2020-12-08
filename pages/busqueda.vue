@@ -139,7 +139,7 @@ export default {
         buscador
     },
     computed: {
-        ...mapState(['datosUsuario','datosBusqueda','recursosBusqueda']),
+        ...mapState(['datosUsuario','datosBusqueda','categorias']),
         tituloResultados(){
             console.log("this.datosBusqueda.tipo")
             if(this.cont !== 0)
@@ -174,18 +174,19 @@ export default {
         ...mapActions(['obtenerRecursos']),
         async initProceso(){
             await this.obtenerRecursos()
-            console.log(this.recursosBusqueda)
-            // alert("paso1")
+            console.log(this.categorias)
+
 
             
             this.filtarDatos();
             // alert("paso3")
         },
         filtarDatos(){
-            // console.log(this.recursosBusqueda);
 
-            this.datos = [...this.recursosBusqueda]
-            // console.log(this.datos);
+            this.datos = [...this.categorias]
+            const {tipo} = this.datosBusqueda;
+            console.log(this.datosBusqueda.tipo)
+
             // alert("aqui 1")
 
             const clave = this.datosBusqueda.clave.toLowerCase().normalize("NFD");
@@ -193,30 +194,32 @@ export default {
 
             if(this.datosBusqueda.tipo !== "todos")
             {
+                console.log("SOLO DE UN TIPO")
+                console.log(this.datosBusqueda.tipo)
                 this.busquedaFiltrada = recursos.filter(recurso =>
-                    (recurso.tags.includes(clave) && recurso.edopost === "publico")
+                    (this.esMatch(recurso, clave) && (recurso.edopost === "publico" && recurso.tipo === tipo))
                 )
             }
             else
             {
                 this.memorias = recursos.filter(recurso =>
-                    (recurso.tags.includes(clave) && recurso.edopost === "publico") &&
+                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
                     recurso.tipo === "memoria"
                 )
                this.blogs = recursos.filter(recurso =>
-                    (recurso.tags.includes(clave) && recurso.edopost === "publico") &&
+                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
                     recurso.tipo === "blog"
                 )
                 this.reflexiones = recursos.filter(recurso =>
-                    (recurso.tags.includes(clave) && recurso.edopost === "publico") &&
+                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
                     recurso.tipo === "reflexion"
                 )
                 this.actividades = recursos.filter(recurso =>
-                    (recurso.tags.includes(clave) && recurso.edopost === "publico") &&
+                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
                     recurso.tipo === "recurso"
                 )
                 this.planeaciones = recursos.filter(recurso =>
-                    (recurso.tags.includes(clave) && recurso.edopost === "publico") &&
+                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
                     recurso.tipo === "planeacion"
                 )
             }
@@ -232,7 +235,41 @@ export default {
             this.spinner =false;
             this.verResultados= true;
 
+            
 
+
+        },
+        esMatch(recurso, clave){
+            // console.log("RECURSO MATCH")
+            // console.log(recurso.titulo)
+            let {tags, titulo, contenido, sinopsis, materia} = recurso;
+            let response = false;
+            if(recurso.tipo === "planeacion" || recurso.tipo === "recurso")
+            {
+                let {sinopsis, materia} = recurso;
+                materia = materia ? materia : "";
+                sinopsis = sinopsis ? sinopsis : "";
+                response = 
+                ( 
+                    tags.includes(clave) || 
+                    titulo.toLowerCase().normalize("NFD").includes(clave) || 
+                    contenido.toLowerCase().normalize("NFD").includes(clave) || 
+                    sinopsis.toLowerCase().normalize("NFD").includes(clave) || 
+                    materia.toLowerCase().normalize("NFD").includes(clave) ) 
+                ? true : false;
+            }
+            else
+            {
+                response = 
+                ( 
+                    tags.includes(clave) || 
+                    titulo.toLowerCase().normalize("NFD").includes(clave) || 
+                    contenido.toLowerCase().normalize("NFD").includes(clave) )
+                ? true : false;
+
+            }
+            // console.log(response)
+            return response;
         },
         mostrarElemento(elemento){
             this.vistaElemento = true

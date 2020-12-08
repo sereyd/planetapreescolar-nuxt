@@ -17,7 +17,7 @@
             <div 
                 v-if="vistapost.tipoRecurso !== 'link' && vistapost.urlRecurso.length !== 0 &&
                 (vistapost.urlRecurso[0] !== '' && vistapost.urlRecurso[0] !== 'none') &&
-                ( subtipo !== 'blog' && subtipo !== 'memoria' )"
+                ( subtipo !== 'blog' && subtipo !== 'memoria' ) && urlFileB !== ''"
             >
                 <Spinner 
                     v-if="spinner" 
@@ -25,6 +25,7 @@
                 <div 
                     v-else-if ="!spinner"
                 >
+                    
                     <a 
                         v-if="datosUsuario.estadoMembresia === 'active' 
                         || 
@@ -107,7 +108,8 @@
             </div>
 
             <!-- SECCION DE COMENTARIOS -->
-            <div>
+            <!-- <h1>COMNENTARIOOO</h1> -->
+            <div v-if="subtipo !== 'planeacion' && subtipo !== 'recurso' && subtipo !== 'recomendacion'">
                 <h3 class="primary--text mt-3 mb-3"> {{vistapost.comentarios.length}} comentarios</h3>
                 <v-card class="card_border">
                     <v-container>
@@ -116,6 +118,8 @@
                             lazy-validation
                             ref="formComentario"
                             v-model="esComentarioValido"
+                            name="form_comentario"
+
                         >
                     
                             <v-textarea
@@ -125,6 +129,7 @@
                             outlined
                             :rules="[v => !!v || 'Comentario vacio']"
                             @keyup.enter=""
+                            name="textarea_comentario"
             
                         ></v-textarea>
                         <v-btn 
@@ -137,12 +142,12 @@
                 </v-card>
 
                 <v-card class="card_border mt-4">
-                    <!-- :key="'post_'+index" -->
+                    
                     <v-row v-for="(comentario, index) in vistapost.comentarios" :key="'comentario_'+index">
                         <v-col cols="3" class="">
                             <div class="pl-7">
                                 <v-avatar size="38" > 
-                                    <!-- :src="a.urlImagen === 'none' || a.urlImage ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : a.urlImagen" -->
+                                    :src="a.urlImagen === 'none' || a.urlImage ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : a.urlImagen" 
                                     <v-img
                                     :src=" comentario.urlImagen === 'none' || comentario.urlImagen==='' ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : comentario.urlImagen"
                                     alt="foto"

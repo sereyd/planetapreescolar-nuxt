@@ -9,11 +9,25 @@ export default{
         return {
             relacionados:[],
             bandera: false,
+
+            //DATA PARA COMENTARIOS
+            esComentarioValido: true,
+            comentarios:[],
+            datosComentario:{
+              idUsuario:"",
+              comentario:"",
+              nombreUsuario:"",
+              urlImagen:""
+            },
+            allpost:[],
+            cont:0,
         }
     },
     async mounted() {
         console.log("RELACIONADOS")
         console.log(this.bandera)
+        console.log(this.posts)
+        console.log(this.vistapost)
         // this.guardarVistaValida(true); 
         await this.cargabaseGral()
         this.bandera = true
@@ -25,6 +39,7 @@ export default{
             this.$emit('updateviewO',false);
         },
         async  cargabaseGral(){
+          let conta = 0;
             try {
               // if(!this.esCompleto)
                 await this.$fireStore
@@ -35,6 +50,8 @@ export default{
                       let data = doc.data();
                       data.tags = data.tags ? data.tags : [];
                       data.favoritos = data.favoritos ? data.favoritos : [];
+                      data.sinopsis= data.sinopsis ? data.sinopsis : "";
+
                       delete data['idRecurso'];
     
     
@@ -52,9 +69,13 @@ export default{
                               ) &&
                               this.vistapost.idRecurso !== datos.idRecurso
                           )
-                          this.relacionados = [
-                            ...this.relacionados,
-                            datos]
+                          {
+
+                            this.relacionados = [
+                              ...this.relacionados,
+                              datos]
+                              
+                          }
                       }
                       else{
 
@@ -65,14 +86,18 @@ export default{
                               ) &&
                               this.vistapost.idRecurso !== datos.idRecurso
                           )
-                          this.relacionados = [
-                            ...this.relacionados,
-                            datos]
+                          {
+
+                            this.relacionados = [
+                              ...this.relacionados,
+                              datos]
+                          }
                       }
 
     
                     
-                      // this.blogpost.push(datos);
+                      // this.posts.push(datos);
+                      conta++;
                     });
                     this.relacionados = this.relacionados.slice(0, 4);
                     console.log("this.RELACIONADOS solo 4 elelemntos")
@@ -82,6 +107,47 @@ export default{
                 console.log(e);
               }
             },
+        //  METODOS PARA COMENTARIOS
+      async agregarComentario(){
+        const {id, nombre, apellido, urlImagen} = this.datosUsuario;
+        
+        this.datosComentario.idUsuario = id;
+        this.datosComentario.nombreUsuario = `${nombre} ${apellido}`;
+        this.datosComentario.urlImagen = urlImagen;
+        //OBTENEMOS EL ID DEL RECURSO (MEMORIA, RELFEXION, RECOMENDACION, ETC)
+        const {idRecurso} = this.vistapost;
+        this.vistapost.comentarios.push({...this.datosComentario});
+
+        //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
+        let recursoComentariosRef = this.$fireStore.collection("CATEGORIAS").doc(idRecurso);
+        
+        //SE ACTUALIZA EN FIREBASE EL CAMPO DE COMENTARIOS
+        recursoComentariosRef.update({
+             comentarios: [...this.vistapost.comentarios]
+        })
+        .then(() => {
+          this.datosComentario.idUsuario = "";
+          this.datosComentario.nombreUsuario = "";
+          this.datosComentario.urlImagen = "";
+          // this.datosComentario.comentario = "";
+          // this.esComentarioValido = true;
+          this.$refs.formComentario.reset();
+
+          console.log("reset data")
+ 
+        })
+        .catch((error) => {
+            console.error("ErroR al agregar nuevo comentario: ", error);
+        });
+
+      },
+      validarFormularioComentario(){
+        // console.log("revision")
+        this.esComentarioValido =this.$refs.formComentario.validate();
+        if(this.esComentarioValido)
+          this.agregarComentario();
+        // console.log("biennnn")
+      },
     },
      
     props:{
@@ -93,6 +159,10 @@ export default{
         vistapost:{
             type: Object,
             default: () => {}
+        },
+        posts:{
+          type: Array,
+          default: () => []
         },
         viewothers:{
           default:()=>{

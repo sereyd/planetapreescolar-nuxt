@@ -80,7 +80,7 @@ export default {
       await this.cargabaseGral();
   },
   computed: {
-    ...mapState(['datosUsuario']),
+    ...mapState(['datosUsuario','categorias']),
   },
   components: {
     buscador,
@@ -88,11 +88,14 @@ export default {
     listablog
   },
   methods:{
-    ...mapMutations(['guardarVistaValida']),
+    ...mapMutations(['guardarVistaValida','actualizarCategorias']),
     async  cargabaseGral(){
+      let cat = [];
+
+      if(this.categorias.length === 0)
+      {
         try {
           // if(!this.esCompleto)
-            let esFav =false;
             await this.$fireStore
               .collection("CATEGORIAS").orderBy("fecha", "desc")
               .get()
@@ -101,6 +104,8 @@ export default {
                   let data = doc.data();
                   data.tags = data.tags ? data.tags : [];
                   data.favoritos = data.favoritos ? data.favoritos : [];
+                  data.sinopsis= data.sinopsis ? data.sinopsis : "";
+
                   delete data['idRecurso'];
 
 
@@ -108,50 +113,54 @@ export default {
                       idRecurso: doc.id,
                       ...data
                   }
-                  // if(datos.tipo === "reflexion")
-                  //   this.reflexiones.push(datos)
-                  // const recursos = [...this.blogpost.filter(recurso =>
-                  esFav = datos.favoritos.includes(this.datosUsuario.id) 
+                  cat.push(datos);
+
+                  
+                
+                });
+                this.updateCategoriasInicio(cat)
+                this.actualizarCategorias(cat);
+              });
+        } catch (e) {
+          console.log(e);
+        }
+      }else
+      {
+        console.log("BUSCAR DE STORE")
+        this.updateCategoriasInicio([...this.categorias])
+
+      }
+    },
+    updateCategoriasInicio(datos){
+      console.log(datos)
+       
+      datos.map(cat => {
+        let esFav = false;
+        esFav = cat.favoritos.includes(this.datosUsuario.id) 
                   // )]
 
-                  if(datos.tipo === "reflexion" && esFav  && 
-                    ( datos.edopost === "publico" || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) ) )
-                    this.reflexiones.push(datos)
+        if(cat.tipo === "reflexion" && esFav  && 
+          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
+          this.reflexiones.push(cat)
 
-                  else if(datos.tipo === "blog" && esFav  && 
-                    ( datos.edopost === "publico" || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) ) )
-                    this.blog.push(datos)
+        else if(cat.tipo === "blog" && esFav  && 
+          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
+          this.blog.push(cat)
 
 
-                  else if(datos.tipo === "memoria" && esFav  && 
-                    ( datos.edopost === "publico" || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) ) )
-                    this.memorias.push(datos)
+        else if(cat.tipo === "memoria" && esFav  && 
+          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
+          this.memorias.push(cat)
 
-                  else if(datos.tipo === "recurso" && esFav  && 
-                    ( datos.edopost === "publico" || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) ) )
-                    this.recursos.push(datos)
+        else if(cat.tipo === "recurso" && esFav  && 
+          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
+          this.recursos.push(cat)
 
-                  else if(datos.tipo === "planeacion" && esFav  && 
-                    ( datos.edopost === "publico" || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) ) )
-                    this.planeaciones.push(datos)
-                
-                  // this.blogpost.push(datos);
-                });
-                // console.log("this.planeaciones")
-                // console.log(this.planeaciones)
-                // console.log("this.recursos")
-                // console.log(this.recursos)
-                // console.log("this.blog")
-                // console.log(this.blog)
-                // console.log("this.memorias")
-                // console.log(this.memorias)
-                  // this.blogpost = [...this.blogpost].slice(0,4);
-                // console.log(this.blogpost);
-              });
-          } catch (e) {
-            console.log(e);
-          }
-        },
+        else if(cat.tipo === "planeacion" && esFav  && 
+          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
+          this.planeaciones.push(cat)
+      })
+    },
     
   },
 };

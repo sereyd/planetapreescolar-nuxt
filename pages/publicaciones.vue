@@ -144,6 +144,8 @@ export default {
               let data = doc.data();
               data.tags = data.tags ? data.tags : [];
               data.favoritos = data.favoritos ? data.favoritos : [];
+              data.sinopsis= data.sinopsis ? data.sinopsis : "";
+
               delete data['idRecurso'];
 
 

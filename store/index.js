@@ -168,6 +168,9 @@ const createStore = () => {
       misPost:[],
       otrosPost:[],
 
+      //DATA DE TODOS LOS RECURSOS
+      categorias:[],
+
 
     }),
     actions: {
@@ -398,121 +401,51 @@ const createStore = () => {
       },
 
       async obtenerRecursos(context) {
-        context.state.recursosBusqueda = [];
-        let datos = {};
+        // context.state.recursosBusqueda = [];
         try {
           // console.log(context.state.datosBusqueda);
+          let datos = {};
+          let cat = [];
+          if(context.state.categorias.length === 0)
+          {
+            console.log("BUSCAR DE FIREBASE")
 
-          if (context.state.datosBusqueda.tipo === "todos") {
-            console.log(context.state.datosBusqueda.tipo)
             await this.$fireStore
-              .collection("CATEGORIAS")
-              .get()
-              .then(data => {
-                console.log(data);
-                data.forEach(doc => {
-                  let data = doc.data();
-                    //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
-                  data.tags = data.tags ? data.tags : [];
-                  data.favoritos = data.favoritos ? data.favoritos : [];
+            .collection("CATEGORIAS")
+            .get()
+            .then(data => {
+              console.log(data);
+              data.forEach(doc => {
+                let data = doc.data();
+                  //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
+                data.tags = data.tags ? data.tags : [];
+                data.favoritos = data.favoritos ? data.favoritos : [];
+                data.sinopsis= data.sinopsis ? data.sinopsis : "";
 
-
-                  datos = {
-                    idRecurso: doc.id,
-                    ...data
-                  }
-                  context.state.recursosBusqueda.push(datos);
-                  
-                });
+                datos = {
+                  idRecurso: doc.id,
+                  ...data
+                }
+                cat.push(datos);
+                
               });
+              context.dispatch( "actualizarCategorias('cat')" );
 
-            // // console.log("obtener Todos los Recursos")
-            // context.state.recursos.map(async (recu) => {
-            //   // console.log("santes de then")
-            //   await this.$fireStore
-            //     .collection(recu)
-            //     .get()
-            //     .then(data => {
-            //       // console.log("santes de foreach")
+            });
 
-            //       // console.log(data);
-            //       data.forEach(doc => {
-            //         let data = doc.data();
-            //         //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
-            //         data.tags = data.tags ? data.tags : [];
-            //         data.favoritos = data.favoritos ? data.favoritos : [];
-            //         delete data['idRecurso'];
-
-            //         datos = {
-            //           idRecurso: doc.id,
-            //           ...data
-            //         }
-            //         context.state.recursosBusqueda.push(datos);
-            //         // console.log("context.state.recursosBusqueda")
-            //         // console.log(context.state.recursosBusqueda)
-            //         // alert("averrr")
-            //       });
-            //       // console.log("context.state.recursosBusqueda")
-            //       // console.log(context.state.recursosBusqueda)
-            //     });
-            // });
-          // return context.state.recursosBusqueda;
-
-          } else {
-            // context.state.datosBusqueda.tipo
-            console.log(context.state.datosBusqueda.tipo)
-            await this.$fireStore
-              .collection("CATEGORIAS")
-              .where('tipo','==',context.state.datosBusqueda.tipo)
-              .get()
-              .then(data => {
-                console.log(data);
-                data.forEach(doc => {
-                  let data = doc.data();
-                    //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
-                  data.tags = data.tags ? data.tags : [];
-                  data.favoritos = data.favoritos ? data.favoritos : [];
-
-
-                  datos = {
-                    idRecurso: doc.id,
-                    ...data
-                  }
-                  context.state.recursosBusqueda.push(datos);
-                  // console.log("context.state.recursosBusqueda")
-                  // console.log(context.state.recursosBusqueda)
-                  // alert("averrr")
-                });
-              });
-              // console.log("context.state.recursosBusqueda")
-              // console.log(context.state.recursosBusqueda)
-          // return context.state.recursosBusqueda;
+          }
+          else{
+            console.log("BUSCAR DE STORE")
 
           }
 
-          // return context.state.recursosBusqueda;
+
         } catch (e) {
           console.log(e);
         }
-        return context.state.recursosBusqueda;
+        // return [...context.state.categorias];
       },
-      obtenerTodosRecursos(context) {
-        // console.log("obtenerRecursos")
-        context.state.recursos.map(recu => {
-          this.$fireStore
-            .collection(recu)
-            .get()
-            .then(data => { 
-              // console.log(data);
-              data.forEach(doc => {
-                context.state.recursosBusqueda.push(doc.data());
-                // console.log("context.state.recursosBusqueda")
-                // console.log(context.state.recursosBusqueda)
-                // alert("averrr")
-              });
-            });
-        });
-      },
+      
       async fotostorageAsync({state},ubi){
         console.log("entra al fotoStorage fotostorageAsyng: " + state.imgupload);
         let urlimagen=""
@@ -548,7 +481,84 @@ const createStore = () => {
         ///console.log("entra al fotoStorage: " + state.urlimg);
         //// limpia todos los datos 
         return urlimagen
-        },
+      },
+
+      //CARGA DE POST POR TIPO DE POST PARA LA VISTA DE VER MAS
+      async  cargaBasePost({state,dispatch},tipoPost){
+        let postG = [];
+
+        if(state.categorias.length === 0)
+        {
+          console.log("BUSCAR DE FIREBASE")
+          try {
+            await this.$fireStore
+              .collection("CATEGORIAS").orderBy("fecha", "desc")
+              .get()
+              .then((data) => {
+                data.forEach((doc) => {
+                  let data = doc.data();
+                  data.tags = data.tags ? data.tags : [];
+                  data.favoritos = data.favoritos ? data.favoritos : [];
+                  data.sinopsis= data.sinopsis ? data.sinopsis : "";
+
+                  delete data['idRecurso'];
+
+
+                  const datos = {
+                      idRecurso: doc.id,
+                      ...data
+                  }
+                  postG.push(datos);
+
+                });
+                dispacth("updateCategoriasInicio('postG', 'tipoPost')" )
+                
+                  // this.blogpost = [...this.blogpost].slice(0,4);
+                // console.log(this.blogpost);
+              });
+          } catch (e) {
+            console.log(e);
+          }
+        }else{
+          console.log("BUSCAR DE STORE")
+          dispacth("updateCategoriasInicio('[...state.categorias]', 'tipoPost')" )
+
+        }
+    },
+    updateCategoriasInicio(postG, tipoPost){
+      console.log(postG);
+      if(tipoPost === "actividades")
+      {
+        console.log("RECOMENDADOS")
+        state.misPost = postG.filter( 
+          post  => (post.tipo === "planeacion" && (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)))
+        )
+
+        state.otrosPost = postG.filter( 
+          post  => 
+            ( post.tipo === "recurso" && (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)) )
+        )
+      }
+      else
+      {
+
+        state.misPost = postG.filter( 
+          post  => (post.tipo === tipoPost && post.idCreador === state.datosUsuario.id)
+        )
+
+        state.otrosPost = postG.filter( 
+          post  => 
+            ( post.tipo === tipoPost && (post.idCreador !== state.datosUsuario.id && post.edopost !== "privado") )
+        )
+      }
+      console.log("state.misPost")
+      console.log(state.misPost)
+      console.log("state.otrosPost")
+      console.log(state.otrosPost)
+
+      
+    },
+
         cerrarconexion(){
           console.log('action close conexion')
           observer()
@@ -586,6 +596,15 @@ const createStore = () => {
 
         state.vistaValida = data;
         // alert("Cambnio"+ state.vistaValida)
+      },
+      actualizarCategorias(state, payload){
+        state.categorias = payload;
+      },
+      agregarCategorias(state, payload){
+        state.categorias = [
+          ...state.categorias,
+          payload
+        ];
       },
       
 

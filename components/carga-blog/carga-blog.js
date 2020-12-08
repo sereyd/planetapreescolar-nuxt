@@ -2,6 +2,8 @@ import { VueEditor } from "vue2-editor";
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale';
 import InputTag from 'vue-input-tag';
+import { mapState, mapActions, mapMutations } from "vuex";
+
 
 export default {
   data() {
@@ -21,11 +23,12 @@ export default {
         // user:"",
         contenido:"",
         tipoRecurso:"",
-        urlRecurso:"",
+        urlRecurso: ["",""],
         tags:[],
         premium: false,
         recomendado: false,
         },
+        sinopsis:"",
         customToolbar: [
           [{ 'font': [] }],
           [{ 'header': [false, 1, 2, 3, 4, 5, 6, ] }],
@@ -47,6 +50,39 @@ export default {
 
         tagsValido: null,
         msjTag: "",
+
+        // REGLAS PARA FORMULARIO
+      sinopsisReglas: [
+        v => !!v || 'Sinopsis es requerido',
+        v => (v && v.length <= 500) || 'Sinopsis debe tener menos de 500 caracteres',
+      ],
+
+      file: null,
+
+
+      ubiWP:"",
+
+      completadoW: false,
+      cargandoW: false,
+      porcentajeW: 0,
+      fileWord:null,
+
+
+      completadoP: false,
+      cargandoP: false,
+      porcentajeP: 0,
+      filePDF:null,
+
+      completadoF: false,
+      cargandoF: false,
+      porcentajeF: 0,
+      file:null,
+
+      changeFile1: false,
+      changeFile2: false,
+
+      tipoRecursoSelect: "",
+      tiposRecursoList: ["link","file"],
     };
   },
   components: {
@@ -54,6 +90,7 @@ export default {
     InputTag
   },
   computed: {
+    ...mapState(['datosUsuario']),
     fechaVisual(payload){
       console.log(payload)
       // const fecha = format(payload, "dd 'de' MMMM 'de' yyyy", {locale: es});
@@ -78,6 +115,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(["agregarCategorias"]),
     async cargaPost() {
     // console.log(this.tipo)
     // console.log(this.$store.state.datosUsuario.id)
@@ -122,9 +160,18 @@ export default {
     },
 
 
-    mostrarRecursoEdit(post){
+
+
+    async mostrarRecursoEdit(post){
       console.log(post)
       console.log(this.tipo);
+      let nombreFile = ""
+      let nombreFile2 = ""
+      let response = "";
+      let data = "";
+      let metadata = {};
+      
+      
       if(this.tipo === "RECOMENDACION")
         this.esBlog = true;
       else
@@ -135,8 +182,68 @@ export default {
       this.datosRecursoEdit = {...post};
       this.datosRecursoEdit.premium = !this.datosRecursoEdit.premium ? false : this.datosRecursoEdit.premium;
       this.datosRecursoEdit.recomendado = !this.datosRecursoEdit.recomendado ? false : this.datosRecursoEdit.recomendado;
-      // console.log(this.datosRecursoEdit)
-      // console.log(this.tipo)
+      
+        
+      if(this.datosRecursoEdit.tipo === "planeacion")
+      {
+        this.filePDF=null;
+        this.fileWord=null;
+
+        if(this.datosRecursoEdit.urlRecurso.length === 0)
+        {
+          this.datosRecursoEdit.urlRecurso[0] = ""
+          this.datosRecursoEdit.urlRecurso[1] = ""
+        }
+        else{
+
+          console.log(this.datosRecursoEdit.urlRecurso)
+
+          if(this.datosRecursoEdit.urlRecurso[0] !== 'none' && this.datosRecursoEdit.urlRecurso[0] !== "")
+          {
+
+            response = await fetch(this.datosRecursoEdit.urlRecurso[0]);
+            data = await response.blob();
+            metadata = {
+              type: 'application/vnd.openxmlformats-officedocument.word'
+            };
+            this.fileWord = new File([data], "word.docx", metadata);
+          }
+
+          if(this.datosRecursoEdit.urlRecurso[1] !== 'none' && this.datosRecursoEdit.urlRecurso[1] !== "")
+          {
+            response = await fetch(this.datosRecursoEdit.urlRecurso[1]);
+            data = await response.blob();
+            metadata = {
+              type: 'application/pdf '
+            };
+            this.filePDF = new File([data], "pdf.pdf", metadata);
+          }
+
+
+        }
+      }else if (this.datosRecursoEdit.tipo === "recurso")
+      {
+        this.tipoRecursoSelect = this.datosRecursoEdit.tipoRecurso !== "link" ? "file": "link";
+        // this.datosRecursoEdit.urlRecurso[1] = this.datosRecursoEdit.urlRecurso[0];
+        if(this.datosRecursoEdit.urlRecurso[0] !== 'none' && 
+        this.datosRecursoEdit.urlRecurso[0] !== "" && 
+        this.datosRecursoEdit.tipoRecurso !== "link")
+          {
+
+            response = await fetch(this.datosRecursoEdit.urlRecurso[0]);
+            data = await response.blob();
+
+            console.log(data)
+            const res = data.type.split("/");
+            const typeFile = res[1];
+            const nombreFile = this.datosRecursoEdit.titulo+'.'+typeFile;
+            metadata = {
+              type: data.type
+            };
+            this.file = new File([data], nombreFile, metadata);
+          }
+
+      }
 
 
     },
@@ -144,7 +251,7 @@ export default {
 
       console.log(this.datosRecursoEdit);
       // alert("altooo");
-      const {idRecurso, titulo, contenido, edopost, tags, premium, recomendado} = this.datosRecursoEdit;
+      const {idRecurso, titulo, contenido, edopost, tags, premium, recomendado, urlRecurso, materia, grado} = this.datosRecursoEdit;
       
 
       //SE OBTIENE EL RECURSO POR MEDIO DEL ID
@@ -152,7 +259,7 @@ export default {
       
       //SE ACTUALIZA EN FIREBASE EL RECURSO SELECCIONADO
       usuarioRecursosRef.update({
-        titulo, contenido, edopost,tags, premium, recomendado
+        titulo, contenido, edopost,tags, premium, recomendado, sinopsis: this.sinopsis, urlRecurso, materia, grado
       })
       .then(() => {
           // console.log(this.grupo);
@@ -173,6 +280,7 @@ export default {
               lista.tags = tags;
               lista.premium = premium;
               lista.recomendado = recomendado;
+              lista.sinopsis = this.sinopsis;
               
             }
           })
@@ -189,6 +297,183 @@ export default {
       });
 
     },
+
+    async changeFile(){
+      this.ubiWP = `${this.subtipo}/${this.datosUsuario.id}/${this.datosRecursoEdit.foldercode}/`;
+
+      console.log("UBICACION")
+      console.log(this.ubiWP)
+
+      
+      let file =  this.file;
+      let typeFileFull = ""
+      let metadata = {};
+      console.log(file)
+      
+      if(file)
+      {
+        
+        this.completadoF = false;
+        this.cargandoF= true;
+        this.porcentajeF = 0;
+        typeFileFull = file.type;
+        console.log(typeFileFull)
+        metadata = {
+        contentType: typeFileFull
+        };
+      }
+
+      // file = null;
+
+      //VERIFICAR QUE EXISTA ARCHIVO PARA SUBIR
+      if(file){
+        console.log("FILE VALIDO")
+          try {
+              //SE AGREGA LA FOTO AL STORAGE DE FIREBASE
+
+              let storageRef = this.$fireStorage.ref(this.ubiWP);
+              let uploadTask = storageRef.child("file_"+this.datosRecursoEdit.foldercode).put(file, metadata);
+
+              await uploadTask.on('state_changed', // or 'state_changed'
+              (snapshot) => {
+                  this.porcentajeF = Math.round( (snapshot.bytesTransferred / snapshot.totalBytes) * 100 );
+
+              },(error) => {
+                  console.log("ERROR")
+                  console.log(error)
+              }, () => {
+                  uploadTask.snapshot.ref.getDownloadURL()
+                  .then( async(downloadURL) => {
+                      this.datosRecursoEdit.urlRecurso[0] = downloadURL;
+                      this.datosRecursoEdit.urlRecurso[1] = downloadURL;
+                      console.log('File available at', downloadURL);
+                      console.log('URLFILE', this.datosRecursoEdit.urlRecurso);
+                      this.cargandoF = false;
+                  });
+              });
+
+          } catch (error) {
+              console.log(error)
+          }
+      }
+
+    },
+
+    async changeWord(){
+
+      
+      this.ubiWP = `${this.subtipo}/${this.datosUsuario.id}/${this.datosRecursoEdit.foldercode}/`;
+
+      console.log("UBICACION")
+      console.log(this.ubiWP)
+
+      
+      let file =  this.fileWord;
+      console.log(file)
+      
+      if(file)
+      {
+        
+        this.completadoW = false;
+        this.cargandoW = true;
+        this.porcentajeW = 0;
+        const typeFileFull = file.type;
+        console.log(typeFileFull)
+        const metadata = {
+        contentType: typeFileFull
+        };
+      }
+
+      // file = null;
+
+      //VERIFICAR QUE EXISTA ARCHIVO PARA SUBIR
+      if(file){
+        console.log("FILE VALIDO")
+          try {
+              //SE AGREGA LA FOTO AL STORAGE DE FIREBASE
+
+              let storageRef = this.$fireStorage.ref(this.ubiWP);
+              let uploadTask = storageRef.child("word_"+this.datosRecursoEdit.foldercode).put(file, metadata);
+
+              await uploadTask.on('state_changed', // or 'state_changed'
+              (snapshot) => {
+                  this.porcentajeW = Math.round( (snapshot.bytesTransferred / snapshot.totalBytes) * 100 );
+
+              },(error) => {
+                  console.log("ERROR")
+                  console.log(error)
+              }, () => {
+                  uploadTask.snapshot.ref.getDownloadURL()
+                  .then( async(downloadURL) => {
+                      this.datosRecursoEdit.urlRecurso[0] = downloadURL;
+                      console.log('File available at', downloadURL);
+                      console.log('URLFILE', this.datosRecursoEdit.urlRecurso);
+                      this.cargandoW = false;
+                  });
+              });
+
+          } catch (error) {
+              console.log(error)
+          }
+      }
+    },
+
+    async changePDF(){
+
+      
+      this.ubiWP = `${this.subtipo}/${this.datosUsuario.id}/${this.datosRecursoEdit.foldercode}/`;
+
+      console.log("UBICACION")
+      console.log(this.ubiWP)
+
+      
+      let file =  this.filePDF;
+      console.log(file)
+      if(file)
+      {
+        
+        this.completadoP = false;
+        this.cargandoP = true;
+        this.porcentajeP = 0;
+        const typeFileFull = file.type;
+        console.log(typeFileFull)
+        const metadata = {
+        contentType: typeFileFull
+      }
+      };
+
+      if(file){
+      try {
+          //SE AGREGA LA FOTO AL STORAGE DE FIREBASE
+
+          let storageRef = this.$fireStorage.ref(this.ubiWP);
+          let uploadTask = storageRef.child("pdf_"+this.datosRecursoEdit.foldercode).put(file, metadata);
+
+          await uploadTask.on('state_changed', // or 'state_changed'
+          (snapshot) => {
+              this.porcentajeP = Math.round( (snapshot.bytesTransferred / snapshot.totalBytes) * 100 );
+
+          },(error) => {
+              console.log("ERROR")
+              console.log(error)
+          }, () => {
+              uploadTask.snapshot.ref.getDownloadURL()
+              .then( async(downloadURL) => {
+                  this.datosRecursoEdit.urlRecurso[1] = downloadURL;
+                  console.log('File available at', downloadURL);
+                  console.log('URLFILE', this.datosRecursoEdit.urlRecurso);
+                  this.cargandoP = false;
+              });
+          });
+
+      } catch (error) {
+          console.log(error)
+      }
+      }
+
+    },
+
+
     validarFormularioRecursoEdit(){
       // console.log("revision")
       this.esRecursoEditValido =this.$refs.formRecursoEdit.validate();
