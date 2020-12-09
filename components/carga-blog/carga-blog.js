@@ -115,7 +115,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["agregarCategorias"]),
+    ...mapMutations(["agregarCategorias","updateEditado"]),
     async cargaPost() {
     // console.log(this.tipo)
     // console.log(this.$store.state.datosUsuario.id)
@@ -170,6 +170,9 @@ export default {
       let response = "";
       let data = "";
       let metadata = {};
+
+      // if(this.datosRecursoEdit.sinopsis)  
+      //   this.sinopsis = this.datosRecursoEdit.sinopsis
       
       
       if(this.tipo === "RECOMENDACION")
@@ -242,6 +245,7 @@ export default {
             };
             this.file = new File([data], nombreFile, metadata);
           }
+          
 
       }
 
@@ -251,15 +255,20 @@ export default {
 
       console.log(this.datosRecursoEdit);
       // alert("altooo");
-      const {idRecurso, titulo, contenido, edopost, tags, premium, recomendado, urlRecurso, materia, grado} = this.datosRecursoEdit;
+      let {idRecurso, titulo, contenido, edopost, tags, premium, sinopsis, recomendado, urlRecurso, materia, grado} = this.datosRecursoEdit;
       
 
       //SE OBTIENE EL RECURSO POR MEDIO DEL ID
       let usuarioRecursosRef =  this.$fireStore.collection("CATEGORIAS").doc(idRecurso);
+
+      if(this.datosRecursoEdit.tipoRecurso === "link")
+      {
+        urlRecurso[1] = urlRecurso[0];
+      }
       
       //SE ACTUALIZA EN FIREBASE EL RECURSO SELECCIONADO
       usuarioRecursosRef.update({
-        titulo, contenido, edopost,tags, premium, recomendado, sinopsis: this.sinopsis, urlRecurso, materia, grado
+        titulo, contenido, edopost,tags, premium, recomendado, sinopsis, urlRecurso, materia, grado
       })
       .then(() => {
           // console.log(this.grupo);
@@ -280,7 +289,11 @@ export default {
               lista.tags = tags;
               lista.premium = premium;
               lista.recomendado = recomendado;
-              lista.sinopsis = this.sinopsis;
+              lista.sinopsis = sinopsis;
+              lista.urlRecurso= urlRecurso;
+              lista.materia= materia;
+              lista.grado= grado;
+              this.updateEditado(lista);
               
             }
           })

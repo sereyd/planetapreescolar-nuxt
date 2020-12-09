@@ -83,13 +83,13 @@ export default {
   //   ...mapMutations(['guardarVistaValida']),
   // },
   async mounted() {
-      console.log("HOME")
-      console.log(this.bandera)
+      // console.log("HOME")
+      // console.log(this.bandera)
       // this.guardarVistaValida(true); 
       await this.cargabaseGral()
       this.bandera = true
-      console.log("HOME")
-      console.log(this.bandera)
+      // console.log("HOME")
+      // console.log(this.bandera)
   },
   computed: {
     ...mapState(['datosUsuario', 'categorias']),
@@ -106,7 +106,7 @@ export default {
 
       if(this.categorias.length === 0)
       {
-        console.log("BUSCAR DE FIREBASE")
+        // console.log("BUSCAR DE FIREBASE")
         try {
           // if(!this.esCompleto)
           await this.$fireStore
@@ -147,7 +147,7 @@ export default {
       }
     },
     updateCategoriasInicio(datos){
-      console.log(datos)
+      // console.log(datos)
 
       datos.map(cat => {
 
@@ -170,12 +170,12 @@ export default {
       this.blog = this.blog.slice(0, 4);
       this.memorias = this.memorias.slice(0, 4);
       this.recomendaciones = this.recomendaciones.slice(0, 4);
-      console.log("this.blog solo 4 elelemntos")
-      console.log(this.blog)
-      console.log("this.memorias solo 4 elelemntos")
-      console.log(this.memorias);
-      console.log("this.RECOMENDAIONES solo 4 elelemntos")
-      console.log(this.recomendaciones);
+      // console.log("this.blog solo 4 elelemntos")
+      // console.log(this.blog)
+      // console.log("this.memorias solo 4 elelemntos")
+      // console.log(this.memorias);
+      // console.log("this.RECOMENDAIONES solo 4 elelemntos")
+      // console.log(this.recomendaciones);
     }
   },
 };

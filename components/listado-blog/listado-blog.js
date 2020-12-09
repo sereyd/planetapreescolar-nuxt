@@ -278,33 +278,10 @@ export default{
       postSeleccionado: () => import('~/components/postSeleccionado/postSeleccionado.vue'),
       postGeneral: () => import('~/components/postGeneral/postGeneral.vue'),
     },
-    async mounted(){
-
-      // this.blogpost.sinopsis= this.blogpost ? this.blogpost : "";
-      // console.log(this.subtipo)
-      console.log(this.blogpost)
-        // if(this.esBusqueda)
-        // {
-        //   console.log("BUACANDOOOO")
-        //   const clave = this.datoBuscar.toLowerCase().normalize("NFD");
-        //   let recursos = [...this.blogpost.filter(recurso =>
-        //     (
-        //       recurso.tags.includes(clave) && 
-        //       ( 
-        //         (recurso.edopost === "publico" || 
-        //         ( recurso.edopost === "privado" && recurso.idCreador === this.datosUsuario.id ) )&&
-        //         recurso.tipo === this.subtipo
-        //       ) 
-        //     )
-        //   )]
-
-        //   this.$emit('updateBlogpost',recursos)
-            
-           
-        // }
+    // async mounted(){
 
 
-    },
+    // },
     computed: {
       ...mapState(['datosUsuario','itemsmenu','descargarFree']),
       cargarecomendacion(){

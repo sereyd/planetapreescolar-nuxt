@@ -70,6 +70,7 @@ export default {
       //DATA PARA CARGA DE RECURSOS
       barraProgreso: 0,
       urlFile: ["",""],
+      urlLink: "",
       file: null,
       // tipoFile: "",
       tipoFile:"",
@@ -163,7 +164,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["almacenarFotoStorage","actualizaurlimg","actualizaImgUpload","agregarCategorias"]),
+    ...mapMutations(["almacenarFotoStorage","actualizaImgUpload","agregarCategorias","actualizarCategorias"]),
     // creanuevopost() {
     //   this.mensajeError1 = "";
     //   if (this.datablog.titulo && this.datablog.edopost) {
@@ -230,7 +231,7 @@ export default {
         //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
         const {id, nombre, apellido, lvluser} = this.datosUsuario;
         let nuevoRecurso = {};
-        console.log("subtipo", this.subtipo)
+        // console.log("subtipo", this.subtipo)
         
         if(this.subtipo === "recurso" || this.subtipo === "planeacion")
           nuevoRecurso = {
@@ -263,7 +264,7 @@ export default {
         try {
           await this.$fireStore.collection(this.tipo).add(nuevoRecurso);
           this.listaR.push(this.datosRecurso)
-          this.agregarCategorias(this.datosRecurso);
+          this.actualizarCategorias([]);
 
           // this.$emit('updateListaR',this.listaR)
           this.$emit('updateRefresh',!this.refreshPost)
@@ -540,9 +541,9 @@ export default {
           // tipoFile
           if(this.tipoRecursoSelect === "link")
           {
-            const {urlRecurso} = this.datosRecurso;
-            this.urlFile[0] = urlRecurso[0];
-            this.urlFile[1] = urlRecurso[0];
+            // const {urlRecurso} = this.datosRecurso;
+            this.urlFile[0] = this.urlLink;
+            this.urlFile[1] = this.urlLink;
             this.tipoFile = "link";
           }
           else if(this.fileWord || this.filePDF)
@@ -566,10 +567,10 @@ export default {
     },
     async validarFormularioRecurso () {
       this.esRecursoValido =this.$refs.formRecurso.validate();
-      console.log("this.esRecursoValido")
-      console.log(this.esRecursoValido)
-      console.log("this.datosRecurso.tags.length")
-      console.log(this.datosRecurso.tags.length)
+      // console.log("this.esRecursoValido")
+      // console.log(this.esRecursoValido)
+      // console.log("this.datosRecurso.tags.length")
+      // console.log(this.datosRecurso.tags.length)
       
       if(this.datosRecurso.tags.length === 0)
       {
@@ -583,13 +584,13 @@ export default {
       {
         this.tagsValido = true;
         this.msjTag = ""
-        console.log("tags validos")
+        // console.log("tags validos")
         let files =  this.files;
         this.datosRecurso.foldercode = this.datosRecurso.foldercode === "" ? this.$codegenerate() : this.datosRecurso.foldercode ;
         const ubi = `${this.subtipo}/${this.datosUsuario.id}/${this.datosRecurso.foldercode}/`;
    
-            console.log(files)
-            console.log(ubi)
+            // console.log(files)
+            // console.log(ubi)
             await this.updateFile(files, ubi)
   
         
@@ -614,7 +615,7 @@ export default {
     },
     abrirDialog(){
 
-      console.log(this.subtipo);
+      // console.log(this.subtipo);
       if(this.tipo === "RECOMENDACION")
         this.esBlog = true;
       else

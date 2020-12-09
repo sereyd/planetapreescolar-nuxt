@@ -484,7 +484,7 @@ const createStore = () => {
       },
 
       //CARGA DE POST POR TIPO DE POST PARA LA VISTA DE VER MAS
-      async  cargaBasePost({state,dispatch},tipoPost){
+      async  cargaBasePost({state,commit},tipoPost){
         let postG = [];
 
         if(state.categorias.length === 0)
@@ -511,7 +511,9 @@ const createStore = () => {
                   postG.push(datos);
 
                 });
-                dispacth("updateCategoriasInicio('postG', 'tipoPost')" )
+                state.categorias = postG;
+                // dispatch("updateCategoriasInicio('postG', 'tipoPost')" )
+                commit("updateVerMas",tipoPost);
                 
                   // this.blogpost = [...this.blogpost].slice(0,4);
                 // console.log(this.blogpost);
@@ -521,7 +523,9 @@ const createStore = () => {
           }
         }else{
           console.log("BUSCAR DE STORE")
-          dispacth("updateCategoriasInicio('[...state.categorias]', 'tipoPost')" )
+          // dispatch("updateCategoriasInicio({'state.categorias', 'tipoPost'})" )
+          commit("updateVerMas",tipoPost);
+
 
         }
     },
@@ -601,10 +605,15 @@ const createStore = () => {
         state.categorias = payload;
       },
       agregarCategorias(state, payload){
+        console.log(payload)
+        console.log(state.categorias)
+        alert("state.categorias")
         state.categorias = [
           ...state.categorias,
           payload
         ];
+        console.log(state.categorias)
+        alert("state.categorias")
       },
       
 
@@ -696,7 +705,48 @@ const createStore = () => {
               console.log(error);
             });
         }
-      }
+      },
+      updateEditado(state, post){
+
+        state.categorias.map( cat =>{
+          if(post.idRecurso === cat.idRecurso)
+            cat = post;
+        })
+
+      },
+      updateVerMas(state,tipoPost){
+        // console.log(state.categorias);
+        if(tipoPost === "actividades")
+        {
+          // console.log("RECOMENDADOS")
+          state.misPost = state.categorias.filter( 
+            post  => (post.tipo === "planeacion" && (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)))
+          )
+  
+          state.otrosPost = state.categorias.filter( 
+            post  => 
+              ( post.tipo === "recurso" && (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)) )
+          )
+        }
+        else
+        {
+  
+          state.misPost = state.categorias.filter( 
+            post  => (post.tipo === tipoPost && post.idCreador === state.datosUsuario.id)
+          )
+  
+          state.otrosPost = state.categorias.filter( 
+            post  => 
+              ( post.tipo === tipoPost && (post.idCreador !== state.datosUsuario.id && post.edopost !== "privado") )
+          )
+        }
+        // console.log("state.misPost")
+        // console.log(state.misPost)
+        // console.log("state.otrosPost")
+        // console.log(state.otrosPost)
+  
+        
+      },
     }
   });
 };

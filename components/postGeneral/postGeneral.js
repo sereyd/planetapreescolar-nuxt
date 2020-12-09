@@ -20,7 +20,7 @@ export default{
               urlImagen:""
             },
             allpost:[],
-            cont:0,
+            contador:0,
         }
     },
     async mounted() {
@@ -59,23 +59,27 @@ export default{
                           idRecurso: doc.id,
                           ...data
                       }
-                      console.log(this.subtipo)
+                      // console.log(this.subtipo)
                       if(this.subtipo === "recomendacion")
                       {
                           if(
                              ( datos.tipo === "planeacion" || datos.tipo === "recurso" )  && 
                               ( datos.edopost === "publico" || 
                                   (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) 
-                              ) &&
-                              this.vistapost.idRecurso !== datos.idRecurso
+                              ) 
                           )
                           {
-
                             this.relacionados = [
                               ...this.relacionados,
                               datos]
+
+                            if(this.vistapost.idRecurso === datos.idRecurso)
+                            {
+                              this.contador = (this.relacionados.length - 1)
+                            }
                               
                           }
+                          // console.log(this.contador)
                       }
                       else{
 
@@ -83,14 +87,19 @@ export default{
                               datos.tipo === this.subtipo  && 
                               ( datos.edopost === "publico" || 
                                   (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) 
-                              ) &&
-                              this.vistapost.idRecurso !== datos.idRecurso
+                              ) 
                           )
                           {
 
                             this.relacionados = [
                               ...this.relacionados,
                               datos]
+
+                            if(this.vistapost.idRecurso === datos.idRecurso)
+                            {
+                              this.contador = (this.relacionados.length - 1)
+                            }
+                            console.log(this.contador)
                           }
                       }
 
@@ -117,6 +126,7 @@ export default{
         //OBTENEMOS EL ID DEL RECURSO (MEMORIA, RELFEXION, RECOMENDACION, ETC)
         const {idRecurso} = this.vistapost;
         this.vistapost.comentarios.push({...this.datosComentario});
+        this.relacionados[this.contador].comentarios.push({...this.datosComentario});
 
         //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
         let recursoComentariosRef = this.$fireStore.collection("CATEGORIAS").doc(idRecurso);
@@ -148,6 +158,7 @@ export default{
           this.agregarComentario();
         // console.log("biennnn")
       },
+
     },
      
     props:{
