@@ -49,16 +49,18 @@
                         <v-icon rigth dark> mdi-download </v-icon>
                         Descargar
                     </v-btn>
-                    <!-- <span v-else>Has alcanzado el limite de descargas diario</span> -->
+                    <!-- <span v-else>Has alcanzado el limite de descargas diario</span> 
+                    <v-btn class="melon white--text" @click="previsualizarDoc()" v-if="vistapost.tipoRecurso==='docx'">Previsualizar</v-btn>-->
+                    
                 </div>
             </div>
             
-            
+    
 
 
-            <v-section class="pl-5" v-html="vistapost.contenido"  >
+            <v-main class="pl-5" v-html="vistapost.contenido"  style="width:100%; max-width: 100%; overflow: auto; min-height:300px; max-height:400px; height:100%;"  >
                 
-            </v-section>
+            </v-main>
 
             <!-- :src="vistapost.urlImagen!=='' ? vistapost.urlImagen : 'images/logos/planeta_preescolar_logo.png'"  -->
 

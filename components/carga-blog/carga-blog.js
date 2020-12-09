@@ -1,4 +1,5 @@
 import { VueEditor } from "vue2-editor";
+import { mapState } from 'vuex'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale';
 import InputTag from 'vue-input-tag';
@@ -54,6 +55,7 @@ export default {
     InputTag
   },
   computed: {
+    ...mapState(['datosUsuario']),
     fechaVisual(payload){
       console.log(payload)
       // const fecha = format(payload, "dd 'de' MMMM 'de' yyyy", {locale: es});
@@ -91,7 +93,7 @@ export default {
    
         await this.$fireStore
           .collection(this.tipo)
-          .where("idCreador", "==",this.$store.state.datosUsuario.id)
+          .where("idCreador", "==",this.datosUsuario.id)
           // .where("tipo","==",this.tipo)  
           .get()
           .then((data) => {

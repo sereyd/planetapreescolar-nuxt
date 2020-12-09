@@ -2,7 +2,7 @@
 <v-main  v-if="bandera">
   <!-----Buscador------>
 <v-card class="secondary ma-3  modbuscador" >
-    <v-card-text class="backbuscador text-center white--text pa-12 rounded-2">
+    <v-card-text class="backbuscador text-center white--text pa-12 rounded-2 pt-3">
         <h1 class="medidah1">¡Muchos recursos para ti!</h1>
         <p class="medidap">Encuentra cantos, imágenes, planeaciones, todo para ti, educadora</p>
         <buscador />

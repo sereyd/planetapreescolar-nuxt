@@ -160,15 +160,10 @@ const createStore = () => {
       //APIS DEVELOP Y PRODUCCION
       urlAPI: "https://stripe-checkout-api.herokuapp.com",
       // urlAPI: "http://localhost:4242",
-
-
       descargarFree: 1,
-
       // data para ver lista completa de post
       misPost:[],
       otrosPost:[],
-
-
     }),
     actions: {
       async loginStore(context, data) {
@@ -177,6 +172,7 @@ const createStore = () => {
       scrollmenu({state}){
 
         if(window.scrollY>200){ 
+
           state.menufix=true 
           
         }else{ 
@@ -199,25 +195,18 @@ const createStore = () => {
     if(data.user!==''){
       idnot=data.user
     }
-
       var addnotificacion= await this.$fireStore.collection('Notificaciones').doc(idnot).collection('notify').add({
         icon:data.icon, 
         title: data.text,
         link:data.link,
         date:new Date(),
         status:0
-        
       })
- 
-
   },    
   async tomanotificaciones({state}){
-     
     let tomaNotifi=this.$fireStore.collection('Notificaciones').doc(state.datosUsuario.id).collection('notify').where('status','==',0)
     tomaNotifi.onSnapshot((data)=>{
-      
       state.itemsnotifi=data.docs
-    
     })
   },    
   async eliminarImagen(context,data){
@@ -228,21 +217,17 @@ const createStore = () => {
         let respdir2=respdir1.replace(/%20/gi,' ')
         console.log(respdir2)
         let desertRef =  await this.$fireStorage.ref().child(respdir2);
-
         // Delete the file
        desertRef.delete().then(function() {
           console.log('imagen eliminada')
-
           return true;
         }).catch(function(error) {
           console.error('imagen no eliminada')
           return false;
         });
-
       },
       async autenticarUsuario(context) {
         console.log("Verificando si hay sesion abierta");
-
         context.commit("compruebaConexion", "usuarios");
         setTimeout(() => {
           console.log(context.state.connection);

@@ -42,7 +42,6 @@ export default {
         [{ 'direction': 'rtl' }],
         ['clean'],
       ],
-
       //DATA PARA CREAR NUEVO RECURSO
       creaRecurso: false,
       // formRecurso: true,
@@ -77,7 +76,6 @@ export default {
       typeFileFull: "",
       // imagenF: null,
 
-      
       //DATA PARA BARRA DE PROGRESO UPLOAD
       cargando: false,
       interval: {},
@@ -102,7 +100,7 @@ export default {
       currFiles: [],
       files: [],
       filesArray:[],
-
+      showicon:false
   
     };
   },
@@ -140,6 +138,7 @@ export default {
         this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg"
         this.labelFile="Seleccione archivo"
       }
+      
       // else if(this.tipo === "AUDIOS")
       // {
       //   tipoM= "Nuevo audio";
@@ -158,6 +157,7 @@ export default {
       //   this.tipoRecursoFile = "image/*"
       //   this.labelFile="Seleccione imagen"
       // }
+
       return tipoM;
     }
   },
@@ -409,6 +409,7 @@ export default {
               //SE AGREGA LA FOTO AL STORAGE DE FIREBASE
 
               let storageRef = this.$fireStorage.ref(ubi);
+              
               let uploadTask = storageRef.child("recurso_"+this.datosRecurso.foldercode).put(file, metadata);
 
               await uploadTask.on('state_changed', // or 'state_changed'

@@ -7,11 +7,10 @@
           height="150px"
           style="background-color: #F2EAF1"
         >
-          
 
           <v-btn color="" text  @click="abrirDialog()" 
           fab
-          dark 
+          dark
           x-large
           class="m-0 p-0 btn_add_img">
               <div >
@@ -49,14 +48,24 @@
                     ref="formRecurso"
                     v-model="esRecursoValido"
                   >
-                    <div class="" v-if="!cargando">
+                    <div class="text-center" v-if="!cargando">
                         <subirImagen 
+                        v-if="subtipo !=='reflexion'"
                             titulo=""  
                             @updateImg="datosRecurso.urlImagen=$event" 
                             ejecimagen="uploadimg" 
                             tpimg="post"
                             class=" d-flex justify-center mb-4"
                         />
+                        <v-row v-if="subtipo ==='reflexion'" v-show="showicon===true" style="border:solid #ccc 1px; border-radius:10px;" >
+                            <v-col cols="2" md="2" v-for="k in 8"  :key="'pos'+k" >
+                                <v-btn @click="datosRecurso.icono='images/iconos/reflexiones/'+k+'.png';showicon=false" depressed ><img :src="'images/iconos/reflexiones/'+k+'.png'" width="50" /></v-btn>
+                            </v-col>
+                        </v-row>
+                        <v-avatar size="90" v-if="subtipo ==='reflexion'">
+                            <img :src="datosRecurso.icono" width="100%" />
+                        </v-avatar>
+                        <v-btn v-if="subtipo ==='reflexion'"  @click="showicon=true">Cambiar Icono</v-btn>
                         <v-select
                             :items="tiposRecursoList"
                             label="Tipo de video"
@@ -67,13 +76,14 @@
                         ></v-select>
                         <!-- <h1>{{subtipo}}</h1> -->
                         <v-file-input
+             
                             outlined
                             :label="labelFile"
                             prepend-icon="mdi-paperclip"
                             :accept="tipoRecursoFile"
                             v-model="file"
                             @change = "changeFile"
-                            v-if="tipoRecursoSelect === 'file'"
+                            v-if="tipoRecursoSelect === 'file' && subtipo !=='reflexion'"
                         ></v-file-input>
         <!--
             PARA VALIDAR MULTIPLES ARCHIVOS 
@@ -242,9 +252,6 @@
                     <!-- </v-row> -->
                     <!-- </div> -->
                   </v-form>
-      
-                          
-                       
               </div>
             </v-card>
         </v-dialog>

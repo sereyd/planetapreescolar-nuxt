@@ -17,7 +17,7 @@
                         titulo="Actividades para los niños" subtitulos="Recortes, actividades, días especiales, ¡todo lo que necesitas!" 
                         linkmas="recursos"  
                 />
-                <div style="width:100%; height:50px;" v-if="recursos.length > 0"></div>
+                <div style="width:100%; height:150px;" v-if="recursos.length > 0"></div>
 
         </v-main>
 </template>
@@ -40,7 +40,6 @@ export default {
   //   ...mapMutations(['guardarVistaValida']),
   // },
   async mounted() {
-      console.log("aqui1")
       // this.guardarVistaValida(true); 
       await this.cargabaseGral()
   },

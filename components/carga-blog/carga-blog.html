@@ -23,10 +23,20 @@
             <div class=" ml-3 textos">
                 <h4>{{key.titulo}}</h4>
                 <p :class="key.edopost==='privado' ? 'red--text texto_mb' : 'black--text texto_mb'">{{key.edopost}}</p>
-                <!-- <p class="texto_mb">{{ fechaVisual(key.fecha) }}</p> -->
+               
+                <v-chip 
+                color="primary"
+                dark  
+                v-if="datosUsuario.adminlvl==='1'" >
+                {{key.nombreCreador}}
+                </v-chip>
 
+                <!-- <p class="texto_mb">{{ fechaVisual(key.fecha) }}</p> -->
+                    
                 <!-- <p class="datosGrupo">{{el.cicloEscolar}}</p>
-                <p class="datosGrupo">{{el.total}} alumnos</p> -->
+                
+                    <p class="datosGrupo">{{el.total}} alumnos</p> -->
+
             </div>
         </div>
 

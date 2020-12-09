@@ -115,8 +115,10 @@ export default {
     this.cargaPost();
   },
   methods:{
+
     async cargaPost() {
-        this.memorias=[];
+
+    this.memorias=[];
         this.blog=[];
         this.reflexiones=[];
         this.planeaciones=[];
@@ -133,10 +135,10 @@ export default {
         // console.log(this.$fireStore)
         // tipo = this.datosUsuario.lvluser === 2 ? "ACTIVIDADES" : "CATEGORIAS";
         
+      if(this.datosUsuario.adminlvl && this.datosUsuario.adminlvl==='1'){
 
         await this.$fireStore
           .collection(tipo)
-          .where("idCreador", "==",this.$store.state.datosUsuario.id)
           // .where("tipo","==",this.tipo)  
           .get()
           .then((data) => {
@@ -168,9 +170,58 @@ export default {
                 else if(datos.tipo === "recurso")
                   this.recursos.push(datos)
 
-              
+              // this.listaR.push(datos);
+                // console.log("Carga tipo: "+this.tipo)
+                // console.log(doc.data())
+              // this.listaR.push(doc.data());
+            });
 
+            console.log("this.reflexiones")
+            console.log(this.reflexiones)
+              console.log("this.planeaciones")
+              console.log(this.planeaciones)
+              console.log("this.recursos")
+              console.log(this.recursos)
+              console.log("this.blog")
+              console.log(this.blog)
+              console.log("this.memorias")
+              console.log(this.memorias)
+            // console.log(this.listaR)
+          });
+
+      }else{
+
+          await this.$fireStore
+          .collection(tipo)
+          .where("idCreador", "==",this.$store.state.datosUsuario.id)
+          // .where("tipo","==",this.tipo)  
+          .get()
+          .then((data) => {
+            data.forEach((doc) => {
+              let data = doc.data();
+              data.tags = data.tags ? data.tags : [];
+              data.favoritos = data.favoritos ? data.favoritos : [];
+              delete data['idRecurso'];
+
+              datos = {
+                idRecurso: doc.id,
+                ...data
+              }
+
+                if(datos.tipo === "memoria")
+                  this.memorias.push(datos)
+
+                else if(datos.tipo === "blog")
+                  this.blog.push(datos)
               
+                else if(datos.tipo === "reflexion")
+                  this.reflexiones.push(datos)
+
+                if(datos.tipo === "planeacion")
+                  this.planeaciones.push(datos)
+
+                else if(datos.tipo === "recurso")
+                  this.recursos.push(datos)
 
               // this.listaR.push(datos);
                 // console.log("Carga tipo: "+this.tipo)
@@ -190,6 +241,12 @@ export default {
               console.log(this.memorias)
             // console.log(this.listaR)
           });
+
+      }
+
+
+
+
       } catch (e) {
         console.log(e);
       }
