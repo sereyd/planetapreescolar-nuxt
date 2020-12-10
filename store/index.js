@@ -160,10 +160,7 @@ const createStore = () => {
       //APIS DEVELOP Y PRODUCCION
       urlAPI: "https://stripe-checkout-api.herokuapp.com",
       // urlAPI: "http://localhost:4242",
-
-
       descargarFree: 1,
-
       // data para ver lista completa de post
       misPost:[],
       otrosPost:[],
@@ -180,13 +177,14 @@ const createStore = () => {
       scrollmenu({state}){
 
         if(window.scrollY>200){ 
+
           state.menufix=true 
           
         }else{ 
           state.menufix=false
       
           }
-          console.log(state.menufix)
+          //console.log(state.menufix)
         },
 
       actualizarGrupos(context, data) {
@@ -202,25 +200,18 @@ const createStore = () => {
     if(data.user!==''){
       idnot=data.user
     }
-
       var addnotificacion= await this.$fireStore.collection('Notificaciones').doc(idnot).collection('notify').add({
         icon:data.icon, 
         title: data.text,
         link:data.link,
         date:new Date(),
         status:0
-        
       })
- 
-
   },    
   async tomanotificaciones({state}){
-     
     let tomaNotifi=this.$fireStore.collection('Notificaciones').doc(state.datosUsuario.id).collection('notify').where('status','==',0)
     tomaNotifi.onSnapshot((data)=>{
-      
       state.itemsnotifi=data.docs
-    
     })
   },    
   async eliminarImagen(context,data){
@@ -229,26 +220,22 @@ const createStore = () => {
         let dirsep2=dirsep[7].split('?')
         let respdir1=dirsep2[0].replace(/%2F/gi,'/')
         let respdir2=respdir1.replace(/%20/gi,' ')
-        console.log(respdir2)
+        //console.log(respdir2)
         let desertRef =  await this.$fireStorage.ref().child(respdir2);
-
         // Delete the file
        desertRef.delete().then(function() {
-          console.log('imagen eliminada')
-
+          //console.log('imagen eliminada')
           return true;
         }).catch(function(error) {
           console.error('imagen no eliminada')
           return false;
         });
-
       },
       async autenticarUsuario(context) {
-        console.log("Verificando si hay sesion abierta");
-
+       // console.log("Verificando si hay sesion abierta");
         context.commit("compruebaConexion", "usuarios");
         setTimeout(() => {
-          console.log(context.state.connection);
+       ////   console.log(context.state.connection);
         }, 2000);
         /*
           const usuarioAuth =  this.$fireStore.collection('usuarios').where("correo", "==", user.email).get();
@@ -309,16 +296,16 @@ const createStore = () => {
                       if(suscripcion.error)
                       {
 
-                        console.log(suscripcion)
-                        console.log("SUSCRIPCION NO VÁLIDA")
+                       /// console.log(suscripcion)
+                        ////console.log("SUSCRIPCION NO VÁLIDA")
                         datos.estadoMembresia = "canceled";
-                        console.log(datos)
+                        ///console.log(datos)
                   
                         const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
                         
 
                         const d = await response.json();
-                        console.log(d)
+                       // console.log(d)
 
                         if(!datos.descargasDia)
                         {
@@ -331,7 +318,7 @@ const createStore = () => {
                         }
                         else if(d.fecha !== datos.descargasDia.fecha)
                         {
-                          console.log("el dia cambiooooooo")
+                          ///console.log("el dia cambiooooooo")
                           datos.descargasDia.disponibles= context.state.descargarFree,
                           datos.descargasDia.usadas = [];
                           datos.descargasDia.fecha = d.fecha;
@@ -362,7 +349,7 @@ const createStore = () => {
       {
         if(!state.datosUsuario.userlogin)
         {
-          console.log("necesitas iniciar sesión")
+          ///console.log("necesitas iniciar sesión")
           this.$router.push("/login");
         }
         else
@@ -414,7 +401,7 @@ const createStore = () => {
             .collection("CATEGORIAS")
             .get()
             .then(data => {
-              console.log(data);
+              ///console.log(data);
               data.forEach(doc => {
                 let data = doc.data();
                   //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA

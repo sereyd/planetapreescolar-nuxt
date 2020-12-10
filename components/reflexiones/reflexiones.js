@@ -3,6 +3,7 @@ export default{
         return {
             reflexion:[],
             reflexionSeleccionada:{},
+            imagenIcono:""
         }
     },
     computed:{
@@ -11,6 +12,13 @@ export default{
             var loncadena= this.reflexionSeleccionada.contenido.length
             var suspensivos="..."
             var contenido= this.reflexionSeleccionada.contenido.substr(0,limit)
+            this.imagenIcono="/images/iconos/globo-estrellas.png"
+
+            if(this.reflexionSeleccionada.icono){
+                this.imagenIcono=this.reflexionSeleccionada.icono
+            }
+
+            
             if(loncadena<limit){
                 suspensivos=""
             }

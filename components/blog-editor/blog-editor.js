@@ -42,7 +42,6 @@ export default {
         [{ 'direction': 'rtl' }],
         ['clean'],
       ],
-
       //DATA PARA CREAR NUEVO RECURSO
       creaRecurso: false,
       // formRecurso: true,
@@ -79,7 +78,6 @@ export default {
       typeFileFull: "",
       // imagenF: null,
 
-      
       //DATA PARA BARRA DE PROGRESO UPLOAD
       cargando: false,
       interval: {},
@@ -106,7 +104,7 @@ export default {
       filesArray:[],
 
       ubiWP:"",
-
+      showicon:false,
       completadoW: false,
       cargandoW: false,
       porcentajeW: 0,
@@ -507,6 +505,7 @@ export default {
               //SE AGREGA LA FOTO AL STORAGE DE FIREBASE
 
               let storageRef = this.$fireStorage.ref(ubi);
+              
               let uploadTask = storageRef.child("recurso_"+this.datosRecurso.foldercode).put(file, metadata);
 
               await uploadTask.on('state_changed', // or 'state_changed'

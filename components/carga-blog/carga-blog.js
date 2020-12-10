@@ -26,7 +26,7 @@ export default {
         urlRecurso: ["",""],
         tags:[],
         premium: false,
-        recomendado: false,
+        recomendado: false, 
         },
         sinopsis:"",
         customToolbar: [
@@ -129,7 +129,7 @@ export default {
    
         await this.$fireStore
           .collection(this.tipo)
-          .where("idCreador", "==",this.$store.state.datosUsuario.id)
+          .where("idCreador", "==",this.datosUsuario.id)
           // .where("tipo","==",this.tipo)  
           .get()
           .then((data) => {
