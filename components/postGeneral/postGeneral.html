@@ -121,11 +121,18 @@
                 </v-row>
             </v-card>
         </div>
+
+        <h2 class="primary--text mt-3">Relacionados</h2>
+        <div class="scroll mt-3">
+
+            <listablog 
+                :blogpost="relacionados" :esCompleto="false" @updateBlogpost="relacionados=$event"
+                tipo="CATEGORIAS" :subtipo="subtipo" 
+                titulo="" subtitulos=""  
+            />
+        </div>
         
-        <listablog 
-            :blogpost="relacionados" :esCompleto="false" @updateBlogpost="relacionados=$event"
-            tipo="CATEGORIAS" :subtipo="subtipo" 
-            titulo="Relacionados" subtitulos=""  
-        />
+      
+        
     </v-container>
 </v-card-text>

@@ -32,18 +32,42 @@
       </v-col>
 
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2">
-        <h2>Mis Actividades</h2>
-
-        <cargablog tipo="CATEGORIAS" subtipo="recurso"  :listaR="recursos"  >
+        <h2>Mis hojas de trabajo</h2>
+        <cargablog tipo="CATEGORIAS" subtipo="hojatrabajo"  :listaR="hojastrabajo"  >
           <template v-slot:header>
-            <editorblog tipo="CATEGORIAS" subtipo="recurso"   
-            @updateListaR="recursos=$event"
-            :listaR="recursos"
+            <editorblog tipo="CATEGORIAS" subtipo="hojatrabajo"   
+            @updateListaR="hojastrabajo=$event"
+            :listaR="hojastrabajo"
             :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
             @updatepost="updatepost.actividades=$event"   ></editorblog>
           </template>
         </cargablog>
+      </v-col>
 
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2">
+        <h2>Mi material didáctico</h2>
+        <cargablog tipo="CATEGORIAS" subtipo="materialdidactico"  :listaR="materialdidactico"  >
+          <template v-slot:header>
+            <editorblog tipo="CATEGORIAS" subtipo="materialdidactico"   
+            @updateListaR="materialdidactico=$event"
+            :listaR="materialdidactico"
+            :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
+            @updatepost="updatepost.actividades=$event"   ></editorblog>
+          </template>
+        </cargablog>
+      </v-col>
+
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2">
+        <h2>Mis interactivos</h2>
+        <cargablog tipo="CATEGORIAS" subtipo="interactivo"  :listaR="interactivos"  >
+          <template v-slot:header>
+            <editorblog tipo="CATEGORIAS" subtipo="interactivo"   
+            @updateListaR="interactivos=$event"
+            :listaR="interactivos"
+            :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
+            @updatepost="updatepost.actividades=$event"   ></editorblog>
+          </template>
+        </cargablog>
       </v-col>
 
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 1">
@@ -94,7 +118,9 @@ export default {
         // actividades:[],
         reflexiones:[],
         planeaciones:[],
-        recursos:[],
+        hojastrabajo:[],
+        materialdidactico:[],
+        interactivos:[],
 
       // },
       datapage: {

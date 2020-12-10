@@ -108,7 +108,7 @@ export default{
                       // this.posts.push(datos);
                       conta++;
                     });
-                    this.relacionados = this.relacionados.slice(0, 4);
+                    // this.relacionados = this.relacionados.slice(0, 4);
                     console.log("this.RELACIONADOS solo 4 elelemntos")
                     console.log(this.relacionados)
                   });

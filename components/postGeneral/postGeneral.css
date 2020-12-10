@@ -16,3 +16,10 @@
      height:230px;
      border-radius: 3em;
 }
+
+.scroll {
+    
+    width: 100%;
+    height: 250px;
+    overflow: auto;
+  }

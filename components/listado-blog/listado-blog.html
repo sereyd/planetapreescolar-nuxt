@@ -75,7 +75,7 @@
                       </v-fab-transition>
 
 
-                      <v-fab-transition class="pb-5">
+                      <v-fab-transition class="pb-5" v-if="key.tipo !== 'blog' && key.tipo !== 'memoria' && key.tipo !== 'reflexion'">
                         <v-btn
                             :key="'edo_'+index"
                             :color="key.premium === true ? 'melon' : 'primary'"
