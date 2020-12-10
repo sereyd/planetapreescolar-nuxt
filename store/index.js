@@ -164,6 +164,11 @@ const createStore = () => {
       // data para ver lista completa de post
       misPost:[],
       otrosPost:[],
+
+      //DATA DE TODOS LOS RECURSOS
+      categorias:[],
+
+
     }),
     actions: {
       async loginStore(context, data) {
@@ -179,7 +184,7 @@ const createStore = () => {
           state.menufix=false
       
           }
-          console.log(state.menufix)
+          //console.log(state.menufix)
         },
 
       actualizarGrupos(context, data) {
@@ -215,11 +220,11 @@ const createStore = () => {
         let dirsep2=dirsep[7].split('?')
         let respdir1=dirsep2[0].replace(/%2F/gi,'/')
         let respdir2=respdir1.replace(/%20/gi,' ')
-        console.log(respdir2)
+        //console.log(respdir2)
         let desertRef =  await this.$fireStorage.ref().child(respdir2);
         // Delete the file
        desertRef.delete().then(function() {
-          console.log('imagen eliminada')
+          //console.log('imagen eliminada')
           return true;
         }).catch(function(error) {
           console.error('imagen no eliminada')
@@ -227,10 +232,10 @@ const createStore = () => {
         });
       },
       async autenticarUsuario(context) {
-        console.log("Verificando si hay sesion abierta");
+       // console.log("Verificando si hay sesion abierta");
         context.commit("compruebaConexion", "usuarios");
         setTimeout(() => {
-          console.log(context.state.connection);
+       ////   console.log(context.state.connection);
         }, 2000);
         /*
           const usuarioAuth =  this.$fireStore.collection('usuarios').where("correo", "==", user.email).get();
@@ -291,16 +296,16 @@ const createStore = () => {
                       if(suscripcion.error)
                       {
 
-                        console.log(suscripcion)
-                        console.log("SUSCRIPCION NO VÁLIDA")
+                       /// console.log(suscripcion)
+                        ////console.log("SUSCRIPCION NO VÁLIDA")
                         datos.estadoMembresia = "canceled";
-                        console.log(datos)
+                        ///console.log(datos)
                   
                         const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
                         
 
                         const d = await response.json();
-                        console.log(d)
+                       // console.log(d)
 
                         if(!datos.descargasDia)
                         {
@@ -313,7 +318,7 @@ const createStore = () => {
                         }
                         else if(d.fecha !== datos.descargasDia.fecha)
                         {
-                          console.log("el dia cambiooooooo")
+                          ///console.log("el dia cambiooooooo")
                           datos.descargasDia.disponibles= context.state.descargarFree,
                           datos.descargasDia.usadas = [];
                           datos.descargasDia.fecha = d.fecha;
@@ -344,7 +349,7 @@ const createStore = () => {
       {
         if(!state.datosUsuario.userlogin)
         {
-          console.log("necesitas iniciar sesión")
+          ///console.log("necesitas iniciar sesión")
           this.$router.push("/login");
         }
         else
@@ -383,121 +388,51 @@ const createStore = () => {
       },
 
       async obtenerRecursos(context) {
-        context.state.recursosBusqueda = [];
-        let datos = {};
+        // context.state.recursosBusqueda = [];
         try {
           // console.log(context.state.datosBusqueda);
+          let datos = {};
+          let cat = [];
+          if(context.state.categorias.length === 0)
+          {
+            console.log("BUSCAR DE FIREBASE")
 
-          if (context.state.datosBusqueda.tipo === "todos") {
-            console.log(context.state.datosBusqueda.tipo)
             await this.$fireStore
-              .collection("CATEGORIAS")
-              .get()
-              .then(data => {
-                console.log(data);
-                data.forEach(doc => {
-                  let data = doc.data();
-                    //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
-                  data.tags = data.tags ? data.tags : [];
-                  data.favoritos = data.favoritos ? data.favoritos : [];
+            .collection("CATEGORIAS")
+            .get()
+            .then(data => {
+              ///console.log(data);
+              data.forEach(doc => {
+                let data = doc.data();
+                  //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
+                data.tags = data.tags ? data.tags : [];
+                data.favoritos = data.favoritos ? data.favoritos : [];
+                data.sinopsis= data.sinopsis ? data.sinopsis : "";
 
-
-                  datos = {
-                    idRecurso: doc.id,
-                    ...data
-                  }
-                  context.state.recursosBusqueda.push(datos);
-                  
-                });
+                datos = {
+                  idRecurso: doc.id,
+                  ...data
+                }
+                cat.push(datos);
+                
               });
+              context.dispatch( "actualizarCategorias('cat')" );
 
-            // // console.log("obtener Todos los Recursos")
-            // context.state.recursos.map(async (recu) => {
-            //   // console.log("santes de then")
-            //   await this.$fireStore
-            //     .collection(recu)
-            //     .get()
-            //     .then(data => {
-            //       // console.log("santes de foreach")
+            });
 
-            //       // console.log(data);
-            //       data.forEach(doc => {
-            //         let data = doc.data();
-            //         //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
-            //         data.tags = data.tags ? data.tags : [];
-            //         data.favoritos = data.favoritos ? data.favoritos : [];
-            //         delete data['idRecurso'];
-
-            //         datos = {
-            //           idRecurso: doc.id,
-            //           ...data
-            //         }
-            //         context.state.recursosBusqueda.push(datos);
-            //         // console.log("context.state.recursosBusqueda")
-            //         // console.log(context.state.recursosBusqueda)
-            //         // alert("averrr")
-            //       });
-            //       // console.log("context.state.recursosBusqueda")
-            //       // console.log(context.state.recursosBusqueda)
-            //     });
-            // });
-          // return context.state.recursosBusqueda;
-
-          } else {
-            // context.state.datosBusqueda.tipo
-            console.log(context.state.datosBusqueda.tipo)
-            await this.$fireStore
-              .collection("CATEGORIAS")
-              .where('tipo','==',context.state.datosBusqueda.tipo)
-              .get()
-              .then(data => {
-                console.log(data);
-                data.forEach(doc => {
-                  let data = doc.data();
-                    //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
-                  data.tags = data.tags ? data.tags : [];
-                  data.favoritos = data.favoritos ? data.favoritos : [];
-
-
-                  datos = {
-                    idRecurso: doc.id,
-                    ...data
-                  }
-                  context.state.recursosBusqueda.push(datos);
-                  // console.log("context.state.recursosBusqueda")
-                  // console.log(context.state.recursosBusqueda)
-                  // alert("averrr")
-                });
-              });
-              // console.log("context.state.recursosBusqueda")
-              // console.log(context.state.recursosBusqueda)
-          // return context.state.recursosBusqueda;
+          }
+          else{
+            console.log("BUSCAR DE STORE")
 
           }
 
-          // return context.state.recursosBusqueda;
+
         } catch (e) {
           console.log(e);
         }
-        return context.state.recursosBusqueda;
+        // return [...context.state.categorias];
       },
-      obtenerTodosRecursos(context) {
-        // console.log("obtenerRecursos")
-        context.state.recursos.map(recu => {
-          this.$fireStore
-            .collection(recu)
-            .get()
-            .then(data => { 
-              // console.log(data);
-              data.forEach(doc => {
-                context.state.recursosBusqueda.push(doc.data());
-                // console.log("context.state.recursosBusqueda")
-                // console.log(context.state.recursosBusqueda)
-                // alert("averrr")
-              });
-            });
-        });
-      },
+      
       async fotostorageAsync({state},ubi){
         console.log("entra al fotoStorage fotostorageAsyng: " + state.imgupload);
         let urlimagen=""
@@ -533,7 +468,88 @@ const createStore = () => {
         ///console.log("entra al fotoStorage: " + state.urlimg);
         //// limpia todos los datos 
         return urlimagen
-        },
+      },
+
+      //CARGA DE POST POR TIPO DE POST PARA LA VISTA DE VER MAS
+      async  cargaBasePost({state,commit},tipoPost){
+        let postG = [];
+
+        if(state.categorias.length === 0)
+        {
+          console.log("BUSCAR DE FIREBASE")
+          try {
+            await this.$fireStore
+              .collection("CATEGORIAS").orderBy("fecha", "desc")
+              .get()
+              .then((data) => {
+                data.forEach((doc) => {
+                  let data = doc.data();
+                  data.tags = data.tags ? data.tags : [];
+                  data.favoritos = data.favoritos ? data.favoritos : [];
+                  data.sinopsis= data.sinopsis ? data.sinopsis : "";
+
+                  delete data['idRecurso'];
+
+
+                  const datos = {
+                      idRecurso: doc.id,
+                      ...data
+                  }
+                  postG.push(datos);
+
+                });
+                state.categorias = postG;
+                // dispatch("updateCategoriasInicio('postG', 'tipoPost')" )
+                commit("updateVerMas",tipoPost);
+                
+                  // this.blogpost = [...this.blogpost].slice(0,4);
+                // console.log(this.blogpost);
+              });
+          } catch (e) {
+            console.log(e);
+          }
+        }else{
+          console.log("BUSCAR DE STORE")
+          // dispatch("updateCategoriasInicio({'state.categorias', 'tipoPost'})" )
+          commit("updateVerMas",tipoPost);
+
+
+        }
+    },
+    updateCategoriasInicio(postG, tipoPost){
+      console.log(postG);
+      if(tipoPost === "actividades")
+      {
+        console.log("RECOMENDADOS")
+        state.misPost = postG.filter( 
+          post  => (post.tipo === "planeacion" && (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)))
+        )
+
+        state.otrosPost = postG.filter( 
+          post  => 
+            ( post.tipo === "recurso" && (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)) )
+        )
+      }
+      else
+      {
+
+        state.misPost = postG.filter( 
+          post  => (post.tipo === tipoPost && post.idCreador === state.datosUsuario.id)
+        )
+
+        state.otrosPost = postG.filter( 
+          post  => 
+            ( post.tipo === tipoPost && (post.idCreador !== state.datosUsuario.id && post.edopost !== "privado") )
+        )
+      }
+      console.log("state.misPost")
+      console.log(state.misPost)
+      console.log("state.otrosPost")
+      console.log(state.otrosPost)
+
+      
+    },
+
         cerrarconexion(){
           console.log('action close conexion')
           observer()
@@ -571,6 +587,20 @@ const createStore = () => {
 
         state.vistaValida = data;
         // alert("Cambnio"+ state.vistaValida)
+      },
+      actualizarCategorias(state, payload){
+        state.categorias = payload;
+      },
+      agregarCategorias(state, payload){
+        console.log(payload)
+        console.log(state.categorias)
+        alert("state.categorias")
+        state.categorias = [
+          ...state.categorias,
+          payload
+        ];
+        console.log(state.categorias)
+        alert("state.categorias")
       },
       
 
@@ -662,7 +692,48 @@ const createStore = () => {
               console.log(error);
             });
         }
-      }
+      },
+      updateEditado(state, post){
+
+        state.categorias.map( cat =>{
+          if(post.idRecurso === cat.idRecurso)
+            cat = post;
+        })
+
+      },
+      updateVerMas(state,tipoPost){
+        // console.log(state.categorias);
+        if(tipoPost === "actividades")
+        {
+          // console.log("RECOMENDADOS")
+          state.misPost = state.categorias.filter( 
+            post  => (post.tipo === "planeacion" && (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)))
+          )
+  
+          state.otrosPost = state.categorias.filter( 
+            post  => 
+              ( post.tipo === "recurso" && (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)) )
+          )
+        }
+        else
+        {
+  
+          state.misPost = state.categorias.filter( 
+            post  => (post.tipo === tipoPost && post.idCreador === state.datosUsuario.id)
+          )
+  
+          state.otrosPost = state.categorias.filter( 
+            post  => 
+              ( post.tipo === tipoPost && (post.idCreador !== state.datosUsuario.id && post.edopost !== "privado") )
+          )
+        }
+        // console.log("state.misPost")
+        // console.log(state.misPost)
+        // console.log("state.otrosPost")
+        // console.log(state.otrosPost)
+  
+        
+      },
     }
   });
 };

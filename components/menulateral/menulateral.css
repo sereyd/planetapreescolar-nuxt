@@ -33,7 +33,7 @@
 
 .datamenu{
     width: 100%;
-    max-width:350px;
+    max-width:450px;
     border-radius:10px;
     position:relative;
  
@@ -73,6 +73,10 @@
     margin-right: 12px!important;
 }
 
+.vMmobilview{
+    font-size: 12px;
+}
+
 /*   vista mobil */
 @media (max-width:959px){
 .vMmobilview{
@@ -90,7 +94,7 @@
 
 .datamenu{
     width: 100%;
-    max-width:115px;
+    max-width:160px;
     border-radius:10px;
     position:relative;
  

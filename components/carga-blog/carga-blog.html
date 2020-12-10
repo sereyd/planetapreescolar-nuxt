@@ -60,6 +60,93 @@
                 ref="formRecursoEdit"
                 v-model="esRecursoEditValido"
               >
+                <div v-if="subtipo ==='planeacion'">
+
+                    <v-file-input
+                        outlined
+                        label="Archivo WORD"
+                        prepend-icon="mdi-paperclip"
+                        accept=".doc, .docx"
+                        v-model="fileWord"
+                        @change = "changeWord"
+                        v-if="!cargandoW"
+    
+                    ></v-file-input>
+                
+                    <v-progress-linear
+                        class="mb-6"
+                        v-model="porcentajeW"
+                        color="primary"
+                        height="20"
+                        v-else
+                    >
+                        <strong class="white--text" style="font-size: 14px;">{{ Math.ceil(porcentajeW) }}%</strong>
+                    </v-progress-linear>
+
+
+                    <v-file-input
+                        outlined
+                        label="Archivo PDF"
+                        prepend-icon="mdi-paperclip"
+                        accept=".pdf"
+                        v-model="filePDF"
+                        @change = "changePDF"
+                        v-if="!cargandoP"
+    
+                    ></v-file-input>
+                    <v-progress-linear
+                        class="mb-6"
+                        v-model="porcentajeP"
+                        color="primary"
+                        height="20"
+                        v-else
+                    >
+                        <strong class="white--text" style="font-size: 14px;">{{ Math.ceil(porcentajeP) }}%</strong>
+                    </v-progress-linear>
+                </div>
+
+                <v-select
+                    :items="tiposRecursoList"
+                    label="Tipo de recurso"
+                    solo
+                    outlined
+                    v-model="tipoRecursoSelect"
+                    v-if="subtipo !=='planeacion' && subtipo !=='reflexion'"
+                ></v-select>
+
+                <div v-if="tipoRecursoSelect === 'file' && subtipo !=='planeacion'" >
+                    
+                    <v-file-input
+                        outlined
+                        label="Seleccione un archivo válido"
+                        prepend-icon="mdi-paperclip"
+                        accept="audio/mp3, image/png, image/jpg, .ppt, .pptx, .pdf"
+                        v-model="file"
+                        @change = "changeFile"
+                        v-if="!cargandoF"
+    
+                    ></v-file-input>
+                    <v-progress-linear
+                        class="mb-6"
+                        v-model="porcentajeF"
+                        color="primary"
+                        height="20"
+                        v-else
+                    >
+                        <strong class="white--text" style="font-size: 14px;">{{ Math.ceil(porcentajeF) }}%</strong>
+                    </v-progress-linear>
+
+                </div>
+                <v-text-field
+                    v-model="datosRecursoEdit.urlRecurso[0]"
+                    placeholder="Link del video"
+                    required
+                    outlined
+                    :rules="[v => !!v || 'Link del video es requerida']"
+                    @keyup.enter=""
+                    v-else-if="tipoRecursoSelect === 'link' && subtipo !=='planeacion'"
+                ></v-text-field>
+
                     
 
                     <v-text-field
@@ -70,6 +157,19 @@
                         :rules="[v => !!v || 'titulo del post es requerida']"
                         @keyup.enter=""
                     ></v-text-field>
+                    <v-textarea
+                        solo
+                        outlined
+                        required
+                        v-model="datosRecursoEdit.sinopsis"
+                        name="input-7-4"
+                        :rules="sinopsisReglas"
+                        label="Sinopsis..."
+                        v-if="(subtipo === 'planeacion' || subtipo === 'recurso')"
+
+                        @keyup.enter=""
+
+                    ></v-textarea>
 
                     <v-text-field
                             v-model="datosRecursoEdit.materia"
@@ -78,7 +178,7 @@
                             outlined
                             :rules="[v => !!v || 'Materia grupo es requerida']"
                             @keyup.enter=""
-                            v-if="esBlog"
+                            v-if="datosRecursoEdit.tipo === 'planeacion' || datosRecursoEdit.tipo === 'recurso'"
                     ></v-text-field>
                     <v-text-field
                         v-model="datosRecursoEdit.grado"
@@ -87,7 +187,8 @@
                         outlined
                         :rules="[v => !!v || 'Grado es requerida']"
                         @keyup.enter=""
-                        v-if="esBlog"
+                        v-if="datosRecursoEdit.tipo === 'planeacion' || datosRecursoEdit.tipo === 'recurso'"
+
                     ></v-text-field>
 
                     <!-- <v-textarea
@@ -173,6 +274,7 @@
                             class="mb-2 mt-2 tags_input"
                         >
                     </input-tag>
+                    <p><small>*Presione enter o ingrese una coma para agregar otro tag</small></p>
                     <div v-if="tagsValido === false" >
                         <p :class="[tagsValido ? '' : 'errorTags']">{{msjTag}}</p>
                     </div>

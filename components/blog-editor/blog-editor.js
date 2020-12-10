@@ -63,11 +63,13 @@ export default {
       },
       materia: "",
       grado: "",
+      sinopsis: "",
       esUrlimgR: false,
 
       //DATA PARA CARGA DE RECURSOS
       barraProgreso: 0,
-      urlFile: [],
+      urlFile: ["",""],
+      urlLink: "",
       file: null,
       // tipoFile: "",
       tipoFile:"",
@@ -79,7 +81,7 @@ export default {
       //DATA PARA BARRA DE PROGRESO UPLOAD
       cargando: false,
       interval: {},
-      porcentaje: 0,
+      porcentaje: 60,
       bytesTotal: 0,
       bytesTranferidos: 0,
       updatedCollection: false,
@@ -100,7 +102,25 @@ export default {
       currFiles: [],
       files: [],
       filesArray:[],
-      showicon:false
+
+      ubiWP:"",
+      showicon:false,
+      completadoW: false,
+      cargandoW: false,
+      porcentajeW: 0,
+      fileWord:null,
+
+
+      completadoP: false,
+      cargandoP: false,
+      porcentajeP: 0,
+      filePDF:null,
+
+      // REGLAS PARA FORMULARIO
+      sinopsisReglas: [
+        v => !!v || 'Sinopsis es requerido',
+        v => (v && v.length <= 500) || 'Sinopsis debe tener menos de 500 caracteres',
+      ],
   
     };
   },
@@ -138,105 +158,78 @@ export default {
         this.tipoRecursoFile = "audio/mp3, image/png,image/jpeg"
         this.labelFile="Seleccione archivo"
       }
-      
-      // else if(this.tipo === "AUDIOS")
-      // {
-      //   tipoM= "Nuevo audio";
-      //   this.tipoRecursoFile = "audio/*"
-      //   this.labelFile="Seleccione audio"
-      // }
-      // else if(this.tipo === "VIDEOS")
-      // {
-      //   tipoM= "Nuevo video";
-      //   this.tipoRecursoFile = "video/mp4"
-      //   this.labelFile="Seleccione video"
-      // }
-      // else if(this.tipo === "IMAGENES")
-      // {
-      //   tipoM= "Nueva imagen";
-      //   this.tipoRecursoFile = "image/*"
-      //   this.labelFile="Seleccione imagen"
-      // }
-
       return tipoM;
     }
   },
   methods: {
-    ...mapMutations(["almacenarFotoStorage","actualizaurlimg","actualizaImgUpload"]),
-    creanuevopost() {
-      this.mensajeError1 = "";
-      if (this.datablog.titulo && this.datablog.edopost) {
-        this.editar = false;
-        this.creablog = true;
-      } else {
-        this.mensajeError1 = "Ingrese todos los datos para continuar";
+    ...mapMutations(["almacenarFotoStorage","actualizaImgUpload","agregarCategorias","actualizarCategorias"]),
+    // creanuevopost() {
+    //   this.mensajeError1 = "";
+    //   if (this.datablog.titulo && this.datablog.edopost) {
+    //     this.editar = false;
+    //     this.creablog = true;
+    //   } else {
+    //     this.mensajeError1 = "Ingrese todos los datos para continuar";
 
-        setTimeout(() => {
-          this.mensajeError1 = "";
-        }, 2000);
-      }
-    },
-    guardaPost() {
-      try {
-      } catch (e) {
-        console.error(e);
-      }
-    },
-    cerrar() {
-      this.creablog = false;
-      this.editar = true;
-    },
-    async guardarPost() {
-      try {
-        if (this.imagen === "true") {
-          if (this.preview) {
-            this.almacenarFotoStorage(
-              this.tipo+"/" + this.datosUsuario.foldercode
-            );
-          } else {
-            this.guardaenstore();
-          }
-        }else{
-          this.guardaenstore();
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    },
-    async guardaenstore() {
-      try {
-        var date=new Date();
-        this.datablog.fecha=date.getDay()+"-"+date.getMonth()+"-"+date.getFullYear();
-        var numhora=date.getSeconds()+date.getMilliseconds()
-        await this.$fireStore.collection(this.tipo).add(this.datablog);
-        this.creablog = false;
-            this.datablog.urlImagen=""
-            this.datablog.edopost=""
-            this.datablog.fecha=""
-            this.datablog.titulo=""
-            this.datablog.contenido=""
-        this.$emit('updatepost',numhora)
-      } catch (e) {
-        console.error(e);
-      }
-    },
+    //     setTimeout(() => {
+    //       this.mensajeError1 = "";
+    //     }, 2000);
+    //   }
+    // },
+    // guardaPost() {
+    //   try {
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
+    // },
+    // cerrar() {
+    //   this.creablog = false;
+    //   this.editar = true;
+    // },
+    // async guardarPost() {
+    //   try {
+    //     if (this.imagen === "true") {
+    //       if (this.preview) {
+    //         this.almacenarFotoStorage(
+    //           this.tipo+"/" + this.datosUsuario.foldercode
+    //         );
+    //       } else {
+    //         this.guardaenstore();
+    //       }
+    //     }else{
+    //       this.guardaenstore();
+    //     }
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
+    // },
+    // async guardaenstore() {
+    //   try {
+    //     var date=new Date();
+    //     this.datablog.fecha=date.getDay()+"-"+date.getMonth()+"-"+date.getFullYear();
+    //     var numhora=date.getSeconds()+date.getMilliseconds()
+    //     await this.$fireStore.collection(this.tipo).add(this.datablog);
+    //     this.creablog = false;
+    //         this.datablog.urlImagen=""
+    //         this.datablog.edopost=""
+    //         this.datablog.fecha=""
+    //         this.datablog.titulo=""
+    //         this.datablog.contenido=""
+    //     this.$emit('updatepost',numhora)
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
+    // },
 
     //METODOS PARA LA CARGA DE RECURSOS A FIREBASE
     async almacenarRecursoCollection(){
-      // console.log("this.completado")
-      // console.log(this.completado)
-      // alert("completadooo");
       if(this.completado)
       {
 
         //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
         const {id, nombre, apellido, lvluser} = this.datosUsuario;
-        // if(this.tipoFile === "imagen"){
-        //   this.datosRecurso.urlRecurso = this.urlFile
-        //   this.datosRecurso.tipoRecurso = 
-        // }
         let nuevoRecurso = {};
-        console.log("subtipo", this.subtipo)
+        // console.log("subtipo", this.subtipo)
         
         if(this.subtipo === "recurso" || this.subtipo === "planeacion")
           nuevoRecurso = {
@@ -248,6 +241,7 @@ export default {
             nombreCreador: `${nombre} ${apellido}`,
             materia: this.materia,
             grado: this.grado,
+            sinopsis: this.sinopsis,
             tipoCreador: lvluser === 2 ? 'administrador' : 'usuario',
             tipo: this.subtipo,
             // tags: this.tags
@@ -268,23 +262,133 @@ export default {
         try {
           await this.$fireStore.collection(this.tipo).add(nuevoRecurso);
           this.listaR.push(this.datosRecurso)
+          this.actualizarCategorias([]);
+
           // this.$emit('updateListaR',this.listaR)
           this.$emit('updateRefresh',!this.refreshPost)
           this.resetDatos();
-
-
 
           
         } catch (error) {
           console.log(error);
         }
-
-        
       }
-      // else{
-      //   // console.log("NO SE PUDO SUBIR EL RECURSO")
-      // }
+    },
 
+    async changeWord(){
+
+      if(this.ubiWP === "")
+      {
+        this.datosRecurso.foldercode =this.$codegenerate();
+        this.ubiWP = `${this.subtipo}/${this.datosUsuario.id}/${this.datosRecurso.foldercode}/`;
+
+      }
+
+      console.log("UBICACION")
+      console.log(this.ubiWP)
+
+      this.completadoW = false;
+      this.cargandoW = true;
+      this.porcentajeW = 0;
+
+      let file =  this.fileWord;
+      console.log(file)
+      const typeFileFull = file.type;
+      console.log(typeFileFull)
+      const metadata = {
+      contentType: typeFileFull
+      };
+
+      // file = null;
+
+      //VERIFICAR QUE EXISTA ARCHIVO PARA SUBIR
+      if(file){
+        console.log("FILE VALIDO")
+          try {
+              //SE AGREGA LA FOTO AL STORAGE DE FIREBASE
+
+              let storageRef = this.$fireStorage.ref(this.ubiWP);
+              let uploadTask = storageRef.child("word_"+this.datosRecurso.foldercode).put(file, metadata);
+
+              await uploadTask.on('state_changed', // or 'state_changed'
+              (snapshot) => {
+                  this.porcentajeW = Math.round( (snapshot.bytesTransferred / snapshot.totalBytes) * 100 );
+
+              },(error) => {
+                  console.log("ERROR")
+                  console.log(error)
+              }, () => {
+                  uploadTask.snapshot.ref.getDownloadURL()
+                  .then( async(downloadURL) => {
+                      this.urlFile[0] = downloadURL;
+                      console.log('File available at', downloadURL);
+                      console.log('URLFILE', this.urlFile);
+                      this.cargandoW = false;
+                  });
+              });
+
+          } catch (error) {
+              console.log(error)
+          }
+      }
+    },
+
+    async changePDF(){
+
+      if(this.ubiWP === "")
+      {
+        this.datosRecurso.foldercode =this.$codegenerate();
+        this.ubiWP = `${this.subtipo}/${this.datosUsuario.id}/${this.datosRecurso.foldercode}/`;
+
+      }
+
+      console.log("UBICACION")
+      console.log(this.ubiWP)
+
+      this.completadoP = false;
+      this.cargandoP = true;
+      this.porcentajeP = 0;
+
+      let file =  this.filePDF;
+      console.log(file)
+      const typeFileFull = file.type;
+      console.log(typeFileFull)
+      const metadata = {
+      contentType: typeFileFull
+      };
+
+      
+      try {
+          //SE AGREGA LA FOTO AL STORAGE DE FIREBASE
+
+          let storageRef = this.$fireStorage.ref(this.ubiWP);
+          let uploadTask = storageRef.child("pdf_"+this.datosRecurso.foldercode).put(file, metadata);
+
+          await uploadTask.on('state_changed', // or 'state_changed'
+          (snapshot) => {
+              this.porcentajeP = Math.round( (snapshot.bytesTransferred / snapshot.totalBytes) * 100 );
+
+          },(error) => {
+              console.log("ERROR")
+              console.log(error)
+          }, () => {
+              uploadTask.snapshot.ref.getDownloadURL()
+              .then( async(downloadURL) => {
+                  this.urlFile[1] = downloadURL;
+                  console.log('File available at', downloadURL);
+                  console.log('URLFILE', this.urlFile);
+                  this.cargandoP = false;
+              });
+          });
+
+      } catch (error) {
+          console.log(error)
+      }
+
+    },
+    cambio(){
+      this.porcentajeW = 0;
+      this.cargandoW = false;
     },
 
     async changeFile(){
@@ -296,7 +400,8 @@ export default {
       {
 
         //SE CREA URL DEL ARCHIVO QUE SE SUBIRA
-        this.urlFile = [URL.createObjectURL(this.file)];
+        this.urlFile[0] = URL.createObjectURL(this.file);
+        this.urlFile[1] = URL.createObjectURL(this.file);
         // console.log(this.urlFile);
         // console.log(this.file);
 
@@ -330,62 +435,57 @@ export default {
 
   },
   //METODOS PARA MULTIPLES ARCHIVOS
-  remove (index) {
-    this.files.splice(index, 1)
-    this.filesArray.splice(index, 1)
-  },
-  inputChanged () {
-    console.log(this.currFiles)
+  // remove (index) {
+  //   this.files.splice(index, 1)
+  //   this.filesArray.splice(index, 1)
+  // },
+  // inputChanged () {
+  //   console.log(this.currFiles)
     
-    this.typeFileFull = "none";
-    if(this.currFiles.length === 0)
-    {
-      console.log("no hay nada")
-      this.files= [];
-      this.filesArray= [];
-    }
-    else{
+  //   this.typeFileFull = "none";
+  //   if(this.currFiles.length === 0)
+  //   {
+  //     console.log("no hay nada")
+  //     this.files= [];
+  //     this.filesArray= [];
+  //   }
+  //   else{
 
-      let res = this.currFiles[0].type.split("/");
-      if(res[0] === "application")
-      {
-        console.log("appl")
-        res = this.currFiles[0].name.split(".");
-        console.log(res)
-        res[0] = res[1];
-      }
+  //     let res = this.currFiles[0].type.split("/");
+  //     if(res[0] === "application")
+  //     {
+  //       console.log("appl")
+  //       res = this.currFiles[0].name.split(".");
+  //       console.log(res)
+  //       res[0] = res[1];
+  //     }
   
-      // this.cargando = true;
-      // this.porcentaje = 0;
-        if(this.files)
-        {
+  //     // this.cargando = true;
+  //     // this.porcentaje = 0;
+  //       if(this.files)
+  //       {
   
-          //SE CREA URL DEL ARCHIVO QUE SE SUBIRA
-          this.filesArray.push( {
-            urlFile: URL.createObjectURL(this.currFiles[0]),
-            typeFileFull: this.currFiles[0].type,
-            bytesTranferidos: (this.currFiles[0].size / 1000000).toFixed(2),
-            tipoFile: res[0],
+  //         //SE CREA URL DEL ARCHIVO QUE SE SUBIRA
+  //         this.filesArray.push( {
+  //           urlFile: URL.createObjectURL(this.currFiles[0]),
+  //           typeFileFull: this.currFiles[0].type,
+  //           bytesTranferidos: (this.currFiles[0].size / 1000000).toFixed(2),
+  //           tipoFile: res[0],
             
-          })
-        }
-      this.files = [
-        ...this.files,
-        ...this.currFiles,
-      ]
-      console.log(this.files)
-      console.log(this.filesArray)
-    }
+  //         })
+  //       }
+  //     this.files = [
+  //       ...this.files,
+  //       ...this.currFiles,
+  //     ]
+  //     console.log(this.files)
+  //     console.log(this.filesArray)
+  //   }
 
-  },
+  // },
   
 
   async updateFile(fileL, ubi){
-      // console.log("listaR VALIDACION")
-      // console.log(this.listaR)
-      // this.datosRecurso.foldercode =this.$codegenerate();
-      // const ubi = `${this.subtipo}/${this.datosUsuario.id}/${this.datosRecurso.foldercode}/`;
-
       this.cargando = true;
       this.updatedCollection = false;
       this.porcentaje = 0;
@@ -397,10 +497,6 @@ export default {
       contentType: this.typeFileFull
       // contentType: 'video/*'
       };
-      // await this.almacenarFotoStorage(ubi);
-      
-
-      // if(this.subtipo !== "recurso" && this.subtipo !== "planeacion")
 
       //VERIFICAR QUE EXISTA ARCHIVO PARA SUBIR
       if(file){
@@ -426,18 +522,13 @@ export default {
               // Upload completed successfully, now we can get the download URL
                   uploadTask.snapshot.ref.getDownloadURL()
                   .then( async(downloadURL) => {
-                      this.urlFile = [downloadURL];
+                      // this.urlFile = [downloadURL];
+                      this.urlFile[0] = downloadURL;
+                      this.urlFile[1] = downloadURL;
                       console.log('File available at', downloadURL);
                       console.log('URLFILE', this.urlFile);
-                      // console.log("saliendo fotoStorage: "+ this.urlFile)
-                      // this.cargando = false;
                       this.completado = true;
-                      // console.log("listaR then de update")
-                      // console.log(this.listaR)
                       this.almacenarFotoStorage(ubi);
-
-                      
-                      // this.almacenarRecursoCollection();
 
                   });
               });
@@ -449,146 +540,36 @@ export default {
           // tipoFile
           if(this.tipoRecursoSelect === "link")
           {
-            const {urlRecurso} = this.datosRecurso;
-            this.urlFile = urlRecurso[0];
+            // const {urlRecurso} = this.datosRecurso;
+            this.urlFile[0] = this.urlLink;
+            this.urlFile[1] = this.urlLink;
             this.tipoFile = "link";
+          }
+          else if(this.fileWord || this.filePDF)
+          {
+
+            this.tipoFile = "docx/pdf";
           }
           else
           {
 
-            this.urlFile = [];
+            this.urlFile = ["",""];
             this.tipoFile = "none";
           }
 
-          // this.urlFile = "none";
-          // this.urlFile= this.urlFile === 'none' ? "" : "none";
           this.porcentaje = 100;
           this.completado = true;
           this.almacenarFotoStorage(ubi);
       }
 
-    //   else
-
-    //   if(fileL){
-
-    //     try {
-    //         //SE AGREGA LA FOTO AL STORAGE DE FIREBASE
-            
-    //         // files.map(async(file) => {
-              
-              
-    //           let metadata = {
-    //             contentType: fileL.type
-    //             // contentType: 'video/*'
-    //           };
-    //           console.log("ENTANDO A UPLOADTASK")
-    //           console.log(fileL)
-              
-
-    //           // this.$fireStorage.ref(ubi).put(fileL, metadata)
-    //           // .then((snapshot) => {
-    //           //   this.porcentaje = Math.round( (snapshot.bytesTransferred / snapshot.totalBytes) * 100 );
-    //           //   // console.log('Upload is ' + this.porcentaje + '% done');
-    //           //   this.bytesTranferidos = ( snapshot.bytesTransferred / 1000000).toFixed(2);
-    //           //   this.bytesTotal = ( snapshot.totalBytes / 1000000).toFixed(2);
-    //           //   console.log(this.bytesTranferidos ,'/',this.bytesTotal)
-    //           //   console.log('One success:')
-    //           // })
-    //           // .then( (re) =>{
-    //           //   console.log("asasasasasasas");
-    //           //   console.log(re);
-    //           // })
-    //           // .catch((error) => {
-    //           //   console.log('One failed:')
-    //           // });
-
-
-    //           console.log(ubi)
-    //           let storageRef = this.$fireStorage.ref(ubi);
-    //           let uploadTask = storageRef.child("archivo_"+this.datosRecurso.foldercode).put(files);
-              
-    //           await uploadTask.on('state_changed', // or 'state_changed'
-    //           (snapshot) => {
-    //               this.porcentaje = Math.round( (snapshot.bytesTransferred / snapshot.totalBytes) * 100 );
-    //               // console.log('Upload is ' + this.porcentaje + '% done');
-    //               this.bytesTranferidos = ( snapshot.bytesTransferred / 1000000).toFixed(2);
-    //               this.bytesTotal = ( snapshot.totalBytes / 1000000).toFixed(2);
-    //               console.log(this.bytesTranferidos ,'/',this.bytesTotal)
-  
-    //           },(error) => {
-    //               console.log("ERROR")
-    //               console.log(error)
-    //           }, () => {
-    //           // Upload completed successfully, now we can get the download URL
-    //               uploadTask.snapshot.ref.getDownloadURL()
-    //               .then( async(downloadURL) => {
-
-    //                   contFiles++;
-              
-    //                   console.log("ARCVHIOSSS")
-    //                   console.log(fileL)
-    //                   // console.log(fileL)
-    //                   console.log( this.urlFile)
-    //                   // alert("primer archiuvo")
-    //                   this.urlFile.push(downloadURL);
-    //                   console.log( this.urlFile)
-    //                   // alert("primer archiuvo")
-    //                   // console.log('File available at', downloadURL);
-    //                   // console.log("saliendo fotoStorage: "+ this.urlFile)
-    //                   // this.cargando = false;
-    //                   // console.log("listaR then de update")
-    //                   // console.log(this.listaR)
-    //                   // if(contFiles === files.length)
-    //                   // {
-    //                   //   this.completado = true;
-    //                   //   this.almacenarFotoStorage(ubi);
-    //                   // }else{
-    //                     this.porcentaje = 0;
-    //                     this.bytesTranferidos = 0;
-    //                     this.bytesTotal = 0;
-    //                   // }
-  
-                      
-    //                   // this.almacenarRecursoCollection();
-  
-    //               });
-    //           })
-
-
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }else{
-    //     // tipoFile
-    //     if(this.tipoRecursoSelect === "link")
-    //     {
-    //       const {urlRecurso} = this.datosRecurso;
-    //       this.urlFile = urlRecurso[0];
-    //       this.tipoFile = "link";
-    //     }
-    //     else
-    //     {
-
-    //       this.urlFile = [];
-    //       this.tipoFile = "none";
-    //     }
-
-    //     // this.urlFile = "none";
-    //     // this.urlFile= this.urlFile === 'none' ? "" : "none";
-    //     this.porcentaje = 100;
-    //     this.completado = true;
-    //     this.almacenarFotoStorage(ubi);
-    // }
-
-
-
+    
     },
     async validarFormularioRecurso () {
       this.esRecursoValido =this.$refs.formRecurso.validate();
-      console.log("this.esRecursoValido")
-      console.log(this.esRecursoValido)
-      console.log("this.datosRecurso.tags.length")
-      console.log(this.datosRecurso.tags.length)
+      // console.log("this.esRecursoValido")
+      // console.log(this.esRecursoValido)
+      // console.log("this.datosRecurso.tags.length")
+      // console.log(this.datosRecurso.tags.length)
       
       if(this.datosRecurso.tags.length === 0)
       {
@@ -602,37 +583,15 @@ export default {
       {
         this.tagsValido = true;
         this.msjTag = ""
-        console.log("tags validos")
+        // console.log("tags validos")
         let files =  this.files;
-        this.datosRecurso.foldercode =this.$codegenerate();
+        this.datosRecurso.foldercode = this.datosRecurso.foldercode === "" ? this.$codegenerate() : this.datosRecurso.foldercode ;
         const ubi = `${this.subtipo}/${this.datosUsuario.id}/${this.datosRecurso.foldercode}/`;
-        
-        console.log("ANTES DE MAP")
-        // Promise.all(
-          // files.map(async(file) => {
-
-          //   console.log("DESDE VALIDACION")
-            console.log(files)
-            console.log(ubi)
+   
+            // console.log(files)
+            // console.log(ubi)
             await this.updateFile(files, ubi)
   
-          // })
-        // )
-        // .then((url) => {
-        //   console.log(`All success`)
-        //   console.log("DESPUES DE MAP")
-        //   this.completado = true;
-        //   this.almacenarFotoStorage(ubi);
-        // })
-        // files.map(async(file) => {
-
-        //   console.log("DESDE VALIDACION")
-        //   console.log(file)
-        //   this.updateFile(file, ubi).then(res =>{
-        //     console.log("UN UPDATE DEL RCURSO HECHO....")
-        //   });
-
-        // })
         
       }
 
@@ -655,18 +614,15 @@ export default {
     },
     abrirDialog(){
 
-      console.log(this.tipo);
+      // console.log(this.subtipo);
       if(this.tipo === "RECOMENDACION")
         this.esBlog = true;
       else
         this.esBlog = false;
 
       // if(TtipoRecursoSelect === 'file')
-      
-      if(this.tipo === "VIDEOS")
+      if(this.subtipo === "reflexion")
         this.tipoRecursoSelect = "";
-      else
-        this.tipoRecursoSelect = "file";
 
       this.creaRecurso=true
     },
@@ -690,13 +646,17 @@ export default {
       },
       this.materia ="";
       this.grado ="";
+      this.sinopsis ="";
       this.tipoRecursoSelect = "";
       
       this.file = null;
-      this.urlFile= [];
+      this.urlFile= ["",""];
       this.tipoFile="";
       this.typeFileFull= "";
       this.updatedCollection = true;
+
+      this.filePDF = null;
+      this.fileWord = null;
 
       this.completado = false;
       this.bytesTotal=0;
@@ -705,9 +665,6 @@ export default {
 
       this.actualizaImgUpload("");
     },
-
-
-
 
   },
   mounted() {

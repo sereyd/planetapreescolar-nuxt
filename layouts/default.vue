@@ -87,7 +87,7 @@
   position:fixed;  
   top:90px;
   z-index:1; 
-}
+} 
 
 
 .menufixednavmovil{

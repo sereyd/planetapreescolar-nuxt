@@ -17,7 +17,7 @@
 <listablog :esCompleto="false" tipo="RECOMENDACION" titulo="Recomendación del día" subtitulos="Una sección de recursos y planeación para tu día"  linkmas="recomendacion"  /> -->
 
   <!---------RECOMENDACIONES------------>
-<div style="width:100%; height:50px;"></div>
+<div style="width:100%; height:0px;"></div>
 <listablog 
   :blogpost="recomendaciones" :esCompleto="false" @updateBlogpost="recomendaciones=$event"
   tipo="CATEGORIAS" subtipo="recomendacion" 
@@ -83,16 +83,16 @@ export default {
   //   ...mapMutations(['guardarVistaValida']),
   // },
   async mounted() {
-      console.log("HOME")
-      console.log(this.bandera)
+      // console.log("HOME")
+      // console.log(this.bandera)
       // this.guardarVistaValida(true); 
       await this.cargabaseGral()
       this.bandera = true
-      console.log("HOME")
-      console.log(this.bandera)
+      // console.log("HOME")
+      // console.log(this.bandera)
   },
   computed: {
-    ...mapState(['datosUsuario']),
+    ...mapState(['datosUsuario', 'categorias']),
   },
   components: {
     buscador,
@@ -100,88 +100,83 @@ export default {
     listablog
   },
   methods: {
-    ...mapMutations(['guardarVistaValida']),
+    ...mapMutations(['guardarVistaValida','actualizarCategorias']),
     async  cargabaseGral(){
+      let cat = [];
+
+      if(this.categorias.length === 0)
+      {
+        // console.log("BUSCAR DE FIREBASE")
         try {
           // if(!this.esCompleto)
-            await this.$fireStore
-              .collection("CATEGORIAS").orderBy("fecha", "desc")
-              .get()
-              .then((data) => {
-                data.forEach((doc) => {
-                  let data = doc.data();
-                  data.tags = data.tags ? data.tags : [];
-                  data.favoritos = data.favoritos ? data.favoritos : [];
-                  delete data['idRecurso'];
+          await this.$fireStore
+            .collection("CATEGORIAS").orderBy("fecha", "desc")
+            .get()
+            .then((data) => {
+              data.forEach((doc) => {
+                let data = doc.data();
+                data.tags = data.tags ? data.tags : [];
+                data.favoritos = data.favoritos ? data.favoritos : [];
+                data.sinopsis= data.sinopsis ? data.sinopsis : "";
+
+                delete data['idRecurso'];
 
 
-                  const datos = {
-                      idRecurso: doc.id,
-                      ...data
-                  }
-                  // if(datos.tipo === "reflexion")
-                  //   this.reflexiones.push(datos)
-                  // console.log(datos.tipo)
-                  // console.log(datos)
+                const datos = {
+                    idRecurso: doc.id,
+                    ...data
+                }
 
-                  if(datos.tipo === "blog"  && 
-                    ( datos.edopost === "publico" || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) ) )
-                    this.blog = [
-                      ...this.blog,
-                      datos]
-
-                  else if(datos.tipo === "memoria"  &&
-                    ( datos.edopost === "publico" || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) ) )
-                    this.memorias.push(datos)
-
-                  else if((datos.tipo === "recurso" || datos.tipo === "planeacion") && datos.recomendado && 
-                    ( datos.edopost === "publico" || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) ) )
-                    this.recomendaciones.push(datos)
-                
-                  // this.blogpost.push(datos);
-                });
-                // console.log("this.planeaciones")
-                // console.log(this.planeaciones)
-                // console.log("this.recursos")
-                // console.log(this.recursos)
-                this.blog = this.blog.slice(0, 4);
-                this.memorias = this.memorias.slice(0, 4);
-                this.recomendaciones = this.recomendaciones.slice(0, 4);
-                console.log("this.blog solo 4 elelemntos")
-                console.log(this.blog)
-                console.log("this.memorias solo 4 elelemntos")
-                console.log(this.memorias);
-                console.log("this.RECOMENDAIONES solo 4 elelemntos")
-                console.log(this.recomendaciones);
-                
-                  // this.blogpost = [...this.blogpost].slice(0,4);
-                // console.log(this.blogpost);
+                cat.push(datos);
+              
               });
-            // else
-            //   await this.$fireStore
-            //     .collection(this.tipo).orderBy("fecha", "desc")
-            //     .get()
-            //     .then((data) => {
-            //       data.forEach((doc) => {
-            //         let data = doc.data();
-            //         data.tags = data.tags ? data.tags : [];
-            //         data.favoritos = data.favoritos ? data.favoritos : [];
-            //         delete data['idRecurso'];
+              this.updateCategoriasInicio(cat)
+              this.actualizarCategorias(cat);
+              this.sliceCategoriasInicio();
 
+            });
+        } catch (e) {
+          console.log(e);
+        }
+      }
+      else
+      {
+        console.log("BUSCAR DE STORE")
+        this.updateCategoriasInicio([...this.categorias])
+        this.sliceCategoriasInicio();
+      }
+    },
+    updateCategoriasInicio(datos){
+      // console.log(datos)
 
-            //         const datos = {
-            //             idRecurso: doc.id,
-            //             ...data
-            //           }
-            //         this.blogpost.push(datos);
-            //       });
-                    // this.blogpost = [...this.blogpost].slice(0,4);
-                  // console.log(this.blogpost);
-                // });
-          } catch (e) {
-            console.log(e);
-          }
-        },
+      datos.map(cat => {
+
+        if(cat.tipo === "blog"  && 
+          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
+          this.blog = [
+            ...this.blog,
+            cat]
+
+        else if(cat.tipo === "memoria"  &&
+          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
+          this.memorias.push(cat)
+
+        else if((cat.tipo === "recurso" || cat.tipo === "planeacion") && cat.recomendado && 
+          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
+          this.recomendaciones.push(cat)
+      })
+    },
+    sliceCategoriasInicio(){
+      this.blog = this.blog.slice(0, 4);
+      this.memorias = this.memorias.slice(0, 4);
+      this.recomendaciones = this.recomendaciones.slice(0, 4);
+      // console.log("this.blog solo 4 elelemntos")
+      // console.log(this.blog)
+      // console.log("this.memorias solo 4 elelemntos")
+      // console.log(this.memorias);
+      // console.log("this.RECOMENDAIONES solo 4 elelemntos")
+      // console.log(this.recomendaciones);
+    }
   },
 };
 </script>

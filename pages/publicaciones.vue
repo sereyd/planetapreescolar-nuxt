@@ -146,6 +146,8 @@ export default {
               let data = doc.data();
               data.tags = data.tags ? data.tags : [];
               data.favoritos = data.favoritos ? data.favoritos : [];
+              data.sinopsis= data.sinopsis ? data.sinopsis : "";
+
               delete data['idRecurso'];
 
 
@@ -229,16 +231,16 @@ export default {
               // this.listaR.push(doc.data());
             });
 
-            console.log("this.reflexiones")
-            console.log(this.reflexiones)
-              console.log("this.planeaciones")
-              console.log(this.planeaciones)
-              console.log("this.recursos")
-              console.log(this.recursos)
-              console.log("this.blog")
-              console.log(this.blog)
-              console.log("this.memorias")
-              console.log(this.memorias)
+            // console.log("this.reflexiones")
+            // console.log(this.reflexiones)
+            //   console.log("this.planeaciones")
+            //   console.log(this.planeaciones)
+            //   console.log("this.recursos")
+            //   console.log(this.recursos)
+            //   console.log("this.blog")
+            //   console.log(this.blog)
+            //   console.log("this.memorias")
+            //   console.log(this.memorias)
             // console.log(this.listaR)
           });
 
@@ -257,7 +259,7 @@ export default {
   watch: {
   async refreshPost() {
         // this.verResultados= false;
-        console.log("REFRESH LISTA DE RECURSOS")
+        // console.log("REFRESH LISTA DE RECURSOS")
         await this.cargaPost();
     },
 

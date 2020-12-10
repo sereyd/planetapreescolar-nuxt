@@ -104,10 +104,19 @@ export default{
         this.vistapost.tipoRecurso = p.tipoRecurso ? p.tipoRecurso : 'image';
         this.vistapost.urlRecurso = p.urlRecurso ? p.urlRecurso : [];
         this.fechaVisual = format(this.vistapost.fecha , "dd  MMMM yyyy", {locale: es});
+        console.log(this.subtipo)
+
+        if(this.subtipo !=='planeacion' && this.subtipo !=='recurso' && this.subtipo !=='recomendacion')
+        {
+          this.viewothers = false;
+          this.viewpost = true;
+
+        }
 
 
        if(this.vistapost.tipoRecurso !== 'none' && this.vistapost.tipoRecurso !== 'link')
        {
+        
          const xhr = new XMLHttpRequest();
          xhr.responseType = 'blob';
          xhr.onload = (event) => {
@@ -132,9 +141,15 @@ export default{
 
  
          };
-         xhr.open('GET', p.urlRecurso[0]);
-         xhr.send();
-       }
+
+         console.log(p.urlRecurso[0])
+         console.log(p.urlRecurso[1])
+          if( p.urlRecurso[1] !== "none" && p.urlRecurso[1] !== "")
+          {
+            xhr.open('GET', p.urlRecurso[1]);
+            xhr.send();
+          }
+         }
        else if(this.vistapost.tipoRecurso === 'link')
        {
          let {urlRecurso} = this.vistapost;
@@ -263,32 +278,22 @@ export default{
       postSeleccionado: () => import('~/components/postSeleccionado/postSeleccionado.vue'),
       postGeneral: () => import('~/components/postGeneral/postGeneral.vue'),
     },
-    async mounted(){
-      console.log(this.subtipo)
-        // if(this.esBusqueda)
-        // {
-        //   console.log("BUACANDOOOO")
-        //   const clave = this.datoBuscar.toLowerCase().normalize("NFD");
-        //   let recursos = [...this.blogpost.filter(recurso =>
-        //     (
-        //       recurso.tags.includes(clave) && 
-        //       ( 
-        //         (recurso.edopost === "publico" || 
-        //         ( recurso.edopost === "privado" && recurso.idCreador === this.datosUsuario.id ) )&&
-        //         recurso.tipo === this.subtipo
-        //       ) 
-        //     )
-        //   )]
-
-        //   this.$emit('updateBlogpost',recursos)
-            
-           
-        // }
+    // async mounted(){
 
 
-    },
+    // },
     computed: {
       ...mapState(['datosUsuario','itemsmenu','descargarFree']),
+      cargarecomendacion(){
+        var limit=350
+        var loncadena= this.reflexionSeleccionada.contenido.length
+        var suspensivos="..."
+        var contenido= this.reflexionSeleccionada.contenido.substr(0,limit)
+        if(loncadena<limit){
+            suspensivos=""
+        }
+        return contenido+suspensivos
+    }  
       // fechaVisualC(vm, payload){
       //   console.log(vm)
       //   console.log(payload)

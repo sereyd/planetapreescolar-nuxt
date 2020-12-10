@@ -12,6 +12,7 @@
                 <v-col cols="2" md="3" sm="3" class="white pa-0" style="border-radius:10px 0  0 10px;">
                 <v-select  class="pa-0" solo   hide-details="auto" 
                     label="Seleccione una opción":items="recursos" 
+                    small
                     v-model="datosBusqueda.tipo"
                     :rules="[v => !!v || 'Seleccione tipo de busqueda']"
     

@@ -1,10 +1,30 @@
 <v-card-text>
-    <v-container>
+    <v-container v-if="relacionados.length !== 0">
         <v-card style="border-radius: 14px;">
+        <div class="d-flex justify-space-between">
+            <v-btn
+              icon
+              color="primary"
+              class="ml-5"
+              @click="contador--"
+              :disabled="contador === 0"
+            >
+              <v-icon style="font-size: 35px;">mdi-arrow-left-bold</v-icon>
+            </v-btn>
+            <v-btn
+              icon
+              color="primary"
+              class="mr-5"
+              @click="contador++"
+              :disabled="contador === (relacionados.length - 1)"
+            >
+              <v-icon style="font-size: 35px;">mdi-arrow-right-bold</v-icon>
+            </v-btn>
+        </div>
         <v-row>
             <v-col cols="12" md="5" sm="5" class="" >
                 <v-img
-                    :src="vistapost.urlImagen === '' || vistapost.urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : vistapost.urlImagen"
+                    :src="relacionados[contador].urlImagen === '' || relacionados[contador].urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : relacionados[contador].urlImagen"
                     contain
                     class="fotomd "
                     
@@ -13,10 +33,10 @@
             <v-col cols="12" md="7" sm="7" class="" >
                 <div>
                     <div v-if="subtipo==='memoria'" class=" ml-3 textos">
-                        <h4>{{vistapost.titulo}}</h4>
-                        <p>{{vistapost.nombreCreador}}</p>
+                        <h4>{{relacionados[contador].titulo}}</h4>
+                        <p>{{relacionados[contador].nombreCreador}}</p>
                         <div class="mt-4" style="font-size:15px;" v-html="cargarecomendacion"></div>
-                        <!-- <p class="texto_mb">{{ fechaVisual(vistapost.fecha) }}</p> -->
+                        <!-- <p class="texto_mb">{{ fechaVisual(relacionados[contador].fecha) }}</p> -->
                         <!-- <p class="datosGrupo">{{el.cicloEscolar}}</p>
                         <p class="datosGrupo">{{el.total}} alumnos</p> -->
                     </div>
@@ -25,17 +45,17 @@
                         v-if="subtipo==='blog'" 
                         class=" ml-3 textos"
                     >
-                        <h4>{{vistapost.titulo}}</h4>
-                        <p class="datos_extra">{{vistapost.nombreCreador}}</p>
-                        <p class="datos_extra">{{vistapost.fecha}}</p>
+                        <h4>{{relacionados[contador].titulo}}</h4>
+                        <p class="datos_extra">{{relacionados[contador].nombreCreador}}</p>
+                        <p class="datos_extra">{{relacionados[contador].fecha}}</p>
                         <div class="mt-4" style="font-size:13px;" v-html="cargarecomendacion"></div>
                     </div>
     
                     <div v-if="subtipo==='planeacion' || subtipo==='recurso' || subtipo==='recomendacion'" class=" ml-3 textos">
-                        <h4>{{vistapost.titulo}}</h4>
-                        <p class="datos_extra">{{vistapost.materia}}</p>
-                        <p class="datos_extra">{{vistapost.grado}}</p>
-                        <div class="mt-4" style="font-size:13px;" v-html="cargarecomendacion"></div>
+                        <h4>{{relacionados[contador].titulo}}</h4>
+                        <p class="datos_extra">{{relacionados[contador].materia}}</p>
+                        <p class="datos_extra">{{relacionados[contador].sinopsis}}</p>
+                        <!-- <div class="mt-4" style="font-size:13px;" v-html="cargarecomendacion"></div> -->
                     </div>
                     
                     
@@ -44,6 +64,63 @@
             </v-col>
         </v-row>
         </v-card>
+
+        <div v-if="subtipo === 'planeacion' || subtipo === 'recurso' || subtipo === 'recomendacion'">
+            <h3 class="primary--text mt-3 mb-3"> {{relacionados[contador].comentarios.length}} comentarios</h3>
+            <v-card class="card_border">
+                <v-container>
+
+                    <v-form
+                        lazy-validation
+                        ref="formComentario"
+                        v-model="esComentarioValido"
+                    >
+                
+                        <v-textarea
+                        v-model="datosComentario.comentario"
+                        placeholder="comenta aqui"
+                        required
+                        outlined
+                        :rules="[v => !!v || 'Comentario vacio']"
+                        @keyup.enter=""
+        
+                    ></v-textarea>
+                    <v-btn 
+                        v-if = "esComentarioValido" 
+                        class="mt-1 melon white--text  btn_crearG" 
+                        @click="validarFormularioComentario()" 
+                    >Comentar</v-btn>
+                    </v-form>
+                </v-container>
+            </v-card>
+
+            <v-card class="card_border mt-4">
+                <!-- :key="'post_'+index" -->
+                <v-row v-for="(comentario, index) in relacionados[contador].comentarios" :key="'comentario_'+index">
+                    <v-col cols="3" class="">
+                        <div class="pl-7">
+                            <v-avatar size="38" > 
+                                <!-- :src="a.urlImagen === 'none' || a.urlImage ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : a.urlImagen" -->
+                                <v-img
+                                :src=" comentario.urlImagen === 'none' || comentario.urlImagen==='' ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : comentario.urlImagen"
+                                alt="foto"
+                                ></v-img>
+                            </v-avatar>
+                        </div>
+                        <div class="pl-5 texto_usuario">
+                            <span>{{comentario.nombreUsuario}}</span>
+                        </div>
+                    </v-col>
+                    <v-col cols="9" class=" d-flex  texto_comentario ">
+                        <div class="pr-1">
+                            <span >{{comentario.comentario}}</span>
+                        </div>
+                    </v-col>
+                    <v-divider  class=" black mt-4"/> 
+                    
+                </v-row>
+            </v-card>
+        </div>
         
         <listablog 
             :blogpost="relacionados" :esCompleto="false" @updateBlogpost="relacionados=$event"

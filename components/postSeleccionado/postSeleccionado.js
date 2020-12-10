@@ -4,6 +4,8 @@ import { mapState, mapActions, mapMutations } from "vuex";
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale';
 import Spinner from '~/components/spinner.vue'
+import pdfviewer from '~/components/pdfviewer/pdfviewer.vue'
+
 ////import toPdf from 'office-to-pdf'
 
 
@@ -33,9 +35,6 @@ export default{
     },
     methods:{
       ...mapActions(['changeRecursosFavoritos']),
- previsualizarDoc(p){
-       
-      },
       contadorDescargar(descargasDia){
         console.log(descargasDia);
         console.log(this.vistapost)
@@ -66,12 +65,7 @@ export default{
               console.error("ErroR al agregar nuevo comentario: ", error);
           });
         }
-
-
-        
       },
-
-
       //  METODOS PARA COMENTARIOS
       async agregarComentario(){
         const {id, nombre, apellido, urlImagen} = this.datosUsuario;
@@ -156,6 +150,7 @@ export default{
       videoPlayer,
       audioPlayer,
       Spinner,
+      pdfviewer
     },
     computed: {
       ...mapState(['datosUsuario','itemsmenu','descargarFree']),
