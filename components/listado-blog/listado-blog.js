@@ -38,7 +38,8 @@ export default{
             viewothers: false,
             vistapost:{
               comentarios:[],
-              urlRecurso:[],
+              urlVista:"",
+              urlDescargable:"",
               // creador:{}
             },
             fechaVisual:"",
@@ -102,19 +103,33 @@ export default{
         this.viewothers = true;
         this.vistapost=p
         this.vistapost.tipoRecurso = p.tipoRecurso ? p.tipoRecurso : 'image';
-        this.vistapost.urlRecurso = p.urlRecurso ? p.urlRecurso : [];
+        this.vistapost.urlVista = p.urlVista ? p.urlVista : "";
+        this.vistapost.urlDescargable = p.urlDescargable ? p.urlDescargable : "";
         this.fechaVisual = format(this.vistapost.fecha , "dd  MMMM yyyy", {locale: es});
-        console.log(this.subtipo)
+        // console.log(this.subtipo)
+        // console.log(this.vistapost.tipo)
 
-        if(this.subtipo !=='planeacion' && this.subtipo !=='recurso' && this.subtipo !=='recomendacion')
+        const {tipo} =this.vistapost;
+
+        if(tipo !=='planeacion' && tipo !=='materialdidactico' && tipo !=='hojatrabajo' && tipo !=='interactivo')
         {
           this.viewothers = false;
           this.viewpost = true;
 
         }
 
+      if(this.vistapost.tipoRecurso === 'link')
+       {
+        // console.log("this.vistapost");
+        // console.log(this.vistapost);
+         let {urlVista} = this.vistapost;
+        const embed = urlVista.replace("watch?v=", "embed/");
+        this.linkembed = embed;
+        // console.log(this.linkembed);
+       }
 
-       if(this.vistapost.tipoRecurso !== 'none' && this.vistapost.tipoRecurso !== 'link')
+
+       if(this.vistapost.tipoRecurso !== 'none'  && this.vistapost.tipoRecurso !== '')
        {
         
          const xhr = new XMLHttpRequest();
@@ -122,7 +137,7 @@ export default{
          xhr.onload = (event) => {
            // console.log(xhr.response);
            const blob = xhr.response;
-           console.log(blob)
+          //  console.log(blob)
            const res = blob.type.split("/");
            const typeFile = res[1];
            if(this.vistapost.tipoRecurso !== "audio" && this.vistapost.tipoRecurso !== "image" )
@@ -130,32 +145,35 @@ export default{
            else
             this.nombreFile = this.vistapost.titulo+'.'+typeFile;
 
-          console.log(this.nombreFile);
+          // console.log(this.nombreFile);
 
  
            this.urlFileB = URL.createObjectURL(blob, {
              type: blob.type
            });
-           console.log(this.urlFileB)
+          //  console.log(this.urlFileB)
            this.spinner = false;
 
  
          };
 
-         console.log(p.urlRecurso[0])
-         console.log(p.urlRecurso[1])
-          if( p.urlRecurso[1] !== "none" && p.urlRecurso[1] !== "")
+        //  console.log(p.urlDescargable)
+        //  console.log(p.urlVista)
+          if( p.urlDescargable !== "none" && p.urlDescargable !== "")
           {
-            xhr.open('GET', p.urlRecurso[1]);
+            xhr.open('GET', p.urlDescargable);
             xhr.send();
           }
-         }
-       else if(this.vistapost.tipoRecurso === 'link')
-       {
-         let {urlRecurso} = this.vistapost;
-        const embed = urlRecurso[0].replace("watch?v=", "embed/");
-        this.linkembed = embed;
-       }
+        }
+      //  else if(this.vistapost.tipoRecurso === 'link')
+      //  {
+      //   console.log("this.vistapost");
+      //   console.log(this.vistapost);
+      //    let {urlVista} = this.vistapost;
+      //   const embed = urlVista.replace("watch?v=", "embed/");
+      //   this.linkembed = embed;
+      //   console.log(this.linkembed);
+      //  }
 
       },
       // editapost(t){

@@ -116,7 +116,7 @@
                         <!-- <p class="datos_extra">{{key.fecha}}</p> -->
                     </div>
                     
-                    <div v-if="subtipo==='planeacion' || subtipo==='recurso' || subtipo==='recomendacion'" class=" ml-3 textos">
+                    <div v-if="subtipo==='planeacion' || subtipo==='materialdidactico' || subtipo==='hojatrabajo' || subtipo==='interactivo' || subtipo==='recomendacion'" class=" ml-3 textos">
                         <!-- <p class="datos_extra">{{key}}</p> -->
                         
                         <h4>{{key.titulo}}</h4>
@@ -181,6 +181,10 @@
             :vistapost="vistapost"
             :posts:="blogpost"
             :subtipo="subtipo"
+            :spinner="spinner"
+            :urlFileB="urlFileB" @updateUrlFileB="urlFileB=$event"
+            :nombreFile="nombreFile" @updateNombreFile="nombreFile=$event"
+            :linkembed="linkembed" @updateLinkEmbed="linkembed=$event"
             :viewothers ="viewothers" @updateviewO="viewothers=$event"
             :viewpost="viewpost" @updateviewP="viewpost=$event"
         />

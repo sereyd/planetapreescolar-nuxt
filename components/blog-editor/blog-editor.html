@@ -66,36 +66,85 @@
                             <img :src="datosRecurso.icono" width="100%" />
                         </v-avatar>
                         <v-btn v-if="subtipo ==='reflexion'"  @click="showicon=true">Cambiar Icono</v-btn>
-                        <v-select
-                            :items="tiposRecursoList"
-                            label="Tipo de recurso"
-                            solo
-                            outlined
-                            v-model="tipoRecursoSelect"
-                            v-if="subtipo !=='planeacion' && subtipo !=='reflexion'"
-                        ></v-select>
 
-                        <v-file-input
-             
-                            outlined
-                            label="Seleccione un archivo válido"
-                            prepend-icon="mdi-paperclip"
-                            :accept="tipoRecursoFile"
-                            v-model="file"
-                            @change = "changeFile"
-                            v-if="tipoRecursoSelect === 'file' && subtipo !=='planeacion'"
+                        <!-- <p>{{subtipo}}</p> -->
+                        <div v-if="subtipo ==='planeacion'">
+                            <subirFile 
+                                filesAccepts=".doc, .docx" 
+                                label="Archivo WORD"
+                                :subtipo="subtipo"
+                                :foldercode="datosRecurso.foldercode" @updateFoldercode="datosRecurso.foldercode=$event" 
+                                :file="fileDescargable" @updateFile="fileDescargable=$event"
+                                @updateUrlFile="urlDescargable=$event"
+                                nickFile="word"
+                            />
 
-                        ></v-file-input>
+                            <subirFile
+                                filesAccepts=".pdf" 
+                                label="Archivo PDF"
+                                :subtipo="subtipo"
+                                :foldercode="datosRecurso.foldercode" @updateFoldercode="datosRecurso.foldercode=$event" 
+                                :file="fileVista" @updateFile="fileVista=$event"
+                                @updateUrlFile="urlVista=$event"
+                                nickFile="pdf"
+                            />
+                            
+                            
+                        </div>
 
-                        <v-text-field
-                            v-model="urlLink"
-                            placeholder="Link del video"
-                            required
-                            outlined
-                            :rules="[v => !!v || 'Link del video es requerida']"
-                            @keyup.enter=""
-                            v-else-if="tipoRecursoSelect === 'link'"
-                        ></v-text-field>
+                        <div v-if="subtipo !=='planeacion' && subtipo !=='reflexion' && subtipo !=='materialdidactico' && subtipo !=='hojatrabajo'">
+                            <v-select
+                                :items="tiposRecursoList"
+                                label="Tipo de recurso"
+                                solo
+                                outlined
+                                v-model="tipoRecursoSelect"
+                            ></v-select>
+
+
+                            <v-text-field
+                                v-model="urlVista"
+                                placeholder="Link del video"
+                                required
+                                outlined
+                                :rules="[v => !!v || 'Link del video es requerida']"
+                                @keyup.enter=""
+                                v-if="tipoRecursoSelect === 'link'"
+                            ></v-text-field>
+                            <subirFile v-else-if="tipoRecursoSelect === 'file'"
+                                filesAccepts="audio/mp3" 
+                                :label="labelFile"
+                                :subtipo="subtipo"
+                                :foldercode="datosRecurso.foldercode" @updateFoldercode="datosRecurso.foldercode=$event" 
+                                :file="fileVista" @updateFile="fileVista=$event"
+                                @updateUrlFile="urlVista=$event"
+                                nickFile="subtipo"
+                            />
+                            <subirFile
+                                filesAccepts=".pdf" 
+                                label="Archivo válido"
+                                :subtipo="subtipo"
+                                :foldercode="datosRecurso.foldercode" @updateFoldercode="datosRecurso.foldercode=$event"
+                                :file="fileDescargable" @updateFile="fileDescargable=$event"
+                                @updateUrlFile="urlDescargable=$event"
+                                nickFile="letra"
+
+                                
+                            />
+                           
+                        </div>
+
+                        <div v-else-if="subtipo ==='materialdidactico' || subtipo ==='hojatrabajo'">
+                            <subirFile 
+                                filesAccepts="image/*, .pdf, .doc, .docx" 
+                                :label="labelFile"
+                                :subtipo="subtipo"
+                                :foldercode="datosRecurso.foldercode" @updateFoldercode="datosRecurso.foldercode=$event" 
+                                :file="fileDescargable" @updateFile="fileDescargable=$event"
+                                @updateUrlFile="urlDescargable=$event"
+                                nickFile="subtipo"
+                            />
+                        </div>
 
                         
     
@@ -108,14 +157,7 @@
                             @keyup.enter=""
                         ></v-text-field>
                         
-                        <!-- <v-text-field
-                            v-model="sinopsis"
-                            placeholder="Sinopsis"
-                            required
-                            outlined
-                            :rules="[v => !!v || 'Sinopsis es requerida']"
-                            @keyup.enter=""
-                        ></v-text-field> -->
+                       
                         <v-textarea
                             solo
                             outlined
@@ -124,7 +166,7 @@
                             name="input-7-4"
                             :rules="sinopsisReglas"
                             label="Sinopsis..."
-                            v-if="(subtipo === 'planeacion' || subtipo === 'recurso')"
+                            v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo')"
                             @keyup.enter=""
 
                         ></v-textarea>
@@ -136,7 +178,7 @@
                             outlined
                             :rules="[v => !!v || 'Materia es requerida']"
                             @keyup.enter=""
-                            v-if="esBlog || (subtipo === 'recurso' || subtipo === 'planeacion')"
+                            v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo')"
                         ></v-text-field>
 
                         <v-text-field
@@ -146,17 +188,9 @@
                             outlined
                             :rules="[v => !!v || 'Grado es requerida']"
                             @keyup.enter=""
-                            v-if="esBlog || (subtipo === 'recurso' || subtipo === 'planeacion')"
+                            v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo')"
                         ></v-text-field>
-                        <!-- <v-text-field
-                            v-model="grado"
-                            placeholder="Grado"
-                            required
-                            outlined
-                            :rules="[v => !!v || 'Grado es requerida']"
-                            @keyup.enter=""
-                            v-if="esBlog || (subtipo === 'recurso' || subtipo === 'planeacion')"
-                        ></v-text-field> -->
+
 
                         <VueEditor class="elevation-3 rounded-lg" v-model="datosRecurso.contenido" :editorToolbar="customToolbar"></VueEditor>
             
@@ -187,6 +221,8 @@
                                 inset
                                 label="Premium"
                                 small
+                                v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo')"
+
                             ></v-switch>
     
                             <v-switch
@@ -194,7 +230,7 @@
                                 inset
                                 label="Recomendado"
                                 small
-                                v-if="subtipo === 'recurso' || subtipo === 'planeacion' "
+                                v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' "
 
                             ></v-switch>
                         </div>

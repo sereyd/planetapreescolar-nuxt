@@ -38,7 +38,7 @@
                 <div style="width:100%; height:50px;" v-if="interactivos.length > 0"></div>
 
                 
-                <div style="width:100%; height:150px;" v-if="recursos.length > 0"></div>
+                <div style="width:100%; height:150px;" v-if="interactivos.length > 0"></div>
 
         </v-main>
 </template>
@@ -117,18 +117,17 @@ export default {
       }
       else
       {
-        console.log("BUSCAR DE STORE")
-        console.log(this.categorias)
+        // console.log("BUSCAR DE STORE")
+        // console.log(this.categorias)
 
         this.updateCategoriasInicio([...this.categorias])
         this.sliceCategoriasInicio();
-        console.log(this.planeaciones)
-        console.log(this.recursos)
+        // console.log(this.recursos)
       }
     },
 
     updateCategoriasInicio(datos){
-      console.log(datos)
+      // console.log(datos)
       datos.map(cat => {
 
         if(cat.tipo === "planeacion"  && 
@@ -150,10 +149,10 @@ export default {
 
       })
 
-        console.log(this.planeaciones)
-        console.log(this.hojastrabajo)
-        console.log(this.materialdidactico)
-        console.log(this.interactivos)
+        // console.log(this.planeaciones)
+        // console.log(this.hojastrabajo)
+        // console.log(this.materialdidactico)
+        // console.log(this.interactivos)
     },
     sliceCategoriasInicio(){
       this.planeaciones = this.planeaciones.slice(0, 4);

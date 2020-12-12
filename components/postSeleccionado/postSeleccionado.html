@@ -15,8 +15,7 @@
             :disabled="loading3" -->
             <!-- :href="urlFileB"  -->
             <div 
-                v-if="vistapost.tipoRecurso !== 'link' && vistapost.urlRecurso.length !== 0 &&
-                (vistapost.urlRecurso[0] !== '' && vistapost.urlRecurso[0] !== 'none') &&
+                v-if="vistapost.tipoRecurso !== 'link' && vistapost.urlDescargable !== '' &&
                 ( subtipo !== 'blog' && subtipo !== 'memoria' ) && urlFileB !== ''"
             >
                 <Spinner 
@@ -50,7 +49,7 @@
                         <v-icon rigth dark> mdi-download </v-icon>
                         Descargar
                     </v-btn>
-                        <pdfviewer :src="vistapost.urlRecurso[1]" ></pdfviewer>
+                        <pdfviewer :src="vistapost.urlVista" ></pdfviewer>
                     
                 </div>
             </div>
@@ -58,19 +57,16 @@
     
 
 
-            <v-main class="pl-5" v-html="vistapost.contenido"  style="width:100%; max-width: 100%; overflow: auto; min-height:300px; max-height:400px; height:100%;"  >
-                
-            </v-main>
+            
 
             <!-- :src="vistapost.urlImagen!=='' ? vistapost.urlImagen : 'images/logos/planeta_preescolar_logo.png'"  -->
 
-            <div class="d-flex justify-center mt-5">
+            <div class="d-flex justify-center mt-5" v-if="vistapost.tipo !== 'planeacion'">
                 
-
 
                 <v-img 
                     v-if="vistapost.tipoRecurso==='image'" 
-                    :src="vistapost.urlRecurso[0]"
+                    :src="vistapost.urlVista"
                     style="max-width:50%; width:50%; background-color:azure; "
                 ></v-img>
 
@@ -80,7 +76,7 @@
                     v-else-if="vistapost.tipoRecurso==='audio'"
                     style="max-width:50%; width:50%; background-color:azure; "
                     >
-                    <source :src="vistapost.urlRecurso" />
+                    <source :src="vistapost.urlVista" />
                 </audio-player>
                 <div  class="d-flex justify-center">
                     <!-- <video-player 
@@ -88,7 +84,7 @@
                         && vistapost.tipoRecurso !=='' && vistapost.tipoRecurso !=='audio'"
                         style="max-width:50%; width:50%; background-color:azure; "
                     >
-                        <source :src="vistapost.urlRecurso" />
+                        <source :src="vistapost.urlVista" />
                     </video-player> -->
                     <iframe 
                         v-if="vistapost.tipoRecurso ==='link'"
@@ -102,6 +98,17 @@
                
             
             </div>
+            
+
+            <!--- VISOR DE PDF   AQUI -->
+
+
+            <v-main class="pl-5" v-html="vistapost.contenido"  
+            style="width:100%; max-width: 100%; overflow: auto; min-height:300px; max-height:400px; height:100%;"  
+            ></v-main>
+
+            
+
             <div class="d-flex justify-center" 
                 v-if="vistapost.tipoRecurso !=='link' && vistapost.tipoRecurso !=='none' && vistapost.tipoRecurso !==''"
             >

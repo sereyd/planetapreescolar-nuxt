@@ -60,7 +60,102 @@
                 ref="formRecursoEdit"
                 v-model="esRecursoEditValido"
               >
+
+<!-- 
+                <p>{{subtipo}}</p>
+                <p>Folder: {{datosRecursoEdit.foldercode}}</p>
+                <p>FileD: {{fileDescargable}}</p>
+                <p>FileV: {{fileVista}}</p>
+                <p>urlD: {{datosRecursoEdit.urlDescargable}}</p>
+                <p>urlV: {{datosRecursoEdit.urlVista}}</p> -->
                 <div v-if="subtipo ==='planeacion'">
+                    <subirFile 
+                        filesAccepts=".doc, .docx" 
+                        label="Archivo WORD"
+                        :subtipo="subtipo"
+                        :foldercode="datosRecursoEdit.foldercode" @updateFoldercode="datosRecursoEdit.foldercode=$event" 
+                        :file="fileDescargable" @updateFile="fileDescargable=$event"
+                        @updateUrlFile="datosRecursoEdit.urlDescargable=$event"
+                        nickFile="word"
+                        :urlFileEdit="datosRecursoEdit.urlDescargable"
+                    />
+
+                    <subirFile
+                        filesAccepts=".pdf" 
+                        label="Archivo PDF"
+                        :subtipo="subtipo"
+                        :foldercode="datosRecursoEdit.foldercode" @updateFoldercode="datosRecursoEdit.foldercode=$event" 
+                        :file="fileVista" @updateFile="fileVista=$event"
+                        @updateUrlFile="datosRecursoEdit.urlVista=$event"
+                        nickFile="pdf"
+                        :urlFileEdit="datosRecursoEdit.urlVista"
+                    />
+                    
+                    
+                </div>
+
+                <div v-if="subtipo !=='planeacion' && subtipo !=='reflexion' && subtipo !=='materialdidactico' && subtipo !=='hojatrabajo'">
+                    <v-select
+                        :items="tiposRecursoList"
+                        label="Tipo de recurso"
+                        solo
+                        outlined
+                        v-model="tipoRecursoSelect"
+                        @change="cambioSelect()"
+                    ></v-select>
+
+                    <!-- {{tipoRecursoSelect}} -->
+                    <v-text-field
+                        v-model="datosRecursoEdit.urlVista"
+                        placeholder="Link del video"
+                        required
+                        outlined
+                        :rules="[v => !!v || 'Link del video es requerida']"
+                        @keyup.enter=""
+                        v-if="tipoRecursoSelect === 'link'"
+                    ></v-text-field>
+                    <subirFile v-else-if="tipoRecursoSelect === 'file'"
+                        filesAccepts="audio/mp3" 
+                        label="Archivo de mp3"
+                        :subtipo="subtipo"
+                        :foldercode="datosRecursoEdit.foldercode" @updateFoldercode="datosRecursoEdit.foldercode=$event" 
+                        :file="fileVista" @updateFile="fileVista=$event"
+                        @updateUrlFile="datosRecursoEdit.urlVista=$event"
+                        nickFile="subtipo"
+                        :urlFileEdit="datosRecursoEdit.urlVista"
+                    />
+                    <subirFile
+                        filesAccepts=".pdf" 
+                        label="Letra de video/música"
+                        :subtipo="subtipo"
+                        :foldercode="datosRecursoEdit.foldercode" @updateFoldercode="datosRecursoEdit.foldercode=$event"
+                        :file="fileDescargable" @updateFile="fileDescargable=$event"
+                        @updateUrlFile="datosRecursoEdit.urlDescargable=$event"
+                        nickFile="letra"
+                        :urlFileEdit="datosRecursoEdit.urlDescargable"
+
+                        
+                    />
+                    
+                </div>
+
+                <div v-else-if="subtipo ==='materialdidactico' || subtipo ==='hojatrabajo'">
+                    <subirFile 
+                        filesAccepts="image/*, .pdf, .doc, .docx" 
+                        label="Archivo válido"
+                        :subtipo="subtipo"
+                        :foldercode="datosRecursoEdit.foldercode" @updateFoldercode="datosRecursoEdit.foldercode=$event" 
+                        :file="fileDescargable" @updateFile="fileDescargable=$event"
+                        @updateUrlFile="datosRecursoEdit.urlDescargable=$event"
+                        nickFile="subtipo"
+                        :urlFileEdit="datosRecursoEdit.urlDescargable"
+                    />
+                </div>
+
+
+
+
+                <!-- <div v-if="subtipo ==='planeacion'">
 
                     <v-file-input
                         outlined
@@ -145,7 +240,7 @@
                     :rules="[v => !!v || 'Link del video es requerida']"
                     @keyup.enter=""
                     v-else-if="tipoRecursoSelect === 'link' && subtipo !=='planeacion'"
-                ></v-text-field>
+                ></v-text-field> -->
 
                     
 

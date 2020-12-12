@@ -1,5 +1,10 @@
 import { mapState, mapActions, mapMutations } from "vuex";
+import { audioPlayer, videoPlayer } from 'vue-md-player'
 import listablog from '~/components/listado-blog/listado-blog.vue'
+import Spinner from '~/components/spinner.vue'
+import pdfviewer from '~/components/pdfviewer/pdfviewer.vue'
+
+
 
 // import { format } from 'date-fns'
 // import { es } from 'date-fns/locale';
@@ -24,14 +29,14 @@ export default{
         }
     },
     async mounted() {
-        console.log("RELACIONADOS")
-        console.log(this.bandera)
-        console.log(this.posts)
-        console.log(this.vistapost)
+        // console.log("RELACIONADOS")
+        // console.log(this.bandera)
+        // console.log(this.posts)
+        // console.log(this.vistapost)
         // this.guardarVistaValida(true); 
         await this.cargabaseGral()
         this.bandera = true
-        console.log(this.bandera)
+        // console.log(this.bandera)
     },
     methods: {
         verRecurso(){
@@ -63,7 +68,7 @@ export default{
                       if(this.subtipo === "recomendacion")
                       {
                           if(
-                             ( datos.tipo === "planeacion" || datos.tipo === "recurso" )  && 
+                             ( datos.tipo === "planeacion" || datos.tipo === "hojatrabajo" || datos.tipo === "materialdidactico" || datos.tipo === "interactivo" )  && 
                               ( datos.edopost === "publico" || 
                                   (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) 
                               ) 
@@ -99,7 +104,7 @@ export default{
                             {
                               this.contador = (this.relacionados.length - 1)
                             }
-                            console.log(this.contador)
+                            // console.log(this.contador)
                           }
                       }
 
@@ -109,8 +114,8 @@ export default{
                       conta++;
                     });
                     // this.relacionados = this.relacionados.slice(0, 4);
-                    console.log("this.RELACIONADOS solo 4 elelemntos")
-                    console.log(this.relacionados)
+                    // console.log("this.RELACIONADOS solo 4 elelemntos")
+                    // console.log(this.relacionados)
                   });
               } catch (e) {
                 console.log(e);
@@ -159,6 +164,104 @@ export default{
         // console.log("biennnn")
       },
 
+      contadorDescargar(descargasDia){
+        console.log(descargasDia);
+        console.log(this.vistapost)
+        const {idRecurso} = this.vistapost;
+        const {id} = this.datosUsuario;
+
+        if(this.vistapost.premium === true && this.datosUsuario.estadoMembresia !== 'active')
+        {
+          descargasDia.usadas.push(idRecurso);
+          descargasDia.disponibles= this.descargarFree;
+          //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
+          let descargasFreeRef = this.$fireStore.collection("usuarios").doc(id);
+          
+          //SE ACTUALIZA EN FIREBASE EL CAMPO DE COMENTARIOS
+          descargasFreeRef.update({
+            descargasDia
+          })
+          .then(() => {
+           
+            console.log(this.$refs.downloadFile)
+            // this.$refs.downloadFile.click();
+            // this.$refs.downloadFile.download();
+  
+            console.log("UPDATE DESCARGAR LIMITE")
+   
+          })
+          .catch((error) => {
+              console.error("ErroR al agregar nuevo comentario: ", error);
+          });
+        }
+      },
+
+      sliderF(data){
+        console.log(data)
+        console.log(this.contador)
+        // this.contador = data === "adelante" ? this.contador++ : this.contador--;
+        if(data === "adelante")
+          this.contador++
+        else
+          this.contador--
+        
+        console.log(this.contador)
+        
+        
+        this.cambioUrls();
+
+      },
+      cambioUrls(){
+        let postS = {...this.relacionados[this.contador]}
+        console.log("POST")
+        console.log(postS)
+        if(postS.tipoRecurso === 'link')
+        {
+          let {urlVista} = postS;
+          const embed = urlVista.replace("watch?v=", "embed/");
+          // this.linkembed = embed;
+          this.$emit("updateLinkEmbed",embed)
+          console.log(this.linkembed);
+        }
+
+        const xhr = new XMLHttpRequest();
+        xhr.responseType = 'blob';
+        xhr.onload = (event) => {
+           // console.log(xhr.response);
+           const blob = xhr.response;
+           console.log(blob)
+           const res = blob.type.split("/");
+           const typeFile = res[1];
+           if(postS.tipoRecurso !== "audio" && postS.tipoRecurso !== "image" )
+            this.$emit("updateNombreFile",postS.titulo+'.'+postS.tipoRecurso)
+
+            // this.nombreFile = postS.titulo+'.'+postS.tipoRecurso;
+           else
+           this.$emit("updateNombreFile", postS.titulo+'.'+typeFile)
+
+            // this.nombreFile = postS.titulo+'.'+typeFile;
+
+          console.log(this.nombreFile);
+
+ 
+          const urlFB = URL.createObjectURL(blob, {
+            type: blob.type
+          });
+          console.log(urlFB)
+          this.$emit("updateUrlFileB",urlFB)
+
+          // this.spinner = false;
+
+          
+          
+        }
+        if( postS.urlDescargable !== "none" && postS.urlDescargable !== "")
+        {
+          xhr.open('GET', postS.urlDescargable);
+          xhr.send();
+        }
+      },
+
     },
      
     props:{
@@ -185,9 +288,32 @@ export default{
               return 'BLOG'
           }
         },
+        urlFileB:{
+          default:()=>{
+            return 'BLOG'
+          }
+        },
+        nombreFile:{
+          default:()=>{
+            return 'BLOG'
+          }
+        },
+        linkembed:{
+          default:()=>{
+            return 'BLOG'
+          }
+        },
+        spinner:{
+          default:()=>{
+              return false;
+          }
+      },
     },
     components:{
-        listablog: () => import('~/components/listado-blog/listado-blog.vue')
+        listablog: () => import('~/components/listado-blog/listado-blog.vue'),
+        Spinner,
+        pdfviewer,
+        audioPlayer,
         // TreeFolderContents: () => import('./tree-folder-contents.vue')
     },
     
@@ -205,6 +331,7 @@ export default{
             suspensivos=""
         }
         return contenido+suspensivos
-    }
+      },
+      
     },
 }

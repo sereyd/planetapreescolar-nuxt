@@ -148,7 +148,9 @@ export default {
         this.blog=[];
         this.reflexiones=[];
         this.planeaciones=[];
-        this.recursos=[];
+        this.hojastrabajo=[];
+        this.materialdidactico=[];
+        this.interactivos=[];
     // console.log(this.tipo)
     // console.log(this.$store.state.datosUsuario.id)
     let datos = {};
@@ -182,7 +184,9 @@ export default {
                 ...data
               }
 
-              
+                console.log("TIPO")
+                console.log(datos.tipo)
+                console.log(datos)
                 if(datos.tipo === "memoria")
                   this.memorias.push(datos)
 
@@ -192,11 +196,17 @@ export default {
                 else if(datos.tipo === "reflexion")
                   this.reflexiones.push(datos)
 
-                if(datos.tipo === "planeacion")
+                else if(datos.tipo === "planeacion")
                   this.planeaciones.push(datos)
 
-                else if(datos.tipo === "recurso")
-                  this.recursos.push(datos)
+                else if(datos.tipo === "hojatrabajo")
+                  this.hojastrabajo.push(datos)
+
+                else if(datos.tipo === "materialdidactico")
+                  this.materialdidactico.push(datos)
+
+                else if(datos.tipo === "interactivo")
+                  this.interactivos.push(datos)
 
               // this.listaR.push(datos);
                 // console.log("Carga tipo: "+this.tipo)
@@ -208,8 +218,16 @@ export default {
             console.log(this.reflexiones)
               console.log("this.planeaciones")
               console.log(this.planeaciones)
-              console.log("this.recursos")
-              console.log(this.recursos)
+
+              console.log("this.hojastrabajo")
+              console.log(this.hojastrabajo)
+
+              console.log("this.materialdidactico")
+              console.log(this.materialdidactico)
+
+              console.log("this.interactivos")
+              console.log(this.interactivos)
+
               console.log("this.blog")
               console.log(this.blog)
               console.log("this.memorias")
@@ -245,12 +263,17 @@ export default {
                 else if(datos.tipo === "reflexion")
                   this.reflexiones.push(datos)
 
-                if(datos.tipo === "planeacion")
+                else if(datos.tipo === "planeacion")
                   this.planeaciones.push(datos)
 
-                else if(datos.tipo === "recurso")
-                  this.recursos.push(datos)
+                else if(datos.tipo === "hojatrabajo")
+                  this.hojastrabajo.push(datos)
 
+                else if(datos.tipo === "materialdidactico")
+                  this.materialdidactico.push(datos)
+
+                else if(datos.tipo === "interactivo")
+                  this.interactivos.push(datos)
               // this.listaR.push(datos);
                 // console.log("Carga tipo: "+this.tipo)
                 // console.log(doc.data())
