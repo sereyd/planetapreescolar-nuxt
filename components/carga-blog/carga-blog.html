@@ -88,7 +88,7 @@
                     
                 </div>
 
-                <div v-if="subtipo !=='planeacion' && subtipo !=='reflexion' && subtipo !=='materialdidactico' && subtipo !=='hojatrabajo'">
+                <div v-if="subtipo !=='planeacion' && subtipo !=='reflexion' && subtipo !=='materialdidactico' && subtipo !=='hojatrabajo' && subtipo !=='otro'">
                     <v-select
                         :items="tiposRecursoList"
                         label="Tipo de recurso"
@@ -133,7 +133,7 @@
                     
                 </div>
 
-                <div v-else-if="subtipo ==='materialdidactico' || subtipo ==='hojatrabajo'">
+                <div v-else-if="subtipo ==='materialdidactico' || subtipo ==='hojatrabajo' || subtipo ==='otro'">
                     <subirFile 
                         filesAccepts="image/*, .pdf, .doc, .docx" 
                         label="Archivo válido"
@@ -227,6 +227,7 @@
                                 inset
                                 label="Premium"
                                 small
+                                v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro')"
                             ></v-switch>
     
                             <v-switch
@@ -234,7 +235,7 @@
                                 inset
                                 label="Recomendado"
                                 small
-                                v-if="datosRecursoEdit.tipo === 'recurso' || datosRecursoEdit.tipo === 'planeacion' "
+                                v-if="datosRecursoEdit.tipo === 'planeacion' || subtipo ==='materialdidactico' || subtipo ==='hojatrabajo' || subtipo === 'interactivo' || subtipo ==='otro'"
                             ></v-switch>
                         </div>
 

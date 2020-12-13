@@ -21,7 +21,7 @@
               <v-icon style="font-size: 35px;">mdi-arrow-right-bold</v-icon>
             </v-btn>
         </div>
-
+        <!-- <p>{{relacionados[contador].tipo}}</p> -->
         <v-row v-if="relacionados[contador].tipo === 'planeacion' || relacionados[contador].tipo === 'materialdidactico' ">
             <v-col cols="12" md="5" sm="5" class="" >
                 <v-img
@@ -109,8 +109,14 @@
                         <p class="datos_extra">{{relacionados[contador].fecha}}</p>
                         <div class="mt-4" style="font-size:13px;" v-html="cargarecomendacion"></div>
                     </div>
+
+                    <div v-if="relacionados[contador].tipo==='otro'" class=" ml-3 textos">
+                        <h4 style="font-size: 17px;">{{relacionados[contador].titulo}}</h4>
+                        <p class="datos_extra">{{relacionados[contador].nombreCreador}}</p>
+                        <p class="datos_extra" style="font-size: 14px;" v-html="relacionados[contador].contenido.substr(0,90)"></p>
+                    </div>
     
-                    <div v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo==='recomendacion'" 
+                    <div v-else-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo==='recomendacion'" 
                     class=" ml-3 textos">
                         <h4>{{relacionados[contador].titulo}}</h4>
                         <p class="datos_extra">{{relacionados[contador].materia}}</p>

@@ -59,7 +59,7 @@ export default{
             urlFileB: "",
             spinner:true,
 
-            linkembed:"",
+            linkembed:"https://www.youtube.com/embed/AddqzrFdR4Q",
 
             // dialogPlanes:false,
         }
@@ -111,7 +111,7 @@ export default{
 
         const {tipo} =this.vistapost;
 
-        if(tipo !=='planeacion' && tipo !=='materialdidactico' && tipo !=='hojatrabajo' && tipo !=='interactivo')
+        if(tipo !=='planeacion' && tipo !=='materialdidactico' && tipo !=='hojatrabajo' && tipo !=='interactivo' && tipo !=='otro')
         {
           this.viewothers = false;
           this.viewpost = true;

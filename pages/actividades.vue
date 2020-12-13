@@ -37,8 +37,17 @@
                 />
                 <div style="width:100%; height:0px;" v-if="interactivos.length > 0"></div>
 
+                <!-------OTROS------------->
+                <listablog 
+                        :blogpost="otros" :esCompleto="false" @updateBlogpost="otros=$event"
+                        tipo="CATEGORIAS" subtipo="otro" 
+                        titulo="Otros" subtitulos="Efemérides nacionales e internacionales, convocatorias varias, Orientaciones administrativas, ¡todo lo que necesitas!" 
+                        linkmas="otros"  
+                />
+                <div style="width:100%; height:0px;" v-if="otros.length > 0"></div>
+
                 
-                <div style="width:100%; height:150px;" v-if="interactivos.length > 0"></div>
+                <!-- <div style="width:100%; height:150px;" v-if="interactivos.length > 0"></div> -->
 
         </v-main>
 </template>
@@ -57,6 +66,7 @@ export default {
       hojastrabajo:[],
       materialdidactico:[],
       interactivos:[],
+      otros:[],
     };
   },
   // methods:{
@@ -145,6 +155,10 @@ export default {
         else if(cat.tipo === "interactivo"  && 
           (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
           this.interactivos.push(cat)
+        
+        else if(cat.tipo === "otro"  && 
+          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+          this.otros.push(cat)
 
 
       })
@@ -159,6 +173,7 @@ export default {
       this.hojastrabajo = this.hojastrabajo.slice(0, 4);
       this.materialdidactico = this.materialdidactico.slice(0, 4);
       this.interactivos = this.interactivos.slice(0, 4);
+      this.otros = this.otros.slice(0, 4);
     }
   },
 };

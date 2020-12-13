@@ -22,17 +22,28 @@
             })
           "
         >
-          Mis planeaciones
+          Mis otros
         </h2>
 
         <listablog
           :blogpost="misPost" @updateBlogpost="misPost=$event"
-          tipo="CATEGORIAS"  subtipo="planeacion"
+          tipo="CATEGORIAS"  subtipo="otro"
           :userId="this.datosUsuario.id"
           titulo=""
           subtitulos=""
           :addslot="true"
         >
+          <!-- <editorblog
+            tipo="CATEGORIAS"
+            v-if="
+              $validasesion($store, {
+                sinregistro: false,
+                logeado: true,
+                permisos: 1
+              })
+            "
+            @updatepost="updatepost.misMemorias = $event"
+          ></editorblog> -->
         </listablog>
       </v-col>
 
@@ -45,8 +56,8 @@
 
         <listablog
           :blogpost="otrosPost" @updateBlogpost="otrosPost=$event"
-          tipo="CATEGORIAS"  subtipo="planeacion"
-          titulo="Planeaciones públicas"
+          tipo="CATEGORIAS"  subtipo="otro"
+          titulo="Otros publicos"
           subtitulos="Conoce lo que pasa en el mundo de la educación inicial"
         />
       </v-col>
@@ -84,7 +95,7 @@ export default {
     methods:{
     ...mapActions(['cargaBasePost']),
     async cargaPost(){
-      await this.cargaBasePost("planeacion");
+      await this.cargaBasePost("otro");
 
     },
     },

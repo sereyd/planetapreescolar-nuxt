@@ -67,7 +67,7 @@
                         </v-avatar>
                         <v-btn v-if="subtipo ==='reflexion'"  @click="showicon=true">Cambiar Icono</v-btn>
 
-                        <!-- <p>{{subtipo}}</p> -->
+                        <p>{{subtipo}}</p>
                         <div v-if="subtipo ==='planeacion'">
                             <subirFile 
                                 filesAccepts=".doc, .docx" 
@@ -92,7 +92,7 @@
                             
                         </div>
 
-                        <div v-if="subtipo !=='planeacion' && subtipo !=='reflexion' && subtipo !=='materialdidactico' && subtipo !=='hojatrabajo'">
+                        <div v-if="subtipo !=='planeacion' && subtipo !=='reflexion' && subtipo !=='materialdidactico' && subtipo !=='hojatrabajo' && subtipo !=='otro'">
                             <v-select
                                 :items="tiposRecursoList"
                                 label="Tipo de recurso"
@@ -134,7 +134,7 @@
                            
                         </div>
 
-                        <div v-else-if="subtipo ==='materialdidactico' || subtipo ==='hojatrabajo'">
+                        <div v-else-if="subtipo ==='materialdidactico' || subtipo ==='hojatrabajo' || subtipo ==='otro'">
                             <subirFile 
                                 filesAccepts="image/*, .pdf, .doc, .docx" 
                                 :label="labelFile"
@@ -221,7 +221,7 @@
                                 inset
                                 label="Premium"
                                 small
-                                v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo')"
+                                v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro')"
 
                             ></v-switch>
     
@@ -230,7 +230,7 @@
                                 inset
                                 label="Recomendado"
                                 small
-                                v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' "
+                                v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro'"
 
                             ></v-switch>
                         </div>

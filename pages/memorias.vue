@@ -1,5 +1,5 @@
 <template>
-  <v-main class="pa-10" v-if="bandera">
+  <v-main class="px-10" v-if="bandera">
     <v-row>
       <v-col
         cols="12"
@@ -47,7 +47,7 @@
         </listablog>
       </v-col>
 
-      <div style="width:100%; height:50px;"></div>
+      <div style="width:100%; height:0px;"></div>
 
       <v-col
         cols="12"

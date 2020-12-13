@@ -39,7 +39,7 @@
             @updateListaR="hojastrabajo=$event"
             :listaR="hojastrabajo"
             :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
-            @updatepost="updatepost.actividades=$event"   ></editorblog>
+            @updatepost="updatepost.hojastrabajo=$event"   ></editorblog>
           </template>
         </cargablog>
       </v-col>
@@ -52,7 +52,7 @@
             @updateListaR="materialdidactico=$event"
             :listaR="materialdidactico"
             :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
-            @updatepost="updatepost.actividades=$event"   ></editorblog>
+            @updatepost="updatepost.materialdidactico=$event"   ></editorblog>
           </template>
         </cargablog>
       </v-col>
@@ -65,7 +65,20 @@
             @updateListaR="interactivos=$event"
             :listaR="interactivos"
             :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
-            @updatepost="updatepost.actividades=$event"   ></editorblog>
+            @updatepost="updatepost.interactivos=$event"   ></editorblog>
+          </template>
+        </cargablog>
+      </v-col>
+
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2">
+        <h2>Mis otros</h2>
+        <cargablog tipo="CATEGORIAS" subtipo="otro"  :listaR="otros"  >
+          <template v-slot:header>
+            <editorblog tipo="CATEGORIAS" subtipo="otro"   
+            @updateListaR="otros=$event"
+            :listaR="otros"
+            :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
+            @updatepost="updatepost.otros=$event"   ></editorblog>
           </template>
         </cargablog>
       </v-col>
@@ -110,7 +123,11 @@ export default {
         memorias:"",
         blog:"",
         reflexiones:"",
-        recomendacion:""
+        planeaciones:"",
+        hojastrabajo:"",
+        materialdidactico:"",
+        interactivos:"",
+        otros:"",
       },
       // {
         memorias:[],
@@ -121,6 +138,7 @@ export default {
         hojastrabajo:[],
         materialdidactico:[],
         interactivos:[],
+        otros:[],
 
       // },
       datapage: {
@@ -151,6 +169,7 @@ export default {
         this.hojastrabajo=[];
         this.materialdidactico=[];
         this.interactivos=[];
+        this.otros=[];
     // console.log(this.tipo)
     // console.log(this.$store.state.datosUsuario.id)
     let datos = {};
@@ -207,6 +226,9 @@ export default {
 
                 else if(datos.tipo === "interactivo")
                   this.interactivos.push(datos)
+                
+                else if(datos.tipo === "otro")
+                  this.otros.push(datos)
 
               // this.listaR.push(datos);
                 // console.log("Carga tipo: "+this.tipo)
@@ -227,6 +249,9 @@ export default {
 
               console.log("this.interactivos")
               console.log(this.interactivos)
+
+              console.log("this.otros")
+              console.log(this.otros)
 
               console.log("this.blog")
               console.log(this.blog)
@@ -274,6 +299,9 @@ export default {
 
                 else if(datos.tipo === "interactivo")
                   this.interactivos.push(datos)
+
+                else if(datos.tipo === "otro")
+                  this.otros.push(datos)
               // this.listaR.push(datos);
                 // console.log("Carga tipo: "+this.tipo)
                 // console.log(doc.data())

@@ -68,7 +68,7 @@ export default{
                       if(this.subtipo === "recomendacion")
                       {
                           if(
-                             ( datos.tipo === "planeacion" || datos.tipo === "hojatrabajo" || datos.tipo === "materialdidactico" || datos.tipo === "interactivo" )  && 
+                             ( datos.tipo === "planeacion" || datos.tipo === "hojatrabajo" || datos.tipo === "materialdidactico" || datos.tipo === "interactivo" || datos.tipo === "otro" )  && 
                               ( datos.edopost === "publico" || 
                                   (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) 
                               ) 
