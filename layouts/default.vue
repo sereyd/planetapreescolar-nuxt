@@ -59,7 +59,7 @@
     </v-list>
 </v-col>
 
-<v-col  cols="12" :md="vistaValida ? 10 : 12" >
+<v-col  cols="12" :md="vistaValida ? 10 : 12" style="padding-top:0px!important; margin-top:0px!important;">
 
 
       <!----Espacio de carga de vistas------>

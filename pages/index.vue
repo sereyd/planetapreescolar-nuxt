@@ -1,8 +1,8 @@
 <template>
 <v-main  v-if="bandera">
   <!-----Buscador------>
-<v-card class="secondary ma-3  modbuscador" >
-    <v-card-text class="backbuscador text-center white--text pa-12 rounded-2 pt-3">
+<v-card class="secondary ma-2  modbuscador" >
+    <v-card-text class="backbuscador text-center white--text pa-4 rounded-2 pt-3">
         <h1 class="medidah1">¡Muchos recursos para ti!</h1>
         <p class="medidap">Encuentra cantos, imágenes, planeaciones, todo para ti, educadora</p>
         <buscador />
@@ -17,7 +17,7 @@
 <listablog :esCompleto="false" tipo="RECOMENDACION" titulo="Recomendación del día" subtitulos="Una sección de recursos y planeación para tu día"  linkmas="recomendacion"  /> -->
 
   <!---------RECOMENDACIONES------------>
-<div style="width:100%; height:0px;"></div>
+<div style="width:100%; height:10px;"></div>
 <listablog 
   :blogpost="recomendaciones" :esCompleto="false" @updateBlogpost="recomendaciones=$event"
   tipo="CATEGORIAS" subtipo="recomendacion" 
@@ -26,7 +26,7 @@
 />
 
   <!-------Blog------------->
-<div style="width:100%; height:50px;"></div>
+<div style="width:100%; height:0px;"></div>
 <listablog 
   :blogpost="blog" :esCompleto="false" @updateBlogpost="blog=$event"
   tipo="CATEGORIAS" subtipo="blog" 
@@ -36,7 +36,7 @@
 
 
   <!---------memorias------------>
-<div style="width:100%; height:50px;"></div>
+<div style="width:100%; height:0px;"></div>
 <listablog 
   :blogpost="memorias" :esCompleto="false" @updateBlogpost="memorias=$event"
   tipo="CATEGORIAS" subtipo="memoria" 

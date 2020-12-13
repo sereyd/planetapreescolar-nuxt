@@ -1,12 +1,12 @@
 <div v-if="blogpost.length !== 0">
-    <v-row class="px-3 ma-0" >
+    <v-row class="px-0 ma-0" >
     
-    <v-col cols="12" md="10" >
-        <h2 class="primary--text">{{titulo}}</h2>
-        <p v-if="subtitulos !== ''">{{subtitulos}}</p>
+    <v-col cols="9" md="10" class="space">
+        <h2 class="primary--text space">{{titulo}}</h2>
+        <p v-if="subtitulos !== ''" class="space">{{subtitulos}}</p>
     </v-col>
     
-    <v-col cols="12" md="2"  style="text-align: right;" >
+    <v-col cols="3" md="2"  style="text-align: right; " class="space d-flex align-center">
        <v-btn v-if="linkmas!=='#'" class="melon white--text rounded-pill btn_crearG" :to="'/'+linkmas"  >Ver más</v-btn> 
     </v-col>
             <v-col 
@@ -119,11 +119,11 @@
                     <div v-if="subtipo==='planeacion' || subtipo==='materialdidactico' || subtipo==='hojatrabajo' || subtipo==='interactivo' || subtipo==='recomendacion'" class=" ml-3 textos">
                         <!-- <p class="datos_extra">{{key}}</p> -->
                         
-                        <h4>{{key.titulo}}</h4>
-                        <p class="datos_extra">{{key.materia}}</p>
+                        <h4 style="font-size: 17px;">{{key.titulo}}</h4>
+                        <p class="datos_extra" style="font-size: 14px;">{{key.materia}}</p>
                         <!-- <p class="datos_extra">{{key.grado}}</p> -->
                         
-                        <p class="datos_extra">{{key.sinopsis.substr(0,90)}}</p>
+                        <p class="datos_extra"  style="font-size: 12px;">{{key.sinopsis.substr(0,90)}}</p>
                     </div>
                     
                     

@@ -1,14 +1,14 @@
 <template>
-        <v-main>
+        <v-main >
                 <!---------planeaciones------------>
-                <div style="width:100%; height:15px;"></div>
+                <div style="width:100%; height:5px;"></div>
                 <listablog 
                         :blogpost="planeaciones" :esCompleto="false" @updateBlogpost="planeaciones=$event"
                         tipo="CATEGORIAS" subtipo="planeacion" 
                         titulo="Planeaciones" subtitulos="¡Planea tu día con muchas actividades!"  
                         linkmas="planeaciones" 
                 />
-                <div style="width:100%; height:50px;" v-if="planeaciones.length > 0"></div>
+                <div style="width:100%; height:0px;" v-if="planeaciones.length > 0"></div>
 
                 <!-------HOJAS DE TRABAJO------------->
                 <listablog 
@@ -17,7 +17,7 @@
                         titulo="Hojas de trabajo para los niños" subtitulos="Recortes, actividades, días especiales, ¡todo lo que necesitas!" 
                         linkmas="hojas-trabajo"  
                 />
-                <div style="width:100%; height:50px;" v-if="hojastrabajo.length > 0"></div>
+                <div style="width:100%; height:0px;" v-if="hojastrabajo.length > 0"></div>
 
                 <!-------MATERIAL DIDÁCTICO------------->
                 <listablog 
@@ -26,7 +26,7 @@
                         titulo="Material didáctico para los niños" subtitulos="Recortes, actividades, días especiales, ¡todo lo que necesitas!" 
                         linkmas="material-didactico"  
                 />
-                <div style="width:100%; height:50px;" v-if="materialdidactico.length > 0"></div>
+                <div style="width:100%; height:0px;" v-if="materialdidactico.length > 0"></div>
 
                 <!-------INTERACTIVOS------------->
                 <listablog 
@@ -35,7 +35,7 @@
                         titulo="Interactivos para los niños" subtitulos="Recortes, actividades, días especiales, ¡todo lo que necesitas!" 
                         linkmas="interactivos"  
                 />
-                <div style="width:100%; height:50px;" v-if="interactivos.length > 0"></div>
+                <div style="width:100%; height:0px;" v-if="interactivos.length > 0"></div>
 
                 
                 <div style="width:100%; height:150px;" v-if="interactivos.length > 0"></div>

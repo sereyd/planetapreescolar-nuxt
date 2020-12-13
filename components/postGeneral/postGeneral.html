@@ -21,7 +21,8 @@
               <v-icon style="font-size: 35px;">mdi-arrow-right-bold</v-icon>
             </v-btn>
         </div>
-        <v-row v-if="relacionados[contador].tipo === 'planeacion' || relacionados[contador].tipo === 'materialdidactico' || relacionados[contador].tipo === 'hojatrabajo'">
+
+        <v-row v-if="relacionados[contador].tipo === 'planeacion' || relacionados[contador].tipo === 'materialdidactico' ">
             <v-col cols="12" md="5" sm="5" class="" >
                 <v-img
                     :src="relacionados[contador].urlImagen === '' || relacionados[contador].urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : relacionados[contador].urlImagen"

@@ -1,7 +1,7 @@
 <template>
-  <v-main class="pa-10">
+  <v-main class="px-10 pt-0">
     <v-row>
-      <v-col cols="12" md="12"> </v-col>
+      <!-- <v-col cols="12" md="12"> </v-col> -->
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2">
         <h2>Mis Reflexiones</h2>
 

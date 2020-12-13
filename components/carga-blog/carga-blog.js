@@ -3,6 +3,7 @@ import { format } from 'date-fns'
 import { es } from 'date-fns/locale';
 import InputTag from 'vue-input-tag';
 import subirFile from "@/components/subirArchivo/subirArchivo.vue"
+import subirImagen from "@/components/subirimagen/subirimagen.vue";
 import Spinner from '~/components/spinner.vue'
 import { mapState, mapActions, mapMutations } from "vuex";
 
@@ -67,6 +68,9 @@ export default {
       fileVista: null,
       fileDescargable: null,
 
+      esUrlimgR: false,
+      completado:false,
+
 
       // ubiWP:"",
 
@@ -98,9 +102,10 @@ export default {
     InputTag,
     Spinner,
     subirFile,
+    subirImagen
   },
   computed: {
-    ...mapState(['datosUsuario']),
+    ...mapState(["urlimg", "datosUsuario"]),
     fechaVisual(payload){
       console.log(payload)
       // const fecha = format(payload, "dd 'de' MMMM 'de' yyyy", {locale: es});
@@ -130,14 +135,14 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["agregarCategorias","updateEditado"]),
+    ...mapMutations(["agregarCategorias","updateEditado",'almacenarFotoStorage']),
     
 
 
 
 
     async mostrarRecursoEdit(post){
-      // console.log(post)
+      console.log(post)
       // console.log(this.tipo);
       let nombreFile = ""
       let nombreFile2 = ""
@@ -181,62 +186,73 @@ export default {
     },
     modificarRecurso(){
 
-      console.log(this.datosRecursoEdit);
-      // alert("altooo");
-      let {idRecurso, titulo, contenido, edopost, tags, premium, sinopsis, recomendado, urlVista, urlDescargable, materia, grado} = this.datosRecursoEdit;
-      
+      if(this.completado)
+      {
+        console.log(this.urlimg)
+        if(this.urlimg !== "" && this.urlimg !== "none")
+          this.datosRecursoEdit.urlImagen = this.urlimg
 
-      //SE OBTIENE EL RECURSO POR MEDIO DEL ID
-      let usuarioRecursosRef =  this.$fireStore.collection("CATEGORIAS").doc(idRecurso);
+        console.log(this.datosRecursoEdit);
+        // alert("altooo");
+        let {idRecurso, titulo, contenido, edopost, tags, premium, sinopsis, recomendado, urlVista, urlDescargable, materia, grado, urlImagen} = this.datosRecursoEdit;
+        
+  
+        //SE OBTIENE EL RECURSO POR MEDIO DEL ID
+        let usuarioRecursosRef =  this.$fireStore.collection("CATEGORIAS").doc(idRecurso);
+  
+        // if(this.datosRecursoEdit.tipoRecurso === "link")
+        // {
+        //   urlRecurso[1] = urlRecurso[0];
+        // }
+        
+        //SE ACTUALIZA EN FIREBASE EL RECURSO SELECCIONADO
+        usuarioRecursosRef.update({
+          titulo, contenido, edopost,tags, premium, recomendado, sinopsis, urlVista, urlDescargable, materia, grado, urlImagen
+        })
+        .then(() => {
+            // console.log(this.grupo);
+            // alert("paso 1")
+            // this.$router.push('/publicaciones')
+            //ACTUALIZAR RECURSO LISTAR DE PROPS
+            // console.log("Antes de cambio this.listaR")
+            // console.log(this.listaR)
+            // alert("1")
+            this.listaR.map( (lista) => {
+              // console.log(lista.id +"==="+ id)
+              // console.log(lista)
+              if(lista.idRecurso === idRecurso)
+              {
+                lista.titulo = titulo;
+                lista.contenido = contenido ;
+                lista.edopost = edopost;
+                lista.tags = tags;
+                lista.premium = premium;
+                lista.recomendado = recomendado;
+                lista.sinopsis = sinopsis;
+                lista.urlDescargable= urlDescargable;
+                lista.urlVista= urlVista;
+                lista.urlImagen= urlImagen;
+                lista.materia= materia;
+                lista.grado= grado;
+                this.updateEditado(lista);
+                
+              }
+            })
+            this.editRecurso = false;
+            this.completado = false;
 
-      // if(this.datosRecursoEdit.tipoRecurso === "link")
-      // {
-      //   urlRecurso[1] = urlRecurso[0];
-      // }
-      
-      //SE ACTUALIZA EN FIREBASE EL RECURSO SELECCIONADO
-      usuarioRecursosRef.update({
-        titulo, contenido, edopost,tags, premium, recomendado, sinopsis, urlVista, urlDescargable, materia, grado
-      })
-      .then(() => {
-          // console.log(this.grupo);
-          // alert("paso 1")
-          // this.$router.push('/publicaciones')
-          //ACTUALIZAR RECURSO LISTAR DE PROPS
-          // console.log("Antes de cambio this.listaR")
-          // console.log(this.listaR)
-          // alert("1")
-          this.listaR.map( (lista) => {
-            // console.log(lista.id +"==="+ id)
-            // console.log(lista)
-            if(lista.idRecurso === idRecurso)
-            {
-              lista.titulo = titulo;
-              lista.contenido = contenido ;
-              lista.edopost = edopost;
-              lista.tags = tags;
-              lista.premium = premium;
-              lista.recomendado = recomendado;
-              lista.sinopsis = sinopsis;
-              lista.urlDescargable= urlDescargable;
-              lista.urlVista= urlVista;
-              lista.materia= materia;
-              lista.grado= grado;
-              this.updateEditado(lista);
-              
-            }
-          })
-          this.editRecurso = false;
+  
+            // console.log("Despues de cambio this.listaR")
+            // console.log(this.listaR)
+            // alert("2")
+  
+   
+        })
+        .catch((error) => {
+            console.error("ErroR al modifcar recurso: ", error);
+        });
+      }
 
-          // console.log("Despues de cambio this.listaR")
-          // console.log(this.listaR)
-          // alert("2")
-
- 
-      })
-      .catch((error) => {
-          console.error("ErroR al modifcar recurso: ", error);
-      });
 
     },
 
@@ -251,7 +267,11 @@ export default {
 
       }
     },
-
+    // cargaFinal(){
+    //   const ubi = `${this.subtipo}/${this.datosUsuario.id}/${this.datosRecursoEdit.foldercode}/`;
+    //   this.completado = true;
+    //   this.almacenarFotoStorage(ubi);
+    // },
 
     validarFormularioRecursoEdit(){
       // console.log("revision")
@@ -262,7 +282,13 @@ export default {
         this.tagsValido = true;
         this.msjTag = ""
         console.log("tags validos")
-        this.modificarRecurso()
+        
+        const ubi = `${this.subtipo}/${this.datosUsuario.id}/${this.datosRecursoEdit.foldercode}/`;
+        this.completado = true;
+        this.almacenarFotoStorage(ubi);
+
+        // this.almacenarFotoStorage(ubi);
+        // this.modificarRecurso()
       }
 
       if(this.datosRecursoEdit.tags.length === 0)
@@ -276,12 +302,22 @@ export default {
         // console.log("biennnn")
     }
   },
-  mounted() {
-    // console.log("this.listaR")
-    // console.log(this.listaR)
-    // alert("cargando ListaR")
-    // this.cargaPost();
+  watch: {
+    async urlimg() {
 
+      if(!this.esUrlimgR)
+      {
+        console.log("NO SE ESTA RESETEANDO")
+        
+        await this.modificarRecurso()
+
+
+        
+      }
+      else{
+        this.esUrlimgR = false; 
+      }
+    }
   },
   props: {
     tipo: {
