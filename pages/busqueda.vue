@@ -38,13 +38,43 @@
                     subtitulos=""   
                 />
 
-                <!------actividades----->
+                <!------hojas de trabajo----->
                 <!-- <div style="width:100%; height:50px;"></div> -->
                 <listablog 
-                    :blogpost="actividades" @updateBlogpost="actividades=$event"
-                    tipo="CATEGORIAS"  subtipo="recurso"  
+                    :blogpost="hojastrabajo" @updateBlogpost="hojastrabajo=$event"
+                    tipo="CATEGORIAS"  subtipo="hojatrabajo"  
                     :datoBuscar= "this.datosBusqueda.clave.toLowerCase()" 
-                    titulo="Actividades" 
+                    titulo="Hojas de trabajo" 
+                    subtitulos=""   
+                />
+
+                <!------material didactico----->
+                <!-- <div style="width:100%; height:50px;"></div> -->
+                <listablog 
+                    :blogpost="materialdidactico" @updateBlogpost="materialdidactico=$event"
+                    tipo="CATEGORIAS"  subtipo="materialdidactico"  
+                    :datoBuscar= "this.datosBusqueda.clave.toLowerCase()" 
+                    titulo="Material didáctico" 
+                    subtitulos=""   
+                />
+
+                <!------interactivos----->
+                <!-- <div style="width:100%; height:50px;"></div> -->
+                <listablog 
+                    :blogpost="interactivos" @updateBlogpost="interactivos=$event"
+                    tipo="CATEGORIAS"  subtipo="interactivo"  
+                    :datoBuscar= "this.datosBusqueda.clave.toLowerCase()" 
+                    titulo="Interactivos" 
+                    subtitulos=""   
+                />
+
+                <!------otros----->
+                <!-- <div style="width:100%; height:50px;"></div> -->
+                <listablog 
+                    :blogpost="otros" @updateBlogpost="otros=$event"
+                    tipo="CATEGORIAS"  subtipo="otro"  
+                    :datoBuscar= "this.datosBusqueda.clave.toLowerCase()" 
+                    titulo="Otros" 
                     subtitulos=""   
                 />
 
@@ -117,7 +147,10 @@ export default {
             blogs:[],
             memorias:[],
             planeaciones:[],
-            actividades:[],
+            materialdidactico:[],
+            hojastrabajo:[],
+            interactivos:[],
+            otros:[],
             recursos:[
                 'todos',
                 'blog',
@@ -150,14 +183,21 @@ export default {
             let tipoM = "";
             if(this.datosBusqueda.tipo === "reflexion")
                 tipoM= "Resultados reflexiones";
-            else if(this.datosBusqueda.tipo === "'planeacion")
-                tipoM= "Resultados planeaciones";
-            else if(this.datosBusqueda.tipo === "recurso")
-                tipoM= "Resultados recursos";
             else if(this.datosBusqueda.tipo === "memoria")
                 tipoM= "Resultados memorias";
             else if(this.datosBusqueda.tipo === "blog")
                 tipoM= "Resultados blogs";
+            else if(this.datosBusqueda.tipo === "'planeacion")
+                tipoM= "Resultados planeaciones";
+
+            else if(this.datosBusqueda.tipo === "hojatrabajo")
+                tipoM= "Resultados hojas de trabajo";
+            else if(this.datosBusqueda.tipo === "materialdidactico")
+                tipoM= "Resultados material didáctico";
+            else if(this.datosBusqueda.tipo === "interactivo")
+                tipoM= "Resultados interactivos";
+            else if(this.datosBusqueda.tipo === "otro")
+                tipoM= "Resultados otros";
             
             return tipoM;
         }
@@ -214,13 +254,25 @@ export default {
                     (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
                     recurso.tipo === "reflexion"
                 )
-                this.actividades = recursos.filter(recurso =>
-                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
-                    recurso.tipo === "recurso"
-                )
                 this.planeaciones = recursos.filter(recurso =>
                     (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
                     recurso.tipo === "planeacion"
+                )
+                this.materialdidactico = recursos.filter(recurso =>
+                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+                    recurso.tipo === "materialdidactico"
+                )
+                this.hojastrabajo = recursos.filter(recurso =>
+                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+                    recurso.tipo === "hojatrabajo"
+                )
+                this.interactivos = recursos.filter(recurso =>
+                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+                    recurso.tipo === "interactivo"
+                )
+                this.otros = recursos.filter(recurso =>
+                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+                    recurso.tipo === "otro"
                 )
             }
 
@@ -244,7 +296,7 @@ export default {
             // console.log(recurso.titulo)
             let {tags, titulo, contenido, sinopsis, materia} = recurso;
             let response = false;
-            if(recurso.tipo === "planeacion" || recurso.tipo === "recurso")
+            if(recurso.tipo === "planeacion" || recurso.tipo === "materialdidactico" || recurso.tipo === "hojatrabajo" || recurso.tipo === "interactivo")
             {
                 let {sinopsis, materia} = recurso;
                 materia = materia ? materia : "";
