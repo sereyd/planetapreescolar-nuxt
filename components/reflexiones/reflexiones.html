@@ -1,11 +1,12 @@
-<v-card class="pa-1 ma-0 elevation-5"> 
-    <v-card-text>
-        <h1 ><b>Reflexion de la semana</b></h1>
-        <br />
-        <v-row>
-            <v-col cols="12" md="11" sm="11">
-                <p v-if="reflexion[0]" style="font-size:18px; text-align:left;" v-html="cargarecomendacion">
-                    
+<v-card class="px-1 mx-2 elevation-5"> 
+    <v-card-text style="padding-bottom: 0px; margin-bottom: 0px;">
+        <h2 ><b>Reflexion de la semana</b></h2>
+        <v-row style="padding-bottom: 0px; margin-bottom: 0px;">
+            <v-col cols="12" md="11" sm="11" style="padding-bottom: 0;">
+                <p 
+                    v-if="reflexion[0]" 
+                    style="font-size:18px; text-align:left;" 
+                    v-html="cargarecomendacion">
                 </p>
             </v-col>
             <v-col cols="12" md="1" sm="1">

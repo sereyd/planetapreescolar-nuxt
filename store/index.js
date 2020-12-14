@@ -636,7 +636,7 @@ const createStore = () => {
           try {
             //SE AGREGA LA FOTO AL STORAGE DE FIREBASE
             let storageRef = this.$fireStorage.ref(ubi);
-            await storageRef.child(file.name).put(file, metadata);
+            await storageRef.child("portada/perfil").put(file, metadata);
             //SE OBTIENE LA URL DE LA IMAGEN DE PERFIL Y SE AGREGA AL OBJETO DE USUARIO
             await storageRef
               .child(file.name)

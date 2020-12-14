@@ -7,7 +7,7 @@
                         tipo="CATEGORIAS" subtipo="planeacion" 
                         titulo="Planeaciones" subtitulos="¡Planea tu día con muchas actividades!"  
                 />
-                <div style="width:100%; height:50px;" v-if="misPost.length > 0"></div>
+                <div style="width:100%; height:0px;" v-if="misPost.length > 0"></div>
 
                 <!-------Actividades------------->
                 <listablog 
@@ -15,7 +15,7 @@
                         tipo="CATEGORIAS" subtipo="recurso" 
                         titulo="Actividades para los niños" subtitulos="Recortes, actividades, días especiales, ¡todo lo que necesitas!" 
                 />
-                <div style="width:100%; height:50px;" v-if="otrosPost.length > 0"></div>
+                <div style="width:100%; height:0px;" v-if="otrosPost.length > 0"></div>
 
         </v-main>
 </template>

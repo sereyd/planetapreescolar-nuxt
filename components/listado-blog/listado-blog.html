@@ -1,12 +1,12 @@
 <div v-if="blogpost.length !== 0">
-    <v-row class="px-3 ma-0" >
+    <v-row class="px-0 ma-0" >
     
-    <v-col cols="12" md="10" >
-        <h2 class="primary--text">{{titulo}}</h2>
-        <p v-if="subtitulos !== ''">{{subtitulos}}</p>
+    <v-col cols="9" md="10" class="space">
+        <h2 class="primary--text space">{{titulo}}</h2>
+        <p v-if="subtitulos !== ''" class="space">{{subtitulos}}</p>
     </v-col>
     
-    <v-col cols="12" md="2"  style="text-align: right;" >
+    <v-col cols="3" md="2"  style="text-align: right; " class="space d-flex align-center">
        <v-btn v-if="linkmas!=='#'" class="melon white--text rounded-pill btn_crearG" :to="'/'+linkmas"  >Ver más</v-btn> 
     </v-col>
             <v-col 
@@ -22,14 +22,48 @@
                     height="150px"
                 >
                 <!-- v-if="key.urlImagen!==''"  -->
+                    <!-- <p>{{key.tipoRecurso}}</p> -->
+                    <div v-if="key.tipoRecurso !== 'link'">
+                        <v-img
+                            :src="key.urlImagen === '' || key.urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : key.urlImagen"
+                            contain
+                            class="fotomini"
+                            @click="muestrapost(key)"
+                        />
+                    </div>
+                    <iframe 
+                        v-else
+                        width="auto" height="auto" 
+                        :src="key.urlVista.replace('watch?v=', 'embed/')" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen></iframe>
 
-                    <v-img
-                    :src="key.urlImagen === '' || key.urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : key.urlImagen"
-                    contain
-                    class="fotomini"
-                    @click="muestrapost(key)"
                     
-                    >
+                    <v-fab-transition class="mt-5" v-if ="key.tipoRecurso === 'link'">
+                        <v-btn
+                            :key="'edo_'+index"
+                            :color="key.premium === true ? 'melon' : 'primary'"
+                            x-small
+                            fab
+                            absolute
+                            top
+                            left
+                            class="v-btn--example"
+                            style="top: 12px!important;"
+                            @click="muestrapost(key)"
+                        >
+                            <!-- <span class="white--text" >Ver recurso</span> -->
+                            <v-icon 
+                                color="white"
+                            >mdi-arrow-expand</v-icon>
+                        </v-btn> 
+                      </v-fab-transition>
+
+                    
+
+                    
+                    
                     <v-fab-transition class="pb-5 d-flex " v-if ="!esFavoritos">
                         <v-btn
                             :key="'fav_'+index"
@@ -76,7 +110,7 @@
                       </v-fab-transition>
 
 
-                      <v-fab-transition class="pb-5">
+                      <v-fab-transition class="pb-5" v-if="key.tipo !== 'blog' && key.tipo !== 'memoria' && key.tipo !== 'reflexion'">
                         <v-btn
                             :key="'edo_'+index"
                             :color="key.premium === true ? 'melon' : 'primary'"
@@ -116,16 +150,24 @@
                         <!-- <p class="datos_extra">{{key.fecha}}</p> -->
                     </div>
                     
-                    <div v-if="subtipo==='planeacion' || subtipo==='recurso' || subtipo==='recomendacion'" class=" ml-3 textos">
+                    
+                    <div v-if="key.tipo==='otro'" class=" ml-3 textos">
                         <!-- <p class="datos_extra">{{key}}</p> -->
                         
-                        <h4>{{key.titulo}}</h4>
-                        <p class="datos_extra">{{key.materia}}</p>
-                        <!-- <p class="datos_extra">{{key.grado}}</p> -->
-                        
-                        <p class="datos_extra">{{key.sinopsis.substr(0,90)}}</p>
+                        <h4 style="font-size: 17px;">{{key.titulo}}</h4>
+                        <p class="datos_extra">{{key.nombreCreador}}</p>
+                        <p class="datos_extra" style="font-size: 14px;" v-html="key.contenido.substr(0,90)"></p>
                     </div>
                     
+                    <div v-else-if="subtipo==='planeacion' || subtipo==='materialdidactico' || subtipo==='hojatrabajo' || subtipo==='interactivo' || subtipo==='otro' || subtipo==='recomendacion'" class=" ml-3 textos">
+                        <!-- <p class="datos_extra">{{key}}</p> -->
+                        
+                        <h4 style="font-size: 17px;">{{key.titulo}}</h4>
+                        <p class="datos_extra" style="font-size: 14px;">{{key.materia}}</p>
+                        <!-- <p class="datos_extra">{{key.grado}}</p> -->
+                        
+                        <p class="datos_extra"  style="font-size: 12px;">{{key.sinopsis.substr(0,90)}}</p>
+                    </div>
                     
                 </div>
         
@@ -181,6 +223,10 @@
             :vistapost="vistapost"
             :posts:="blogpost"
             :subtipo="subtipo"
+            :spinner="spinner"
+            :urlFileB="urlFileB" @updateUrlFileB="urlFileB=$event"
+            :nombreFile="nombreFile" @updateNombreFile="nombreFile=$event"
+            :linkembed="linkembed" @updateLinkEmbed="linkembed=$event"
             :viewothers ="viewothers" @updateviewO="viewothers=$event"
             :viewpost="viewpost" @updateviewP="viewpost=$event"
         />

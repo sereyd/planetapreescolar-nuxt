@@ -1,73 +1,21 @@
 <v-main>
-    <div v-if="subtipo ==='planeacion'">
-        <v-file-input
-            outlined
-            label="Archivo WORD"
-            prepend-icon="mdi-paperclip"
-            :accept="tipoRecursoFile"
-            v-model="fileWord"
-            @change = "changeWord"
-            v-if="!cargandoW"
-
-        ></v-file-input>
-       
-        <v-progress-linear
-            class="mb-6"
-            v-model="porcentajeW"
-            color="primary"
-            height="20"
-            v-else
-        >
-            <strong class="white--text" style="font-size: 14px;">{{ Math.ceil(porcentajeW) }}%</strong>
-        </v-progress-linear>
-
-        <v-file-input
-            outlined
-            label="Archivo PDF"
-            prepend-icon="mdi-paperclip"
-            :accept="tipoRecursoFile"
-            v-model="filePDF"
-            @change = "changePDF"
-            v-if="!cargandoP"
-
-        ></v-file-input>
-        <v-progress-linear
-            class="mb-6"
-            v-model="porcentajeP"
-            color="primary"
-            height="20"
-            v-else
-        >
-            <strong class="white--text" style="font-size: 14px;">{{ Math.ceil(porcentajeP) }}%</strong>
-        </v-progress-linear>
-    </div>
-    <v-select
-        :items="tiposRecursoList"
-        label="Tipo de recurso"
-        solo
-        outlined
-        v-model="tipoRecursoSelect"
-        v-if="subtipo !=='planeacion' && subtipo !=='reflexion'"
-    ></v-select>
-
     <v-file-input
         outlined
-        label="Seleccione un archivo válido"
+        :label="label"
         prepend-icon="mdi-paperclip"
-        :accept="tipoRecursoFile"
-        v-model="file"
+        :accept="filesAccepts"
+        v-model="fileInterno"
         @change = "changeFile"
-        v-if="tipoRecursoSelect === 'file' && subtipo !=='planeacion'"
-
+        v-if="!cargando"
     ></v-file-input>
-
-    <v-text-field
-        v-model="datosRecurso.urlRecurso"
-        placeholder="Link del video"
-        required
-        outlined
-        :rules="[v => !!v || 'Link del video es requerida']"
-        @keyup.enter=""
-        v-else-if="tipoRecursoSelect === 'link'"
-    ></v-text-field>
+    <v-progress-linear
+        class="mb-6"
+        v-model="porcentaje"
+        color="primary"
+        height="20"
+        v-else
+    >
+        <strong class="white--text" style="font-size: 14px;">{{ Math.ceil(porcentaje) }}%</strong>
+    </v-progress-linear>
+    
 </v-main>
