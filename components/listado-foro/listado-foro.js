@@ -1,8 +1,11 @@
 import {mapState, mapActions, mapMutatios } from 'vuex'
+import editablog from '~/components/editor-blog/editor-blog.vue'
 export default {
   data(){
     return {
-      items:[]
+      items:[],
+      addeditblog:false,
+      blogeditable:{}
     }
   },
   computed:{
@@ -13,13 +16,17 @@ export default {
   },
   methods:{
     cargaDatosforo(){
-      var tomaforos=this.$fireStroe.collection('foro').get()
+      /*var tomaforos=this.$fireStroe.collection('foro').get()
       
       tomaforos.forEach((data)=>{
         this.items.push(data.data())
       })
 
       console.log(this.items)
+   */
     }
+  },
+  components:{
+    editablog
   }
 }
