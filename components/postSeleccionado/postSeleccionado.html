@@ -28,7 +28,7 @@
                     <a 
                         v-if="datosUsuario.estadoMembresia === 'active' 
                         || 
-                        (datosUsuario.descargasDia || datosUsuario.descargasDia.usadas || datosUsuario.descargasDia.usadas.length < datosUsuario.descargasDia.disponibles
+                        (datosUsuario.descargasDia.usadas.length < datosUsuario.descargasDia.disponibles
                             || vistapost.premium === false
                         )"
                         :download="nombreFile"
@@ -238,4 +238,4 @@
           </div>
         </v-card>
     </v-dialog>
-</div>
+</div>      

@@ -167,6 +167,24 @@ const createStore = () => {
 
       //DATA DE TODOS LOS RECURSOS
       categorias:[],
+      categoriasblog:[{
+        text:'Planeaciones',
+        value:'planeaciones'
+      },
+      {
+        text:'Escuelas',
+        value:'escuelas'
+      },
+      {
+        text:'Educación',
+        value:'educacion'
+      },
+      {
+        text:'Niños',
+        value:'niños'
+      }
+    ]
+
 
 
     }),

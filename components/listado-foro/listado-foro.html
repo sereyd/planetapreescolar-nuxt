@@ -1,0 +1,18 @@
+<v-main>
+
+        <v-list>
+
+    <v-btn class="melon white--text" @click="addeditblog=true">Crear Entrada</v-btn>
+
+
+        <v-list-item>
+        
+        </v-list-item>
+
+    <v-dialog v-model="addeditblog" max-width="800">
+        <editablog :editar="blogeditable"></editablog>
+    </v-dialog>
+
+    </v-list>
+
+</v-main>
