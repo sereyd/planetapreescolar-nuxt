@@ -32,7 +32,7 @@
                 <listablog 
                         :blogpost="interactivos" :esCompleto="false" @updateBlogpost="interactivos=$event"
                         tipo="CATEGORIAS" subtipo="interactivo" 
-                        titulo="Interactivos para los niños" subtitulos="Recortes, actividades, días especiales, ¡todo lo que necesitas!" 
+                        titulo="Interactivos para los niños" subtitulos="Videos y audios, ¡todo lo que necesitas!" 
                         linkmas="interactivos"  
                 />
                 <div style="width:100%; height:0px;" v-if="interactivos.length > 0"></div>

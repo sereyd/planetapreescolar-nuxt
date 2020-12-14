@@ -146,6 +146,13 @@ export default {
         this.labelFile="Seleccione archivo"
         // this.tipoRecursoSelect ="file"
       }
+      else if(this.subtipo === "otro")
+      {
+        tipoM= "Nuevo recurso";
+        this.tipoRecursoFile = ".pdf"
+        this.labelFile="Seleccione archivo"
+        // this.tipoRecursoSelect ="file"
+      }
       else if(this.subtipo === "memoria")
       {
         tipoM= "Nueva memoria";

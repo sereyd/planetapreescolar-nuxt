@@ -129,6 +129,8 @@ export default {
         tipoM= "Editar hoja de trabajo";
       else if(this.subtipo === "interactivo")
         tipoM= "Editar interactivo";
+      else if(this.subtipo === "otro")
+        tipoM= "Editar interactivo";
         
           
       return tipoM;
