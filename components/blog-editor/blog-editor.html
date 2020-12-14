@@ -137,7 +137,7 @@
 
                         <div v-else-if="subtipo ==='materialdidactico' || subtipo ==='hojatrabajo' || subtipo ==='otro'">
                             <subirFile 
-                                filesAccepts="image/*, .pdf, .doc, .docx" 
+                                filesAccepts=".pdf" 
                                 :label="labelFile"
                                 :subtipo="subtipo"
                                 :foldercode="datosRecurso.foldercode" @updateFoldercode="datosRecurso.foldercode=$event" 

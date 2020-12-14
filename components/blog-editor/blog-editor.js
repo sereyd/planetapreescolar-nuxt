@@ -187,7 +187,7 @@ export default {
             ...this.datosRecurso,
             fecha:  Date.now(),
             tipoRecurso: this.tipoFile,
-            urlVista: this.urlVista,
+            urlVista: this.subtipo === 'materialdidactico' ? this.urlDescargable : this.urlVista,
             urlDescargable: this.urlDescargable,
             idCreador: id,
             nombreCreador: `${nombre} ${apellido}`,

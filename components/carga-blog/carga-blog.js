@@ -188,6 +188,8 @@ export default {
     },
     modificarRecurso(){
 
+      console.log("this.completado")
+      console.log(this.completado)
       if(this.completado)
       {
         console.log(this.urlimg)
@@ -208,8 +210,19 @@ export default {
         // }
         
         //SE ACTUALIZA EN FIREBASE EL RECURSO SELECCIONADO
+        if(this.subtipo === 'materialdidactico')
+        {
+          // console.log(urlDescargable)
+          // console.log(urlVista)
+          // alert("es material")
+          urlVista = urlDescargable;
+          // console.log(urlDescargable)
+          // console.log(urlVista)
+          // alert("es material")
+        }
         usuarioRecursosRef.update({
-          titulo, contenido, edopost,tags, premium, recomendado, sinopsis, urlVista, urlDescargable, materia, grado, urlImagen
+          titulo, contenido, edopost,tags, premium, recomendado, sinopsis, urlVista, 
+          urlDescargable, materia, grado, urlImagen
         })
         .then(() => {
             // console.log(this.grupo);
