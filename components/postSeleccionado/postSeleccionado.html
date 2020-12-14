@@ -49,7 +49,7 @@
                         <v-icon rigth dark> mdi-download </v-icon>
                         Descargar
                     </v-btn>
-                        <pdfviewer :src="vistapost.urlVista" ></pdfviewer>
+                        <pdfviewer v-if="vistapost.tipo ==='materialdidactico'" :src="vistapost.urlDescargable" ></pdfviewer>
                     
                 </div>
             </div>

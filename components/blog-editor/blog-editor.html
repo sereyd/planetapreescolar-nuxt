@@ -67,7 +67,7 @@
                         </v-avatar>
                         <v-btn v-if="subtipo ==='reflexion'"  @click="showicon=true">Cambiar Icono</v-btn>
 
-                        <p>{{subtipo}}</p>
+                        <!-- <p>{{subtipo}}</p> -->
                         <div v-if="subtipo ==='planeacion'">
                             <subirFile 
                                 filesAccepts=".doc, .docx" 
@@ -121,6 +121,7 @@
                                 nickFile="subtipo"
                             />
                             <subirFile
+                                v-if="subtipo !=='blog' && subtipo !=='memoria'"
                                 filesAccepts=".pdf" 
                                 label="Archivo válido"
                                 :subtipo="subtipo"
