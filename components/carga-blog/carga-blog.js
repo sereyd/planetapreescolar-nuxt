@@ -272,7 +272,7 @@ export default {
     },
 
     cambioSelect(){
-      console.log("Cam,nbio de select")
+      console.log("Cambio de select")
       if(this.datosRecursoEdit.tipoRecurso === "link")
       {
         urlVistaCache = this.datosRecursoEdit.urlVista;

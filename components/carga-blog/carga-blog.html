@@ -237,6 +237,9 @@
                                 small
                                 v-if="datosRecursoEdit.tipo === 'planeacion' || subtipo ==='materialdidactico' || subtipo ==='hojatrabajo' || subtipo === 'interactivo' || subtipo ==='otro'"
                             ></v-switch>
+
+                            <v-switch v-model="datosRecursoEdit.permisoadmin"  v-if="datosUsuario.lvluser===3" label="Validado por administador
+                            "></v-switch>
                         </div>
 
                     <input-tag 

@@ -2,7 +2,7 @@
   <v-main class="px-10 pt-0">
     <v-row>
       <!-- <v-col cols="12" md="12"> </v-col> -->
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
         <h2>Mis Reflexiones</h2>
 
         <cargablog tipo="CATEGORIAS" subtipo="reflexion"   :listaR="reflexiones" >
@@ -16,7 +16,7 @@
         </cargablog>
 
       </v-col>
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
         <h2>Mis Planeaciones</h2>
 
         <cargablog tipo="CATEGORIAS" subtipo="planeacion"  :listaR="planeaciones"  >
@@ -31,7 +31,7 @@
 
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
         <h2>Mis hojas de trabajo</h2>
         <cargablog tipo="CATEGORIAS" subtipo="hojatrabajo"  :listaR="hojastrabajo"  >
           <template v-slot:header>
@@ -44,7 +44,7 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
         <h2>Mi material didáctico</h2>
         <cargablog tipo="CATEGORIAS" subtipo="materialdidactico"  :listaR="materialdidactico"  >
           <template v-slot:header>
@@ -57,7 +57,7 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
         <h2>Mis interactivos</h2>
         <cargablog tipo="CATEGORIAS" subtipo="interactivo"  :listaR="interactivos"  >
           <template v-slot:header>
@@ -70,7 +70,7 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
         <h2>Mis otros</h2>
         <cargablog tipo="CATEGORIAS" subtipo="otro"  :listaR="otros"  >
           <template v-slot:header>
@@ -180,7 +180,7 @@ export default {
 
         // console.log(this)
         // console.log(this.$fireStore)
-        // tipo = this.datosUsuario.lvluser === 2 ? "ACTIVIDADES" : "CATEGORIAS";
+        // tipo = this.datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3 ? "ACTIVIDADES" : "CATEGORIAS";
         
       if(this.datosUsuario.adminlvl && this.datosUsuario.adminlvl==='1'){
 

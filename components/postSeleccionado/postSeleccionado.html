@@ -49,7 +49,7 @@
                         <v-icon rigth dark> mdi-download </v-icon>
                         Descargar
                     </v-btn>
-                        <pdfviewer :src="vistapost.urlVista" ></pdfviewer>
+                        <pdfviewer :src="vistapost.urlVista" :numspages="[3,4,5]" ></pdfviewer>
                     
                 </div>
             </div>
@@ -103,7 +103,7 @@
             <!--- VISOR DE PDF   AQUI -->
 
 
-            <v-main class="pl-5" v-html="vistapost.contenido"  
+            <v-main class="pl-5 contenido" v-html="vistapost.contenido"  
             style="width:100%; max-width: 100%; overflow: auto; min-height:300px; max-height:400px; height:100%;"  
             ></v-main>
 
