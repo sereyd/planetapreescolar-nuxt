@@ -4,26 +4,18 @@
         <div  max-width="100%" style="height:20px; "></div>
         <v-container class="ma-auto elevation-3 rounded-ml" style="background-image:url('images/back/backstart.jpg'); background-position:top; background-size: 100%; background-repeat: repeat-x; text-align: left; max-width:1200px; width:100%; ">
     
-     
             <h2 class="primary--text pl-5"><b>{{vistapost.titulo}}</b> </h2>
             <div class=" d-flex flex-column mb-5 texto_recurso">
                 <span class="pl-5" >Por {{vistapost.nombreCreador}}</span>
                 <span class="pl-5" >{{ fechaVisual }}</span>
             </div>
 
-            <!-- :loading="loading3"
-            :disabled="loading3" -->
-            <!-- :href="urlFileB"  -->
             <div 
                 v-if="vistapost.tipoRecurso !== 'link' && vistapost.urlDescargable !== '' &&
                 ( subtipo !== 'blog' && subtipo !== 'memoria' ) && urlFileB !== ''"
             >
-                <Spinner 
-                    v-if="spinner" 
-                />
-                <div 
-                    v-else-if ="!spinner"
-                >
+                <Spinner v-if="spinner"  />
+                <div v-else-if ="!spinner">
                     
                     <a 
                         v-if="datosUsuario.estadoMembresia === 'active' 
@@ -49,29 +41,47 @@
                         <v-icon rigth dark> mdi-download </v-icon>
                         Descargar
                     </v-btn>
-                        <pdfviewer :src="vistapost.urlVista" ></pdfviewer>
-                    
+
+                        
+                    <div class="d-flex justify-center">
+                        <v-btn icon class="v-btn--example"
+                        @click="currentPage--"
+                        :disabled="currentPage === 1"
+                        >
+                            <v-icon  color="primary" >mdi-chevron-left</v-icon>
+                        </v-btn> 
+
+                        <div class="mt-2">
+                            <span>{{currentPage}}</span> /<span>{{numPages}}</span>
+                        </div>
+
+                        <v-btn icon class="v-btn--example"
+                            @click="currentPage++"
+                            :disabled="currentPage === numPages"
+                        >
+                            <v-icon color="primary">mdi-chevron-right</v-icon>
+                        </v-btn> 
+                    </div>
+                    <div class="d-flex justify-center">
+                        <pdf
+                            :src="src"
+                            :page="currentPage"
+                            @num-pages="numPages = $event"
+                            @page-loaded="currentPage = $event"
+                            style="width: 80%"
+                        ></pdf>
+                    </div> 
                 </div>
             </div>
             
-    
-
-
-            
-
-            <!-- :src="vistapost.urlImagen!=='' ? vistapost.urlImagen : 'images/logos/planeta_preescolar_logo.png'"  -->
-
             <div class="d-flex justify-center mt-5" v-if="vistapost.tipo !== 'planeacion'">
                 
-
                 <v-img 
                     v-if="vistapost.tipoRecurso==='image'" 
                     :src="vistapost.urlVista"
                     style="max-width:50%; width:50%; background-color:azure; "
                 ></v-img>
 
-
-                
                 <audio-player 
                     v-else-if="vistapost.tipoRecurso==='audio'"
                     style="max-width:50%; width:50%; background-color:azure; "
@@ -79,13 +89,6 @@
                     <source :src="vistapost.urlVista" />
                 </audio-player>
                 <div  class="d-flex justify-center">
-                    <!-- <video-player 
-                        v-if="vistapost.tipoRecurso !=='link' && vistapost.tipoRecurso !=='none' 
-                        && vistapost.tipoRecurso !=='' && vistapost.tipoRecurso !=='audio'"
-                        style="max-width:50%; width:50%; background-color:azure; "
-                    >
-                        <source :src="vistapost.urlVista" />
-                    </video-player> -->
                     <iframe 
                         v-if="vistapost.tipoRecurso ==='link'"
                         width="560" height="315" 
@@ -95,19 +98,11 @@
                         allowfullscreen>
                     </iframe>
                 </div>
-               
-            
             </div>
             
-
-            <!--- VISOR DE PDF   AQUI -->
-
-
             <v-main class="pl-5" v-html="vistapost.contenido"  
             style="width:100%; max-width: 100%; overflow: auto; min-height:300px; max-height:400px; height:100%;"  
             ></v-main>
-
-            
 
             <div class="d-flex justify-center" 
                 v-if="vistapost.tipoRecurso !=='link' && vistapost.tipoRecurso !=='none' && vistapost.tipoRecurso !==''"
@@ -116,7 +111,6 @@
             </div>
 
             <!-- SECCION DE COMENTARIOS -->
-            <!-- <h1>COMNENTARIOOO</h1> -->
             <div v-if="subtipo !== 'planeacion' && subtipo !== 'recurso' && subtipo !== 'recomendacion'">
                 <h3 class="primary--text mt-3 mb-3"> {{vistapost.comentarios.length}} comentarios</h3>
                 <v-card class="card_border">
@@ -127,7 +121,6 @@
                             ref="formComentario"
                             v-model="esComentarioValido"
                             name="form_comentario"
-
                         >
                     
                             <v-textarea
@@ -177,8 +170,6 @@
                 </v-card>
             </div>
 
-
-
     </v-container>
     </v-card-text>
     <v-card-text v-else>
@@ -206,8 +197,7 @@
     </v-card-text>
 
 
-    <v-dialog v-model="dialogPlanes" persistent max-width="755">
-            
+    <v-dialog v-model="dialogPlanes" persistent max-width="755"> 
         <v-card class=" px-10">
           <v-card-title class=" justify-space-between">
               <v-btn icon text small color="purple" @click="" >
@@ -232,9 +222,7 @@
                 <div class="d-flex justify-center">
                     <v-btn 
                         class="melon white--text rounded-pill mb-5 btn_crearG" to="/checkout" >Ver planes</v-btn> 
-                </div>
-                      
-                   
+                </div>     
           </div>
         </v-card>
     </v-dialog>

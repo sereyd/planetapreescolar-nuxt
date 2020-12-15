@@ -229,18 +229,27 @@ export default{
         xhr.onload = (event) => {
            // console.log(xhr.response);
            const blob = xhr.response;
-           console.log(blob)
+          //  console.log(blob)
            const res = blob.type.split("/");
+          //  console.log("res")
+          //  console.log(res)
            const typeFile = res[1];
-           if(postS.tipoRecurso !== "audio" && postS.tipoRecurso !== "image" )
+           if(blob.type === "application/pdf")
+           {
+            this.$emit("updateNombreFile",postS.titulo+'.pdf')
+           }
+           else if(blob.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+           {
+            this.$emit("updateNombreFile",postS.titulo+'.docx')
+           }
+           else if(postS.tipoRecurso !== "audio" && postS.tipoRecurso !== "image" )
             this.$emit("updateNombreFile",postS.titulo+'.'+postS.tipoRecurso)
-
-            // this.nombreFile = postS.titulo+'.'+postS.tipoRecurso;
            else
            this.$emit("updateNombreFile", postS.titulo+'.'+typeFile)
 
             // this.nombreFile = postS.titulo+'.'+typeFile;
 
+          // console.log("this.nombreFile");
           console.log(this.nombreFile);
 
  
