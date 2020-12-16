@@ -51,7 +51,8 @@ export default {
         comentarios:[],
         idCreador:"",
         nombreCreador:"",
-        tags:[]
+        tags:[],
+        permisoadmin: true,
       },
       esCrear: true,
       materia: "",
@@ -380,6 +381,7 @@ export default {
 
 
       this.actualizaImgUpload("");
+      this.creaRecurso = false;
     },
 
   },

@@ -137,7 +137,7 @@ export default{
          xhr.onload = (event) => {
            // console.log(xhr.response);
            const blob = xhr.response;
-          //  console.log(blob)
+           console.log(blob)
            const res = blob.type.split("/");
           //  console.log("res")
           //  console.log(res)
@@ -149,6 +149,10 @@ export default{
            else if(blob.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
            {
             this.nombreFile = this.vistapost.titulo+'.docx';
+           }
+           else if(blob.type === "application/vnd.openxmlformats-officedocument.presentationml.presentation")
+           {
+            this.nombreFile = this.vistapost.titulo+'.pptx';
            }
            else if(this.vistapost.tipoRecurso !== "audio" && this.vistapost.tipoRecurso !== "image" )
             this.nombreFile = this.vistapost.titulo+'.'+this.vistapost.tipoRecurso;
@@ -321,7 +325,12 @@ export default{
             suspensivos=""
         }
         return contenido+suspensivos
-    }  
+    },
+    cantidadComentarios(comentarios){
+      console.log(comentarios);
+      let comen = comentarios.filter(com => com.valido === true);
+      return comen.length;
+    },
       // fechaVisualC(vm, payload){
       //   console.log(vm)
       //   console.log(payload)

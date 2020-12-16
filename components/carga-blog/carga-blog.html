@@ -27,7 +27,7 @@
                 <v-chip 
                 color="primary"
                 dark  
-                v-if="datosUsuario.adminlvl==='1'" >
+                v-if="datosUsuario.lvluser===3" >
                 {{key.nombreCreador}}
                 </v-chip>
 
@@ -119,7 +119,7 @@
                         :urlFileEdit="datosRecursoEdit.urlVista"
                     />
                     <subirFile
-                        filesAccepts=".pdf" 
+                        filesAccepts=".pdf, .ppt, .pptx" 
                         label="Letra de video/música"
                         :subtipo="subtipo"
                         :foldercode="datosRecursoEdit.foldercode" @updateFoldercode="datosRecursoEdit.foldercode=$event"
@@ -237,6 +237,9 @@
                                 small
                                 v-if="datosRecursoEdit.tipo === 'planeacion' || subtipo ==='materialdidactico' || subtipo ==='hojatrabajo' || subtipo === 'interactivo' || subtipo ==='otro'"
                             ></v-switch>
+
+                            <v-switch v-model="datosRecursoEdit.permisoadmin"  v-if="datosUsuario.lvluser===3" label="Validado por administador
+                            "></v-switch>
                         </div>
 
                     <input-tag 

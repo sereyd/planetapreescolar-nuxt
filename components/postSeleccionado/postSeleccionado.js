@@ -5,10 +5,9 @@ import { format } from 'date-fns'
 import { es } from 'date-fns/locale';
 import Spinner from '~/components/spinner.vue'
 import pdfviewer from '~/components/pdfviewer/pdfviewer.vue'
-import pdf from 'vue-pdf'
-
 
 ////import toPdf from 'office-to-pdf'
+
 
 export default{
     data(){
@@ -25,40 +24,18 @@ export default{
               idUsuario:"",
               comentario:"",
               nombreUsuario:"",
-              urlImagen:""
+              urlImagen:"",
+              valido: false,
             },
 
 
             // linkembed:"",
 
             dialogPlanes:false,
-            //PDF
-            currentPage: 1,
-            // pageCount: 10,
-            src: null,
-			      numPages: null,
-            
-
-            
         }
     },
-    mounted() {
-      console.log(this.vistapost.urlVista)
-      var loadingTask = pdf.createLoadingTask(this.vistapost.urlVista);
-      console.log(loadingTask)
-      this.src = loadingTask;
-
-      // vistapost.urlVista
-      this.src.promise.then(pdf => {
-        // console.log(pdf)
-        console.log(pdf.numPages)
-        this.numPages = pdf.numPages;
-      });
-    },
     methods:{
-      ...mapActions(['changeRecursosFavoritos']),
-
-      
+      ...mapActions(['changeRecursosFavoritos','notificacionComentario']),
       contadorDescargar(descargasDia){
         console.log(descargasDia);
         console.log(this.vistapost)
@@ -109,6 +86,8 @@ export default{
              comentarios: [...this.vistapost.comentarios]
         })
         .then(() => {
+
+          this.notificacionComentario({...this.datosComentario, idRecurso})
           this.datosComentario.idUsuario = "";
           this.datosComentario.nombreUsuario = "";
           this.datosComentario.urlImagen = "";
@@ -174,8 +153,7 @@ export default{
       videoPlayer,
       audioPlayer,
       Spinner,
-      pdfviewer,
-      pdf
+      pdfviewer
     },
     computed: {
       ...mapState(['datosUsuario','itemsmenu','descargarFree']),

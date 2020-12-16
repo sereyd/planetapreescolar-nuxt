@@ -242,6 +242,10 @@ export default{
            {
             this.$emit("updateNombreFile",postS.titulo+'.docx')
            }
+           else if(blob.type === "application/vnd.openxmlformats-officedocument.presentationml.presentation")
+           {
+            this.nombreFile = this.vistapost.titulo+'.pptx';
+           }
            else if(postS.tipoRecurso !== "audio" && postS.tipoRecurso !== "image" )
             this.$emit("updateNombreFile",postS.titulo+'.'+postS.tipoRecurso)
            else

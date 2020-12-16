@@ -23,3 +23,7 @@
     height: 250px;
     overflow: auto;
   }
+
+  .invalido{
+      background-color: darkgray;
+  }

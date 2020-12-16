@@ -1,7 +1,7 @@
-<v-card>
-    <v-card-text>
-        
-        <PDF :src="src"></PDF>
-    
-    </v-card-text>
-</v-card>
+<div>
+        <div v-for="(key,index) in paginas" key="index-'pag'" >
+
+           <PDF :src="src" :page="key" ></PDF>
+ 
+    </div>
+    </div>

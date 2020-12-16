@@ -6,3 +6,9 @@
     text-indent: 0em;
     text-transform: none;
 }
+.v-main{
+    display:block;
+}
+.invalido{
+    background-color: darkgray;
+}

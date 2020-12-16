@@ -122,7 +122,7 @@
                             />
                             <subirFile
                                 v-if="subtipo !=='blog' && subtipo !=='memoria'"
-                                filesAccepts=".pdf" 
+                                filesAccepts=".pdf, .ppt, .pptx" 
                                 label="Archivo válido"
                                 :subtipo="subtipo"
                                 :foldercode="datosRecurso.foldercode" @updateFoldercode="datosRecurso.foldercode=$event"
