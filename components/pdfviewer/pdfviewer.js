@@ -1,8 +1,16 @@
 import PDF from 'vue-pdf'
+
 export default {
     data(){
         return {
-            paginas:[1,2,3]
+            paginas:[1,2,3],
+            numPages:0
+        }
+    },
+    computed:{
+        cargaPdf(){
+            var pdfload=pdf.createLoadingTask(this.src);
+            return pdfload
         }
     },
     mounted(){
@@ -15,6 +23,6 @@ export default {
     },
     props:{
         src:"",
-        numspages:[]
+
     }
 }

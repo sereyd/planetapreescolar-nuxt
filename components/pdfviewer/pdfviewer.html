@@ -1,7 +1,8 @@
 <div>
-        <div v-for="(key,index) in paginas" key="index-'pag'" >
-
-           <PDF :src="src" :page="key" ></PDF>
- 
+  <div>
+     Cantidad de paginas; {{numPages}}
+    <div v-for="(key,index) in paginas" key="index-'pag'">
+      <PDF :src="cargaPdf" :page="key" ></PDF>
     </div>
-    </div>
+  </div>
+</div>
