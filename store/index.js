@@ -346,7 +346,7 @@ const createStore = () => {
                       // context.commit("cambiastatusSesion",datos);
                   });
 
-                  datos.estadoMembresia = datos.lvluser === 2 ? "active" : "";
+                  datos.estadoMembresia = datos.lvluser >= 2 ? "active" : "";
 
                   //REVISAR ESTADO DE LA SUSCRIPCIÓN MIENTRAS NO SEA USUARIO ADMIN
                   if(datos.lvluser === 1)
@@ -678,14 +678,15 @@ const createStore = () => {
 
         //VERIFICAR QUE SELECCIONARA UNA FOTO DE PERFIL
         if (file) {
-          // console.log("entroo")
+          console.log("entroo")
+          console.log(file)
           try {
             //SE AGREGA LA FOTO AL STORAGE DE FIREBASE
             let storageRef = this.$fireStorage.ref(ubi);
-            await storageRef.child("portada/perfil").put(file, metadata);
+            await storageRef.child("portada-perfil").put(file, metadata);
             //SE OBTIENE LA URL DE LA IMAGEN DE PERFIL Y SE AGREGA AL OBJETO DE USUARIO
             await storageRef
-              .child(file.name)
+              .child("portada-perfil")
               .getDownloadURL()
               .then(url => {
                 state.urlimg = url
