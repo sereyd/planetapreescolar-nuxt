@@ -182,7 +182,7 @@ export default {
         // console.log(this.$fireStore)
         // tipo = this.datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3 ? "ACTIVIDADES" : "CATEGORIAS";
         
-      if(this.datosUsuario.adminlvl && this.datosUsuario.adminlvl==='1'){
+      if( this.datosUsuario.lvluser=== 3){
 
         await this.$fireStore
           .collection(tipo)

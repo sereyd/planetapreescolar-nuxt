@@ -225,6 +225,52 @@ const createStore = () => {
         date:new Date(),
         status:0
       })
+  },
+  async notificacionComentario({state},data){
+
+    await this.$fireStore.collection('Notificaciones').doc("CmOcNemgS0lFofErT7d5").collection('notify').add({
+      icon:"mdi-comment", 
+      title: "Autorizar comentario",
+      link:"",
+      comentario: data,
+      date:new Date(), 
+      status:0
+    })
+
+    console.log(data)
+    // const usuarioQuery =  this.$fireStore.collection('usuarios').where("lvluser", "==", 3);
+    // usuarioQuery.get()
+    // .then(async (querySnapshot) => {
+    //   querySnapshot.forEach( async(doc) => {
+    //     console.log(doc.id);
+    //     console.log(doc.data());
+
+    //     // await this.$fireStore.collection('Notificaciones').doc(doc.id).collection('notify').add({
+    //     //   icon:"mdi-comment", 
+    //     //   title: "Autorizar comentario",
+    //     //   link:"",
+    //     //   comentario: data,
+    //     //   date:new Date(), 
+    //     //   status:0
+    //     // })
+    //   });
+    // })
+    // .catch((error) =>{
+    //     console.log("Error: ", error);
+    // });
+    
+    // var idnot=state.datosUsuario.id
+
+    // if(data.user!==''){
+    //   idnot=data.user
+    // }
+    //   var addnotificacion= await this.$fireStore.collection('Notificaciones').doc(idnot).collection('notify').add({
+    //     icon:data.icon, 
+    //     title: data.text,
+    //     link:data.link,
+    //     date:new Date(), 
+    //     status:0
+    //   })
   },    
   async tomanotificaciones({state}){
     let tomaNotifi=this.$fireStore.collection('Notificaciones').doc(state.datosUsuario.id).collection('notify').where('status','==',0)

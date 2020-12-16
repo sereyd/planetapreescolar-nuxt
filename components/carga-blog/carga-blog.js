@@ -30,7 +30,8 @@ export default {
         urlRecurso: ["",""],
         tags:[],
         premium: false,
-        recomendado: false, 
+        recomendado: false,
+        permisoadmin:true,
         },
         sinopsis:"",
         customToolbar: [
@@ -72,26 +73,6 @@ export default {
       completado:false,
 
 
-      // ubiWP:"",
-
-      // completadoW: false,
-      // cargandoW: false,
-      // porcentajeW: 0,
-      // fileWord:null,
-
-
-      // completadoP: false,
-      // cargandoP: false,
-      // porcentajeP: 0,
-      // filePDF:null,
-
-      // completadoF: false,
-      // cargandoF: false,
-      // porcentajeF: 0,
-      // file:null,
-
-      // changeFile1: false,
-      // changeFile2: false,
 
       tipoRecursoSelect: "",
       tiposRecursoList: ["link","file"],
@@ -198,7 +179,10 @@ export default {
 
         console.log(this.datosRecursoEdit);
         // alert("altooo");
-        let {idRecurso, titulo, contenido, edopost, tags, premium, sinopsis, recomendado, urlVista, urlDescargable, materia, grado, urlImagen} = this.datosRecursoEdit;
+        let {idRecurso, titulo, contenido, edopost, tags, premium, sinopsis, recomendado, 
+          urlVista, urlDescargable, materia, grado, urlImagen, permisoadmin} = this.datosRecursoEdit;
+        // let permisoadmin = true;
+
         
   
         //SE OBTIENE EL RECURSO POR MEDIO DEL ID
@@ -222,7 +206,7 @@ export default {
         }
         usuarioRecursosRef.update({
           titulo, contenido, edopost,tags, premium, recomendado, sinopsis, urlVista, 
-          urlDescargable, materia, grado, urlImagen
+          urlDescargable, materia, grado, urlImagen, permisoadmin
         })
         .then(() => {
             // console.log(this.grupo);
@@ -249,6 +233,7 @@ export default {
                 lista.urlImagen= urlImagen;
                 lista.materia= materia;
                 lista.grado= grado;
+                lista.permisoadmin = permisoadmin;
                 this.updateEditado(lista);
                 
               }

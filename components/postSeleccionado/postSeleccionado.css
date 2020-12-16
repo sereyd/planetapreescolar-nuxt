@@ -9,3 +9,6 @@
 .v-main{
     display:block;
 }
+.invalido{
+    background-color: darkgray;
+}

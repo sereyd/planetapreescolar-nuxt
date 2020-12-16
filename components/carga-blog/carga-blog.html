@@ -27,7 +27,7 @@
                 <v-chip 
                 color="primary"
                 dark  
-                v-if="datosUsuario.adminlvl==='1'" >
+                v-if="datosUsuario.lvluser===3" >
                 {{key.nombreCreador}}
                 </v-chip>
 
@@ -119,7 +119,7 @@
                         :urlFileEdit="datosRecursoEdit.urlVista"
                     />
                     <subirFile
-                        filesAccepts=".pdf" 
+                        filesAccepts=".pdf, .ppt, .pptx" 
                         label="Letra de video/música"
                         :subtipo="subtipo"
                         :foldercode="datosRecursoEdit.foldercode" @updateFoldercode="datosRecursoEdit.foldercode=$event"

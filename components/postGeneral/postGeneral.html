@@ -129,7 +129,7 @@
             <v-col cols="12" md="5" sm="5" class="" >
                 <div>
                     <!-- <p>VISOR PDF: {{relacionados[contador].urlDescargable}}</p> -->
-                    <pdfviewer :src="relacionados[contador].urlDescargable" ></pdfviewer>
+                    <!-- <pdfviewer :src="relacionados[contador].urlDescargable" ></pdfviewer> -->
                 </div>
                 <!-- File: {{urlFileB}} -->
                 <div 
@@ -183,7 +183,7 @@
 
         <div v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'recomendacion'">
             <h3 class="primary--text mt-3 mb-3"> {{relacionados[contador].comentarios.length}} comentarios</h3>
-            <v-card class="card_border">
+            <v-card class="card_border" v-if="datosUsuario.userlogin===true">
                 <v-container>
 
                     <v-form
@@ -213,7 +213,16 @@
             <v-card class="card_border mt-4">
                 <!-- :key="'post_'+index" -->
                 <v-row v-for="(comentario, index) in relacionados[contador].comentarios" :key="'comentario_'+index">
-                    <v-col cols="3" class="">
+                    <!-- <div 
+                        v-if="comentario.valido || comentario.idUsuario === datosUsuario.id" 
+                        :class="[(!comentario.valido && comentario.idUsuario === datosUsuario.id) ? invalido : '']"
+                        style="width: 100%;"
+                    > -->
+                    <v-col 
+                        cols="3"
+                        v-if="comentario.valido || comentario.idUsuario === datosUsuario.id" 
+                        :class="[(!comentario.valido && comentario.idUsuario === datosUsuario.id) ? 'invalido' : '']"
+                    >
                         <div class="pl-7">
                             <v-avatar size="38" > 
                                 <!-- :src="a.urlImagen === 'none' || a.urlImage ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : a.urlImagen" -->
@@ -227,12 +236,17 @@
                             <span>{{comentario.nombreUsuario}}</span>
                         </div>
                     </v-col>
-                    <v-col cols="9" class=" d-flex  texto_comentario ">
+                    <v-col 
+                        v-if="comentario.valido || comentario.idUsuario === datosUsuario.id" 
+                        :class="[(!comentario.valido && comentario.idUsuario === datosUsuario.id) ? 'invalido  d-flex texto_comentario': 'd-flex texto_comentario']"
+                        cols="9"
+                    >
                         <div class="pr-1">
                             <span >{{comentario.comentario}}</span>
                         </div>
                     </v-col>
-                    <v-divider  class=" black mt-4"/> 
+                    <!-- <v-divider  class=" black mt-4"/>  -->
+                    <!-- </div> -->
                     
                 </v-row>
             </v-card>

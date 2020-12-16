@@ -24,7 +24,8 @@ export default{
               idUsuario:"",
               comentario:"",
               nombreUsuario:"",
-              urlImagen:""
+              urlImagen:"",
+              valido: false,
             },
 
 
@@ -34,7 +35,7 @@ export default{
         }
     },
     methods:{
-      ...mapActions(['changeRecursosFavoritos']),
+      ...mapActions(['changeRecursosFavoritos','notificacionComentario']),
       contadorDescargar(descargasDia){
         console.log(descargasDia);
         console.log(this.vistapost)
@@ -85,6 +86,8 @@ export default{
              comentarios: [...this.vistapost.comentarios]
         })
         .then(() => {
+
+          this.notificacionComentario({...this.datosComentario, idRecurso})
           this.datosComentario.idUsuario = "";
           this.datosComentario.nombreUsuario = "";
           this.datosComentario.urlImagen = "";
