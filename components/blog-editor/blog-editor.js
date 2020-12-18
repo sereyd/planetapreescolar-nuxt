@@ -53,6 +53,10 @@ export default {
         nombreCreador:"",
         tags:[],
         permisoadmin: true,
+        // descargas: 0,
+        // visualizaciones: 0,
+        descargas: [],
+        visualizaciones: [],
       },
       esCrear: true,
       materia: "",
@@ -71,6 +75,7 @@ export default {
       fileDescargable: null,
       tipoFile:"",
       completado: false,
+      listo: false,
       esRecursoValido: true,
       typeFileFull: "",
       // imagenF: null,
@@ -174,9 +179,17 @@ export default {
     
     //METODOS PARA LA CARGA DE RECURSOS A FIREBASE
     async almacenarRecursoCollection(){
-      if(this.completado)
+
+      console.log("this.completado blogEditor")
+      console.log(this.completado)
+      console.log("this.listo blogEditor")
+      console.log(this.listo)
+      if(this.completado && this.listo)
       {
-        // alert("LISTO PARA CREAR NUEVO");
+        console.log("LISTO PARA CREAR NUEVO");
+
+        if(this.urlimg !== "" && this.urlimg !== "none")
+          this.datosRecurso.urlImagen = this.urlimg
 
         //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
         const {id, nombre, apellido, lvluser} = this.datosUsuario;
@@ -221,7 +234,7 @@ export default {
           // this.$emit('updateListaR',this.listaR)
           this.$emit('updateRefresh',!this.refreshPost)
           this.resetDatos();
-          this.esCrear = false;
+          // this.esCrear = false;
 
 
           
@@ -290,6 +303,7 @@ export default {
       this.datosRecurso.foldercode = this.datosRecurso.foldercode === "" ? this.$codegenerate() : this.datosRecurso.foldercode ;
       const ubi = `${this.subtipo}/${this.datosUsuario.id}/${this.datosRecurso.foldercode}/`;
       this.completado = true;
+      this.listo = true;
       this.almacenarFotoStorage(ubi);
     },
   
@@ -367,6 +381,12 @@ export default {
       this.sinopsis ="";
       this.tipoRecursoSelect = "";
       
+
+      this.urlDescargable="";
+      this.urlVista="";
+      this.fileVista = null;
+      this.fileDescargable = null;
+
       this.file = null;
       this.urlFile= ["",""];
       this.tipoFile="";
@@ -374,9 +394,11 @@ export default {
       this.updatedCollection = true;
 
       this.completado = false;
+      this.listo = false;
+
       this.bytesTotal=0;
       this.bytesTranferidos=0;
-      this.esUrlimgR = true;
+      // this.esUrlimgR = true;
       // this.esCrear = true;
 
 
@@ -422,25 +444,27 @@ export default {
   },
   watch: {
     async urlimg() {
+      // console.log("urlR")
+      // console.log(this.esUrlimgR)
 
-      if(!this.esUrlimgR)
-      {
+      // if(!this.esUrlimgR)
+      // {
         console.log("NO SE ESTA RESETEANDO")
         // this.datablog.urlImagen = this.urlimg;
-        this.datosRecurso.urlImagen = this.urlimg
-        console.log(this.esCrear)
+        // this.datosRecurso.urlImagen = this.urlimg
+        // console.log(this.esCrear)
 
-        if(this.esCrear)
-        {
-          this.esCrear = false;
-          console.log(this.esCrear)
+        // if(this.esCrear)
+        // {
+        //   this.esCrear = false;
+        //   console.log(this.esCrear)
           await this.almacenarRecursoCollection();
 
-        }
-      }
-      else{
-        this.esUrlimgR = false; 
-      }
+        // }
+      // }
+      // else{
+      //   this.esUrlimgR = false; 
+      // }
     }
   }
 };

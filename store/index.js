@@ -613,6 +613,30 @@ const createStore = () => {
 
       
     },
+    listaAleatoria({state},data){
+      let ran = 0;
+      let postSeleccionados = 1;
+      let contador = 1;
+      // console.log(data);
+      let response= [];
+      data.map(li => {
+        ran = Math.floor(Math.random() * 2);
+        // console.log(ran);
+        if( ( data.length - contador ) <= 4)
+          ran = 1;
+        if(postSeleccionados <= 4)
+          if(ran === 1 )
+          {
+            response.push(li);
+            postSeleccionados++;
+          }
+
+        // console.log(response);
+        contador++;
+      });
+
+      return response;
+    },
 
         cerrarconexion(){
           console.log('action close conexion')

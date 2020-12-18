@@ -5,6 +5,7 @@ import { format } from 'date-fns'
 import { es } from 'date-fns/locale';
 import Spinner from '~/components/spinner.vue'
 import pdfviewer from '~/components/pdfviewer/pdfviewer.vue'
+import comentarios from '~/components/comentarios/comentarios.vue'
 
 ////import toPdf from 'office-to-pdf'
 
@@ -19,14 +20,14 @@ export default{
 
             //DATA PARA COMENTARIOS
             esComentarioValido: true,
-            comentarios:[],
-            datosComentario:{
-              idUsuario:"",
-              comentario:"",
-              nombreUsuario:"",
-              urlImagen:"",
-              valido: false,
-            },
+            // comentarios:[],
+            // datosComentario:{
+            //   idUsuario:"",
+            //   comentario:"",
+            //   nombreUsuario:"",
+            //   urlImagen:"",
+            //   // valido: false,
+            // },
 
 
             // linkembed:"",
@@ -67,50 +68,7 @@ export default{
           });
         }
       },
-      //  METODOS PARA COMENTARIOS
-      async agregarComentario(){
-        const {id, nombre, apellido, urlImagen} = this.datosUsuario;
-        
-        this.datosComentario.idUsuario = id;
-        this.datosComentario.nombreUsuario = `${nombre} ${apellido}`;
-        this.datosComentario.urlImagen = urlImagen;
-        //OBTENEMOS EL ID DEL RECURSO (MEMORIA, RELFEXION, RECOMENDACION, ETC)
-        const {idRecurso} = this.vistapost;
-        this.vistapost.comentarios.push({...this.datosComentario});
-
-        //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
-        let recursoComentariosRef = this.$fireStore.collection("CATEGORIAS").doc(idRecurso);
-        
-        //SE ACTUALIZA EN FIREBASE EL CAMPO DE COMENTARIOS
-        recursoComentariosRef.update({
-             comentarios: [...this.vistapost.comentarios]
-        })
-        .then(() => {
-
-          this.notificacionComentario({...this.datosComentario, idRecurso})
-          this.datosComentario.idUsuario = "";
-          this.datosComentario.nombreUsuario = "";
-          this.datosComentario.urlImagen = "";
-          // this.datosComentario.comentario = "";
-          // this.esComentarioValido = true;
-          this.$refs.formComentario.reset();
-
-          console.log("reset data")
- 
-        })
-        .catch((error) => {
-            console.error("ErroR al agregar nuevo comentario: ", error);
-        });
-
-      },
-      validarFormularioComentario(){
-        // console.log("revision")
-        this.esComentarioValido =this.$refs.formComentario.validate();
-        if(this.esComentarioValido)
-          this.agregarComentario();
-        // console.log("biennnn")
-      },
-
+      
     },
     props:{
       subtipo:{
@@ -153,7 +111,8 @@ export default{
       videoPlayer,
       audioPlayer,
       Spinner,
-      pdfviewer
+      pdfviewer,
+      comentarios
     },
     computed: {
       ...mapState(['datosUsuario','itemsmenu','descargarFree']),

@@ -115,75 +115,11 @@
 
             </div>
 
-            <!-- SECCION DE COMENTARIOS -->
-            <!-- <h1>COMNENTARIOOO</h1> -->
-            <div v-if="subtipo !== 'planeacion' && subtipo !== 'recurso' && subtipo !== 'recomendacion'">
-                <h3 class="primary--text mt-3 mb-3"> {{vistapost.comentarios.length}} comentarios</h3>
-                <v-card class="card_border" v-if="datosUsuario.userlogin===true">
-                    <v-container>
-
-                        <v-form
-                            lazy-validation
-                            ref="formComentario"
-                            v-model="esComentarioValido"
-                            name="form_comentario"
-
-                        >
-                    
-                            <v-textarea
-                            v-model="datosComentario.comentario"
-                            placeholder="comenta aqui"
-                            required
-                            outlined
-                            :rules="[v => !!v || 'Comentario vacio']"
-                            @keyup.enter=""
-                            name="textarea_comentario"
-            
-                        ></v-textarea>
-                        <v-btn 
-                            v-if = "esComentarioValido" 
-                            class="mt-1 melon white--text  btn_crearG" 
-                            @click="validarFormularioComentario()" 
-                        >Comentar</v-btn>
-                        </v-form>
-                    </v-container>
-                </v-card>
-
-                <v-card class="card_border mt-4">
-                    
-                    <v-row v-for="(comentario, index) in vistapost.comentarios" :key="'comentario_'+index">
-                        <v-col 
-                            cols="3"
-                            v-if="comentario.valido || comentario.idUsuario === datosUsuario.id" 
-                            :class="[(!comentario.valido && comentario.idUsuario === datosUsuario.id) ? 'invalido' : '']"
-                        >
-                            <div class="pl-7">
-                                <v-avatar size="38" > 
-                                    :src="a.urlImagen === 'none' || a.urlImage ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : a.urlImagen" 
-                                    <v-img
-                                    :src=" comentario.urlImagen === 'none' || comentario.urlImagen==='' ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : comentario.urlImagen"
-                                    alt="foto"
-                                    ></v-img>
-                                </v-avatar>
-                            </div>
-                            <div class="pl-5 texto_usuario">
-                                <span>{{comentario.nombreUsuario}}</span>
-                            </div>
-                        </v-col>
-                        <v-col 
-                            v-if="comentario.valido || comentario.idUsuario === datosUsuario.id" 
-                            :class="[(!comentario.valido && comentario.idUsuario === datosUsuario.id) ? 'invalido  d-flex texto_comentario': 'd-flex texto_comentario']"
-                            cols="9"
-                        >
-                            <div class="pr-1">
-                                <span >{{comentario.comentario}}</span>
-                            </div>
-                        </v-col>
-                        <v-divider  class=" black mt-4"/> 
-                        
-                    </v-row>
-                </v-card>
-            </div>
+            <!-- <h1>{{subtipo}}</h1> -->
+            <comentarios
+                v-if="subtipo !== 'planeacion' && subtipo !== 'recurso' && subtipo !== 'recomendacion'"
+                :post="vistapost" @updatePost="vistapost = $event"
+            />
 
 
 

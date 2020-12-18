@@ -17,6 +17,26 @@
             @click="mostrarRecursoEdit(key)"
             
             ></v-img>
+
+            <v-fab-transition class="mt-5" >
+                <v-btn
+                    :key="'delete_'+index"
+                    color="red"
+                    x-small
+                    fab
+                    absolute
+                    top
+                    right
+                    class="v-btn--example"
+                    style="top: 12px!important;"
+                    @click="eliminarPost(key)"
+                >
+                    <!-- <span class="white--text" >Ver recurso</span> -->
+                    <v-icon 
+                        color="white"
+                    >mdi-delete</v-icon>
+                </v-btn> 
+              </v-fab-transition>
         </v-card>
 
         <div>

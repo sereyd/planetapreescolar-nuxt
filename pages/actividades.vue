@@ -1,5 +1,6 @@
 <template>
         <v-main >
+            <!-- <v-btn @click="listaAleatoria([])">Random</v-btn> -->
                 <!---------planeaciones------------>
                 <div style="width:100%; height:5px;"></div>
                 <listablog 
@@ -86,6 +87,7 @@ export default {
   },
   methods: {
     ...mapMutations(['guardarVistaValida','actualizarCategorias']),
+    ...mapActions(['listaAleatoria']),
     async  cargabaseGral(){
       let cat = [];
 
@@ -163,17 +165,25 @@ export default {
 
       })
 
-        // console.log(this.planeaciones)
-        // console.log(this.hojastrabajo)
-        // console.log(this.materialdidactico)
-        // console.log(this.interactivos)
     },
-    sliceCategoriasInicio(){
-      this.planeaciones = this.planeaciones.slice(0, 4);
-      this.hojastrabajo = this.hojastrabajo.slice(0, 4);
-      this.materialdidactico = this.materialdidactico.slice(0, 4);
-      this.interactivos = this.interactivos.slice(0, 4);
-      this.otros = this.otros.slice(0, 4);
+    async sliceCategoriasInicio(){
+
+    
+      this.planeaciones = 
+        this.planeaciones.length > 4 ? await this.listaAleatoria(this.planeaciones) : this.planeaciones.slice(0, 4) 
+      
+      this.hojastrabajo = 
+        this.hojastrabajo.length > 4 ? await this.listaAleatoria(this.hojastrabajo) : this.hojastrabajo.slice(0, 4) 
+      
+      this.materialdidactico = 
+        this.materialdidactico.length > 4 ? await this.listaAleatoria(this.materialdidactico) : this.materialdidactico.slice(0, 4) 
+
+      this.interactivos = 
+        this.interactivos.length > 4 ? await this.listaAleatoria(this.interactivos) : this.interactivos.slice(0, 4) 
+      
+      this.otros = 
+        this.otros.length > 4 ? await this.listaAleatoria(this.otros) : this.otros.slice(0, 4) 
+      
     }
   },
 };
