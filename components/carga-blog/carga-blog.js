@@ -71,6 +71,7 @@ export default {
 
       esUrlimgR: false,
       completado:false,
+      listo: false,
 
 
 
@@ -118,7 +119,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["agregarCategorias","updateEditado",'almacenarFotoStorage']),
+    ...mapMutations(["agregarCategorias","updateEditado",'almacenarFotoStorage','actualizarCategorias']),
     
 
 
@@ -169,10 +170,14 @@ export default {
     },
     modificarRecurso(){
 
-      console.log("this.completado")
+      console.log("this.completado cargablog")
       console.log(this.completado)
-      if(this.completado)
+      console.log("this.listo cargablog")
+      console.log(this.listo)
+      if(this.completado && this.listo )
       {
+        console.log("LISTO PARA EDITADO");
+
         console.log(this.urlimg)
         if(this.urlimg !== "" && this.urlimg !== "none")
           this.datosRecursoEdit.urlImagen = this.urlimg
@@ -240,6 +245,8 @@ export default {
             })
             this.editRecurso = false;
             this.completado = false;
+            this.listo = false;
+
 
   
             // console.log("Despues de cambio this.listaR")
@@ -285,6 +292,7 @@ export default {
         
         const ubi = `${this.subtipo}/${this.datosUsuario.id}/${this.datosRecursoEdit.foldercode}/`;
         this.completado = true;
+        this.listo = true;
         this.almacenarFotoStorage(ubi);
 
         // this.almacenarFotoStorage(ubi);
@@ -300,7 +308,66 @@ export default {
       }
       
         // console.log("biennnn")
-    }
+    },
+    async eliminarPost(data){
+      if (confirm("¿Deseas eliminar este recurso?") === true) {
+        console.log("ELIMINADO")
+        console.log(data);
+        const {foldercode, tipo, idRecurso} = data;
+        const {id} = this.datosUsuario
+        const ruta = `${tipo}/${id}/${foldercode}`;
+        console.log(ruta)
+
+        var storageRef = this.$fireStorage.ref();
+        // Create a reference 
+        var mountainsRef = storageRef.child(ruta);
+
+        // Now we get the references of these files
+        mountainsRef.listAll().then( (result) => {
+            result.items.forEach( (file) => {
+              console.log(file)
+               file.delete();
+            });
+            console.log("terminadmos de recorrer")
+
+            //BORRANDO POST SELECCIONADO
+            this.$fireStore.collection("CATEGORIAS").doc(idRecurso).delete()
+            .then(() => {
+
+              console.log(this.listaR)
+              alert("1")
+              this.listaR.filter( (lista) => lista.idRecurso !== idRecurso)
+              console.log(this.listaR)
+              alert("1")
+              this.actualizarCategorias([]);
+              this.$emit('updateRefresh',!this.refreshPost)
+
+
+
+            }).catch((error) => {
+                console.error("Error removing document: ", error);
+            });
+
+        }).catch( (error) => {
+            alert("ALGO ESTABA MAL")
+
+        });
+        // const desertRef = await this.$fireStorage.ref().child(ruta);
+
+        // // Delete the file
+        // desertRef.delete().then(function() {
+        //   alert("ELIMNADOOOOOO")
+        // }).catch(function(error) {
+        //   // Uh-oh, an error occurred!
+        //   alert("ALGO ESTABA MAL")
+
+        // });
+
+      } else {
+        console.log("SALVADO")
+
+      }
+    },
   },
   watch: {
     async urlimg() {
@@ -331,6 +398,10 @@ export default {
     listaR:{
       type: Array,
       default: () => []
-    }
+    },
+    refreshPost:{
+      type: Boolean,
+      default: false,
+    },
   }
 };

@@ -101,6 +101,7 @@ export default {
   },
   methods: {
     ...mapMutations(['guardarVistaValida','actualizarCategorias']),
+    ...mapActions(['listaAleatoria']),
     async  cargabaseGral(){
       let cat = [];
 
@@ -166,10 +167,20 @@ export default {
           this.recomendaciones.push(cat)
       })
     },
-    sliceCategoriasInicio(){
-      this.blog = this.blog.slice(0, 4);
-      this.memorias = this.memorias.slice(0, 4);
-      this.recomendaciones = this.recomendaciones.slice(0, 4);
+    async sliceCategoriasInicio(){
+
+      this.blog = 
+        this.blog.length > 4 ? await this.listaAleatoria(this.blog) : this.blog.slice(0, 4) 
+      
+      this.memorias = 
+        this.memorias.length > 4 ? await this.listaAleatoria(this.memorias) : this.memorias.slice(0, 4) 
+      
+      this.recomendaciones = 
+        this.recomendaciones.length > 4 ? await this.listaAleatoria(this.recomendaciones) : this.recomendaciones.slice(0, 4) 
+      
+      // this.blog = this.blog.slice(0, 4);
+      // this.memorias = this.memorias.slice(0, 4);
+      // this.recomendaciones = this.recomendaciones.slice(0, 4);
       // console.log("this.blog solo 4 elelemntos")
       // console.log(this.blog)
       // console.log("this.memorias solo 4 elelemntos")

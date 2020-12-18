@@ -3,6 +3,8 @@ import { audioPlayer, videoPlayer } from 'vue-md-player'
 import listablog from '~/components/listado-blog/listado-blog.vue'
 import Spinner from '~/components/spinner.vue'
 import pdfviewer from '~/components/pdfviewer/pdfviewer.vue'
+import comentarios from '~/components/comentarios/comentarios.vue'
+
 
 
 
@@ -17,13 +19,13 @@ export default{
 
             //DATA PARA COMENTARIOS
             esComentarioValido: true,
-            comentarios:[],
-            datosComentario:{
-              idUsuario:"",
-              comentario:"",
-              nombreUsuario:"",
-              urlImagen:""
-            },
+            // comentarios:[],
+            // datosComentario:{
+            //   idUsuario:"",
+            //   comentario:"",
+            //   nombreUsuario:"",
+            //   urlImagen:""
+            // },
             allpost:[],
             contador:0,
         }
@@ -121,48 +123,7 @@ export default{
                 console.log(e);
               }
             },
-        //  METODOS PARA COMENTARIOS
-      async agregarComentario(){
-        const {id, nombre, apellido, urlImagen} = this.datosUsuario;
-        
-        this.datosComentario.idUsuario = id;
-        this.datosComentario.nombreUsuario = `${nombre} ${apellido}`;
-        this.datosComentario.urlImagen = urlImagen;
-        //OBTENEMOS EL ID DEL RECURSO (MEMORIA, RELFEXION, RECOMENDACION, ETC)
-        const {idRecurso} = this.vistapost;
-        this.vistapost.comentarios.push({...this.datosComentario});
-        this.relacionados[this.contador].comentarios.push({...this.datosComentario});
-
-        //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
-        let recursoComentariosRef = this.$fireStore.collection("CATEGORIAS").doc(idRecurso);
-        
-        //SE ACTUALIZA EN FIREBASE EL CAMPO DE COMENTARIOS
-        recursoComentariosRef.update({
-             comentarios: [...this.vistapost.comentarios]
-        })
-        .then(() => {
-          this.datosComentario.idUsuario = "";
-          this.datosComentario.nombreUsuario = "";
-          this.datosComentario.urlImagen = "";
-          // this.datosComentario.comentario = "";
-          // this.esComentarioValido = true;
-          this.$refs.formComentario.reset();
-
-          console.log("reset data")
- 
-        })
-        .catch((error) => {
-            console.error("ErroR al agregar nuevo comentario: ", error);
-        });
-
-      },
-      validarFormularioComentario(){
-        // console.log("revision")
-        this.esComentarioValido =this.$refs.formComentario.validate();
-        if(this.esComentarioValido)
-          this.agregarComentario();
-        // console.log("biennnn")
-      },
+       
 
       contadorDescargar(descargasDia){
         console.log(descargasDia);
@@ -327,6 +288,7 @@ export default{
         Spinner,
         pdfviewer,
         audioPlayer,
+        comentarios
         // TreeFolderContents: () => import('./tree-folder-contents.vue')
     },
     

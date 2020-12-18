@@ -5,7 +5,10 @@
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
         <h2>Mis Reflexiones</h2>
 
-        <cargablog tipo="CATEGORIAS" subtipo="reflexion"   :listaR="reflexiones" >
+        <cargablog 
+          tipo="CATEGORIAS" subtipo="reflexion"   :listaR="reflexiones"
+          :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
+        >
           <template v-slot:header>
             <editorblog tipo="CATEGORIAS" subtipo="reflexion" 
             @updateListaR="reflexiones=$event"
@@ -19,7 +22,10 @@
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
         <h2>Mis Planeaciones</h2>
 
-        <cargablog tipo="CATEGORIAS" subtipo="planeacion"  :listaR="planeaciones"  >
+        <cargablog 
+          tipo="CATEGORIAS" subtipo="planeacion"  :listaR="planeaciones" 
+          :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
+        >
           <template v-slot:header>
             <editorblog tipo="CATEGORIAS" subtipo="planeacion"   
             @updateListaR="planeaciones=$event"
@@ -33,7 +39,10 @@
 
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
         <h2>Mis hojas de trabajo</h2>
-        <cargablog tipo="CATEGORIAS" subtipo="hojatrabajo"  :listaR="hojastrabajo"  >
+        <cargablog 
+          tipo="CATEGORIAS" subtipo="hojatrabajo"  :listaR="hojastrabajo" 
+          :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
+        >
           <template v-slot:header>
             <editorblog tipo="CATEGORIAS" subtipo="hojatrabajo"   
             @updateListaR="hojastrabajo=$event"
@@ -46,7 +55,10 @@
 
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
         <h2>Mi material didáctico</h2>
-        <cargablog tipo="CATEGORIAS" subtipo="materialdidactico"  :listaR="materialdidactico"  >
+        <cargablog 
+          tipo="CATEGORIAS" subtipo="materialdidactico"  :listaR="materialdidactico" 
+          :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
+        >
           <template v-slot:header>
             <editorblog tipo="CATEGORIAS" subtipo="materialdidactico"   
             @updateListaR="materialdidactico=$event"
@@ -59,7 +71,10 @@
 
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
         <h2>Mis interactivos</h2>
-        <cargablog tipo="CATEGORIAS" subtipo="interactivo"  :listaR="interactivos"  >
+        <cargablog 
+          tipo="CATEGORIAS" subtipo="interactivo"  :listaR="interactivos" 
+          :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
+        >
           <template v-slot:header>
             <editorblog tipo="CATEGORIAS" subtipo="interactivo"   
             @updateListaR="interactivos=$event"
@@ -72,7 +87,10 @@
 
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
         <h2>Mis otros</h2>
-        <cargablog tipo="CATEGORIAS" subtipo="otro"  :listaR="otros"  >
+        <cargablog 
+          tipo="CATEGORIAS" subtipo="otro"  :listaR="otros" 
+          :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
+        >
           <template v-slot:header>
             <editorblog tipo="CATEGORIAS" subtipo="otro"   
             @updateListaR="otros=$event"
@@ -85,7 +103,10 @@
 
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 1">
         <h2>Mis Memorias</h2>
-        <cargablog tipo="CATEGORIAS" subtipo=" memoria"  :listaR="memorias" >
+        <cargablog 
+          tipo="CATEGORIAS" subtipo=" memoria"  :listaR="memorias"
+          :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
+        >
           <template v-slot:header>
             <editorblog tipo="CATEGORIAS" subtipo="memoria"  
             @updateListaR="memorias=$event"
@@ -97,7 +118,10 @@
       </v-col>  
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 1">
         <h2>Mis Blogs</h2>
-        <cargablog tipo="CATEGORIAS" subtipo="blog"  :listaR="blog" >
+        <cargablog 
+          tipo="CATEGORIAS" subtipo="blog"  :listaR="blog"
+          :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
+        >
           <template v-slot:header>
             <editorblog tipo="CATEGORIAS" subtipo="blog"  
             @updateListaR="blog=$event"

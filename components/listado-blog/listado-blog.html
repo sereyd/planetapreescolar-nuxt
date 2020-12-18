@@ -17,9 +17,10 @@
                 v-if="key.edopost === 'publico' || datosUsuario.id === key.idCreador"
             >
                 <v-card
-                    class=" grey lighten-3 d-flex justify-center align-center mx-2 "
+                    class="  d-flex justify-center align-center mx-2 "
                     style="overflow: hidden;"
                     height="150px"
+                    :color="key.tipo === 'hojatrabajo' ? 'white' : 'grey lighten-3'"
                 >
                 <!-- v-if="key.urlImagen!==''"  -->
                     <!-- <p>{{key.tipoRecurso}}</p> -->
