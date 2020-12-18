@@ -111,7 +111,7 @@ export default{
                 //DESPUES DE OBTENER A LOS USUARIOS LOS ALMACENAMOS EN THIS.UUSUARIOS
                 this.usuarios = dtuser.docs.map(doc=>{
                     this.optionUsuarios.push({
-                        text:doc.data().nombre+" "+doc.data().apellido,
+                        text:doc.data().nombre+" "+doc.data().apellido+": "+doc.data().correo,
                         value:doc.id
                     })
 

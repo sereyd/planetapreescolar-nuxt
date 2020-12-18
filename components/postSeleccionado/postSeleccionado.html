@@ -49,19 +49,11 @@
                         <v-icon rigth dark> mdi-download </v-icon>
                         Descargar
                     </v-btn>
-                    <pdfviewer :src="vistapost.urlVista"  ></pdfviewer>
-                        <!-- <pdfviewer :src="vistapost.urlVista" :numspages="[3,4,5]" ></pdfviewer> -->
+                    
+                    <pdfviewer :src="vistapost.urlVista" :numspages="[3,4,5]" ></pdfviewer>
                     
                 </div>
             </div>
-            
-    
-
-
-            
-
-            <!-- :src="vistapost.urlImagen!=='' ? vistapost.urlImagen : 'images/logos/planeta_preescolar_logo.png'"  -->
-
             <div class="d-flex justify-center mt-5" v-if="vistapost.tipo !== 'planeacion'">
                 
 
