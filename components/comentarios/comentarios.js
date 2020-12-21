@@ -38,6 +38,7 @@ export default {
  
   methods: {
     ...mapMutations(['']),
+    ...mapActions(['notificacionComentario']),
     
     //  METODOS PARA COMENTARIOS
     async agregarComentario(){
@@ -48,9 +49,11 @@ export default {
         this.datosComentario.nombreUsuario = `${nombre} ${apellido}`;
         this.datosComentario.urlImagen = urlImagen;
         //OBTENEMOS EL ID DEL RECURSO (MEMORIA, RELFEXION, RECOMENDACION, ETC)
-        const {idRecurso} = this.post;
+        // console.log(this.post);
+        const {idRecurso, idCreador,nombreCreador, titulo} = this.post;
         this.post.comentarios.push({...this.datosComentario});
-        // this.post.comentarios.push({...this.datosComentario});
+
+
 
         //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
         let recursoComentariosRef = this.$fireStore.collection("CATEGORIAS").doc(idRecurso);
@@ -61,7 +64,7 @@ export default {
         })
         .then(() => {
 
-        // this.notificacionComentario({...this.datosComentario, idRecurso})
+        this.notificacionComentario({dataComentario:{...this.datosComentario}, dataRecurso: {idRecurso, nombreCreador, idCreador,titulo}})
         this.datosComentario.idUsuario = "";
         this.datosComentario.nombreUsuario = "";
         this.datosComentario.urlImagen = "";

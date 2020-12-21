@@ -183,7 +183,6 @@ export default {
           this.datosRecursoEdit.urlImagen = this.urlimg
 
         console.log(this.datosRecursoEdit);
-        // alert("altooo");
         let {idRecurso, titulo, contenido, edopost, tags, premium, sinopsis, recomendado, 
           urlVista, urlDescargable, materia, grado, urlImagen, permisoadmin} = this.datosRecursoEdit;
         // let permisoadmin = true;
@@ -193,37 +192,19 @@ export default {
         //SE OBTIENE EL RECURSO POR MEDIO DEL ID
         let usuarioRecursosRef =  this.$fireStore.collection("CATEGORIAS").doc(idRecurso);
   
-        // if(this.datosRecursoEdit.tipoRecurso === "link")
-        // {
-        //   urlRecurso[1] = urlRecurso[0];
-        // }
-        
         //SE ACTUALIZA EN FIREBASE EL RECURSO SELECCIONADO
         if(this.subtipo === 'materialdidactico')
         {
-          // console.log(urlDescargable)
-          // console.log(urlVista)
-          // alert("es material")
           urlVista = urlDescargable;
-          // console.log(urlDescargable)
-          // console.log(urlVista)
-          // alert("es material")
         }
         usuarioRecursosRef.update({
           titulo, contenido, edopost,tags, premium, recomendado, sinopsis, urlVista, 
           urlDescargable, materia, grado, urlImagen, permisoadmin
         })
         .then(() => {
-            // console.log(this.grupo);
-            // alert("paso 1")
-            // this.$router.push('/publicaciones')
-            //ACTUALIZAR RECURSO LISTAR DE PROPS
-            // console.log("Antes de cambio this.listaR")
-            // console.log(this.listaR)
-            // alert("1")
+           
             this.listaR.map( (lista) => {
-              // console.log(lista.id +"==="+ id)
-              // console.log(lista)
+             
               if(lista.idRecurso === idRecurso)
               {
                 lista.titulo = titulo;
@@ -245,14 +226,7 @@ export default {
             })
             this.editRecurso = false;
             this.completado = false;
-            this.listo = false;
-
-
-  
-            // console.log("Despues de cambio this.listaR")
-            // console.log(this.listaR)
-            // alert("2")
-  
+            this.listo = false; 
    
         })
         .catch((error) => {
@@ -335,10 +309,8 @@ export default {
             .then(() => {
 
               console.log(this.listaR)
-              alert("1")
               this.listaR.filter( (lista) => lista.idRecurso !== idRecurso)
               console.log(this.listaR)
-              alert("1")
               this.actualizarCategorias([]);
               this.$emit('updateRefresh',!this.refreshPost)
 
@@ -349,19 +321,9 @@ export default {
             });
 
         }).catch( (error) => {
-            alert("ALGO ESTABA MAL")
+            alert("ALGO SALIO MAL")
 
         });
-        // const desertRef = await this.$fireStorage.ref().child(ruta);
-
-        // // Delete the file
-        // desertRef.delete().then(function() {
-        //   alert("ELIMNADOOOOOO")
-        // }).catch(function(error) {
-        //   // Uh-oh, an error occurred!
-        //   alert("ALGO ESTABA MAL")
-
-        // });
 
       } else {
         console.log("SALVADO")

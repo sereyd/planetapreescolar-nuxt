@@ -13,24 +13,9 @@ import comentarios from '~/components/comentarios/comentarios.vue'
 export default{
     data(){
         return {
-            // dialogPost:false,
-            // viewpost:false,
-            // viewothers: false,
-            // fechaVisual:"",
 
             //DATA PARA COMENTARIOS
             esComentarioValido: true,
-            // comentarios:[],
-            // datosComentario:{
-            //   idUsuario:"",
-            //   comentario:"",
-            //   nombreUsuario:"",
-            //   urlImagen:"",
-            //   // valido: false,
-            // },
-
-
-            // linkembed:"",
 
             dialogPlanes:false,
         }

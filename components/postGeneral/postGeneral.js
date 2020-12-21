@@ -41,9 +41,12 @@ export default{
         // console.log(this.bandera)
     },
     methods: {
+      ...mapMutations(['changeViewPost','changeViewOthers']),
         verRecurso(){
-            this.$emit('updateviewP',true); 
-            this.$emit('updateviewO',false);
+            // this.$emit('updateviewP',true); 
+            // this.$emit('updateviewO',false);
+            this.changeViewPost(true)
+            this.changeViewOthers(false)
         },
         async  cargabaseGral(){
           let conta = 0;
@@ -251,16 +254,6 @@ export default{
         posts:{
           type: Array,
           default: () => []
-        },
-        viewothers:{
-          default:()=>{
-              return 'BLOG'
-          }
-        },
-        viewothers:{
-          default:()=>{
-              return 'BLOG'
-          }
         },
         urlFileB:{
           default:()=>{
