@@ -1,9 +1,11 @@
+import { formatWithOptions } from "date-fns/fp";
 import { mapMutations } from "vuex"
 export default {
   data() {
     return {
       imagen: null,
-      urlImagenPrevia: ""
+      urlImagenPrevia: "",
+      datosimg:{}
     };
   },
   props: {
@@ -18,6 +20,14 @@ export default {
     },
     urlPrevia:{
       type: String,
+      default:""
+    },
+    limitW:{
+      type:[Number,String],
+      default:""
+    },
+    limitH:{
+      type:[Number,String],
       default:""
     }
   },
@@ -46,9 +56,24 @@ export default {
 
     /* VISTA PREVIA DE LA IMAGEN DE PERFIL SELECCIONADA */
     async change() {
+
       this.urlImagenPrevia = URL.createObjectURL(
         this.$refs.fileupload.files[0]
       );
+         if(this.limitW || this.limitH){
+        var foto=new Image()
+        foto.src= this.urlImagenPrevia
+
+        foto.onload=()=>{
+          if(this.limitW && foto.width !== this.limitW){
+            this.urlImagenPrevi=""
+          }
+          if(this.limitH && foto.height !== this.limitH){
+            this.urlImagenPrevi=""
+          }  
+        }
+        }
+
       this.imagen = this.$refs.fileupload.files[0];
       this.$emit("updateImg", this.urlImagenPrevia);
       this.actualizaImgUpload(this.$refs.fileupload.files[0]);

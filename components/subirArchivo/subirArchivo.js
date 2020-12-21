@@ -166,7 +166,7 @@ export default {
     },
     urlFileEdit:{
       default:()=> ""
-    }
-    
+    },
+    reglas:[]
 },
 };
