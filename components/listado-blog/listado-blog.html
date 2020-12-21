@@ -19,15 +19,17 @@
                 <v-card
                     class="  d-flex justify-center align-center mx-2 "
                     style="overflow: hidden;"
+              
                     height="150px"
                     :color="key.tipo === 'hojatrabajo' ? 'white' : 'grey lighten-3'"
                 >
                 <!-- v-if="key.urlImagen!==''"  -->
                     <!-- <p>{{key.tipoRecurso}}</p> -->
-                    <div v-if="key.tipoRecurso !== 'link'">
+                    <div v-if="key.tipoRecurso !== 'link'" style="width:100%; max-width:100%; position:relative;">
                         <v-img
                             :src="key.urlImagen === '' || key.urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : key.urlImagen"
-                            contain
+                
+                            max-width="100%"
                             class="fotomini"
                             @click="muestrapost(key)"
                         />
