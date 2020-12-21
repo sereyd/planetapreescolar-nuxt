@@ -129,38 +129,33 @@ export default {
       }
       else
       {
-        // console.log("BUSCAR DE STORE")
-        // console.log(this.categorias)
-
         this.updateCategoriasInicio([...this.categorias])
         this.sliceCategoriasInicio();
-        // console.log(this.recursos)
       }
     },
 
     updateCategoriasInicio(datos){
-      // console.log(datos)
       datos.map(cat => {
 
         if(cat.tipo === "planeacion"  && 
           ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
-          this.planeaciones.push(cat)
+            this.planeaciones.push(cat)
   
         else if(cat.tipo === "materialdidactico"  && 
           (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
-          this.materialdidactico.push(cat)
+            this.materialdidactico.push(cat)
 
         else if(cat.tipo === "hojatrabajo"  && 
           (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
-          this.hojastrabajo.push(cat)
+            this.hojastrabajo.push(cat)
 
         else if(cat.tipo === "interactivo"  && 
           (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
-          this.interactivos.push(cat)
+            this.interactivos.push(cat)
         
         else if(cat.tipo === "otro"  && 
           (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
-          this.otros.push(cat)
+            this.otros.push(cat)
 
 
       })

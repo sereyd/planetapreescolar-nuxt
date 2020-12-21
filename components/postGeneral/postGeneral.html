@@ -130,6 +130,7 @@
                 <div>
                     <!-- <p>VISOR PDF: {{relacionados[contador].urlDescargable}}</p> -->
                     <!-- <pdfviewer :src="relacionados[contador].urlDescargable" ></pdfviewer> -->
+                    <div v-html="relacionados[contador].contenido" class="scroll"></div>
                 </div>
                 <!-- File: {{urlFileB}} -->
                 <div 
@@ -168,7 +169,7 @@
                             @click="dialogPlanes=true"
                         >
                             <v-icon rigth dark> mdi-download </v-icon>
-                            Descargar negado
+                            Descargar
                         </v-btn>
                         
                         

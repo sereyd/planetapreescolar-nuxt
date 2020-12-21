@@ -33,7 +33,7 @@
                         />
                     </div>
                     <iframe 
-                        v-else
+                        v-else-if="key.tipoRecurso === 'link' && !viewpost && !viewothers"
                         width="auto" height="auto" 
                         :src="key.urlVista.replace('watch?v=', 'embed/')" 
                         frameborder="0" 
@@ -204,7 +204,7 @@
                 </div>
             </div>
             <v-spacer></v-spacer>
-            <v-btn class="melon white--text" @click="dialogPost=false; viewpost = false; viewothers = false;" style="text-transform: none;">Cerrar</v-btn>
+            <v-btn class="melon white--text" @click="cerrarDialog()" style="text-transform: none;">Cerrar</v-btn>
         </v-card-title>
         
         <postSeleccionado 
@@ -228,8 +228,6 @@
             :urlFileB="urlFileB" @updateUrlFileB="urlFileB=$event"
             :nombreFile="nombreFile" @updateNombreFile="nombreFile=$event"
             :linkembed="linkembed" @updateLinkEmbed="linkembed=$event"
-            :viewothers ="viewothers" @updateviewO="viewothers=$event"
-            :viewpost="viewpost" @updateviewP="viewpost=$event"
         />
         
             

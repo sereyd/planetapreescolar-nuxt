@@ -12,10 +12,6 @@
   
 <reflexiones  />
 
-  <!------recomendaciones----->
-  <!-- <div style="width:100%; height:50px;"></div>
-<listablog :esCompleto="false" tipo="RECOMENDACION" titulo="Recomendación del día" subtitulos="Una sección de recursos y planeación para tu día"  linkmas="recomendacion"  /> -->
-
   <!---------RECOMENDACIONES------------>
 <div style="width:100%; height:10px;"></div>
 <listablog 
@@ -45,21 +41,6 @@
 />
 
 
-
-  <!---------audios------------>
-<!-- <div style="width:100%; height:50px;"></div>
-<listablog :esCompleto="false" tipo="AUDIOS" titulo="Audios de la educadora" subtitulos="Audios o música para tus rutinas o clases"  linkmas="audios" /> -->
-
-  <!---------imagenes------------>
-<!-- <div style="width:100%; height:50px;"></div>
-<listablog :esCompleto="false" tipo="IMAGENES" titulo="Imagenes de la educadora" subtitulos="fotos o imágenes de apoyo para clases"  linkmas="imagenes" /> -->
-
-  <!---------videos------------>
-<!-- <div style="width:100%; height:50px;"></div>
-<listablog :esCompleto="false" tipo="VIDEOS" titulo="Videos de la educadora" subtitulos="videos para complementar clases o informativos"  linkmas="videos" /> -->
-
-
-
 </v-main>
 </template>
 
@@ -83,13 +64,8 @@ export default {
   //   ...mapMutations(['guardarVistaValida']),
   // },
   async mounted() {
-      // console.log("HOME")
-      // console.log(this.bandera)
-      // this.guardarVistaValida(true); 
       await this.cargabaseGral()
       this.bandera = true
-      // console.log("HOME")
-      // console.log(this.bandera)
   },
   computed: {
     ...mapState(['datosUsuario', 'categorias']),
@@ -107,9 +83,7 @@ export default {
 
       if(this.categorias.length === 0)
       {
-        // console.log("BUSCAR DE FIREBASE")
         try {
-          // if(!this.esCompleto)
           await this.$fireStore
             .collection("CATEGORIAS").orderBy("fecha", "desc")
             .get()
@@ -142,17 +116,18 @@ export default {
       }
       else
       {
-        console.log("BUSCAR DE STORE")
         this.updateCategoriasInicio([...this.categorias])
         this.sliceCategoriasInicio();
       }
     },
     updateCategoriasInicio(datos){
-      // console.log(datos)
-
       datos.map(cat => {
 
-        if(cat.tipo === "blog"  && 
+        if((cat.tipo === "planeacion" || cat.tipo === "materialdidactico" || cat.tipo === "hojatrabajo" || cat.tipo === "interactivo" || cat.tipo === "otro") && cat.recomendado && 
+          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
+          this.recomendaciones.push(cat)
+
+        else if(cat.tipo === "blog"  && 
           ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
           this.blog = [
             ...this.blog,
@@ -162,9 +137,6 @@ export default {
           ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
           this.memorias.push(cat)
 
-        else if((cat.tipo === "planeacion" || cat.tipo === "materialdidactico" || cat.tipo === "hojatrabajo" || cat.tipo === "interactivo" || cat.tipo === "otro") && cat.recomendado && 
-          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
-          this.recomendaciones.push(cat)
       })
     },
     async sliceCategoriasInicio(){
@@ -177,16 +149,7 @@ export default {
       
       this.recomendaciones = 
         this.recomendaciones.length > 4 ? await this.listaAleatoria(this.recomendaciones) : this.recomendaciones.slice(0, 4) 
-      
-      // this.blog = this.blog.slice(0, 4);
-      // this.memorias = this.memorias.slice(0, 4);
-      // this.recomendaciones = this.recomendaciones.slice(0, 4);
-      // console.log("this.blog solo 4 elelemntos")
-      // console.log(this.blog)
-      // console.log("this.memorias solo 4 elelemntos")
-      // console.log(this.memorias);
-      // console.log("this.RECOMENDAIONES solo 4 elelemntos")
-      // console.log(this.recomendaciones);
+  
     }
   },
 };

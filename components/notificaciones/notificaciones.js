@@ -1,4 +1,4 @@
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
     data(){
@@ -25,15 +25,23 @@ async mounted(){
 methods:{
 
     ...mapActions(['tomanotificaciones','cerrarconexion','creaNotificacion']),
+    ...mapMutations(['changeDialogPost']),
     async notivisto(p){
         console.log(p);
            await this.$fireStore.collection('Notificaciones').doc(this.datosUsuario.id).collection('notify').doc(p.id).update({
             status:1
         })
+
+        this.verCometario = false;
     },
     async abrirLink(p){
         this.$router.push(p.data().link)
         this.notivisto(p)
+    },
+    async verPost(){
+
+        this.changeDialogPost(true);
+
     },
     async accion(req){
         const id =  this.post.data().comentario.idRecurso

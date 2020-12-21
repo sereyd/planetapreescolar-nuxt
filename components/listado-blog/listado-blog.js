@@ -14,28 +14,10 @@ export default{
     data(){
         // name:"listablog",
         return {
-            // blogpost:[],
-            // editpost:{},
-            // edit:false,
-            // customToolbar: [
-            //   [{ 'font': [] }],
-            //   [{ 'header': [false, 1, 2, 3, 4, 5, 6, ] }],
-            //   [{ 'size': ['small', false, 'large', 'huge'] }],
-            //   ['bold', 'italic', 'underline', 'strike'],
-            //   [{'align': ''}, {'align': 'center'}, {'align': 'right'}, {'align': 'justify'}],
-            //   [{ 'header': 1 }, { 'header': 2 }],
-            //   ['blockquote'],
-            //   [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
-            //   [{ 'script': 'sub'}, { 'script': 'super' }],
-            //   [{ 'indent': '-1'}, { 'indent': '+1' }],
-            //   [{ 'color': [] }, { 'background': [] }],
-            //   ['link', 'video', 'formula'],
-            //   [{ 'direction': 'rtl' }],
-            //   ['clean'],
-            // ],
+           
             dialogPost:false,
-            viewpost:false,
-            viewothers: false,
+            // viewpost:false,
+            // viewothers: false,
             vistapost:{
               comentarios:[],
               urlVista:"",
@@ -43,16 +25,6 @@ export default{
               // creador:{}
             },
             fechaVisual:"",
-
-            //DATA PARA COMENTARIOS
-            // esComentarioValido: true,
-            // comentarios:[],
-            // datosComentario:{
-            //   idUsuario:"",
-            //   comentario:"",
-            //   nombreUsuario:"",
-            //   urlImagen:""
-            // },
 
             //PARA DESCARGAR RECURSO
             nombreFile: "",
@@ -66,41 +38,16 @@ export default{
     },
     methods:{
       ...mapActions(['changeRecursosFavoritos']),
-      // contadorDescargar(descargasDia){
-      //   const {idRecurso} = this.vistapost;
-      //   const {id} = this.datosUsuario;
-
-      //   if(this.vistapost.premium === true && this.datosUsuario.estadoMembresia !== 'active')
-      //   {
-      //     descargasDia.usadas.push(idRecurso);
-      //     descargasDia.disponibles= this.descargarFree;
-      //     //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
-      //     let descargasFreeRef = this.$fireStore.collection("usuarios").doc(id);
-          
-      //     //SE ACTUALIZA EN FIREBASE EL CAMPO DE COMENTARIOS
-      //     descargasFreeRef.update({
-      //       descargasDia
-      //     })
-      //     .then(() => {
-           
-      //       console.log("UPDATE DESCARGAR LIMITE")
-   
-      //     })
-      //     .catch((error) => {
-      //         console.error("ErroR al agregar nuevo comentario: ", error);
-      //     });
-      //   }
-
-
-        
-      // },
+      ...mapMutations(['changeViewOthers','changeViewPost','changeDialogPost']),
       muestrapost(p){
         console.log(p);
         this.linkembed = "";
 
         this.spinner = true;
         this.dialogPost=true;
-        this.viewothers = true;
+        // this.changeDialogPost(true);
+        // this.viewothers = true;
+        this.changeViewOthers(true);
         this.vistapost=p
         this.vistapost.tipoRecurso = p.tipoRecurso ? p.tipoRecurso : 'image';
         this.vistapost.urlVista = p.urlVista ? p.urlVista : "";
@@ -113,8 +60,12 @@ export default{
 
         if(tipo !=='planeacion' && tipo !=='materialdidactico' && tipo !=='hojatrabajo' && tipo !=='interactivo' && tipo !=='otro')
         {
-          this.viewothers = false;
-          this.viewpost = true;
+          // this.viewothers = false;
+          this.changeViewOthers(false);
+
+          // this.viewpost = true;
+          this.changeViewPost(true);
+
 
         }
 
@@ -171,70 +122,23 @@ export default{
  
          };
 
-        //  console.log(p.urlDescargable)
-        //  console.log(p.urlVista)
           if( p.urlDescargable !== "none" && p.urlDescargable !== "")
           {
             xhr.open('GET', p.urlDescargable);
             xhr.send();
           }
         }
-      //  else if(this.vistapost.tipoRecurso === 'link')
-      //  {
-      //   console.log("this.vistapost");
-      //   console.log(this.vistapost);
-      //    let {urlVista} = this.vistapost;
-      //   const embed = urlVista.replace("watch?v=", "embed/");
-      //   this.linkembed = embed;
-      //   console.log(this.linkembed);
-      //  }
+     
 
       },
-      // editapost(t){
-      //   this.edit=true
-      //   this.editpost=t
-      // },
-    
 
-      //  METODOS PARA COMENTARIOS
-      // async agregarComentario(){
-      //   const {id, nombre, apellido, urlImagen} = this.datosUsuario;
-        
-      //   this.datosComentario.idUsuario = id;
-      //   this.datosComentario.nombreUsuario = `${nombre} ${apellido}`;
-      //   this.datosComentario.urlImagen = urlImagen;
-      //   //OBTENEMOS EL ID DEL RECURSO (MEMORIA, RELFEXION, RECOMENDACION, ETC)
-      //   const {idRecurso} = this.vistapost;
-      //   this.vistapost.comentarios.push({...this.datosComentario});
-
-      //   //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
-      //   let recursoComentariosRef = this.$fireStore.collection(this.tipo).doc(idRecurso);
-        
-      //   //SE ACTUALIZA EN FIREBASE EL CAMPO DE COMENTARIOS
-      //   recursoComentariosRef.update({
-      //        comentarios: [...this.vistapost.comentarios]
-      //   })
-      //   .then(() => {
-      //     this.datosComentario.idUsuario = "";
-      //     this.datosComentario.nombreUsuario = "";
-      //     this.datosComentario.urlImagen = "";
-      //     this.$refs.formComentario.reset();
-
-      //     console.log("reset data")
- 
-      //   })
-      //   .catch((error) => {
-      //       console.error("ErroR al agregar nuevo comentario: ", error);
-      //   });
-
-      // },
-      // validarFormularioComentario(){
-      //   // console.log("revision")
-      //   this.esComentarioValido =this.$refs.formComentario.validate();
-      //   if(this.esComentarioValido)
-      //     this.agregarComentario();
-      //   // console.log("biennnn")
-      // },
+      cerrarDialog(){
+        this.dialogPost = false; 
+        // this.changeDialogPost(false);
+        this.changeViewPost(false); 
+        this.changeViewOthers(false);
+      },
+      
 
     },
     props:{
@@ -288,18 +192,10 @@ export default{
           type: Boolean,
           default: true,
         },
-        // esBusqueda:{
-        //   type: Boolean,
-        //   default: false,
-        // },
         esFavoritos:{
           type: Boolean,
           default: false,
         },
-        // datoBuscar:{
-        //   type:String,
-        //   default:""
-        // }
     },
     components:{
       VueEditor,
@@ -315,7 +211,7 @@ export default{
 
     // },
     computed: {
-      ...mapState(['datosUsuario','itemsmenu','descargarFree']),
+      ...mapState(['datosUsuario','itemsmenu','descargarFree','viewothers','viewpost']),
       cargarecomendacion(){
         var limit=350
         var loncadena= this.reflexionSeleccionada.contenido.length
@@ -331,24 +227,6 @@ export default{
       let comen = comentarios.filter(com => com.valido === true);
       return comen.length;
     },
-      // fechaVisualC(vm, payload){
-      //   console.log(vm)
-      //   console.log(payload)
-      //   // const fecha = format(payload, "dd 'de' MMMM 'de' yyyy", {locale: es});
-      //   // console.log(fecha)
-      //   return vm;
-      // },
-    //   cargarecomendacion(){
-    //     let limit=150
-    //     let loncadena=this.vistapost.contenido.length
-    //     let suspensivos=" ..."
-    //     let contenido=this.vistapost.contenido.substr(0,limit)
-    //     // console.log(this.vistapost.contenido)
-    //     // console.log(contenido)
-    //     if(loncadena<limit){
-    //         suspensivos=""
-    //     }
-    //     return contenido+suspensivos
-    // }
+    
     },
 }

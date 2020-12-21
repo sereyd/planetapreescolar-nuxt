@@ -191,8 +191,8 @@
                             @keyup.enter=""
                             v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo')"
                         ></v-text-field>
-
-
+                        
+                        <span class="d-flex align-self-start" v-if="subtipo === 'interactivo'">Letra de video o canción:</span>
                         <VueEditor class="elevation-3 rounded-lg" v-model="datosRecurso.contenido" :editorToolbar="customToolbar"></VueEditor>
             
 

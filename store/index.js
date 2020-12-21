@@ -146,7 +146,7 @@ const createStore = () => {
       ///  notificaciones
       itemsnotifi:[
         //{ icon:'mdi-alert', title: 'Alerta de Mensaje', link:"#" }
-    ],
+      ],
 
       /// menu flotante
 
@@ -183,7 +183,10 @@ const createStore = () => {
         text:'Niños',
         value:'niños'
       }
-    ]
+      ],
+      viewpost: false,
+      viewothers: false,
+      dialogPost: false,
 
 
 
@@ -226,51 +229,20 @@ const createStore = () => {
         status:0
       })
   },
-  async notificacionComentario({state},data){
+  async notificacionComentario({state},req){
 
-    await this.$fireStore.collection('Notificaciones').doc("CmOcNemgS0lFofErT7d5").collection('notify').add({
+    // console.log(req);
+
+    await this.$fireStore.collection('Notificaciones').doc(req.dataRecurso.idCreador).collection('notify').add({
       icon:"mdi-comment", 
-      title: "Autorizar comentario",
+      title: "Comentario en Post",
       link:"",
-      comentario: data,
+      dataComentario: req.dataComentario,
+      dataRecurso: req.dataRecurso,
       date:new Date(), 
       status:0
     })
 
-    console.log(data)
-    // const usuarioQuery =  this.$fireStore.collection('usuarios').where("lvluser", "==", 3);
-    // usuarioQuery.get()
-    // .then(async (querySnapshot) => {
-    //   querySnapshot.forEach( async(doc) => {
-    //     console.log(doc.id);
-    //     console.log(doc.data());
-
-    //     // await this.$fireStore.collection('Notificaciones').doc(doc.id).collection('notify').add({
-    //     //   icon:"mdi-comment", 
-    //     //   title: "Autorizar comentario",
-    //     //   link:"",
-    //     //   comentario: data,
-    //     //   date:new Date(), 
-    //     //   status:0
-    //     // })
-    //   });
-    // })
-    // .catch((error) =>{
-    //     console.log("Error: ", error);
-    // });
-    
-    // var idnot=state.datosUsuario.id
-
-    // if(data.user!==''){
-    //   idnot=data.user
-    // }
-    //   var addnotificacion= await this.$fireStore.collection('Notificaciones').doc(idnot).collection('notify').add({
-    //     icon:data.icon, 
-    //     title: data.text,
-    //     link:data.link,
-    //     date:new Date(), 
-    //     status:0
-    //   })
   },    
   async tomanotificaciones({state}){
     let tomaNotifi=this.$fireStore.collection('Notificaciones').doc(state.datosUsuario.id).collection('notify').where('status','==',0)
@@ -459,7 +431,6 @@ const createStore = () => {
           let cat = [];
           if(context.state.categorias.length === 0)
           {
-            console.log("BUSCAR DE FIREBASE")
 
             await this.$fireStore
             .collection("CATEGORIAS")
@@ -540,7 +511,7 @@ const createStore = () => {
 
         if(state.categorias.length === 0)
         {
-          console.log("BUSCAR DE FIREBASE")
+          // console.log("BUSCAR DE FIREBASE")
           try {
             await this.$fireStore
               .collection("CATEGORIAS").orderBy("fecha", "desc")
@@ -563,28 +534,23 @@ const createStore = () => {
 
                 });
                 state.categorias = postG;
-                // dispatch("updateCategoriasInicio('postG', 'tipoPost')" )
                 commit("updateVerMas",tipoPost);
                 
-                  // this.blogpost = [...this.blogpost].slice(0,4);
-                // console.log(this.blogpost);
               });
           } catch (e) {
             console.log(e);
           }
         }else{
-          console.log("BUSCAR DE STORE")
-          // dispatch("updateCategoriasInicio({'state.categorias', 'tipoPost'})" )
+          // console.log("BUSCAR DE STORE")
           commit("updateVerMas",tipoPost);
 
 
         }
     },
     updateCategoriasInicio(postG, tipoPost){
-      console.log(postG);
+      // console.log(postG);
       if(tipoPost === "actividades")
       {
-        console.log("RECOMENDADOS")
         state.misPost = postG.filter( 
           post  => (post.tipo === "planeacion" && (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)))
         )
@@ -606,10 +572,6 @@ const createStore = () => {
             ( post.tipo === tipoPost && (post.idCreador !== state.datosUsuario.id && post.edopost !== "privado") )
         )
       }
-      console.log("state.misPost")
-      console.log(state.misPost)
-      console.log("state.otrosPost")
-      console.log(state.otrosPost)
 
       
     },
@@ -617,11 +579,11 @@ const createStore = () => {
       let ran = 0;
       let postSeleccionados = 1;
       let contador = 1;
-      // console.log(data);
       let response= [];
       data.map(li => {
+
         ran = Math.floor(Math.random() * 2);
-        // console.log(ran);
+
         if( ( data.length - contador ) <= 4)
           ran = 1;
         if(postSeleccionados <= 4)
@@ -631,7 +593,6 @@ const createStore = () => {
             postSeleccionados++;
           }
 
-        // console.log(response);
         contador++;
       });
 
@@ -643,6 +604,9 @@ const createStore = () => {
           observer()
         }
     },
+
+
+
     mutations: {
       cleanImgStore(state){
         state.imgupload="";
@@ -680,15 +644,25 @@ const createStore = () => {
         state.categorias = payload;
       },
       agregarCategorias(state, payload){
-        console.log(payload)
-        console.log(state.categorias)
-        alert("state.categorias")
+        // console.log(payload)
+        // console.log(state.categorias)
+        // alert("state.categorias")
         state.categorias = [
           ...state.categorias,
           payload
         ];
-        console.log(state.categorias)
-        alert("state.categorias")
+        // console.log(state.categorias)
+        // alert("state.categorias")
+      },
+      changeViewOthers(state, payload){
+        state.viewothers = payload;
+      },
+      changeViewPost(state, payload){
+        state.viewpost = payload;
+      },
+      changeDialogPost(state, payload){
+        console.log("mosytrando post")
+        state.dialogPost = payload;
       },
       
 
@@ -702,8 +676,8 @@ const createStore = () => {
 
         //VERIFICAR QUE SELECCIONARA UNA FOTO DE PERFIL
         if (file) {
-          console.log("entroo")
-          console.log(file)
+          // console.log("entroo")
+          // console.log(file)
           try {
             //SE AGREGA LA FOTO AL STORAGE DE FIREBASE
             let storageRef = this.$fireStorage.ref(ubi);
@@ -753,7 +727,7 @@ const createStore = () => {
         }else{
           state.datosUsuario = data;
         }
-        console.log(state.datosUsuario);
+        // console.log(state.datosUsuario);
       },
       async  tomaDatosActualizados(state){
         await this.$fireStore.collection('usuarios').where('id','==',state.datosUsuario.id).get()
