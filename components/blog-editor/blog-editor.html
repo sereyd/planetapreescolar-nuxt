@@ -49,7 +49,12 @@
                     v-model="esRecursoValido"
                   >
                     <div class="text-center" v-if="!cargando">
+
+
+
                         <subirImagen 
+                        
+                        :limitImg="limitWH"
                         v-if="subtipo !=='reflexion'"
                             titulo=""  
                             @updateImg="datosRecurso.urlImagen=$event" 
@@ -57,6 +62,9 @@
                             tpimg="post"
                             class=" d-flex justify-center mb-4"
                         />
+
+                   
+
                         <v-row v-if="subtipo ==='reflexion'" v-show="showicon===true" style="border:solid #ccc 1px; border-radius:10px;" >
                             <v-col cols="2" md="2" v-for="k in 8"  :key="'pos'+k" >
                                 <v-btn @click="datosRecurso.icono='images/iconos/reflexiones/'+k+'.png';showicon=false" depressed ><img :src="'images/iconos/reflexiones/'+k+'.png'" width="50" /></v-btn>
@@ -66,9 +74,10 @@
                             <img :src="datosRecurso.icono" width="100%" />
                         </v-avatar>
                         <v-btn v-if="subtipo ==='reflexion'"  @click="showicon=true">Cambiar Icono</v-btn>
-
+                        <v-chip v-if="etreglas" class="grey white--text mp-5" >{{etreglas}}</v-chip>
                         <!-- <p>{{subtipo}}</p> -->
                         <div v-if="subtipo ==='planeacion'">
+
                             <subirFile 
                                 filesAccepts=".doc, .docx" 
                                 label="Archivo WORD"

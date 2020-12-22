@@ -14,7 +14,7 @@
             @updateListaR="reflexiones=$event"
             :listaR="reflexiones"
             :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
-            @updatepost="updatepost.reflexiones=$event"  imagen="false" ></editorblog>
+            @updatepost="updatepost.reflexiones=$event"  imagen="false"    ></editorblog>
           </template>
         </cargablog>
 
@@ -31,7 +31,7 @@
             @updateListaR="planeaciones=$event"
             :listaR="planeaciones"
             :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
-            @updatepost="updatepost.planeaciones=$event"   ></editorblog>
+            @updatepost="updatepost.planeaciones=$event"  etreglas="Tamaño de portada  522px por 285px" :limitWH="{width:522, height:285}"  ></editorblog>
           </template>
         </cargablog>
 
@@ -64,7 +64,7 @@
             @updateListaR="materialdidactico=$event"
             :listaR="materialdidactico"
             :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
-            @updatepost="updatepost.materialdidactico=$event"   ></editorblog>
+            @updatepost="updatepost.materialdidactico=$event"   etreglas="Tamaño de portada  522px por 285px" :limitWH="{width:522, height:285}"   ></editorblog>
           </template>
         </cargablog>
       </v-col>
@@ -80,7 +80,7 @@
             @updateListaR="interactivos=$event"
             :listaR="interactivos"
             :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
-            @updatepost="updatepost.interactivos=$event"   ></editorblog>
+            @updatepost="updatepost.interactivos=$event"  etreglas="Tamaño de portada  522px por 285px" :limitWH="{width:522, height:285}"    ></editorblog>
           </template>
         </cargablog>
       </v-col>

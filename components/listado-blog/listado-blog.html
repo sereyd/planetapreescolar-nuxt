@@ -28,7 +28,7 @@
                     <div v-if="key.tipoRecurso !== 'link'" style="width:100%; max-width:100%; position:relative;">
                         <v-img
                             :src="key.urlImagen === '' || key.urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : key.urlImagen"
-                
+                            :contain="key.tipo === 'hojatrabajo' ? true : false"
                             max-width="100%"
                             class="fotomini"
                             @click="muestrapost(key)"
