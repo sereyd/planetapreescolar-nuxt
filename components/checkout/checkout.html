@@ -28,7 +28,10 @@
             <div class="price">${{precioTrimenstral}} MXN</div>
             </div>
             <div class="d-flex justify-center">
-              <v-btn class="melon white--text mb-5 btn_crearG" @click="crearSesionSuscripcion('trimestral')">¡Lo quiero!</v-btn>
+              <v-btn class="melon white--text mb-2 btn_crearG" @click="crearSesionSuscripcion('trimestral')">¡Lo quiero!</v-btn>
+            </div>
+            <div class="d-flex justify-center">
+              <v-btn class="melon white--text mb-5 btn_crearG" @click="dialogMP=true; tipoMembresia='trimestral';">OXXO</v-btn>
             </div>
           </v-card>
         </v-col>
@@ -51,7 +54,10 @@
             <div class="price">${{precioSemestral}} MXN</div>
             </div>
             <div class="d-flex justify-center">
-              <v-btn class="melon white--text mb-5 btn_crearG" @click="crearSesionSuscripcion('semestral')">¡Lo quiero!</v-btn>
+              <v-btn class="melon white--text mb-2 btn_crearG" @click="crearSesionSuscripcion('semestral')">¡Lo quiero!</v-btn>
+            </div>
+            <div class="d-flex justify-center">
+              <v-btn class="melon white--text mb-5 btn_crearG" @click="dialogMP=true; tipoMembresia='semestral';">OXXO</v-btn>
             </div>
           </v-card>
         </v-col>
@@ -74,7 +80,10 @@
             <div class="price">${{precioAnual}} MXN</div>
             </div>
             <div class="d-flex justify-center">
-              <v-btn class="melon white--text mb-5 btn_crearG" @click="crearSesionSuscripcion('anual')">¡Lo quiero!</v-btn>
+              <v-btn class="melon white--text mb-2 btn_crearG" @click="crearSesionSuscripcion('anual')">¡Lo quiero!</v-btn>
+            </div>
+            <div class="d-flex justify-center">
+              <v-btn class="melon white--text mb-5 btn_crearG" @click="dialogMP=true; tipoMembresia='anual';">OXXO</v-btn>
             </div>
           </v-card>
         </v-col>
@@ -82,5 +91,69 @@
       </v-row>
       </div>
     </v-container>
+
+    <v-dialog v-model="dialogMP" fullscreen>
+      <v-card class=" px-10">
+        <v-card-title class=" justify-space-between">
+            <v-btn icon text small color="purple" @click="" >
+            </v-btn>
+            <h2 class="primary--text ">Mercadopago</h2>
+            <v-btn icon text small color="purple" @click="dialogMP = false; completado = true;" >
+                <v-icon>mdi-window-close</v-icon>
+            </v-btn>
+        </v-card-title>
+
+        <div class="mt-8" v-if="!completado && !spinner">
+
+          <v-form
+            ref="formMP"
+            v-model="validMP"
+            lazy-validation
+          >
+              
+            <v-text-field 
+                class=""  
+                label="Nombre"
+                outlined 
+                v-model="datosMP.nombre"
+                :rules="[v => !!v || 'Escriba el nombre']"
+            ></v-text-field>
+            <v-text-field 
+                class=""  
+                outlined
+                label="Apellidos" 
+                v-model="datosMP.apellido"
+                :rules="[v => !!v || 'Escriba los apellidos']"
+            ></v-text-field>
+            <v-text-field 
+                class=""  
+                outlined
+                label="Correo"
+                v-model="datosMP.correo"
+                :rules="correoReglas"
+            ></v-text-field>
+            <div class="pb-7 mt-3">
+              <v-btn block class="primary" @click="validarMP()">Pagar</v-btn>
+            </div>
+                
+          </v-form>
+
+
+        </div>
+        <div v-else-if="completado && !spinner">
+          <div class="d-flex flex-column justify-center"  >
+            <h4 class="text-center mb-4">¡Descarga la clave para poder pagar en OXXO!</h4>
+            <v-icon  style="font-size: 60px;" color="success">
+              mdi-checkbox-marked-circle
+            </v-icon>
+            <!-- <div> -->
+              <a class="align-self-center" :href="linkMP" target="_blank">Documento MercaPago</a>
+            <!-- </div> -->
+          </div>
+        </div>
+        <Spinner v-else/>
+      </v-card>
+  </v-dialog>
+
 
 </div>

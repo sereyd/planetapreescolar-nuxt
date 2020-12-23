@@ -158,8 +158,8 @@ const createStore = () => {
       dominio:"https://educadora.cf",
 
       //APIS DEVELOP Y PRODUCCION
-      urlAPI: "https://stripe-checkout-api.herokuapp.com",
-      // urlAPI: "http://localhost:4242",
+      // urlAPI: "https://stripe-checkout-api.herokuapp.com",
+      urlAPI: "http://localhost:4242",
       descargarFree: 1,
       // data para ver lista completa de post
       misPost:[],
@@ -322,7 +322,10 @@ const createStore = () => {
 
                   //REVISAR ESTADO DE LA SUSCRIPCIÓN MIENTRAS NO SEA USUARIO ADMIN
                   if(datos.lvluser === 1)
-                    await fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + datos.idSuscripcion)
+                  {
+                    //PAGO POR STRIPE
+                    console.log(datos.idSuscripcion);
+                    fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + datos.idSuscripcion)
                     .then((result)=>{
                       return result.json()
                     })
@@ -331,37 +334,9 @@ const createStore = () => {
                       // console.log(suscripcion)
                       if(suscripcion.error)
                       {
-
-                       /// console.log(suscripcion)
-                        ////console.log("SUSCRIPCION NO VÁLIDA")
                         datos.estadoMembresia = "canceled";
-                        ///console.log(datos)
-                  
-                        const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
-                        
-
-                        const d = await response.json();
-                       // console.log(d)
-
-                        if(!datos.descargasDia)
-                        {
-                          datos.descargasDia = 
-                          {
-                            disponibles: context.state.descargarFree,
-                            usadas: [],
-                            fecha: d.fecha
-                          }
-                        }
-                        else if(d.fecha !== datos.descargasDia.fecha)
-                        {
-                          ///console.log("el dia cambiooooooo")
-                          datos.descargasDia.disponibles= context.state.descargarFree,
-                          datos.descargasDia.usadas = [];
-                          datos.descargasDia.fecha = d.fecha;
-                        }
                       }
                       else{
-
                         datos.estadoMembresia = suscripcion.status;
                       }
 
@@ -369,6 +344,70 @@ const createStore = () => {
                     .catch((err)=>{
                       console.log('Error al verificar suscripción', err);
                     });
+
+
+                    //PAGO POR MEDIO DE MERCAPAGO
+
+                    const config = {
+                      method: 'POST',
+                      headers: {
+                          'Accept': 'application/json',
+                          'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({idPago: datos.idSuscripcion})
+                    }
+
+                    // fetch(this.urlAPI+"/mercadopago-oxxo",config);
+
+                    fetch(context.state.urlAPI+"/estado-pago",config)
+                    .then((result)=>{
+                      return result.json()
+                    })
+                    .then(async(suscripcion)=>{
+
+                      console.log(suscripcion)
+                      if(suscripcion.error)
+                      {
+                        datos.estadoMembresia = "canceled";
+                      }
+                      else{
+                        datos.estadoMembresia = suscripcion.status;
+                      }
+
+                    })
+                    .catch((err)=>{
+                      console.log('Error al verificar suscripción', err);
+                    });
+
+
+
+                    //SI NO TIENE MEMBRESIA PREMIUM SE LIMITA LAS DESCARGAS
+                    if(context.state.datosUsuario.estadoMembresia === 'canceled')
+                    {
+                      const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
+                        
+                      const d = await response.json();
+
+                      if(!datos.descargasDia)
+                      {
+                        datos.descargasDia = 
+                        {
+                          disponibles: context.state.descargarFree,
+                          usadas: [],
+                          fecha: d.fecha
+                        }
+                      }
+                      else if(d.fecha !== datos.descargasDia.fecha)
+                      {
+                        ///console.log("el dia cambiooooooo")
+                        datos.descargasDia.disponibles= context.state.descargarFree,
+                        datos.descargasDia.usadas = [];
+                        datos.descargasDia.fecha = d.fecha;
+                      }
+                    }
+                  }
+
+
 
                   context.commit("cambiastatusSesion",datos);
 

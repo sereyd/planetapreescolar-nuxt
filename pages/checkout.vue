@@ -11,6 +11,12 @@ import checkout from '~/components/checkout/checkout.vue'
 // import { Card, createToken } from 'vue-stripe-elements-plus'
 
 export default {
+
+    // head() {
+    //     return {
+    //         script: [{src:'https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js'}]
+    //     }
+    // },
     data(){
         return {
             datapage:{
