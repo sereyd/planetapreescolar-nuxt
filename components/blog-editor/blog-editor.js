@@ -412,6 +412,7 @@ export default {
     this.datosRecurso.idCreador = this.datosUsuario.id;
     // console.log(this.listaR)
 
+
   },
   components: {
     subirImagen,
@@ -441,6 +442,19 @@ export default {
       type: Boolean,
       default: false,
     },
+    etreglas:{
+      type:String,
+      default:""
+    },
+    limitWH:{
+      type:Object,
+      default:()=>{
+        return {
+        width:0,
+        height:0
+        }
+      }
+    }
   },
   watch: {
     async urlimg() {
