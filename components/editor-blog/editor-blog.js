@@ -1,4 +1,4 @@
-import { mapState } from 'vuex'
+import { mapState,mapActions } from 'vuex'
 import {VueEditor} from 'vue2-editor'
 import Alerta from '~/components/alertas/alertas.vue'
 
@@ -21,6 +21,7 @@ export default {
         }
     },
     methods:{
+        ...mapActions(['creaNotificacion']),
         validaForm(){
             this.error=[]
 
@@ -44,11 +45,37 @@ export default {
             this.validaForm()
 
             if(this.error.length===0){
-                   var creablog= this.$fireStore.collection('foro').doc(this.datosUsuario.id).collection('publicados')
+
+                this.datosblog.iduser=this.datosUsuario.id
+                this.datosblog.publicador=this.datosUsuario.nombre+" "+this.datosUsuario.apellido
+                this.datosblog.correo=this.datosUsuario.correo
+                this.datosblog.comentarios=[]
+                this.datosblog.verificado=false
+                this.datosblog.estrellas=[]
+                this.datosblog.fechapub=new Date() 
+                var datosdenotificacion={}
+                   var creablog= this.$fireStore.collection('foro')
                    creablog.add(this.datosblog)
-
-
+                        this.$emit('finaliza',false)
                     this.datosblog={}
+
+                    //// toma datos de usuarios lvl 3
+                    this.$fireStore.collection('usuarios').where('lvluser','==',3).get()
+                    .then((dat)=>{
+                      dat.docs.forEach((datos)=>{
+                       
+                       var datosdenotificacion={
+                           user:datos.data().id,
+                            icon:'mdi-text-box-check-outline', 
+                            text:'se publico un nuevo foro',
+                            link:'/foro',
+                       }
+
+                        this.creaNotificacion(datosdenotificacion)
+                      })
+                    })
+
+                    this.$emit('actualizaforo',true)
             }
         },
     

@@ -187,7 +187,8 @@ const createStore = () => {
       viewpost: false,
       viewothers: false,
       dialogPost: false,
-
+      ////foroseleccionado
+      foroselect:{}
 
 
     }),
@@ -608,6 +609,9 @@ const createStore = () => {
 
 
     mutations: {
+      foroseleccionado(state,data){
+        state.foroselect=data
+      },
       cleanImgStore(state){
         state.imgupload="";
         state.urlimg="";
