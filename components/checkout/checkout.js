@@ -1,14 +1,6 @@
-
 import { mapState, mapMutations, mapActions } from 'vuex'
-
-// import { CardNumber, CardExpiry, CardCvc } from 'vue-stripe-elements-plus'
-// import { stripeKey, stripeOptions } from './stripeConfig.json'
-// import { Card, CardNumber, CardExpiry, CardCvc, createToken, confirmCardPayment, handleCardPayment } from 'vue-stripe-elements-plus'
 import Spinner from '~/components/spinner.vue'
 
-// import { StripeCheckout } from 'vue-stripe-checkout';
-
- 
 export default {
   data () {
     return {
@@ -24,8 +16,31 @@ export default {
       precioTrimenstral: 990,
       precioSemestral: 1490,
       precioAnual: 2490,
+      tipoMembresia: "",
+
+      //CLAVES PARA MERCADO PAGO
+      apiKey: "TEST-20920d57-4e20-4f4c-8ae8-165479c50481",
+      accessToken:"TEST-8920658246221073-122116-fae55fc90deca1afa2cffd0207537488-392358182",
+      
+      //DATA DE MERCAPAGO
+      datosMP:{
+        nombre:"Jose",
+        apellido:"Ruiz Diaz",
+        correo:"josed555@gmail.com",
+      },
+      dialogMP: false,
+      mediosPago:["oxxo"],
+      medioSeleccionado:null,
+      validMP:true,
 
       spinner: false,
+      completado: false,
+      linkMP: "",
+
+      correoReglas: [    
+        v => !!v || 'Correo es requerido',
+        v => /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(v) || 'Correo no válido',
+      ],
 
         
     }
@@ -38,9 +53,113 @@ export default {
  
   methods: {
     ...mapMutations(['guardaDatosUsuarioStore','guardarStripeObj']),
+    //PAGOS CON MERCADO LIBRE
+    generarCobro(){
 
-    //PRUEBAS
+      window.Mercadopago.setPublishableKey(this.apiKey);
+      console.log(this.datosMP);
+    },
 
+    validarMP(){
+      const vd = this.$refs.formMP.validate();
+      // console.log(this.$router)
+      this.validMP = vd;
+      if(this.validMP)
+      {
+        // this.tipoMembresia = tipoM;
+
+        this.crearOrdenMP();
+      }
+    
+    },
+
+    //PAGO CON MERCAPAGO POR OXXO
+    async crearOrdenMP(){
+
+      this.spinner = true;
+      this.completado = false;
+
+      window.Mercadopago.setPublishableKey(this.apiKey);
+      console.log(this.datosMP);
+
+      this.importe  = 
+        this.tipoMembresia === 'trimestral' ? this.precioTrimenstral 
+        : this.tipoMembresia === 'semestral' ? this.precioSemestral : this.precioAnual;
+
+      const dataMP = {
+        precio: this.importe,
+        tipo: this.tipoMembresia,
+        correo: this.datosMP.correo,
+        nombre: this.datosMP.nombre+" "+this.datosMP.apellido
+      }
+
+      console.log(this.urlAPI)
+      try {
+        const config = {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dataMP)
+        }
+        
+        const json = await fetch(this.urlAPI+"/mercadopago-oxxo",config);
+        let res = await json.json();
+  
+        // console.log(res.response);
+        // console.log(res.response.transaction_details.external_resource_url);
+        this.linkMP = res.response.transaction_details.external_resource_url;
+        
+        let datosUsuario = {...this.datosUsuario}
+        const {id} = datosUsuario;
+        
+        // const lvl = datosUsuario.lvluser === 2 ? 2 : 1;
+        //SE ASIGNA EL ID DEL PAGO DE OXXO AL ID DE LA SUSCRIPCIÓN
+        // datosUsuario.idSuscripcion = res.response.id;
+
+        //SE BUSCA AL USUARIO EN LA BASE DE DATOS POR MEDIO DEL ID
+        let usuarioRef =  this.$fireStore.collection("usuarios").doc(id);
+
+        //SE ACTUALIZA EN FIREBASE LOS CAMPOS NECESARIOS
+        usuarioRef.update({
+          // lvluser: lvl,
+          idMembresia: res.response.id,
+          // idCliente: this.idCliente,
+          idSuscripcion: res.response.id,
+          tipoSuscripcion: this.tipoMembresia,
+          importeSuscripcion: this.importe,
+        })
+        .then(() => {
+          //SE ACTUALIZA EL OBJETO USUARIOS POR MEDIO DE UN ACTION QUE ESTA EN EL STORE
+          // datosUsuario.lvluser = lvl;
+          datosUsuario.idMembresia =res.response.id;
+          // datosUsuario.idCliente = this.idCliente;
+          datosUsuario.idSuscripcion= res.response.id;
+          datosUsuario.tipoSuscripcion= this.tipoMembresia;
+          datosUsuario.importeSuscripcion= this.importe;
+          // datosUsuario.estadoMembresia = session.payment_status === 'paid' ? 'active' : '';
+
+          this.guardaDatosUsuarioStore(datosUsuario);
+        })
+        .catch((error) => {
+            console.error("Error al realizar pago: ", error);
+        });
+
+        // this.cambiastatusSesion()
+
+        this.spinner = false;
+        this.completado = true;
+
+      } catch (error) {
+        console.log(error)
+      }
+
+    },
+    
+
+
+    //PAGOS CON STRIPE
     crearSesionSuscripcion(priceTipo){
       this.spinner = true;
 

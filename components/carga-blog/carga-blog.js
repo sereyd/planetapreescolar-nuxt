@@ -72,9 +72,6 @@ export default {
       esUrlimgR: false,
       completado:false,
       listo: false,
-
-
-
       tipoRecursoSelect: "",
       tiposRecursoList: ["link","file"],
     };
@@ -89,10 +86,6 @@ export default {
   computed: {
     ...mapState(["urlimg", "datosUsuario"]),
     fechaVisual(payload){
-      console.log(payload)
-      // const fecha = format(payload, "dd 'de' MMMM 'de' yyyy", {locale: es});
-      // console.log(fecha)
-      //return (id) => this.itemById(id).description;
       return (payload) => format(payload, "dd 'de' MMMM 'de' yyyy", {locale: es});
     },
     tituloEditar(){
@@ -121,10 +114,6 @@ export default {
   methods: {
     ...mapMutations(["agregarCategorias","updateEditado",'almacenarFotoStorage','actualizarCategorias']),
     
-
-
-
-
     async mostrarRecursoEdit(post){
       console.log(post)
       // console.log(this.tipo);
@@ -138,8 +127,6 @@ export default {
       this.datosRecursoEdit.premium = !this.datosRecursoEdit.premium ? false : this.datosRecursoEdit.premium;
       this.datosRecursoEdit.recomendado = !this.datosRecursoEdit.recomendado ? false : this.datosRecursoEdit.recomendado;
 
-      // console.log(this.datosRecursoEdit.tipoRecurso)
-
       if(this.datosRecursoEdit.tipoRecurso === "link")
       {
         this.tipoRecursoSelect = "link"
@@ -148,11 +135,6 @@ export default {
         this.tipoRecursoSelect = "file"
 
       }
-      // console.log(this.tipoRecursoSelect)
-
-
-      // if(this.datosRecursoEdit.sinopsis)  
-      //   this.sinopsis = this.datosRecursoEdit.sinopsis
       
       
       if(this.tipo === "RECOMENDACION")
@@ -161,23 +143,12 @@ export default {
         this.esBlog = false;
 
       this.editRecurso = true;
-      // console.log(post);
-     
-      
-    
-
 
     },
     modificarRecurso(){
 
-      console.log("this.completado cargablog")
-      console.log(this.completado)
-      console.log("this.listo cargablog")
-      console.log(this.listo)
       if(this.completado && this.listo )
       {
-        console.log("LISTO PARA EDITADO");
-
         console.log(this.urlimg)
         if(this.urlimg !== "" && this.urlimg !== "none")
           this.datosRecursoEdit.urlImagen = this.urlimg
@@ -248,11 +219,6 @@ export default {
 
       }
     },
-    // cargaFinal(){
-    //   const ubi = `${this.subtipo}/${this.datosUsuario.id}/${this.datosRecursoEdit.foldercode}/`;
-    //   this.completado = true;
-    //   this.almacenarFotoStorage(ubi);
-    // },
 
     validarFormularioRecursoEdit(){
       // console.log("revision")
@@ -269,8 +235,6 @@ export default {
         this.listo = true;
         this.almacenarFotoStorage(ubi);
 
-        // this.almacenarFotoStorage(ubi);
-        // this.modificarRecurso()
       }
 
       if(this.datosRecursoEdit.tags.length === 0)
@@ -336,12 +300,7 @@ export default {
 
       if(!this.esUrlimgR)
       {
-        console.log("NO SE ESTA RESETEANDO")
-        
         await this.modificarRecurso()
-
-
-        
       }
       else{
         this.esUrlimgR = false; 

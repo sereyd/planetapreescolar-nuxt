@@ -3,12 +3,6 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
     data(){
         return {
-            // recursos:[
-            //     'Todos los recursos',
-            //     'Cantos',
-            //     'Planeaciones',
-            //     'Imágenes'
-            // ],
             recursos:[
                 'todos',
                 'blog',

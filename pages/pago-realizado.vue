@@ -1,13 +1,7 @@
 <template>
    
-    
   <v-container v-show="json !== ''">
     <v-card>
-      <!-- 
-        mdi-checkbox-marked-circle
-        mdi-checkbox-marked-circle-outline
-       -->
-
       <v-card-title class="primary d-flex flex-column">
         <div>
           <v-icon  style="font-size: 60px;" color="success">
@@ -27,14 +21,6 @@
 
           <v-row class="mx-8"> 
             <v-col>
-              <!-- <v-row class="">
-                <v-col cols="4" xsm="6" md="4" lg="6">
-                  <h5 class="title">ID de compra:</h5>
-                </v-col>
-                <v-col>
-                  <p>{{idCompra}}</p>
-                </v-col>
-              </v-row> -->
 
               <v-row class="">
                 <v-col cols="4" xsm="6" md="4" lg="6">
@@ -55,29 +41,8 @@
               </v-row>
             </v-col>
           </v-row>
-          <!-- <v-btn @click="opcMembresia()">Opciones de membresia</v-btn>
-          <p>{{idCompra}}</p>||||
-          <p>{{idCliente}}</p> -->
-
-          
-
         </v-container>
-        <div>
-
-          <!-- <p>
-            Gracias por comprar la membresia! Si tienes alguna duda escribenos...
-
-            <a href="mailto:orders@example.com">orders@example.com</a>.
-
-            <v-file-input
-              ref="updateFile"
-              v-model="file"
-              counter
-              show-size
-            ></v-file-input>
-            <v-btn class="primary" @click="subirAlumnos">Subir</v-btn>
-          </p> -->
-        </div>
+        
 
       </v-card-text>
 
@@ -92,8 +57,6 @@
 // import validasitio from '@/mixins/validasitio.js'
 import { mapState, mapMutations, mapActions } from 'vuex'
 
-// import readXlsxFile from 'read-excel-file'
-
 export default {
     data(){
         return {
@@ -103,12 +66,7 @@ export default {
           tipoSuscripcion:"",
           importe:"",
           idCliente:"",
-            // datapage:{
-            //     permisos:0,
-            //     logeado:false
-            // }
-          // dominio:"https://educadora.cf",
-          // dominio:"http://localhost:3000",
+           
         }
     },
     computed:{
@@ -123,18 +81,7 @@ export default {
         console.log(this.$refs)
         console.log(this.$refs.updateFile)
         console.log(this.$refs.updateFile.files)
-        /*
-        this.urlImagenPrevia = URL.createObjectURL(this.$refs.fileupload.files[0]);
-            this.imagen=this.$refs.fileupload.files[0]
-            this.actualizaImgUpload(this.$refs.fileupload.files[0]);
-        */
-        // readXlsxFile(this.file).then((rows) => {
-        //   // `rows` is an array of rows
-        //   // each row being an array of cells.
-        //   console.log(rows);
-        //   console.table(rows);
-        //   rows.map( row => console.log(row));
-        // })
+       
 
       },
       async obtenerCliente(sessionId){
@@ -150,8 +97,6 @@ export default {
             })
             .then((session)=>{
 
-              console.log("************************CHECAR DATA DE SESION ******************")
-              console.log(session)
               if(session.error)
               {
 
@@ -168,9 +113,6 @@ export default {
                   localStorage.setItem("user", "" );
 
                   const {id} = datosUsuario;
-
-                  //SE CREA UNA VARIABLE PARA MODIFICAR LOS CAMPOS
-                  // let datosUsuario = this.datosUsuario;
 
                   //VALIDA QUE SOLO SE CAMBIA A USUARIO TIPO 1 SI EL USUARIO ES TIPO 0
                   const lvl = datosUsuario.lvluser === 2 ? 2 : 1;
@@ -245,28 +187,15 @@ export default {
         console.log("PAGO NO REALIZADO")
         this.$router.push('/')        
       }
-
-
-
       
     },
-    components:{
-        
-    },
-    // computed:{
-    //   ...mapState(['idCompra']),
-    // },
-    // mixins:[validasitio]
 }
 </script>
 
 <style>
-
 .title{
-  /* font-weight: 50; */
   color:black;
 }
-
 </style>
 
 
