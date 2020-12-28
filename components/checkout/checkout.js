@@ -1,25 +1,7 @@
 import { mapState, mapMutations, mapActions } from 'vuex'
-
-// import { CardNumber, CardExpiry, CardCvc } from 'vue-stripe-elements-plus'
-// import { stripeKey, stripeOptions } from './stripeConfig.json'
-// import { Card, CardNumber, CardExpiry, CardCvc, createToken, confirmCardPayment, handleCardPayment } from 'vue-stripe-elements-plus'
 import Spinner from '~/components/spinner.vue'
 
-// import { StripeCheckout } from 'vue-stripe-checkout';
-
- 
 export default {
-
-  // head() {
-  //   return {
-  //     script: [
-  //       {
-  //         src:
-  //           'https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js'
-  //       }
-  //     ]
-  //   }
-  // },
   data () {
     return {
 
@@ -126,9 +108,43 @@ export default {
         let res = await json.json();
   
         // console.log(res.response);
-        this.datosUsuario.idSuscripcion = res.response.id;
         // console.log(res.response.transaction_details.external_resource_url);
         this.linkMP = res.response.transaction_details.external_resource_url;
+        
+        let datosUsuario = {...this.datosUsuario}
+        const {id} = datosUsuario;
+        
+        // const lvl = datosUsuario.lvluser === 2 ? 2 : 1;
+        //SE ASIGNA EL ID DEL PAGO DE OXXO AL ID DE LA SUSCRIPCIÓN
+        // datosUsuario.idSuscripcion = res.response.id;
+
+        //SE BUSCA AL USUARIO EN LA BASE DE DATOS POR MEDIO DEL ID
+        let usuarioRef =  this.$fireStore.collection("usuarios").doc(id);
+
+        //SE ACTUALIZA EN FIREBASE LOS CAMPOS NECESARIOS
+        usuarioRef.update({
+          // lvluser: lvl,
+          idMembresia: res.response.id,
+          // idCliente: this.idCliente,
+          idSuscripcion: res.response.id,
+          tipoSuscripcion: this.tipoMembresia,
+          importeSuscripcion: this.importe,
+        })
+        .then(() => {
+          //SE ACTUALIZA EL OBJETO USUARIOS POR MEDIO DE UN ACTION QUE ESTA EN EL STORE
+          // datosUsuario.lvluser = lvl;
+          datosUsuario.idMembresia =res.response.id;
+          // datosUsuario.idCliente = this.idCliente;
+          datosUsuario.idSuscripcion= res.response.id;
+          datosUsuario.tipoSuscripcion= this.tipoMembresia;
+          datosUsuario.importeSuscripcion= this.importe;
+          // datosUsuario.estadoMembresia = session.payment_status === 'paid' ? 'active' : '';
+
+          this.guardaDatosUsuarioStore(datosUsuario);
+        })
+        .catch((error) => {
+            console.error("Error al realizar pago: ", error);
+        });
 
         // this.cambiastatusSesion()
 

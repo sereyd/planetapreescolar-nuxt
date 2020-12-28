@@ -158,8 +158,8 @@ const createStore = () => {
       dominio:"https://educadora.cf",
 
       //APIS DEVELOP Y PRODUCCION
-      // urlAPI: "https://stripe-checkout-api.herokuapp.com",
-      urlAPI: "http://localhost:4242",
+      urlAPI: "https://stripe-checkout-api.herokuapp.com",
+      // urlAPI: "http://localhost:4242",
       descargarFree: 1,
       // data para ver lista completa de post
       misPost:[],
@@ -324,7 +324,7 @@ const createStore = () => {
                   if(datos.lvluser === 1)
                   {
                     //PAGO POR STRIPE
-                    console.log(datos.idSuscripcion);
+                    // console.log(datos.idSuscripcion);
                     fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + datos.idSuscripcion)
                     .then((result)=>{
                       return result.json()
@@ -365,13 +365,22 @@ const createStore = () => {
                     })
                     .then(async(suscripcion)=>{
 
-                      console.log(suscripcion)
+                      // console.log(suscripcion)
                       if(suscripcion.error)
                       {
                         datos.estadoMembresia = "canceled";
+                        // console.log("error")
                       }
                       else{
-                        datos.estadoMembresia = suscripcion.status;
+                        console.log(suscripcion.response.status)
+                        if(suscripcion.response.status === "approved" || suscripcion.response.status === "accredited")
+                          datos.estadoMembresia = "active";
+                        else
+                          datos.estadoMembresia = "canceled";
+
+
+                        // console.log("no error")
+
                       }
 
                     })
