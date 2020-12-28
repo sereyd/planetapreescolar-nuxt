@@ -53,10 +53,6 @@ export default {
         nombreCreador:"",
         tags:[],
         permisoadmin: true,
-        // descargas: 0,
-        // visualizaciones: 0,
-        // descargas: [],
-        // visualizaciones: [],
       },
       esCrear: true,
       materia: "",
@@ -180,10 +176,7 @@ export default {
     //METODOS PARA LA CARGA DE RECURSOS A FIREBASE
     async almacenarRecursoCollection(){
 
-      console.log("this.completado blogEditor")
-      console.log(this.completado)
-      console.log("this.listo blogEditor")
-      console.log(this.listo)
+      
       if(this.completado && this.listo)
       {
         console.log("LISTO PARA CREAR NUEVO");
@@ -194,9 +187,6 @@ export default {
         //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
         const {id, nombre, apellido, lvluser} = this.datosUsuario;
         let nuevoRecurso = {};
-        // console.log("subtipo", this.subtipo)
-        
-        // if(this.subtipo === "recurso" || this.subtipo === "planeacion")
           nuevoRecurso = {
             ...this.datosRecurso,
             fecha:  Date.now(),
@@ -212,19 +202,6 @@ export default {
             tipo: this.subtipo,
             // tags: this.tags
           }
-        // else
-        //   nuevoRecurso = {
-        //     ...this.datosRecurso,
-        //     fecha:  Date.now(),
-        //     tipoRecurso: this.tipoFile,
-        //     urlVista: this.urlVista,
-        //     urlDescargable: this.urlDescargable,
-        //     idCreador: id,
-        //     nombreCreador: `${nombre} ${apellido}`,
-        //     tipoCreador: lvluser === 2 ? 'administrador' : 'usuario',
-        //     tipo: this.subtipo,
-        //     // tags: this.tags
-        //   }
 
         try {
           await this.$fireStore.collection(this.tipo).add(nuevoRecurso);
@@ -244,60 +221,6 @@ export default {
       }
     },
 
-    
-    
-
-  
-  //METODOS PARA MULTIPLES ARCHIVOS
-  // remove (index) {
-  //   this.files.splice(index, 1)
-  //   this.filesArray.splice(index, 1)
-  // },
-  // inputChanged () {
-  //   console.log(this.currFiles)
-    
-  //   this.typeFileFull = "none";
-  //   if(this.currFiles.length === 0)
-  //   {
-  //     console.log("no hay nada")
-  //     this.files= [];
-  //     this.filesArray= [];
-  //   }
-  //   else{
-
-  //     let res = this.currFiles[0].type.split("/");
-  //     if(res[0] === "application")
-  //     {
-  //       console.log("appl")
-  //       res = this.currFiles[0].name.split(".");
-  //       console.log(res)
-  //       res[0] = res[1];
-  //     }
-  
-  //     // this.cargando = true;
-  //     // this.porcentaje = 0;
-  //       if(this.files)
-  //       {
-  
-  //         //SE CREA URL DEL ARCHIVO QUE SE SUBIRA
-  //         this.filesArray.push( {
-  //           urlFile: URL.createObjectURL(this.currFiles[0]),
-  //           typeFileFull: this.currFiles[0].type,
-  //           bytesTranferidos: (this.currFiles[0].size / 1000000).toFixed(2),
-  //           tipoFile: res[0],
-            
-  //         })
-  //       }
-  //     this.files = [
-  //       ...this.files,
-  //       ...this.currFiles,
-  //     ]
-  //     console.log(this.files)
-  //     console.log(this.filesArray)
-  //   }
-
-  // },
-
     cargaFinal(){
       // this.porcentaje = 100;
       this.datosRecurso.foldercode = this.datosRecurso.foldercode === "" ? this.$codegenerate() : this.datosRecurso.foldercode ;
@@ -315,8 +238,6 @@ export default {
       if(this.datosRecurso.tags.length === 0)
       {
         this.tagsValido = false;
-        console.log("tags NO validos")
-
         this.msjTag = "Necesita agregar por lo menos un tag"
       }
 
@@ -324,10 +245,6 @@ export default {
       {
         this.tagsValido = true;
         this.msjTag = ""
-        // console.log("tags validos")
-        // this.datosRecurso.foldercode = this.datosRecurso.foldercode === "" ? this.$codegenerate() : this.datosRecurso.foldercode ;
-        // const ubi = `${this.subtipo}/${this.datosUsuario.id}/${this.datosRecurso.foldercode}/`;
-   
         if(this.tipoRecursoSelect === "link")
         {
           this.tipoFile = "link";
@@ -370,18 +287,13 @@ export default {
       this.creaRecurso=true
     },
     resetDatos(){
-      console.log(this.datosRecurso)
-      // alert("DATOS RECURSO");
-      // console.log("RESETENADO TODA LA DATA UTILIZADA ")
-      // this.$refs.formRecurso.reset();
-      // this.datosRecurso.tags.length
+      
       this.datosRecurso= {foldercode:"",titulo: "",fecha: "",edopost: "",urlImagen: "",contenido:"",tipoRecurso:"",urlRecurso:"",comentarios:[],tags: [],idCreador:"",nombreCreador:"",};
       this.materia ="";
       this.grado ="";
       this.sinopsis ="";
       this.tipoRecursoSelect = "";
-      
-
+    
       this.urlDescargable="";
       this.urlVista="";
       this.fileVista = null;
@@ -458,27 +370,10 @@ export default {
   },
   watch: {
     async urlimg() {
-      // console.log("urlR")
-      // console.log(this.esUrlimgR)
-
-      // if(!this.esUrlimgR)
-      // {
-        console.log("NO SE ESTA RESETEANDO")
-        // this.datablog.urlImagen = this.urlimg;
-        // this.datosRecurso.urlImagen = this.urlimg
-        // console.log(this.esCrear)
-
-        // if(this.esCrear)
-        // {
-        //   this.esCrear = false;
-        //   console.log(this.esCrear)
+      
+        // console.log("NO SE ESTA RESETEANDO")
           await this.almacenarRecursoCollection();
 
-        // }
-      // }
-      // else{
-      //   this.esUrlimgR = false; 
-      // }
     }
   }
 };
