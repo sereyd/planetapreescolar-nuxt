@@ -12,8 +12,11 @@
         :editar="blogeditable"
         @finaliza="addeditblog=$event"
         @actualizaforo="actualizaForos($event)"
+        tipo="crear"
       ></editablog>
     </v-dialog>
+
+    
   </v-list-item>
 
   <v-list-item v-for="(key, index) in items" :key="'pub'+index" class="ma-5"  >

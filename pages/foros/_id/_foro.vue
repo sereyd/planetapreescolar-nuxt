@@ -1,13 +1,25 @@
 <template>
   <v-row class="pa-10">
     <v-col cols="12" md="10">
+
+
+          <v-dialog v-model="addeditblog" max-width="800">
+      <editablog
+        :editar="datosforo"
+        tipo="actualizar"
+        @finaliza="addeditblog=$event"
+        @actualizaforo="actualizaForos($event)"
+      ></editablog>
+    </v-dialog>
+
       <v-row>
         <v-col cols="12" md="12">
           <v-card>
             <v-card-title>
-              <h3>{{ datosforo.titulo }}</h3>
+              <h3>{{ datosforo.titulo }}</h3><v-spacer></v-spacer><v-btn @click="editarblog()" v-if="datosUsuario.lvluser===3 || this.datosfoto.iduser === this.datosUsuario.id" class="melon white--text"><v-icon>mdi-file-edit-outline</v-icon></v-btn>
             </v-card-title>
-
+            <h4>Categoría: {{datosforo.categoria}}</h4>
+                
             <v-card-text v-html="datosforo.cuerpo"> </v-card-text>
 
             <v-card-text>
@@ -29,7 +41,7 @@
             </v-card-text>
           </v-card>
         </v-col>
-        <v-col cols="12" md="12" >
+        <v-col cols="12" md="12" v-if="datosUsuario.userlogin===true" >
           <v-card>
             <v-card-text>
                    <v-textarea 
@@ -39,13 +51,13 @@
                         v-model="comentario"
                         ></v-textarea>    
 
-                <v-btn class="melon white--text" style="text-transform:none;">Enviar Comentario</v-btn>
+                <v-btn class="melon white--text" @click="guardarComentario()" style="text-transform:none;">Enviar Comentario</v-btn>
 
             </v-card-text>
           </v-card>
         </v-col>
              <v-col cols="12" md="12" >
-               <h4 class="primary--text"> 0 Comentarios </h4>
+               <h4 class="primary--text"> {{ncoment}} Comentarios </h4>
                  
 
                 <v-row>
@@ -75,7 +87,9 @@
   </v-row>
 </template>
 <script>
-import { mapState } from "vuex";
+
+import { mapState,mapActions } from "vuex";
+import editablog from '~/components/editor-blog/editor-blog.vue'
 export default {
   async asyncData({ params }) {
     const foro = params.foro;
@@ -83,11 +97,72 @@ export default {
     return {
       url: foro + " con id: " + uid,
       datosforo:{},
-      comentario:""
+      comentario:"",
+      addeditblog:false,
+      editdatosforo:{},
+      lcomentarios:[]
     };
   },
   computed: {
-    ...mapState(["foroselect","datosUsuario"])
+    ...mapState(["foroselect","datosUsuario"]),
+    ncoment(){
+      this.foroselect.comentarios.forEach((coment)=>{
+        if(this.datosUsuario.userlogin===true && this.datosUsuario.id === this.foroselect.iduser){
+          this.lcomentarios.push(coment)
+        }else{
+        if(coment.validado===true){
+          this.lcomentarios.push(coment)
+          }
+        }
+      })
+
+      return this.lcomentarios.length
+    }
+  },
+  methods:{
+    ...mapActions(['creaNotificacion']),
+    editarblog(){
+      this.addeditblog=true
+      this.editdatosforo=this.foroselect
+    },
+    actualizaForos($datos){
+
+    },
+    guardarComentario(){
+
+var imagenUser=""
+      if(this.datosUsuario.urlImagen){
+        imagenUser=this.datosUsuario.urlImagen
+      }
+
+      this.datosComentario={
+        iduser:this.datosUsuario.id,
+        nombre:this.datosUsuario.nombre+" "+this.datosComentario.apellido,
+        imagen:imagenUser,
+        comentario:this.comentario,
+        fecha:new Date(),
+        validado:false
+      }
+
+      this.datosforo.comentarios.push(this.datosComentario)
+      this.comentario=""
+
+  ///// guarda comentario en firebase 
+
+         var datosdenotificacion={
+                           user:this.datosforo.iduser,
+                            icon:'mdi-text-box-check-outline', 
+                            text:'se agrega un nuevo comentario',
+                            link:'/foro/'+this.datosforo.id+"/"+this.datosforo.titulo,
+                       }
+                        this.creaNotificacion(datosdenotificacion)
+
+      
+     this.$fireStore.collection('foro').doc(this.datosforo.id).update({comentarios:this.datosforo.comentarios})
+
+  ///// envia notificación
+
+    }
   },
   mounted(){
       if(Object.keys(this.foroselect).length===0){
@@ -95,6 +170,9 @@ export default {
       }else{
           this.datosforo=this.foroselect
       }
+  },
+  components:{
+    editablog
   }
 };
 </script>

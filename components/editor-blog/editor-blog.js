@@ -1,8 +1,6 @@
-import { mapState,mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import {VueEditor} from 'vue2-editor'
 import Alerta from '~/components/alertas/alertas.vue'
-
-
 export default {
     data(){
         return {
@@ -41,7 +39,7 @@ export default {
                 this.error.push('Seleccione la categoría')
             }
         },
-        crearBlog(){
+       async crearBlog(){
             this.validaForm()
 
             if(this.error.length===0){
@@ -50,15 +48,25 @@ export default {
                 this.datosblog.publicador=this.datosUsuario.nombre+" "+this.datosUsuario.apellido
                 this.datosblog.correo=this.datosUsuario.correo
                 this.datosblog.comentarios=[]
-                this.datosblog.verificado=false
                 this.datosblog.estrellas=[]
                 this.datosblog.fechapub=new Date() 
                 var datosdenotificacion={}
-                   var creablog= this.$fireStore.collection('foro')
-                   creablog.add(this.datosblog)
-                        this.$emit('finaliza',false)
-                    this.datosblog={}
+                
+                    if(this.tipo==='crear'){
+                        this.datosblog.verificado=false
 
+                   var creablog=await this.$fireStore.collection('foro')
+                   creablog.add(this.datosblog)
+                    }
+                    if(this.tipo==='actualizar'){
+                    console.log(this.datosblog)
+                        await this.$fireStore.collection('foro').doc(this.datosblog.id).update(this.datosblog)
+                    }
+
+                        this.$emit('finaliza',false)
+                        if(this.tipo==='crear'){
+                            this.datosblog={}
+                        }
                     //// toma datos de usuarios lvl 3
                     this.$fireStore.collection('usuarios').where('lvluser','==',3).get()
                     .then((dat)=>{
@@ -70,21 +78,19 @@ export default {
                             text:'se publico un nuevo foro',
                             link:'/foro',
                        }
-
                         this.creaNotificacion(datosdenotificacion)
                       })
                     })
-
                     this.$emit('actualizaforo',true)
             }
         },
-    
     },
     components:{
         VueEditor
     },
     props:{
         editar:{},
+        tipo:""
         
     }
 }

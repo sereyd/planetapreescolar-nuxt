@@ -27,12 +27,14 @@ export default {
       this.items=[]
       var tomaforos
 if(this.datosUsuario.lvluser===3){
-
+console.log('super usuario')
   tomaforos=this.$fireStore.collection('foro')
 }else{
+  console.log('usuario normail')
    tomaforos=this.$fireStore.collection('foro')
     .where('verificado','==', true)
     .where('publicado','==', true)
+    
 }
 console.log('lvl: '+this.datosUsuario.lvluser)
 var datospublicacion

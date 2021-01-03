@@ -43,7 +43,12 @@
                   v-for="(item, index) in itemsmenumni"
                   :key="index"
                 >
-                  <v-list-item-title ><router-link class="linkmenuuser" :to="item.link">{{ item.title }} <span class="flechalink"> > </span></router-link></v-list-item-title>
+                  <v-list-item-title >
+                    <router-link class="linkmenuuser" :to="item.link">{{ item.title }} <span class="flechalink"> 
+                      > 
+                    </span></router-link>
+                  
+                  </v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -62,8 +67,8 @@
 
         <div class="minimovil"></div>
         <div v-if="datosUsuario.userlogin===false" >
-        <router-link to="login" v-if="$validasesion($store,{ sinregistro:true })" class="white--text" style="text-decoration:none;  font-size:15px;">Iniciar sesión</router-link> &nbsp;&nbsp;&nbsp;
-        <v-btn class="melon white--text pa-5"  style="border-radius: 30px; font-size:14px; text-transform:none;" v-if="$validasesion($store,{ sinregistro:true })" link to="registro">Registro </v-btn>
+        <router-link to="/login" v-if="$validasesion($store,{ sinregistro:true })" class="white--text" style="text-decoration:none;  font-size:15px;">Iniciar sesión</router-link> &nbsp;&nbsp;&nbsp;
+        <v-btn class="melon white--text pa-5"  style="border-radius: 30px; font-size:14px; text-transform:none;" v-if="$validasesion($store,{ sinregistro:true })" link to="/registro">Registro </v-btn>
         </div>
 
         <div v-if="datosUsuario.userlogin===true" >

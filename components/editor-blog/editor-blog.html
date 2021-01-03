@@ -3,7 +3,9 @@
        {{  Object.keys(datosblog).length===0 ? 'Crea una nueva entrada' : 'Editor de blog'  }} 
     </v-card-title>
     <v-card-text>
-
+        <div>
+            {{cargadatosblog}}
+        </div>
         <v-text-field placeholder="Titulo de blog" v-model="datosblog.titulo"></v-text-field>
         <v-select placeholder="Categoría" :items="categoriasblog"  v-model="datosblog.categoria"></v-select>
 
