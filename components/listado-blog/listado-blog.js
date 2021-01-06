@@ -40,7 +40,14 @@ export default{
       ...mapActions(['changeRecursosFavoritos']),
       ...mapMutations(['changeViewOthers','changeViewPost','changeDialogPost']),
       muestrapost(p){
-        console.log(p);
+        console.log(p.fecha);
+        const fec = p.fecha.toString();
+        console.log(fec)
+        var cadena2 = fec.slice(0, 10);
+        console.log(cadena2);
+        const fechaN = parseInt(cadena2);
+        console.log(fechaN);
+
         this.linkembed = "";
 
         this.spinner = true;

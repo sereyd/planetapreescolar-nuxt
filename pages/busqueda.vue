@@ -1,7 +1,20 @@
 <template>
     <v-main >
         <div class="mx-3 text-center" >
-            <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/>
+            <v-row>
+                <v-col cols="10"><buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/></v-col>
+                <v-col cols="2">
+                    <v-btn tile small  @click="opcionesFiltrado()" color="melon" class="white--text" style="text-transform: none;">
+                        <v-icon class="white--text" left>mdi-format-list-bulleted</v-icon>
+                        Filtrar
+                    </v-btn>
+                </v-col>
+            </v-row>
+            <!-- <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/> -->
+            <!-- <v-btn tile small color="melon" class="white--text" style="text-transform: none;">
+                <v-icon class="white--text" left>mdi-format-list-bulleted</v-icon>
+                Filtrar
+            </v-btn> -->
         </div>
         
         <div v-if="verResultados">
@@ -121,7 +134,60 @@
         </div>
 
 
+        <v-dialog v-model="dialogF" max-width="750">
+            <v-card>
+                <v-card-title class=" justify-space-between">
+                    <v-btn icon text small color="purple">
+                    <!-- <v-icon>mdi-arrow-left-bold</v-icon> -->
+                    </v-btn>
+                    <h3 class="primary--text ">Filtrado de datos</h3>
+                    <v-btn icon text small color="purple" @click="dialogF = false">
+                    <v-icon>mdi-window-close</v-icon>
+                    </v-btn>
+                </v-card-title>
+                <div class="pb-3 " >
+                    <v-form>
+                        <div class="ml-3">
+                            <h4 class="mt-2">Tipo:</h4>
+                            <v-checkbox
+                                v-model="datosfiltrado[0].estado"
+                                label="videos"
+                                color="primary"
+                                hide-details
+                            ></v-checkbox>
+                            <v-checkbox
+                                v-model="datosfiltrado[1].estado"
+                                label="audios"
+                                color="primary"
+                                hide-details
+                            ></v-checkbox>
+
+                            <h4 class="mt-4">Fecha:</h4>
+                            <v-radio-group
+                                v-model="fechaCarga"
+                                column
+                            >
+                                <v-radio
+                                    label="Esta semana"
+                                    color="melon"
+                                    value="semana"
+                                ></v-radio>
+                                <v-radio
+                                    label="Este mes"
+                                    color="melon"
+                                    value="mes"
+                                ></v-radio>
+                                
+                            </v-radio-group>
+                        </div>
+                        <v-btn small class="melon white--text" style="text-transform: none;" @click="filtarDatos()">Filtrar</v-btn>
+                    </v-form>
+                </div>
+                
+            </v-card>
+        </v-dialog>
     </v-main>
+
 </template>
 <script>
 
@@ -164,6 +230,16 @@ export default {
             verResultados: true,
             tipoCat: null,
             cont: 0,
+            dialogF: false,
+            datosfiltrado:[
+                {tipo:"video", estado: false},
+                {tipo:"audio", estado: false},
+            ],
+            fechaCarga: 0,
+            // datosfiltrado:{
+            //     video:false,
+            //     audio:false,
+            // }
         }
     },
     components:{
@@ -223,14 +299,17 @@ export default {
         },
         filtarDatos(){
 
-            this.datos = [...this.categorias]
-            const {tipo} = this.datosBusqueda;
-            console.log(this.datosBusqueda.tipo)
+            // if(!this.dialogF)
+            // {
+                this.datos = [...this.categorias]
+                const {tipo} = this.datosBusqueda;
+                console.log(this.datosBusqueda.tipo)
+                let recursos = [... this.datos];
+            // }
+            const clave = this.datosBusqueda.clave.toLowerCase().normalize("NFD");
 
             // alert("aqui 1")
 
-            const clave = this.datosBusqueda.clave.toLowerCase().normalize("NFD");
-            let recursos = [... this.datos];
 
             if(this.datosBusqueda.tipo !== "todos")
             {
@@ -286,29 +365,126 @@ export default {
             // console.log(this.busquedaFiltrada);
             this.spinner =false;
             this.verResultados= true;
+            this.dialogF= false;
 
             
 
 
         },
+        // filtrando(){
+
+        //     this.datos = [...this.categorias]
+        //     const {tipo} = this.datosBusqueda;
+        //     // console.log(this.datosBusqueda.tipo)
+
+        //     // alert("aqui 1")
+
+        //     // const clave = this.datosBusqueda.clave.toLowerCase().normalize("NFD");
+        //     let recursos = [... this.datos];
+
+        //     if(this.datosBusqueda.tipo !== "todos")
+        //     {
+        //         console.log("SOLO DE UN TIPO")
+        //         console.log(this.datosBusqueda.tipo)
+        //         this.busquedaFiltrada = recursos.filter(recurso =>
+        //             (this.esFiltrado(recurso))
+        //         )
+        //     }
+        //     else
+        //     {
+        //         this.memorias = recursos.filter(recurso =>
+        //             (this.esFiltrado(recurso)) &&
+        //             recurso.tipo === "memoria"
+        //         )
+        //        this.blogs = recursos.filter(recurso =>
+        //             (this.esFiltrado(recurso)) &&
+        //             recurso.tipo === "blog"
+        //         )
+        //         this.reflexiones = recursos.filter(recurso =>
+        //             (this.esFiltrado(recurso)) &&
+        //             recurso.tipo === "reflexion"
+        //         )
+        //         this.planeaciones = recursos.filter(recurso =>
+        //             (this.esFiltrado(recurso)) &&
+        //             recurso.tipo === "planeacion"
+        //         )
+        //         this.materialdidactico = recursos.filter(recurso =>
+        //             (this.esFiltrado(recurso)) &&
+        //             recurso.tipo === "materialdidactico"
+        //         )
+        //         this.hojastrabajo = recursos.filter(recurso =>
+        //             (this.esFiltrado(recurso)) &&
+        //             recurso.tipo === "hojatrabajo"
+        //         )
+        //         this.interactivos = recursos.filter(recurso =>
+        //             (this.esFiltrado(recurso)) &&
+        //             recurso.tipo === "interactivo"
+        //         )
+        //         this.otros = recursos.filter(recurso =>
+        //             (this.esFiltrado(recurso)) &&
+        //             recurso.tipo === "otro"
+        //         )
+        //     }
+
+
+        //     // console.log(this.tipo)
+        //     console.log(this.busquedaFiltrada)
+
+            
+        //     // console.log(this.busquedaFiltrada.length)
+
+        //     // console.log(this.busquedaFiltrada);
+        //     this.spinner =false;
+        //     this.verResultados= true;
+        //     let response =false;
+        //     //  this.datosfiltrado[0].estado ?  tipoRecurso.toLowerCase().normalize("NFD").includes("link") : ""
+
+        //         if(this.datosfiltrado[0].estado)
+        //             response = tipoRecurso.toLowerCase().normalize("NFD").includes("link");
+                
+        //         if(this.datosfiltrado[1].estado)
+        //             response = tipoRecurso.toLowerCase().normalize("NFD").includes("link");
+
+        //     return response;
+
+        // },
+        // esFiltrado(recurso){
+
+        // },
         esMatch(recurso, clave){
             // console.log("RECURSO MATCH")
-            // console.log(recurso.titulo)
-            let {tags, titulo, contenido, sinopsis, materia} = recurso;
+            console.log(this.datosfiltrado[0].estado +" ----- "+ this.datosfiltrado[1].estado)
+            let {tags, titulo, contenido, sinopsis, materia, tipo, tipoRecurso} = recurso;
             let response = false;
             if(recurso.tipo === "planeacion" || recurso.tipo === "materialdidactico" || recurso.tipo === "hojatrabajo" || recurso.tipo === "interactivo")
             {
                 let {sinopsis, materia} = recurso;
                 materia = materia ? materia : "";
                 sinopsis = sinopsis ? sinopsis : "";
+               
+
                 response = 
                 ( 
                     tags.includes(clave) || 
                     titulo.toLowerCase().normalize("NFD").includes(clave) || 
                     contenido.toLowerCase().normalize("NFD").includes(clave) || 
                     sinopsis.toLowerCase().normalize("NFD").includes(clave) || 
-                    materia.toLowerCase().normalize("NFD").includes(clave) ) 
+                    materia.toLowerCase().normalize("NFD").includes(clave) 
+                )
+                    
                 ? true : false;
+
+                //REVISAR SI SE QUIERE HACER UN FILTRADO AVANZADO
+                if(this.datosfiltrado[0].estado || this.datosfiltrado[1].estado)
+                    this.datosfiltrado.map(dat => {
+                        //CHECAR LOS FILTRADOS ACTIVOS
+                        if(dat.estado && dat.tipo === "audio")
+                            response = tipo.includes("interactivo") && tipoRecurso !== "link" 
+                            
+                        else if(dat.estado && dat.tipo === "video")
+                            response = tipoRecurso.includes("link")
+                    })
+
             }
             else
             {
@@ -319,9 +495,22 @@ export default {
                     contenido.toLowerCase().normalize("NFD").includes(clave) )
                 ? true : false;
 
+                if(this.datosfiltrado[0].estado || this.datosfiltrado[1].estado)
+                    this.datosfiltrado.map(dat => {
+                        //CHECAR LOS FILTRADOS ACTIVOS
+                        if(dat.estado && dat.tipo === "audio")
+                            response = tipo.includes("interactivo") && tipoRecurso !== "link" 
+                            
+                        else if(dat.estado && dat.tipo === "video")
+                            response = tipoRecurso.includes("link")
+                    })
+
             }
             // console.log(response)
             return response;
+        },
+        opcionesFiltrado(){
+            this.dialogF = true;
         },
         mostrarElemento(elemento){
             this.vistaElemento = true
@@ -393,6 +582,9 @@ export default {
 
 .btn{
     cursor: pointer;
+}
+.v-input--selection-controls{
+    margin-top: 0px!important;
 }
 
 </style>

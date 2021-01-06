@@ -188,6 +188,9 @@ const createStore = () => {
       viewothers: false,
       dialogPost: false,
 
+      //DATA PARA DIRECTORIO
+      directorios:[],
+
 
 
     }),
@@ -690,6 +693,9 @@ const createStore = () => {
       },
       actualizarCategorias(state, payload){
         state.categorias = payload;
+      },
+      actualizarDirectorios(state, payload){
+        state.directorios = payload;
       },
       agregarCategorias(state, payload){
         // console.log(payload)

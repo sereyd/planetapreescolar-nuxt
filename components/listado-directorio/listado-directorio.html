@@ -1,0 +1,43 @@
+<div v-if="directorios.length !== 0">
+    <v-row class="px-0 ma-0 " 
+        v-for="(key,index) in directorios" 
+        :key="'post_'+index" 
+        v-if="key.edopost === 'publico'"
+        
+    >
+    
+        <v-card
+            class="  d-flex justify-center  mx-2 mb-4"
+            style="overflow: hidden;"
+            height="150px"
+            v-if="key.tipo !== 'hojatrabajo' && key.tipo !== 'reflexion'"
+        >
+        
+            <v-col  cols="4" md="3" sm="4" >
+                <!-- <div  style="width:100%; max-width:100%; position:relative;"> -->
+                    <v-img
+                        :src="key.urlImagen === '' || key.urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : key.urlImagen"
+                        contain
+                        max-width="100%"
+                        class="fotomini"
+                    />
+                <!-- </div> -->
+            </v-col>
+            
+            <v-col cols="8" md="9" sm="8">
+                <div class="ml-2 textos">
+                    <h4>{{key.titulo}}</h4>
+                    <div>
+
+                        <p >{{key.sinopsis.substr(0,90)}}</p>
+                    </div>
+                    <!-- <p class="datos_extra">{{key.nombreCreador}}</p> -->
+                    <!-- <fechaComponent :fecha="key.fecha" /> -->    
+                </div>
+            </v-col>   
+        
+        </v-card>
+    </v-row>
+    
+    
+</div>
