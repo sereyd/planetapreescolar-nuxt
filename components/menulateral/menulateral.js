@@ -8,8 +8,8 @@ export default {
       menuoculto:true,
       devtest:false,  //// para realizar pruebas de sesiones
       itemsmenumni:[
-        { title: 'Ver perfil',link:"perfil" },
-        { title: 'Cerrar sesión', link:"exit" },
+        { title: 'Ver perfil',link:"/perfil" },
+        { title: 'Cerrar sesión', link:"/exit" },
       ]
     }
   },

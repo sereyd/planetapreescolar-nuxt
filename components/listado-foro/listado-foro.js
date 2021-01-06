@@ -1,4 +1,4 @@
-import {mapState, mapActions, mapMutatios } from 'vuex'
+import {mapState, mapActions, mapMutations } from 'vuex'
 import editablog from '~/components/editor-blog/editor-blog.vue'
 export default {
   data(){
@@ -15,15 +15,53 @@ export default {
     this.cargaDatosforo()
   },
   methods:{
+    ...mapMutations(['foroseleccionado']),
+    foroselect(k){
+      this.foroseleccionado(k)
+      this.$router.push('/foros/'+k.id+"/"+k.titulo)
+    },
+    actualizaForos(e){
+      this.cargaDatosforo()
+    },
     cargaDatosforo(){
-      /*var tomaforos=this.$fireStroe.collection('foro').get()
-      
-      tomaforos.forEach((data)=>{
-        this.items.push(data.data())
-      })
+      this.items=[]
+      var tomaforos
+if(this.datosUsuario.lvluser===3){
+console.log('super usuario')
+  tomaforos=this.$fireStore.collection('foro')
+}else{
+  console.log('usuario normail')
+   tomaforos=this.$fireStore.collection('foro')
+    .where('verificado','==', true)
+    .where('publicado','==', true)
+    
+}
+console.log('lvl: '+this.datosUsuario.lvluser)
+var datospublicacion
+    tomaforos.get()
+        .then((data)=>{
+          data.docs.forEach((d)=>{
+                  datospublicacion={
+                      categoria:d.data().categoria,
+                      comentarios:d.data().comentarios,
+                      correo:d.data().correo,
+                      cuerpo:d.data().cuerpo,
+                      estrellas:d.data().estrellas,
+                      fechapub:d.data().fechapub,
+                      iduser:d.data().iduser,
+                      publicado:d.data().publicado,
+                      publicador:d.data().publicador,
+                      titulo:d.data().titulo,
+                      verificado:d.data().verificado,
+                      id:d.id
+                  }
+            this.items.push(datospublicacion)
+          })
 
+})  
+console.log('Items cargados ')
       console.log(this.items)
-   */
+   
     }
   },
   components:{

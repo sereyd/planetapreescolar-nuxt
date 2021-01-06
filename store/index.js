@@ -191,6 +191,8 @@ const createStore = () => {
       //DATA PARA DIRECTORIO
       directorios:[],
 
+      ////foroseleccionado
+      foroselect:{}
 
 
     }),
@@ -659,6 +661,9 @@ const createStore = () => {
 
 
     mutations: {
+      foroseleccionado(state,data){
+        state.foroselect=data
+      },
       cleanImgStore(state){
         state.imgupload="";
         state.urlimg="";
