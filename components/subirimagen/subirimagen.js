@@ -24,7 +24,12 @@ export default {
     },
     limitImg:{
       type:Object,
-      default:{}
+      default:()=>{
+        return{
+        width:0,
+          height:0
+      }
+      }
     },
     etreglas:{
       type:String,
@@ -60,6 +65,7 @@ export default {
       this.urlImagenPrevia = URL.createObjectURL(
         this.$refs.fileupload.files[0]
       );
+
          if(this.limitImg.width>0 || this.limitImg.height>0){
         var foto=new Image()
         foto.src= this.urlImagenPrevia
@@ -98,7 +104,7 @@ export default {
               this.actualizaImgUpload('');
     
             }
-            if(previewImg===1){
+            if(previewImg===1 ){
               this.imagen = this.$refs.fileupload.files[0];
               this.$emit("updateImg", this.urlImagenPrevia);
               this.actualizaImgUpload(this.$refs.fileupload.files[0]);
@@ -106,6 +112,10 @@ export default {
 
 
           }
+        }else{
+          this.imagen = this.$refs.fileupload.files[0];
+          this.$emit("updateImg", this.urlImagenPrevia);
+          this.actualizaImgUpload(this.$refs.fileupload.files[0]);
         }
        
     }

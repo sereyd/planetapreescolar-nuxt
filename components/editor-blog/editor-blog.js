@@ -41,46 +41,54 @@ export default {
         },
        async crearBlog(){
             this.validaForm()
-
             if(this.error.length===0){
-
-                this.datosblog.iduser=this.datosUsuario.id
-                this.datosblog.publicador=this.datosUsuario.nombre+" "+this.datosUsuario.apellido
-                this.datosblog.correo=this.datosUsuario.correo
-                this.datosblog.comentarios=[]
-                this.datosblog.estrellas=[]
-                this.datosblog.fechapub=new Date() 
-                var datosdenotificacion={}
-                
-                    if(this.tipo==='crear'){
+                if(this.tipo==='crear'){
+                        this.datosblog.iduser=this.datosUsuario.id
+                        this.datosblog.correo=this.datosUsuario.correo
+                        this.datosblog.comentarios=[]
+                        this.datosblog.estrellas=[] 
+                        this.datosblog.fechapub=new Date() 
+                        this.datosblog.publicador=this.datosUsuario.nombre+" "+this.datosUsuario.apellido
                         this.datosblog.verificado=false
-
-                   var creablog=await this.$fireStore.collection('foro')
-                   creablog.add(this.datosblog)
+                        var creablog=await this.$fireStore.collection('foro')
+                        creablog.add(this.datosblog)
+                        this.datosblog={}
+                        //// toma datos de usuarios lvl 3
+                        await this.$fireStore.collection('usuarios').where('lvluser','==',3).get()
+                        .then((dat)=>{
+                          dat.docs.forEach((datos)=>{
+                           
+                           var datosdenotificacion={
+                               user:datos.data().id,
+                                icon:'mdi-text-box-check-outline', 
+                                text:'se publico un nuevo foro',
+                                link:'/foro',
+                           }
+                            this.creaNotificacion(datosdenotificacion)
+                          })
+                        })
                     }
-                    if(this.tipo==='actualizar'){
-                    console.log(this.datosblog)
+                if(this.tipo==='actualizar'){
+                        this.datosblog.iduser=this.editar.iduser  
+                        this.datosblog.correo=this.editar.correo
+                        this.datosblog.comentarios=this.editar.comentarios
+                        this.datosblog.estrellas=this.editar.estrellas
+                        this.datosblog.publicador=this.editar.publicador
                         await this.$fireStore.collection('foro').doc(this.datosblog.id).update(this.datosblog)
                     }
 
-                        this.$emit('finaliza',false)
-                        if(this.tipo==='crear'){
-                            this.datosblog={}
-                        }
-                    //// toma datos de usuarios lvl 3
-                    this.$fireStore.collection('usuarios').where('lvluser','==',3).get()
-                    .then((dat)=>{
-                      dat.docs.forEach((datos)=>{
-                       
-                       var datosdenotificacion={
-                           user:datos.data().id,
-                            icon:'mdi-text-box-check-outline', 
-                            text:'se publico un nuevo foro',
-                            link:'/foro',
-                       }
-                        this.creaNotificacion(datosdenotificacion)
-                      })
-                    })
+                    var datosdenotificacion={
+                        user:this.editar.iduser,
+                         icon:'mdi-text-box-check-outline', 
+                         text:'publicación actualizada',
+                         link:'/foro',
+                    }
+                     this.creaNotificacion(datosdenotificacion)
+
+
+
+                    var datosdenotificacion={}
+                    this.$emit('finaliza',false)
                     this.$emit('actualizaforo',true)
             }
         },
