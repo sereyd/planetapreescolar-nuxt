@@ -48,7 +48,7 @@
             @updateListaR="hojastrabajo=$event"
             :listaR="hojastrabajo"
             :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
-            @updatepost="updatepost.hojastrabajo=$event"   ></editorblog>
+            @updatepost="updatepost.hojastrabajo=$event" :limitWH="{ width:0, height:0}"  ></editorblog>
           </template>
         </cargablog>
       </v-col>

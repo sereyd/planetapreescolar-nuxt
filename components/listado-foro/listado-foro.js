@@ -16,6 +16,7 @@ export default {
   },
   methods:{
     ...mapMutations(['foroseleccionado']),
+   
     foroselect(k){
       this.foroseleccionado(k)
       this.$router.push('/foros/'+k.id+"/"+k.titulo)
@@ -30,6 +31,8 @@ if(this.datosUsuario.lvluser===3){
 console.log('super usuario')
   tomaforos=this.$fireStore.collection('foro')
 }else{
+  ////
+  
   console.log('usuario normail')
    tomaforos=this.$fireStore.collection('foro')
     .where('verificado','==', true)
@@ -43,6 +46,7 @@ var datospublicacion
           data.docs.forEach((d)=>{
                   datospublicacion={
                       categoria:d.data().categoria,
+                      calcstart:parseInt(d.data().calcstart),
                       comentarios:d.data().comentarios,
                       correo:d.data().correo,
                       cuerpo:d.data().cuerpo,

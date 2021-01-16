@@ -35,7 +35,13 @@
 
 <b>{{key.views ? key.view : '0'}}</b>
 
-<v-icon class="yellow--text">mdi-star</v-icon><v-icon>mdi-star</v-icon><v-icon>mdi-star</v-icon><v-icon>mdi-star</v-icon><v-icon>mdi-star</v-icon>
+<v-chip v-for="l in 5" :key="l+'keuuy'" class="white ma-0 pa-0" v-if="key.calcstart!==''"  >
+  <v-icon :class="l<=key.calcstart ? 'yellow--text' : 'grey--text' ">mdi-star</v-icon>
+ </v-chip>
+
+ <v-chip v-for="l in 5" :key="l+'keuy'" class="white ma-0 pa-0" v-if="key.calcstart===''"  >
+  <v-icon class="grey--text">mdi-star</v-icon>
+ </v-chip>
 
 
 </v-col>
