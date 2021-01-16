@@ -51,7 +51,12 @@ export default {
         //OBTENEMOS EL ID DEL RECURSO (MEMORIA, RELFEXION, RECOMENDACION, ETC)
         // console.log(this.post);
         const {idRecurso, idCreador,nombreCreador, titulo} = this.post;
+        console.log(this.datosComentario)
         this.post.comentarios.push({...this.datosComentario});
+        this.comentarios.push({...this.datosComentario});
+
+        // comentarios.push({...this.post.comentarios{...this.datosComentario});
+        // this.$emit('updatePost',this.comentarios);
 
 
 

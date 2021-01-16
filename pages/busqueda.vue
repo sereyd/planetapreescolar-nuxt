@@ -147,39 +147,67 @@
                 </v-card-title>
                 <div class="pb-3 " >
                     <v-form>
-                        <div class="ml-3">
-                            <h4 class="mt-2">Tipo:</h4>
-                            <v-checkbox
-                                v-model="datosfiltrado[0].estado"
-                                label="videos"
-                                color="primary"
-                                hide-details
-                            ></v-checkbox>
-                            <v-checkbox
-                                v-model="datosfiltrado[1].estado"
-                                label="audios"
-                                color="primary"
-                                hide-details
-                            ></v-checkbox>
+                        <v-row>
+                            <v-col cols="6">
+                                <div class="ml-3">
+                                    <h4 class="mt-2">Tipo:</h4>
+                                    <v-checkbox
+                                        v-model="datosfiltrado.filtrovideo"
+                                        label="videos"
+                                        color="primary"
+                                        hide-details
+                                    ></v-checkbox>
+                                    <v-checkbox
+                                        v-model="datosfiltrado.filtroaudio"
+                                        label="audios"
+                                        color="primary"
+                                        hide-details
+                                    ></v-checkbox>
+                                    <v-checkbox
+                                        v-model="datosfiltrado.filtrofile"
+                                        label="archivos"
+                                        color="primary"
+                                        hide-details
+                                    ></v-checkbox>
 
-                            <h4 class="mt-4">Fecha:</h4>
-                            <v-radio-group
-                                v-model="fechaCarga"
-                                column
-                            >
-                                <v-radio
-                                    label="Esta semana"
-                                    color="melon"
-                                    value="semana"
-                                ></v-radio>
-                                <v-radio
-                                    label="Este mes"
-                                    color="melon"
-                                    value="mes"
-                                ></v-radio>
-                                
-                            </v-radio-group>
-                        </div>
+                                    <h4 class="mt-4">Fecha:</h4>
+                                    <v-radio-group
+                                        v-model="fechaCarga"
+                                        column
+                                    >
+                                        <v-radio
+                                            label="Esta semana"
+                                            color="melon"
+                                            value="semana"
+                                        ></v-radio>
+                                        <v-radio
+                                            label="Este mes"
+                                            color="melon"
+                                            value="mes"
+                                        ></v-radio>
+                                        
+                                    </v-radio-group>
+                                </div>
+                            </v-col>
+                            <v-col cols="6">
+                                <div class="ml-3">
+                                    <h4 class="mt-2">Estado:</h4>
+                                    <v-checkbox
+                                        v-model="datosfiltrado.filtropremium"
+                                        label="premium"
+                                        color="primary"
+                                        hide-details
+                                    ></v-checkbox>
+                                    <v-checkbox
+                                        v-model="datosfiltrado.filtrofree"
+                                        label="free"
+                                        color="primary"
+                                        hide-details
+                                    ></v-checkbox>
+                                </div>
+                            </v-col>
+                        </v-row>
+                        
                         <v-btn small class="melon white--text" style="text-transform: none;" @click="filtarDatos()">Filtrar</v-btn>
                     </v-form>
                 </div>
@@ -231,15 +259,20 @@ export default {
             tipoCat: null,
             cont: 0,
             dialogF: false,
-            datosfiltrado:[
-                {tipo:"video", estado: false},
-                {tipo:"audio", estado: false},
-            ],
-            fechaCarga: 0,
-            // datosfiltrado:{
-            //     video:false,
-            //     audio:false,
-            // }
+            // datosfiltrado:[
+            //     {tipo:"video", estado: false},
+            //     {tipo:"audio", estado: false},
+            //     {tipo:"premium", estado: true},
+            //     {tipo:"free", estado: true},
+            // ],
+            fechaCarga: "",
+            datosfiltrado:{
+                filtrovideo:false,
+                filtroaudio:false,
+                filtrofile:false,
+                filtropremium:true,
+                filtrofree: true
+            }
         }
     },
     components:{
@@ -282,7 +315,7 @@ export default {
         
         
         this.buscando = !this.buscando;
-        console.log(this.tipoCat)
+        // console.log(this.tipoCat)
         // this.tipoCat = this.datosBusqueda.tipo
 
     },
@@ -290,7 +323,7 @@ export default {
         ...mapActions(['obtenerRecursos']),
         async initProceso(){
             await this.obtenerRecursos()
-            console.log(this.categorias)
+            // console.log(this.categorias)
 
 
             
@@ -303,7 +336,7 @@ export default {
             // {
                 this.datos = [...this.categorias]
                 const {tipo} = this.datosBusqueda;
-                console.log(this.datosBusqueda.tipo)
+                // console.log(this.datosBusqueda.tipo)
                 let recursos = [... this.datos];
             // }
             const clave = this.datosBusqueda.clave.toLowerCase().normalize("NFD");
@@ -321,43 +354,77 @@ export default {
             }
             else
             {
-                this.memorias = recursos.filter(recurso =>
-                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
-                    recurso.tipo === "memoria"
-                )
-               this.blogs = recursos.filter(recurso =>
-                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
-                    recurso.tipo === "blog"
-                )
-                this.reflexiones = recursos.filter(recurso =>
-                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
-                    recurso.tipo === "reflexion"
-                )
-                this.planeaciones = recursos.filter(recurso =>
-                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
-                    recurso.tipo === "planeacion"
-                )
-                this.materialdidactico = recursos.filter(recurso =>
-                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
-                    recurso.tipo === "materialdidactico"
-                )
-                this.hojastrabajo = recursos.filter(recurso =>
-                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
-                    recurso.tipo === "hojatrabajo"
-                )
-                this.interactivos = recursos.filter(recurso =>
-                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
-                    recurso.tipo === "interactivo"
-                )
-                this.otros = recursos.filter(recurso =>
-                    (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
-                    recurso.tipo === "otro"
-                )
+                
+                this.memorias = [], this.blogs=[], this.reflexiones=[], this.planeaciones=[], 
+                this.materialdidactico=[], this.hojastrabajo=[], this.interactivos=[], this.otros=[],
+                recursos.map(recurso =>
+                {
+                    // console.log(recurso)
+                    let matched = this.esMatch(recurso, clave)
+                    // console.log("HUBO MATCH : "+matched)
+                    if( (matched && recurso.edopost === "publico"))
+                    {
+                        if(recurso.tipo === "memoria")
+                            this.memorias.push(recurso);
+
+                        if(recurso.tipo === "blog")
+                            this.blogs.push(recurso);
+
+                        if(recurso.tipo === "reflexion")
+                            this.reflexiones.push(recurso);
+
+                        if(recurso.tipo === "planeacion")
+                            this.planeaciones.push(recurso);
+
+                        if(recurso.tipo === "materialdidactico")
+                            this.materialdidactico.push(recurso);
+
+                        if(recurso.tipo === "hojatrabajo")
+                            this.hojastrabajo.push(recurso);
+
+                        if(recurso.tipo === "interactivo")
+                            this.interactivos.push(recurso);
+
+                        if(recurso.tipo === "otro")
+                            this.otros.push(recurso);
+
+
+                    }
+
+                })
+            //    this.blogs = recursos.filter(recurso =>
+            //         (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+            //         recurso.tipo === "blog"
+            //     )
+            //     this.reflexiones = recursos.filter(recurso =>
+            //         (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+            //         recurso.tipo === "reflexion"
+            //     )
+            //     this.planeaciones = recursos.filter(recurso =>
+            //         (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+            //         recurso.tipo === "planeacion"
+            //     )
+            //     this.materialdidactico = recursos.filter(recurso =>
+            //         (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+            //         recurso.tipo === "materialdidactico"
+            //     )
+            //     this.hojastrabajo = recursos.filter(recurso =>
+            //         (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+            //         recurso.tipo === "hojatrabajo"
+            //     )
+            //     this.interactivos = recursos.filter(recurso =>
+            //         (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+            //         recurso.tipo === "interactivo"
+            //     )
+            //     this.otros = recursos.filter(recurso =>
+            //         (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+            //         recurso.tipo === "otro"
+            //     )
             }
 
 
             // console.log(this.tipo)
-            console.log(this.busquedaFiltrada)
+            // console.log(this.busquedaFiltrada)
 
             
             // console.log(this.busquedaFiltrada.length)
@@ -371,91 +438,17 @@ export default {
 
 
         },
-        // filtrando(){
-
-        //     this.datos = [...this.categorias]
-        //     const {tipo} = this.datosBusqueda;
-        //     // console.log(this.datosBusqueda.tipo)
-
-        //     // alert("aqui 1")
-
-        //     // const clave = this.datosBusqueda.clave.toLowerCase().normalize("NFD");
-        //     let recursos = [... this.datos];
-
-        //     if(this.datosBusqueda.tipo !== "todos")
-        //     {
-        //         console.log("SOLO DE UN TIPO")
-        //         console.log(this.datosBusqueda.tipo)
-        //         this.busquedaFiltrada = recursos.filter(recurso =>
-        //             (this.esFiltrado(recurso))
-        //         )
-        //     }
-        //     else
-        //     {
-        //         this.memorias = recursos.filter(recurso =>
-        //             (this.esFiltrado(recurso)) &&
-        //             recurso.tipo === "memoria"
-        //         )
-        //        this.blogs = recursos.filter(recurso =>
-        //             (this.esFiltrado(recurso)) &&
-        //             recurso.tipo === "blog"
-        //         )
-        //         this.reflexiones = recursos.filter(recurso =>
-        //             (this.esFiltrado(recurso)) &&
-        //             recurso.tipo === "reflexion"
-        //         )
-        //         this.planeaciones = recursos.filter(recurso =>
-        //             (this.esFiltrado(recurso)) &&
-        //             recurso.tipo === "planeacion"
-        //         )
-        //         this.materialdidactico = recursos.filter(recurso =>
-        //             (this.esFiltrado(recurso)) &&
-        //             recurso.tipo === "materialdidactico"
-        //         )
-        //         this.hojastrabajo = recursos.filter(recurso =>
-        //             (this.esFiltrado(recurso)) &&
-        //             recurso.tipo === "hojatrabajo"
-        //         )
-        //         this.interactivos = recursos.filter(recurso =>
-        //             (this.esFiltrado(recurso)) &&
-        //             recurso.tipo === "interactivo"
-        //         )
-        //         this.otros = recursos.filter(recurso =>
-        //             (this.esFiltrado(recurso)) &&
-        //             recurso.tipo === "otro"
-        //         )
-        //     }
-
-
-        //     // console.log(this.tipo)
-        //     console.log(this.busquedaFiltrada)
-
-            
-        //     // console.log(this.busquedaFiltrada.length)
-
-        //     // console.log(this.busquedaFiltrada);
-        //     this.spinner =false;
-        //     this.verResultados= true;
-        //     let response =false;
-        //     //  this.datosfiltrado[0].estado ?  tipoRecurso.toLowerCase().normalize("NFD").includes("link") : ""
-
-        //         if(this.datosfiltrado[0].estado)
-        //             response = tipoRecurso.toLowerCase().normalize("NFD").includes("link");
-                
-        //         if(this.datosfiltrado[1].estado)
-        //             response = tipoRecurso.toLowerCase().normalize("NFD").includes("link");
-
-        //     return response;
-
-        // },
-        // esFiltrado(recurso){
-
-        // },
+        
         esMatch(recurso, clave){
-            // console.log("RECURSO MATCH")
-            console.log(this.datosfiltrado[0].estado +" ----- "+ this.datosfiltrado[1].estado)
-            let {tags, titulo, contenido, sinopsis, materia, tipo, tipoRecurso} = recurso;
+            let {tags, titulo, contenido, sinopsis, materia, tipo, tipoRecurso, premium} = recurso;
             let response = false;
+
+            if(tipo !== "blog" || tipo !== "reflexion" || tipo !== "memoria")
+                premium =  typeof(premium) === "undefined" ? false : premium
+            // console.log(recurso)
+
+            const {filtrovideo, filtroaudio, filtrofile, filtropremium, filtrofree} = this.datosfiltrado;
+
             if(recurso.tipo === "planeacion" || recurso.tipo === "materialdidactico" || recurso.tipo === "hojatrabajo" || recurso.tipo === "interactivo")
             {
                 let {sinopsis, materia} = recurso;
@@ -474,16 +467,76 @@ export default {
                     
                 ? true : false;
 
+                // console.log("MATCH NORMAL: "+response)
+
                 //REVISAR SI SE QUIERE HACER UN FILTRADO AVANZADO
-                if(this.datosfiltrado[0].estado || this.datosfiltrado[1].estado)
-                    this.datosfiltrado.map(dat => {
-                        //CHECAR LOS FILTRADOS ACTIVOS
-                        if(dat.estado && dat.tipo === "audio")
-                            response = tipo.includes("interactivo") && tipoRecurso !== "link" 
+                if( (filtrovideo || filtroaudio || filtrofile || this.fechaCarga !== "") && response)
+                {
+                    // console.log("REVISANDO MATCH AVANZADO: ")
+
+                    
+
+                    let resFiltro = false;
+                    // this.datosfiltrado.map(dat => {
+                        
+                        if(filtrovideo)
+                            resFiltro = tipoRecurso === "link"
+                        
+                // console.log("MATCH : "+resFiltro)
+
+
+                        if(filtroaudio && !resFiltro)
+                            resFiltro = tipo === "interactivo" && tipoRecurso !== "link"
+                        
+                        if(filtrofile && !resFiltro)
+                            resFiltro = tipoRecurso === "file"
+
+                // console.log("MATCH : "+resFiltro)
+                        
+                        
+                        if(filtropremium !== filtrofree && resFiltro)
+                        {
+
+                            // console.log("free: "+filtrofree+ "  premium: "+filtropremium)
+
+                            if(filtropremium)
+                                resFiltro = premium === true
+    
+                            else if(filtrofree)
+                                resFiltro = premium === false
+                        }
+
+                        if(this.fechaCarga !== "" && resFiltro)
+                        {
+                            const fec = recurso.fecha.toString();
+                            // console.log(fec)
+                            let fechaNueva = fec.slice(0, 10);
+                            // console.log(fechaNueva);
+                            const fechaN = parseInt(fechaNueva);
+                            console.log("FECHA DEL POST");
+                            console.log(fechaN);
                             
-                        else if(dat.estado && dat.tipo === "video")
-                            response = tipoRecurso.includes("link")
-                    })
+                            //FECHA ACTUAL
+                            let now = Date.now() 
+                            // console.log(now);
+                            const fa = now.toString();
+                            // console.log(fa)
+                            let faNueva = fa.slice(0, 10);
+                            // console.log(faNueva);
+                            const fechaAN = parseInt(faNueva);
+                            console.log("FECHA ACTUAL");
+                            console.log(fechaAN);
+
+                            
+                        }
+
+                // console.log("MATCH : "+resFiltro)
+
+  
+                    // })
+                    // console.log("FILTRO AVANZADO: "+resFiltro)
+                    response = resFiltro ? true : false
+                }
 
             }
             else
@@ -495,15 +548,36 @@ export default {
                     contenido.toLowerCase().normalize("NFD").includes(clave) )
                 ? true : false;
 
-                if(this.datosfiltrado[0].estado || this.datosfiltrado[1].estado)
-                    this.datosfiltrado.map(dat => {
-                        //CHECAR LOS FILTRADOS ACTIVOS
-                        if(dat.estado && dat.tipo === "audio")
-                            response = tipo.includes("interactivo") && tipoRecurso !== "link" 
-                            
-                        else if(dat.estado && dat.tipo === "video")
-                            response = tipoRecurso.includes("link")
-                    })
+                //REVISAR SI SE QUIERE HACER UN FILTRADO AVANZADO
+                if( (filtrovideo || filtroaudio || filtrofile || this.fechaCarga !== "" ) && response )
+                {
+
+                    let resFiltro = false;
+                    // this.datosfiltrado.map(dat => {
+                        
+                        if(filtrovideo)
+                            resFiltro = tipoRecurso === "link"
+
+                        if(filtroaudio && !resFiltro)
+                            resFiltro = tipo === "interactivo" && tipoRecurso !== "link" 
+                        
+                        if(filtrofile && !resFiltro)
+                            resFiltro = tipoRecurso === "file"
+
+                        if(filtropremium !== filtrofree && resFiltro)
+                        {
+
+                            if(filtropremium)
+                                resFiltro = premium === true
+    
+                            else if(filtrofree)
+                                resFiltro = premium === false
+                        }
+  
+                    // })
+                    // console.log("FILTRO AVANZADO: "+resFiltro)
+                    response = resFiltro ? true : false
+                }
 
             }
             // console.log(response)

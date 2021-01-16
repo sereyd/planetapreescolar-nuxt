@@ -94,6 +94,9 @@ export default {
                 data.favoritos = data.favoritos ? data.favoritos : [];
                 data.sinopsis= data.sinopsis ? data.sinopsis : "";
 
+                if(data.tipo !== "blog" || data.tipo !== "reflexion" || data.tipo !== "memoria")
+                  data.premium =  typeof(data.premium) === "undefined" ? false : data.premium
+
                 delete data['idRecurso'];
 
 

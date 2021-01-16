@@ -28,6 +28,7 @@ export default{
             // },
             allpost:[],
             contador:0,
+            dialogPlanes:false,
         }
     },
     async mounted() {
@@ -61,6 +62,10 @@ export default{
                       data.tags = data.tags ? data.tags : [];
                       data.favoritos = data.favoritos ? data.favoritos : [];
                       data.sinopsis= data.sinopsis ? data.sinopsis : "";
+                      
+                      if(data.tipo !== "blog" || data.tipo !== "reflexion" || data.tipo !== "memoria")
+                        data.premium =  typeof(data.premium) === "undefined" ? false : data.premium
+                      
 
                       delete data['idRecurso'];
     
@@ -128,13 +133,14 @@ export default{
             },
        
 
-      contadorDescargar(descargasDia){
+      contadorDescargar(){
+        let {descargasDia} = this.datosUsuario;
         console.log(descargasDia);
         console.log(this.vistapost)
         const {idRecurso} = this.vistapost;
         const {id} = this.datosUsuario;
 
-        if(this.vistapost.premium === true && this.datosUsuario.estadoMembresia !== 'active')
+        if( this.datosUsuario.estadoMembresia !== 'active')
         {
           descargasDia.usadas.push(idRecurso);
           descargasDia.disponibles= this.descargarFree;
@@ -147,7 +153,7 @@ export default{
           })
           .then(() => {
            
-            console.log(this.$refs.downloadFile)
+            // console.log(this.$refs.downloadFile)
             // this.$refs.downloadFile.click();
             // this.$refs.downloadFile.download();
   
@@ -161,15 +167,15 @@ export default{
       },
 
       sliderF(data){
-        console.log(data)
-        console.log(this.contador)
+        // console.log(data)
+        // console.log(this.contador)
         // this.contador = data === "adelante" ? this.contador++ : this.contador--;
         if(data === "adelante")
           this.contador++
         else
           this.contador--
         
-        console.log(this.contador)
+        // console.log(this.contador)
         
         
         this.cambioUrls();
@@ -218,13 +224,13 @@ export default{
             // this.nombreFile = postS.titulo+'.'+typeFile;
 
           // console.log("this.nombreFile");
-          console.log(this.nombreFile);
+          // console.log(this.nombreFile);
 
  
           const urlFB = URL.createObjectURL(blob, {
             type: blob.type
           });
-          console.log(urlFB)
+          // console.log(urlFB)
           this.$emit("updateUrlFileB",urlFB)
 
           // this.spinner = false;

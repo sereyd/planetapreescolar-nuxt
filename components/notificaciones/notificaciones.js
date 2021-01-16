@@ -12,14 +12,14 @@ computed:{
     noticount(){
             var num=0
             num=this.itemsnotifi.length
-            console.log(this.itemsnotifi)
+            // console.log(this.itemsnotifi)
 
             return num
         }
     },     
 async mounted(){
     await this.tomanotificaciones()
-    console.log(this.itemsnotifi)
+    // console.log(this.itemsnotifi)
 },
 
 methods:{

@@ -126,6 +126,8 @@ export default {
         tipoM= "Nueva planeación";
         this.tipoRecursoFile = ".doc, .docx, .pdf"
         this.labelFile="Seleccione archivo"
+        this.tipoRecursoSelect ="file"
+
       }
       else if(this.subtipo === "materialdidactico")
       {
@@ -146,14 +148,14 @@ export default {
         tipoM= "Nuevo interactivo";
         this.tipoRecursoFile = "audio/mp3"
         this.labelFile="Seleccione archivo"
-        // this.tipoRecursoSelect ="file"
+        this.tipoRecursoSelect ="audio"
       }
       else if(this.subtipo === "otro")
       {
         tipoM= "Nuevo recurso";
         this.tipoRecursoFile = ".pdf"
         this.labelFile="Seleccione archivo"
-        // this.tipoRecursoSelect ="file"
+        this.tipoRecursoSelect ="file"
       }
       else if(this.subtipo === "memoria")
       {
@@ -190,7 +192,7 @@ export default {
           nuevoRecurso = {
             ...this.datosRecurso,
             fecha:  Date.now(),
-            tipoRecurso: this.tipoFile,
+            tipoRecurso: this.tipoRecursoSelect,
             urlVista: this.subtipo === 'materialdidactico' ? this.urlDescargable : this.urlVista,
             urlDescargable: this.urlDescargable,
             idCreador: id,
@@ -198,7 +200,7 @@ export default {
             materia: this.materia,
             grado: this.grado,
             sinopsis: this.sinopsis,
-            tipoCreador: lvluser === 2 ? 'administrador' : 'usuario',
+            tipoCreador: lvluser === 3 ? 'administrador' : 'usuario',
             tipo: this.subtipo,
             // tags: this.tags
           }
@@ -245,10 +247,17 @@ export default {
       {
         this.tagsValido = true;
         this.msjTag = ""
-        if(this.tipoRecursoSelect === "link")
-        {
-          this.tipoFile = "link";
-        }
+        
+        // if(this.tipoRecursoSelect === "link")
+        //   this.tipoRecurso = "link";
+        console.log(this.subtipo +" "+ this.tipoRecursoSelect);
+        if(this.subtipo === "interactivo" && this.tipoRecursoSelect === "file")
+          this.tipoRecursoSelect = "audio"
+
+        console.log(this.subtipo +" "+ this.tipoRecursoSelect);
+        
+
+        if(this.tipo)
         this.cargaFinal();
         
   
@@ -288,7 +297,17 @@ export default {
     },
     resetDatos(){
       
-      this.datosRecurso= {foldercode:"",titulo: "",fecha: "",edopost: "",urlImagen: "",contenido:"",tipoRecurso:"",urlRecurso:"",comentarios:[],tags: [],idCreador:"",nombreCreador:"",};
+      this.datosRecurso= {
+        foldercode:"",titulo: "",fecha: "",edopost: "",urlImagen: "",contenido:"",tipoRecurso:"",
+        urlRecurso:"",comentarios:[],tags: [],idCreador:"",nombreCreador:"",premium: false,
+        recomendado: false, permisoadmin: true,
+      };
+        
+        
+
+
+        
+
       this.materia ="";
       this.grado ="";
       this.sinopsis ="";

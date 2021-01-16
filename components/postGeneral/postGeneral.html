@@ -1,205 +1,261 @@
 <v-card-text>
-    <v-container v-if="relacionados.length !== 0">
-        <v-card style="border-radius: 14px;">
-        <div class="d-flex justify-space-between">
-            <v-btn
-              icon
-              color="primary"
-              class="ml-5"
-              @click="sliderF('atras')"
-              :disabled="contador === 0"
-            >
-              <v-icon style="font-size: 35px;">mdi-arrow-left-bold</v-icon>
-            </v-btn>
-            <v-btn
-              icon
-              color="primary"
-              class="mr-5"
-              @click="sliderF('adelante')"
-              :disabled="contador === (relacionados.length - 1)"
-            >
-              <v-icon style="font-size: 35px;">mdi-arrow-right-bold</v-icon>
-            </v-btn>
-        </div>
-        <!-- <p>{{relacionados[contador].tipo}}</p> -->
-        <v-row v-if="relacionados[contador].tipo === 'planeacion' || relacionados[contador].tipo === 'materialdidactico' ">
-            <v-col cols="12" md="5" sm="5" class="" >
-                <v-img
-                    :src="relacionados[contador].urlImagen === '' || relacionados[contador].urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : relacionados[contador].urlImagen"
-                    contain
-                    class="fotomd "
-                    
-                />
-            </v-col>
-            <v-col cols="12" md="7" sm="7" class="" >
-                <div>
-                    <div v-if="subtipo==='memoria'" class=" ml-3 textos">
-                        <h4>{{relacionados[contador].titulo}}</h4>
-                        <p>{{relacionados[contador].nombreCreador}}</p>
-                        <div class="mt-4" style="font-size:15px;" v-html="cargarecomendacion"></div>
-                    </div>
-    
-                    <div 
-                        v-if="subtipo==='blog'" 
-                        class=" ml-3 textos"
-                    >
-                        <h4>{{relacionados[contador].titulo}}</h4>
-                        <p class="datos_extra">{{relacionados[contador].nombreCreador}}</p>
-                        <p class="datos_extra">{{relacionados[contador].fecha}}</p>
-                        <div class="mt-4" style="font-size:13px;" v-html="cargarecomendacion"></div>
-                    </div>
-    
-                    <div v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo==='recomendacion'" 
-                    class=" ml-3 textos">
-                        <h4>{{relacionados[contador].titulo}}</h4>
-                        <p class="datos_extra">{{relacionados[contador].materia}}</p>
-                        <p class="datos_extra">{{relacionados[contador].sinopsis}}</p>
-                    </div>
-                    
-                </div>
-                <v-btn class="melon white--text" @click="verRecurso" style="text-transform: none; border-radius: 14px;">Ver recurso</v-btn>
-            </v-col>
-        </v-row>
-
-        <v-row v-else>
-            <!-- <div>
-                {{relacionados[contador]}}
-            </div> -->
-            <v-col cols="12" md="4" sm="4" class="" >
-                <!-- <p>Vista: {{relacionados[contador].urlVista}}</p> -->
-                <!-- <p>linkEmbed: {{linkembed}}</p> -->
-                <div v-if="relacionados[contador].tipoRecurso !== 'link'">
+    <v-container v-if="relacionados.length !== 0 ">
+        <div v-if="datosUsuario.userlogin || relacionados[contador].tipo === 'blog'">
+            <v-card style="border-radius: 14px;">
+            <div class="d-flex justify-space-between">
+                <v-btn
+                icon
+                color="primary"
+                class="ml-5"
+                @click="sliderF('atras')"
+                :disabled="contador === 0"
+                >
+                <v-icon style="font-size: 35px;">mdi-arrow-left-bold</v-icon>
+                </v-btn>
+                <v-btn
+                icon
+                color="primary"
+                class="mr-5"
+                @click="sliderF('adelante')"
+                :disabled="contador === (relacionados.length - 1)"
+                >
+                <v-icon style="font-size: 35px;">mdi-arrow-right-bold</v-icon>
+                </v-btn>
+            </div>
+            <!-- <p>{{relacionados[contador].tipo}}</p> -->
+            <v-row v-if="relacionados[contador].tipo === 'planeacion' || relacionados[contador].tipo === 'materialdidactico' || relacionados[contador].tipo === 'hojatrabajo' ">
+                <v-col cols="12" md="5" sm="5" class="" >
                     <v-img
                         :src="relacionados[contador].urlImagen === '' || relacionados[contador].urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : relacionados[contador].urlImagen"
                         contain
-                        class="fotomd "  
+                        :class="[relacionados[contador].tipo === 'hojatrabajo' ? 'fotohojatrabajo' : 'fotomd']"
+                        
                     />
-                    <!-- v-if="relacionados[contador].tipoRecurso==='audio'" -->
-                    <audio-player 
-                        v-if="relacionados[contador].tipo === 'interactivo'"
-                        style="max-width:100%; width:100%; background-color:azure; "
+                </v-col>
+                <v-col cols="12" md="7" sm="7" class="" >
+                    <div>
+                        <div v-if="subtipo==='memoria'" class=" ml-3 textos">
+                            <h4>{{relacionados[contador].titulo}}</h4>
+                            <p>{{relacionados[contador].nombreCreador}}</p>
+                            <div class="mt-4" style="font-size:15px;" v-html="cargarecomendacion"></div>
+                        </div>
+        
+                        <div 
+                            v-if="subtipo==='blog'" 
+                            class=" ml-3 textos"
                         >
-                        <source :src="relacionados[contador].urlVista" />
-                    </audio-player>
-                </div>
-                <iframe 
-                    v-else
-                    class="pl-5"
-                    width="100%" height="250" 
-                    :src="linkembed" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowfullscreen>
-                </iframe>
-            </v-col>
-            <v-col cols="12" md="3" sm="3" class="" >
-                <div>
-                    <div v-if="subtipo==='memoria'" class=" ml-3 textos">
-                        <h4>{{relacionados[contador].titulo}}</h4>
-                        <p>{{relacionados[contador].nombreCreador}}</p>
-                        <div class="mt-4" style="font-size:15px;" v-html="cargarecomendacion"></div>
+                            <h4>{{relacionados[contador].titulo}}</h4>
+                            <p class="datos_extra">{{relacionados[contador].nombreCreador}}</p>
+                            <p class="datos_extra">{{relacionados[contador].fecha}}</p>
+                            <div class="mt-4" style="font-size:13px;" v-html="cargarecomendacion"></div>
+                        </div>
+        
+                        <div v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo==='recomendacion'" 
+                        class=" ml-3 textos">
+                            <h4>{{relacionados[contador].titulo}}</h4>
+                            <p class="datos_extra">{{relacionados[contador].materia}}</p>
+                            <p class="datos_extra">{{relacionados[contador].sinopsis}}</p>
+                        </div>
+                        
                     </div>
-    
-                    <div 
-                        v-if="subtipo==='blog'" 
-                        class=" ml-3 textos"
-                    >
-                        <h4>{{relacionados[contador].titulo}}</h4>
-                        <p class="datos_extra">{{relacionados[contador].nombreCreador}}</p>
-                        <p class="datos_extra">{{relacionados[contador].fecha}}</p>
-                        <div class="mt-4" style="font-size:13px;" v-html="cargarecomendacion"></div>
-                    </div>
+                    <v-btn class="melon white--text" @click="verRecurso" style="text-transform: none; border-radius: 14px;">Ver recurso</v-btn>
+                </v-col>
+            </v-row>
 
-                    <div v-if="relacionados[contador].tipo==='otro'" class=" ml-3 textos">
-                        <h4 style="font-size: 17px;">{{relacionados[contador].titulo}}</h4>
-                        <p class="datos_extra">{{relacionados[contador].nombreCreador}}</p>
-                        <p class="datos_extra" style="font-size: 14px;" v-html="relacionados[contador].contenido.substr(0,90)"></p>
+            <v-row v-else>
+                <!-- <div>
+                    {{relacionados[contador]}}
+                </div> -->
+                <v-col cols="12" md="4" sm="4" class="" >
+                    <!-- <p>Vista: {{relacionados[contador].urlVista}}</p> -->
+                    <!-- <p>linkEmbed: {{linkembed}}</p> -->
+                    <div v-if="relacionados[contador].tipoRecurso !== 'link'">
+                        <v-img
+                            :src="relacionados[contador].urlImagen === '' || relacionados[contador].urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : relacionados[contador].urlImagen"
+                            contain
+                            class="fotomd "  
+                        />
+                        <!-- v-if="relacionados[contador].tipoRecurso==='audio'" -->
+                        <audio-player 
+                            v-if="relacionados[contador].tipo === 'interactivo'"
+                            style="max-width:100%; width:100%; background-color:azure; "
+                            >
+                            <source :src="relacionados[contador].urlVista" />
+                        </audio-player>
                     </div>
-    
-                    <div v-else-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo==='recomendacion'" 
-                    class=" ml-3 textos">
-                        <h4>{{relacionados[contador].titulo}}</h4>
-                        <p class="datos_extra">{{relacionados[contador].materia}}</p>
-                        <p class="datos_extra">{{relacionados[contador].grado}}</p>
+                    <iframe 
+                        v-else
+                        class="pl-5"
+                        width="100%" height="250" 
+                        :src="linkembed" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </v-col>
+                <v-col cols="12" md="3" sm="3" class="" >
+                    <div>
+                        <div v-if="subtipo==='memoria'" class=" ml-3 textos">
+                            <h4>{{relacionados[contador].titulo}}</h4>
+                            <p>{{relacionados[contador].nombreCreador}}</p>
+                            <div class="mt-4" style="font-size:15px;" v-html="cargarecomendacion"></div>
+                        </div>
+        
+                        <div 
+                            v-if="subtipo==='blog'" 
+                            class=" ml-3 textos"
+                        >
+                            <h4>{{relacionados[contador].titulo}}</h4>
+                            <p class="datos_extra">{{relacionados[contador].nombreCreador}}</p>
+                            <p class="datos_extra">{{relacionados[contador].fecha}}</p>
+                            <div class="mt-4" style="font-size:13px;" v-html="cargarecomendacion"></div>
+                        </div>
+
+                        <div v-if="relacionados[contador].tipo==='otro'" class=" ml-3 textos">
+                            <h4 style="font-size: 17px;">{{relacionados[contador].titulo}}</h4>
+                            <p class="datos_extra">{{relacionados[contador].nombreCreador}}</p>
+                            <p class="datos_extra" style="font-size: 14px;" v-html="relacionados[contador].contenido.substr(0,90)"></p>
+                        </div>
+        
+                        <div v-else-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo==='recomendacion'" 
+                        class=" ml-3 textos">
+                            <h4>{{relacionados[contador].titulo}}</h4>
+                            <p class="datos_extra">{{relacionados[contador].materia}}</p>
+                            <p class="datos_extra">{{relacionados[contador].grado}}</p>
+                        </div>
+                        
+                    </div>
+                </v-col>
+
+                <v-col cols="12" md="5" sm="5" class="" >
+                    <div>
+                        <!-- <p>VISOR PDF: {{relacionados[contador].urlDescargable}}</p> -->
+                        <!-- <pdfviewer :src="relacionados[contador].urlDescargable" ></pdfviewer> -->
+                        <div v-html="relacionados[contador].contenido" class="scroll"></div>
+                    </div>
+                    <!-- File: {{urlFileB}} -->
+                    <div 
+                        v-if=" relacionados[contador].urlDescargable !== '' &&
+                        ( subtipo !== 'blog' && subtipo !== 'memoria' ) && urlFileB !== ''"
+                    >
+                        <Spinner 
+                            v-if="spinner" 
+                        />
+                        <div 
+                            v-else-if ="!spinner && datosUsuario.lvluser > 0"
+                        >
+
+                            <!-- <p>{{datosUsuario.descargasDia}}</p>
+                            <p>{{datosUsuario.estadoMembresia}}</p> -->
+                            <a 
+                                v-if="datosUsuario.estadoMembresia === 'active'|| 
+                                (
+                                    datosUsuario.descargasDia.usadas.length < datosUsuario.descargasDia.disponibles
+                                    
+                                )"
+                                :download="nombreFile"
+                                :href="urlFileB" 
+                                @click="contadorDescargar()"
+                                target="_blank"
+                                class="v-btn v-btn--contained theme--light v-size--default melon mt-3 white--text"
+                                style="text-transform: none; border-radius: 12px;"
+                            >
+                                <v-icon rigth dark> mdi-download </v-icon>
+                                Descargar
+                            </a>
+                            <v-btn
+                                v-else
+                                class="ma-2 melon white--text"
+                                style="text-transform: none; border-radius: 12px;"
+                                @click="dialogPlanes=true"
+                            >
+                                <v-icon rigth dark> mdi-download </v-icon>
+                                Descargar no
+                            </v-btn>
+                            
+                            
+                        </div>
                     </div>
                     
-                </div>
-            </v-col>
+                    <!-- <v-btn class="melon white--text" @click="verRecurso" style="text-transform: none; border-radius: 14px;">Ver recurso</v-btn> -->
+                </v-col>
 
-            <v-col cols="12" md="5" sm="5" class="" >
-                <div>
-                    <!-- <p>VISOR PDF: {{relacionados[contador].urlDescargable}}</p> -->
-                    <!-- <pdfviewer :src="relacionados[contador].urlDescargable" ></pdfviewer> -->
-                    <div v-html="relacionados[contador].contenido" class="scroll"></div>
-                </div>
-                <!-- File: {{urlFileB}} -->
-                <div 
-                    v-if=" relacionados[contador].urlDescargable !== '' &&
-                    ( subtipo !== 'blog' && subtipo !== 'memoria' ) && urlFileB !== ''"
-                >
-                    <Spinner 
-                        v-if="spinner" 
-                    />
-                    <div 
-                        v-else-if ="!spinner"
-                    >
+            </v-row>
+            </v-card>
 
-                        <!-- <p>{{datosUsuario.descargasDia}}</p>
-                        <p>{{datosUsuario.estadoMembresia}}</p> -->
-                        <a 
-                            v-if="datosUsuario.estadoMembresia === 'active' 
-                            || 
-                            (datosUsuario.descargasDia || datosUsuario.descargasDia.usadas || datosUsuario.descargasDia.usadas.length < datosUsuario.descargasDia.disponibles
-                                || relacionados[contador].premium === false
-                            )"
-                            :download="nombreFile"
-                            :href="urlFileB" 
-                            @click="contadorDescargar(datosUsuario.descargasDia)"
-                            target="_blank"
-                            class="v-btn v-btn--contained theme--light v-size--default melon mt-3 white--text"
-                            style="text-transform: none; border-radius: 12px;"
-                        >
-                            <v-icon rigth dark> mdi-download </v-icon>
-                            Descargar
-                        </a>
-                        <v-btn
-                            v-else
-                            class="ma-2 melon white--text"
-                            style="text-transform: none; border-radius: 12px;"
-                            @click="dialogPlanes=true"
-                        >
-                            <v-icon rigth dark> mdi-download </v-icon>
-                            Descargar
-                        </v-btn>
-                        
-                        
-                    </div>
-                </div>
-                
-                <!-- <v-btn class="melon white--text" @click="verRecurso" style="text-transform: none; border-radius: 14px;">Ver recurso</v-btn> -->
-            </v-col>
-
-        </v-row>
-        </v-card>
-
-        <comentarios
-            v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'recomendacion'"
-            :post="vistapost" @updatePost="vistapost = $event"
-        />
-
-        
-
-        <h2 class="primary--text mt-3">Relacionados</h2>
-        <div class="scroll mt-3">
-
-            <listablog 
-                :blogpost="relacionados" :esCompleto="false" @updateBlogpost="relacionados=$event"
-                tipo="CATEGORIAS" :subtipo="subtipo" 
-                titulo="" subtitulos=""  
+            <comentarios
+                v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'recomendacion'"
+                :post="vistapost" @updatePost="vistapost = $event"
             />
+
+            
+
+            <h2 class="primary--text mt-3">Relacionados</h2>
+            <div class="scroll mt-3">
+
+                <listablog 
+                    :blogpost="relacionados" :esCompleto="false" @updateBlogpost="relacionados=$event"
+                    tipo="CATEGORIAS" :subtipo="subtipo" 
+                    titulo="" subtitulos=""  
+                />
+            </div>
+        </div>
+        <div v-else>
+            <div class="d-flex justify-center">
+                 <v-img
+                     src="images/registrate.png"
+                     contain
+                     class=""
+                     style="width: 100%; height: 380px;"
+                     >
+                 </v-img>
+            </div>
+            <div class="d-flex justify-center">
+                <v-btn
+                    class="melon white--text mr-2 "
+                    @click="$router.push('/login')"
+                >Iniciar sesión</v-btn>
+                <v-btn
+                    class="melon white--text "
+                    @click="$router.push('/registro')"
+                >Registro</v-btn>
+            </div>
         </div>
         
       
         
     </v-container>
+    
+    <v-dialog v-model="dialogPlanes" persistent max-width="755">
+            
+        <v-card class=" px-10">
+          <v-card-title class=" justify-space-between">
+              <v-btn icon text small color="purple" @click="" >
+              </v-btn>
+              <h2 class="primary--text ">¿Te gustó la planeación?</h2>
+              <v-btn icon text small color="purple" @click="dialogPlanes = false" >
+                  <v-icon>mdi-window-close</v-icon>
+              </v-btn>
+          </v-card-title>
+          <div class="mt-4">
+                <p class="text-center">
+                    Descarga nuestro material de forma ilimitada suscribiendote a nuestros planes
+                </p>
+                <div class="d-flex justify-center mt-4">
+                    <img
+                      src="../../static/images/planes.png"
+                      width="380"
+                      height="280"
+                      class=""
+                    />
+                  </div>
+                <div class="d-flex justify-center">
+                    <v-btn 
+                        class="melon white--text rounded-pill mb-5 btn_crearG" to="/checkout" >Ver planes</v-btn> 
+                </div>
+                      
+                   
+          </div>
+        </v-card>
+    </v-dialog>
 </v-card-text>

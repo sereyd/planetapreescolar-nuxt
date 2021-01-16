@@ -50,12 +50,12 @@ export default {
       // console.log("CAMBIADO FILE")
       let folder =""
       
-      console.log(this.ubi)
+      // console.log(this.ubi)
       if(this.ubi === "")
       {
         // this.foldercode = this.$codegenerate();
         
-        console.log(this.foldercode)
+        // console.log(this.foldercode)
         if(this.foldercode === "")
         {
           folder = this.$codegenerate()
@@ -69,8 +69,8 @@ export default {
 
       }
 
-      console.log("UBICACION")
-      console.log(this.ubi)
+      // console.log("UBICACION")
+      // console.log(this.ubi)
       // alert("STOPPP");
 
       this.completado = false;
@@ -97,7 +97,7 @@ export default {
       
       let file =  this.fileInterno;
       const typeFileFull = file.type;
-      console.log(typeFileFull)
+      // console.log(typeFileFull)
       const metadata = {
       contentType: typeFileFull
       };
@@ -120,8 +120,8 @@ export default {
               uploadTask.snapshot.ref.getDownloadURL()
               .then( async(downloadURL) => {
                   this.urlFile = downloadURL;
-                  console.log('File available at', downloadURL);
-                  console.log('URLFILE', this.urlFile);
+                  // console.log('File available at', downloadURL);
+                  // console.log('URLFILE', this.urlFile);
                   this.$emit("updateUrlFile", this.urlFile);
 
                   

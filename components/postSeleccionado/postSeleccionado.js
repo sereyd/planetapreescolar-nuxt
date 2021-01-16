@@ -28,7 +28,7 @@ export default{
         const {idRecurso} = this.vistapost;
         const {id} = this.datosUsuario;
 
-        if(this.vistapost.premium === true && this.datosUsuario.estadoMembresia !== 'active')
+        if(this.datosUsuario.estadoMembresia !== 'active')
         {
           descargasDia.usadas.push(idRecurso);
           descargasDia.disponibles= this.descargarFree;

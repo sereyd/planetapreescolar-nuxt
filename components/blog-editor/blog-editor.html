@@ -122,7 +122,7 @@
                             ></v-text-field>
                             <subirFile v-else-if="tipoRecursoSelect === 'file'"
                                 filesAccepts="audio/mp3" 
-                                :label="labelFile"
+                                label="Archivo de audio"
                                 :subtipo="subtipo"
                                 :foldercode="datosRecurso.foldercode" @updateFoldercode="datosRecurso.foldercode=$event" 
                                 :file="fileVista" @updateFile="fileVista=$event"
@@ -132,7 +132,7 @@
                             <subirFile
                                 v-if="subtipo !=='blog' && subtipo !=='memoria'"
                                 filesAccepts=".pdf, .ppt, .pptx" 
-                                label="Archivo válido"
+                                label="Archivo descargable"
                                 :subtipo="subtipo"
                                 :foldercode="datosRecurso.foldercode" @updateFoldercode="datosRecurso.foldercode=$event"
                                 :file="fileDescargable" @updateFile="fileDescargable=$event"
