@@ -1,7 +1,7 @@
 <template>
 <v-main>
     <h3 color="" class="primary--text">Directorio</h3>
-    <listadoDirectorio/>
+    <!-- <listadoDirectorio/> -->
 </v-main>
 </template>
 

@@ -83,7 +83,8 @@
       class="ma-0 pa-0"
       v-if="tipo_registro != '' && tipo_registro === 'educadora'"
     >
-      <img src="/images/img-registro.png" width="100%" />
+      <img src="/images/img-registro-2.png" class="fondoRe1" width="100%" />
+
     </v-col>
 
     <v-col
@@ -111,7 +112,7 @@
       class="ma-0 pa-0"
       v-if="tipo_registro != '' && tipo_registro === 'padres'"
     >
-      <img src="/images/img-registro.png" width="100%" />
+      <img src="/images/img-registro-2.png" width="100%" />
     </v-col>
   </v-row>
   <!-- </div> -->
@@ -133,6 +134,7 @@
   background-image:url('/images/fondo-lg.png'); 
   background-size:100%;
 }
+
 /*
   $body-font-family: 'Montserrat', sans-serif;
 $heading-font-family: 'Montserrat';
