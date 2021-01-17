@@ -120,14 +120,25 @@
                       ><br />
                       <h4>{{ com.nombre }}</h4>
 
+                      <v-icon v-if="datosforo.iduser === datosUsuario.id && com.validado===true" class="success--text" >mdi-check</v-icon>
+                      <v-icon v-if="datosforo.iduser === datosUsuario.id && com.validado===false" class="error--text" >mdi-eye-off</v-icon>
+
                       <v-btn
                         class="success"
                         v-if="datosforo.iduser === datosUsuario.id"
-                        ><v-icon class="white--text">mdi-check</v-icon></v-btn
+                        @click="cambiacoment('accept',com,index)" 
+                        ><v-icon class="white--text" >mdi-check</v-icon></v-btn
+                      >
+                       <v-btn
+                        class="info"
+                        v-if="datosforo.iduser === datosUsuario.id"
+                        @click="cambiacoment('disable',com,index)" 
+                        ><v-icon class="white--text" >mdi-eye-off</v-icon></v-btn
                       >
                       <v-btn
                         class="error"
                         v-if="datosforo.iduser === datosUsuario.id"
+                         @click="cambiacoment('delete',com,index)"
                         ><v-icon class="white--text">mdi-delete</v-icon></v-btn
                       >
                     </v-col>
@@ -183,11 +194,11 @@ export default {
 
     ncoment() {
       this.lcomentarios = [];
-      if (this.foroselect.comentarios) {
-        this.foroselect.comentarios.forEach(coment => {
+      if (this.datosforo.comentarios) {
+        this.datosforo.comentarios.forEach(coment => {
           if (
             this.datosUsuario.userlogin === true &&
-            this.datosUsuario.id === this.foroselect.iduser
+            this.datosUsuario.id === this.datosforo.iduser
           ) {
             this.lcomentarios.push(coment);
           } else {
@@ -213,6 +224,21 @@ export default {
           this.verestrellas=true
         }
       }
+    },
+    cambiacoment(n,data,p){
+      if(n==='accept'){
+        this.datosforo.comentarios[p].validado=true
+        this.$fireStore.collection('foro').doc(this.datosforo.id).update({comentarios:this.datosforo.comentarios})
+      }
+      if(n==='disable'){
+        this.datosforo.comentarios[p].validado=false
+        this.$fireStore.collection('foro').doc(this.datosforo.id).update({comentarios:this.datosforo.comentarios})
+      }
+      if(n==='delete'){
+        this.datosforo.comentarios.splice(p,1)
+        this.$fireStore.collection('foro').doc(this.datosforo.id).update({comentarios:this.datosforo.comentarios})
+      }
+
     },
     selecciona(p) {
       this.calstar = p;
@@ -264,8 +290,10 @@ console.log('suma de '+sumstar+" de "+totalstart+' calificación de estrellas '+
         .collection("foro")
         .doc(this.datosforo.id)
         .update({ estrellas: this.foroselect.estrellas,  calcstart:calcstart.toFixed(0)});
-      this.btnvbl = false;
+        this.btnvbl = false;
         this.verestrellas=false
+
+        this.initForo()
     },
     editarblog() {
       this.addeditblog = true;
@@ -302,17 +330,17 @@ console.log('suma de '+sumstar+" de "+totalstart+' calificación de estrellas '+
         .doc(this.datosforo.id)
         .update({ comentarios: this.datosforo.comentarios });
       ///// envia notificación
-    }
-  },
-  mounted() {
-
-    if (Object.keys(this.foroselect).length === 0) {
+    },
+    initForo(){
+        if (Object.keys(this.foroselect).length === 0) {
       ///// en caso de no tener por store datos de foro se llama datos a firebase
       this.$fireStore
         .collection("foro")
         .doc(this.uid)
         .get()
         .then(data => {
+
+          console.log(data.data())
           this.datosforo = data.data();
              this.datosforo.calcstart = parseInt(data.data().calcstart);
 
@@ -320,9 +348,15 @@ console.log('suma de '+sumstar+" de "+totalstart+' calificación de estrellas '+
 
         });
     } else {
+
       this.datosforo = this.foroselect;
         setTimeout(()=>{this.verifEstrella()},1000)
     }
+    }
+  },
+  mounted() {
+
+  this.initForo()
    
   },
   components: {

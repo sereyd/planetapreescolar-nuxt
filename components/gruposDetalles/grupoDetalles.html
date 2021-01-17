@@ -161,7 +161,7 @@
     <v-btn style="text-transform: none;"  @click="importaGenerales()" depressed class="white" ><v-avatar class="cyan" size="35"><v-icon class="white--text">mdi-download</v-icon></v-avatar> Lista General</v-btn>
     
     <v-chip>Total alumnos: {{datain.totalAlumnos}}</v-chip>
-              <tablaAlumnos :dataAlumnos="datain.Calendario[fechaselected].Alumnos" @editarAlumno="editarAlumno($event)" :cabecera="datain.Calendario[fechaselected].cabeceratabla" ></tablaAlumnos>
+              <tablaAlumnos :dataAlumnos="datain.Calendario[fechaselected].Alumnos" @editarAlumno="editarAlumno($event)" :cabecera="datain.Calendario[fechaselected].cabeceratabla" @addAlumno="addalumno=$event" @addAlumnos="importaGenerales()" ></tablaAlumnos>
 
 
         </v-card-text>

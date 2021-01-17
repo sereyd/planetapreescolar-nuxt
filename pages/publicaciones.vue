@@ -1,6 +1,9 @@
 <template>
   <v-main class="px-10 pt-0">
     <v-row>
+
+
+
       <!-- <v-col cols="12" md="12"> </v-col> -->
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
         <h2>Mis Reflexiones</h2>
@@ -101,7 +104,7 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 1">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 1 || datosUsuario.lvluser === 3">
         <h2>Mis Memorias</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo=" memoria"  :listaR="memorias"
@@ -112,11 +115,11 @@
             @updateListaR="memorias=$event"
             :listaR="memorias"
             :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
-            @updatepost="updatepost.memorias=$event"    ></editorblog>
+            @updatepost="updatepost.memorias=$event"  etreglas="Tamaño de portada  522px por 285px" :limitWH="{width:522, height:285}"  ></editorblog>
           </template>
         </cargablog>
       </v-col>  
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 1">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 1  || datosUsuario.lvluser === 3">
         <h2>Mis Blogs</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="blog"  :listaR="blog"
@@ -127,7 +130,7 @@
             @updateListaR="blog=$event"
             :listaR="blog"
             :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
-            @updatepost="updatepost.blog=$event"  ></editorblog>
+            @updatepost="updatepost.blog=$event" etreglas="Tamaño de portada  522px por 285px" :limitWH="{width:522, height:285}"  ></editorblog>
           </template>
         </cargablog>
       </v-col>
@@ -139,7 +142,6 @@ import validasitio from "@/mixins/validasitio.js";
 import editorblog from "~/components/blog-editor/blog-editor.vue";
 import cargablog from "~/components/carga-blog/carga-blog.vue";
 import { mapState, mapMutations, mapActions } from 'vuex'
-
 export default {
   data() {
     return {

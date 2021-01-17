@@ -759,8 +759,6 @@ const createStore = () => {
         state.imgupload = data;
       },
       cambiastatusSesion(state,data){
-        console.log(data)
-
         if(data.salida===true){
           state.datosUsuario.userlogin=data.login
           state.datosUsuario.lvluser=data.lvl
@@ -768,7 +766,6 @@ const createStore = () => {
           state.datosUsuario.apellido = ""
           state.datosUsuario.correo = ""
           state.datosUsuario.id = ""
-
           state.datosUsuario.grupo =  {};
           state.datosUsuario.idMembresia = "";
           state.datosUsuario.estadoMembresia = "";
@@ -776,9 +773,12 @@ const createStore = () => {
           state.datosUsuario.idSuscripcion = "";
           state.datosUsuario.importeSuscripcion = "";
           state.datosUsuario.tipoSuscripcion = "";
+         
         }else{
           state.datosUsuario = data;
         }
+
+
         // console.log(state.datosUsuario);
       },
       async  tomaDatosActualizados(state){
