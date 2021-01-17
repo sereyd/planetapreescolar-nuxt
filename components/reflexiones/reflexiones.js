@@ -38,8 +38,8 @@ export default{
                         this.reflexion.push(doc.data());
                     });
                     let ran = Math.floor(Math.random() * this.reflexion.length)
-                    console.log(ran);
-                    console.log(this.reflexion.length);
+                    // console.log(ran);
+                    // console.log(this.reflexion.length);
                     this.reflexionSeleccionada = this.reflexion[ran]
 
          ////this.reflexion=data

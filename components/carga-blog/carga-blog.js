@@ -245,16 +245,16 @@ export default {
         this.msjTag = "Necesita agregar por lo menos un tag"
       }
       
-        // console.log("biennnn")
+        // console.log("biennnn")-
     },
     async eliminarPost(data){
       if (confirm("¿Deseas eliminar este recurso?") === true) {
-        console.log("ELIMINADO")
-        console.log(data);
+        // console.log("ELIMINADO")
+        // console.log(data);
         const {foldercode, tipo, idRecurso} = data;
         const {id} = this.datosUsuario
         const ruta = `${tipo}/${id}/${foldercode}`;
-        console.log(ruta)
+        // console.log(ruta)
 
         var storageRef = this.$fireStorage.ref();
         // Create a reference 
@@ -263,18 +263,18 @@ export default {
         // Now we get the references of these files
         mountainsRef.listAll().then( (result) => {
             result.items.forEach( (file) => {
-              console.log(file)
+              // console.log(file)le
                file.delete();
             });
-            console.log("terminadmos de recorrer")
+            // console.log("terminadmos de recorrer")
 
             //BORRANDO POST SELECCIONADO
             this.$fireStore.collection("CATEGORIAS").doc(idRecurso).delete()
             .then(() => {
 
-              console.log(this.listaR)
+              // console.log(this.listaR)
               this.listaR.filter( (lista) => lista.idRecurso !== idRecurso)
-              console.log(this.listaR)
+              // console.log(this.listaR)
               this.actualizarCategorias([]);
               this.$emit('updateRefresh',!this.refreshPost)
 

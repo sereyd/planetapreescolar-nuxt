@@ -41,6 +41,26 @@ export default{
       ...mapMutations(['changeViewOthers','changeViewPost','changeDialogPost']),
       muestrapost(p){
         console.log(p);
+        // const fec = p.fecha.toString();
+        // // console.log(fec)
+        // var fechaNueva = fec.slice(0, 10);
+        // // console.log(fechaNueva);
+        // const fechaN = parseInt(fechaNueva);
+        // console.log("FECHA DEL POST");
+        // console.log(fechaN);
+        
+        // //FECHA ACTUAL
+        // var now = Date.now() 
+        // // console.log(now);
+        // const fa = now.toString();
+        // // console.log(fa)
+        // var faNueva = fa.slice(0, 10);
+        // // console.log(faNueva);
+        // const fechaAN = parseInt(faNueva);
+        // console.log("FECHA ACTUAL");
+        // console.log(fechaAN);
+
+
         this.linkembed = "";
 
         this.spinner = true;

@@ -26,8 +26,8 @@ export default {
     methods: {
         ...mapActions(['obtenerRecursos']),
         buscarDato(){
-            console.log( "this.$router")
-            console.log( this.$router.history.current.fullPath)
+            // console.log( "this.$router")
+            // console.log( this.$router.history.current.fullPath)
             if(this.$router.history.current.fullPath === "/busqueda")
                 this.$emit('updateBuscando',!this.esBuscando)
             else

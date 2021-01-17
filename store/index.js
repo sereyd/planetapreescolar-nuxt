@@ -116,6 +116,7 @@ const createStore = () => {
         },
         idMembresia: "",
         estadoMembresia:"",
+        descargasDia:{},
         vercorreo: false
       },
       connection: {},
@@ -187,6 +188,10 @@ const createStore = () => {
       viewpost: false,
       viewothers: false,
       dialogPost: false,
+
+      //DATA PARA DIRECTORIO
+      directorios:[],
+
       ////foroseleccionado
       foroselect:{}
 
@@ -284,10 +289,12 @@ const createStore = () => {
                     }
                 });
         */
+      //  console.log("VERIFICANDO USUARIOOO...")
         await this.$fireAuth.onAuthStateChanged( user => {
+          // console.log("USUARIO QUE SE ESTA VERIFICANDO:")
           // console.log(user)
           if(user)
-            {
+          {
               let datos = {};
               const usuarioQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
               usuarioQuery.get()
@@ -320,6 +327,8 @@ const createStore = () => {
                   });
 
                   datos.estadoMembresia = datos.lvluser >= 2 ? "active" : "";
+                  // console.log("DATOSSSS ")
+                  // console.log(datos)
 
                   //REVISAR ESTADO DE LA SUSCRIPCIÓN MIENTRAS NO SEA USUARIO ADMIN
                   if(datos.lvluser === 1)
@@ -373,7 +382,7 @@ const createStore = () => {
                         // console.log("error")
                       }
                       else{
-                        console.log(suscripcion.response.status)
+                        // console.log(suscripcion.response.status)
                         if(suscripcion.response.status === "approved" || suscripcion.response.status === "accredited")
                           datos.estadoMembresia = "active";
                         else
@@ -384,38 +393,48 @@ const createStore = () => {
 
                       }
 
+                      //SI NO TIENE MEMBRESIA PREMIUM SE LIMITA LAS DESCARGAS
+                      // console.log("context.state.datosUsuario.estadoMembresia")
+                      // console.log(context.state.datosUsuario.estadoMembresia)
+                      // console.log("datos.estadoMembresia")
+                      // console.log(datos.estadoMembresia)
+                      if(datos.estadoMembresia === 'canceled')
+                      {
+                        const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
+                          
+                        const d = await response.json();
+                        // console.log("FECHA HOY:")
+                        // console.log(d)
+                        // console.log("datos HOY:")
+                        // console.log(datos)
+
+                        if(!datos.descargasDia)
+                        {
+                          datos.descargasDia = 
+                          {
+                            disponibles: context.state.descargarFree,
+                            usadas: [],
+                            fecha: d.fecha
+                          }
+                        }
+                        else if(d.fecha !== datos.descargasDia.fecha)
+                        {
+                          ///console.log("el dia cambiooooooo")
+                          datos.descargasDia.disponibles= context.state.descargarFree,
+                          datos.descargasDia.usadas = [];
+                          datos.descargasDia.fecha = d.fecha;
+                        }
+                      }
+
                     })
                     .catch((err)=>{
                       console.log('Error al verificar suscripción', err);
                     });
 
 
-
-                    //SI NO TIENE MEMBRESIA PREMIUM SE LIMITA LAS DESCARGAS
-                    if(context.state.datosUsuario.estadoMembresia === 'canceled')
-                    {
-                      const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
-                        
-                      const d = await response.json();
-
-                      if(!datos.descargasDia)
-                      {
-                        datos.descargasDia = 
-                        {
-                          disponibles: context.state.descargarFree,
-                          usadas: [],
-                          fecha: d.fecha
-                        }
-                      }
-                      else if(d.fecha !== datos.descargasDia.fecha)
-                      {
-                        ///console.log("el dia cambiooooooo")
-                        datos.descargasDia.disponibles= context.state.descargarFree,
-                        datos.descargasDia.usadas = [];
-                        datos.descargasDia.fecha = d.fecha;
-                      }
-                    }
+                    
                   }
+                  
 
 
 
@@ -425,6 +444,13 @@ const createStore = () => {
               .catch((error) =>{
                   console.log("Error: ", error);
               });
+          }
+          else 
+          {
+            console.log("AQUIIIII NO HAY USUARIO, ES LVLUSER 0")
+            context.state.datosUsuario.descargasDia.disponibles= -5;
+            context.state.datosUsuario.descargasDia.usadas = [];
+            // datos.descargasDia.fecha = d.fecha;
           }
         });
         return true;
@@ -492,6 +518,9 @@ const createStore = () => {
                 data.tags = data.tags ? data.tags : [];
                 data.favoritos = data.favoritos ? data.favoritos : [];
                 data.sinopsis= data.sinopsis ? data.sinopsis : "";
+
+                if(data.tipo !== "blog" || data.tipo !== "reflexion" || data.tipo !== "memoria")
+                  data.premium =  typeof(data.premium) === "undefined" ? false : data.premium
 
                 datos = {
                   idRecurso: doc.id,
@@ -571,6 +600,9 @@ const createStore = () => {
                   data.tags = data.tags ? data.tags : [];
                   data.favoritos = data.favoritos ? data.favoritos : [];
                   data.sinopsis= data.sinopsis ? data.sinopsis : "";
+
+                  if(data.tipo !== "blog" || data.tipo !== "reflexion" || data.tipo !== "memoria")
+                    data.premium =  typeof(data.premium) === "undefined" ? false : data.premium
 
                   delete data['idRecurso'];
 
@@ -695,6 +727,9 @@ const createStore = () => {
       actualizarCategorias(state, payload){
         state.categorias = payload;
       },
+      actualizarDirectorios(state, payload){
+        state.directorios = payload;
+      },
       agregarCategorias(state, payload){
         // console.log(payload)
         // console.log(state.categorias)
@@ -759,6 +794,8 @@ const createStore = () => {
         state.imgupload = data;
       },
       cambiastatusSesion(state,data){
+        // console.log(data)
+
         if(data.salida===true){
           state.datosUsuario.userlogin=data.login
           state.datosUsuario.lvluser=data.lvl
@@ -773,7 +810,9 @@ const createStore = () => {
           state.datosUsuario.idSuscripcion = "";
           state.datosUsuario.importeSuscripcion = "";
           state.datosUsuario.tipoSuscripcion = "";
-         
+          console.log("AQUIIIII NO HAY USUARIO, ES LVLUSER 0")
+                    state.datosUsuario.descargasDia.disponibles= -5;
+                    state.datosUsuario.descargasDia.usadas = [];
         }else{
           state.datosUsuario = data;
         }
@@ -789,8 +828,8 @@ const createStore = () => {
         })
      },
       compruebaConexion(state, data) {
-        console.log("Verificando conexion");
-        console.log(data);
+        // console.log("Verificando conexion");
+        // console.log(data);
 
         if (data !== null) {
           this.$fireStore

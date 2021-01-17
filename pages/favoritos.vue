@@ -12,14 +12,55 @@
     />
     <div style="width:100%; height:10px;" v-if="planeaciones.length > 0"></div>
 
-    <listablog  
+
+    <!-------HOJAS DE TRABAJO------------->
+    <listablog 
+            :blogpost="hojastrabajo" :esCompleto="false" @updateBlogpost="hojastrabajo=$event"
+            tipo="CATEGORIAS" subtipo="hojatrabajo" 
+            titulo="Hojas de trabajo" subtitulos="" 
+            :esFavoritos="true"  
+    />
+    <div style="width:100%; height:0px;" v-if="hojastrabajo.length > 0"></div>
+
+    <!-------MATERIAL DIDÁCTICO------------->
+    <listablog 
+            :blogpost="materialdidactico"  @updateBlogpost="materialdidactico=$event"
+            tipo="CATEGORIAS" subtipo="materialdidactico" 
+            titulo="Material didáctico" subtitulos="" 
+            :esFavoritos="true" 
+    />
+    <div style="width:100%; height:0px;" v-if="materialdidactico.length > 0"></div>
+
+    <!-------INTERACTIVOS------------->
+    <listablog 
+            :blogpost="interactivos"  @updateBlogpost="interactivos=$event"
+            tipo="CATEGORIAS" subtipo="interactivo" 
+            titulo="Interactivos" 
+            subtitulos="" 
+            :esFavoritos="true"
+    />
+    <div style="width:100%; height:0px;" v-if="interactivos.length > 0"></div>
+
+    <!-------OTROS------------->
+    <listablog 
+            :blogpost="otros"  @updateBlogpost="otros=$event"
+            tipo="CATEGORIAS" subtipo="otro" 
+            titulo="Otros"
+            subtitulos="" 
+            :esFavoritos="true" 
+    />
+    <div style="width:100%; height:0px;" v-if="otros.length > 0"></div>
+
+
+    <!------recomendaciones----->
+    <!-- <listablog  
         :blogpost="recursos" @updateBlogpost="recursos=$event"
         tipo="CATEGORIAS" subtipo="recurso" 
         titulo="Actividades" 
         subtitulos=""  
         :esFavoritos="true"
     />
-    <div style="width:100%; height:10px;" v-if="recursos.length > 0"></div>
+    <div style="width:100%; height:10px;" v-if="recursos.length > 0"></div> -->
 
 
 
@@ -67,10 +108,15 @@ export default {
   data() {
     return {
       reflexiones:[],
-      planeaciones:[],
       recursos:[],
       blog:[],
       memorias:[],
+
+      planeaciones:[],
+      hojastrabajo:[],
+      materialdidactico:[],
+      interactivos:[],
+      otros:[],
       // blog:[],
     };
   },
@@ -105,6 +151,9 @@ export default {
                   data.tags = data.tags ? data.tags : [];
                   data.favoritos = data.favoritos ? data.favoritos : [];
                   data.sinopsis= data.sinopsis ? data.sinopsis : "";
+
+                  if(data.tipo !== "blog" || data.tipo !== "reflexion" || data.tipo !== "memoria")
+                        data.premium =  typeof(data.premium) === "undefined" ? false : data.premium
 
                   delete data['idRecurso'];
 
@@ -159,6 +208,25 @@ export default {
         else if(cat.tipo === "planeacion" && esFav  && 
           ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
           this.planeaciones.push(cat)
+
+        
+        else if(cat.tipo === "materialdidactico"  && esFav  && 
+          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+            this.materialdidactico.push(cat)
+
+        else if(cat.tipo === "hojatrabajo"  && esFav  && 
+          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+            this.hojastrabajo.push(cat)
+
+        else if(cat.tipo === "interactivo"  && esFav  && 
+          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+            this.interactivos.push(cat)
+        
+        else if(cat.tipo === "otro"  && esFav  && 
+          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+            this.otros.push(cat)
+
+
       })
     },
     

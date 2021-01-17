@@ -1,5 +1,5 @@
 <div>   
-    <v-card-text style="text-align: right; " v-if="datosUsuario.userlogin">
+    <v-card-text style="text-align: right; " v-if="datosUsuario.userlogin || vistapost.tipo === 'blog'">
 
         <div  max-width="100%" style="height:20px; "></div>
         <v-container class="ma-auto elevation-3 rounded-ml" style="background-image:url('images/back/backstart.jpg'); background-position:top; background-size: 100%; background-repeat: repeat-x; text-align: left; max-width:1200px; width:100%; ">
@@ -29,7 +29,7 @@
                         v-if="datosUsuario.estadoMembresia === 'active' 
                         || 
                         (datosUsuario.descargasDia.usadas.length < datosUsuario.descargasDia.disponibles
-                            || vistapost.premium === false
+                            
                         )"
                         :download="nombreFile"
                         :href="urlFileB" 
@@ -47,7 +47,7 @@
                         @click="dialogPlanes=true"
                     >
                         <v-icon rigth dark> mdi-download </v-icon>
-                        Descargar
+                        Descargar no
                     </v-btn>
                     
                     <pdfviewer :src="vistapost.urlVista" :numspages="[3,4,5]" ></pdfviewer>
