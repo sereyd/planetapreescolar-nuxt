@@ -132,23 +132,23 @@
             </div>
         </div>
 
+        <div class="d-flex">
+            <v-divider  class="mt-4 izq"/> 
+                <span class="spn"> ó </span>
+            <v-divider  class="mt-4 der"/>
+        </div>
+    
+        <v-checkbox
+            v-if="!spinner"
+            class="purpleColor"
+            v-model="checkbox"
+            sm
+            :rules="[v => !!v || 'Debe aceptar los términos y condiciones']"
+            label="Acepto términos y condiciones"
+            required
+        ></v-checkbox>
     </v-form>
 
-    <div class="d-flex">
-        <v-divider  class="mt-4 izq"/> 
-            <span class="spn"> ó </span>
-        <v-divider  class="mt-4 der"/>
-    </div>
-
-    <v-checkbox
-        v-if="!spinner"
-        class="purpleColor"
-        v-model="checkbox"
-        sm
-        :rules="[v => !!v || 'You must agree to continue!']"
-        label="Acepto términos y condiciones"
-        required
-    ></v-checkbox>
    
     <div>
     <v-btn v-if="!spinner"

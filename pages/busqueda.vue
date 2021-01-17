@@ -1,7 +1,7 @@
 <template>
     <v-main >
         <div class="mx-3 text-center" >
-            <v-row>
+            <!-- <v-row>
                 <v-col cols="10"><buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/></v-col>
                 <v-col cols="2">
                     <v-btn tile small  @click="opcionesFiltrado()" color="melon" class="white--text" style="text-transform: none;">
@@ -9,7 +9,7 @@
                         Filtrar
                     </v-btn>
                 </v-col>
-            </v-row>
+            </v-row> -->
             <!-- <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/> -->
             <!-- <v-btn tile small color="melon" class="white--text" style="text-transform: none;">
                 <v-icon class="white--text" left>mdi-format-list-bulleted</v-icon>
