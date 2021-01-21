@@ -830,7 +830,6 @@ const createStore = () => {
           state.datosUsuario.apellido = ""
           state.datosUsuario.correo = ""
           state.datosUsuario.id = ""
-
           state.datosUsuario.grupo =  {};
           state.datosUsuario.idMembresia = "";
           state.datosUsuario.estadoMembresia = "";
@@ -845,6 +844,8 @@ const createStore = () => {
         }else{
           state.datosUsuario = data;
         }
+
+
         // console.log(state.datosUsuario);
       },
       async  tomaDatosActualizados(state){

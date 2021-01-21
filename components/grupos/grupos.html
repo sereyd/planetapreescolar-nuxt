@@ -50,7 +50,19 @@
               class=" grey lighten-3 d-flex justify-center align-center mx-2"
               height="150px"
             >
-              <v-img :src="grupo.urlImagen" class="fotomini"></v-img>
+            
+              <v-img :src="grupo.urlImagen" class="fotomini right">
+                
+                <v-btn class="melon" rounded="12">
+                  <v-icon class="white--text">mdi-eye</v-icon>
+              </v-btn>
+
+              <v-btn class="melon" rounded="12">
+                <v-icon class="white--text">mdi-folder-edit</v-icon>
+            </v-btn>
+
+              </v-img>
+             
             </v-card>
           </div>
           <div>

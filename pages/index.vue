@@ -1,9 +1,9 @@
 <template>
 <v-main  v-if="bandera">
   <!-----Buscador------>
-<v-card class="secondary ma-2  modbuscador" >
+<v-card class=" ma-2  modbuscador" >
     <v-card-text class="backbuscador text-center white--text pa-4 rounded-2 pt-3">
-        <h1 class="medidah1">¡Muchos recursos para ti!</h1>
+        <h2 class="medidah1">¡Muchos recursos para ti!</h2>
         <p class="medidap">Encuentra cantos, imágenes, planeaciones, todo para ti, educadora</p>
         <buscador />
     </v-card-text>

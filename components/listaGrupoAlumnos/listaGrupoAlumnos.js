@@ -29,6 +29,12 @@ export default{
              }
     },
     methods:{
+      addAlumno(){
+        this.$emit('addAlumno',true)
+      },
+      addAlumnos(){
+        this.$emit('addAlumnos',true)
+      },
       updatedata(item,val,tipo){
         this.dataAlumnos[item.pos][tipo]=val
       },

@@ -49,7 +49,7 @@
 
 
 
-  <v-data-table  :headers="cabecera" :items="listadoAlumnos" >
+  <v-data-table  :headers="cabecera" :items="listadoAlumnos" :hide-default-footer="true" >
     <!------info de cabecera-->
    
 
@@ -98,11 +98,14 @@
                 <listasdetareas tipo="rango" @respuesta="updatedata(item,$event,'rango')"  :valor="item.rango"></listasdetareas>
             </template>
 
+            <template v-slot:no-data>
+              <v-alert :value="true" color="primary" class="white--text" >
+    <v-btn class="info" style="text-transform:none;" @click="addAlumno()"><v-icon   class="white--text">mdi-account-plus</v-icon> &nbsp;  Agregar nuevo alumno</v-btn>
+    <v-btn  class="info" style="text-transform:none;" @click="addAlumnos()"><v-icon   class="white--text">mdi-download</v-icon>  &nbsp;   Importar alumnos</v-btn>
+
+              </v-alert>
+            </template>
+
               </v-data-table>
-
-
-              
-
-
             </v-card-text>
             </v-card>
