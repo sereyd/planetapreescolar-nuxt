@@ -37,14 +37,14 @@ export default {
     }
   },
   mounted(){
-    console.log(this.limitImg)
-    console.log(this.urlPrevia);
+    // console.log(this.limitImg)
+    // console.log(this.urlPrevia);
 
     if(this.urlPrevia !== "" && this.urlPrevia !== "none")
     {
       this.urlImagenPrevia = this.urlPrevia;
       this.imagen = true;
-      console.log(this.urlImagenPrevia);
+      // console.log(this.urlImagenPrevia);
 
       // this.$emit("updateImg", this.urlImagenPrevia);
       // this.actualizaImgUpload(this.$refs.fileupload.files[0]);

@@ -117,8 +117,9 @@ const createStore = () => {
         idMembresia: "",
         estadoMembresia:"",
         descargasDia:{},
-        vercorreo: false
+        vercorreo: false,
       },
+      datosSuscripcion:{ status: false},
       connection: {},
       imgupload: "",
       urlimg: "",
@@ -258,20 +259,25 @@ const createStore = () => {
   },    
   async eliminarImagen(context,data){
         let nombreArchivo=data
-        let dirsep=nombreArchivo.split("/")
-        let dirsep2=dirsep[7].split('?')
-        let respdir1=dirsep2[0].replace(/%2F/gi,'/')
-        let respdir2=respdir1.replace(/%20/gi,' ')
-        //console.log(respdir2)
-        let desertRef =  await this.$fireStorage.ref().child(respdir2);
-        // Delete the file
-       desertRef.delete().then(function() {
-          //console.log('imagen eliminada')
-          return true;
-        }).catch(function(error) {
-          console.error('imagen no eliminada')
-          return false;
-        });
+        console.log(data)
+        if(data !== "" || data !== "none")
+        {
+
+          let dirsep=nombreArchivo.split("/")
+          let dirsep2=dirsep[7].split('?')
+          let respdir1=dirsep2[0].replace(/%2F/gi,'/')
+          let respdir2=respdir1.replace(/%20/gi,' ')
+          //console.log(respdir2)
+          let desertRef =  await this.$fireStorage.ref().child(respdir2);
+          // Delete the file
+         desertRef.delete().then(function() {
+            //console.log('imagen eliminada')
+            return true;
+          }).catch(function(error) {
+            console.error('imagen no eliminada')
+            return false;
+          });
+        }
       },
       async autenticarUsuario(context) {
        // console.log("Verificando si hay sesion abierta");
@@ -326,28 +332,33 @@ const createStore = () => {
                       // context.commit("cambiastatusSesion",datos);
                   });
 
-                  datos.estadoMembresia = datos.lvluser >= 2 ? "active" : "";
+                  datos.estadoMembresia = datos.lvluser > 2 ? "active" : "";
                   // console.log("DATOSSSS ")
                   // console.log(datos)
 
                   //REVISAR ESTADO DE LA SUSCRIPCIÓN MIENTRAS NO SEA USUARIO ADMIN
-                  if(datos.lvluser === 1)
+                  if(datos.lvluser === 1 || datos.lvluser === 2)
                   {
                     //PAGO POR STRIPE
-                    // console.log(datos.idSuscripcion);
+                    console.log("datos.idSuscripcion");
+                    console.log(datos.idSuscripcion);
                     fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + datos.idSuscripcion)
                     .then((result)=>{
                       return result.json()
                     })
                     .then(async(suscripcion)=>{
 
-                      // console.log(suscripcion)
+                      console.log(suscripcion)
                       if(suscripcion.error)
                       {
                         datos.estadoMembresia = "canceled";
+                        context.state.datosSuscripcion.status = false;
+
                       }
                       else{
                         datos.estadoMembresia = suscripcion.status;
+                        context.state.datosSuscripcion.status = true;
+                        context.state.datosSuscripcion = suscripcion;
                       }
 
                     })
@@ -369,67 +380,82 @@ const createStore = () => {
 
                     // fetch(this.urlAPI+"/mercadopago-oxxo",config);
 
-                    fetch(context.state.urlAPI+"/estado-pago",config)
-                    .then((result)=>{
-                      return result.json()
-                    })
-                    .then(async(suscripcion)=>{
-
-                      // console.log(suscripcion)
-                      if(suscripcion.error)
-                      {
-                        datos.estadoMembresia = "canceled";
-                        // console.log("error")
-                      }
-                      else{
-                        // console.log(suscripcion.response.status)
-                        if(suscripcion.response.status === "approved" || suscripcion.response.status === "accredited")
-                          datos.estadoMembresia = "active";
-                        else
-                          datos.estadoMembresia = "canceled";
-
-
-                        // console.log("no error")
-
-                      }
-
-                      //SI NO TIENE MEMBRESIA PREMIUM SE LIMITA LAS DESCARGAS
-                      // console.log("context.state.datosUsuario.estadoMembresia")
-                      // console.log(context.state.datosUsuario.estadoMembresia)
-                      // console.log("datos.estadoMembresia")
-                      // console.log(datos.estadoMembresia)
-                      if(datos.estadoMembresia === 'canceled')
-                      {
-                        const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
-                          
-                        const d = await response.json();
-                        // console.log("FECHA HOY:")
-                        // console.log(d)
-                        // console.log("datos HOY:")
-                        // console.log(datos)
-
-                        if(!datos.descargasDia)
+                    if(datos.estadoMembresia !== "active")
+                    {
+                      fetch(context.state.urlAPI+"/estado-pago",config)
+                      .then((result)=>{
+                        return result.json()
+                      })
+                      .then(async(suscripcion)=>{
+  
+                        // console.log(suscripcion)
+                        if(suscripcion.error)
                         {
-                          datos.descargasDia = 
+                          datos.estadoMembresia = "canceled";
+                          context.state.datosSuscripcion.status = false;
+
+                          // console.log("error")
+                        }
+                        else{
+                          // console.log(suscripcion.response.status)
+                          if(suscripcion.response.status === "approved" || suscripcion.response.status === "accredited")
                           {
-                            disponibles: context.state.descargarFree,
-                            usadas: [],
-                            fecha: d.fecha
+                            datos.estadoMembresia = "active";
+                            context.state.datosSuscripcion = suscripcion.response;
+                            context.state.datosSuscripcion.status = true;
+
+                          }
+                          else
+                          {
+                            datos.estadoMembresia = "canceled";
+                            context.state.datosSuscripcion.status = false;
+                          }
+  
+  
+                          // console.log("no error")
+  
+                        }
+  
+                        //SI NO TIENE MEMBRESIA PREMIUM SE LIMITA LAS DESCARGAS
+                        // console.log("context.state.datosUsuario.estadoMembresia")
+                        // console.log(context.state.datosUsuario.estadoMembresia)
+                        // console.log("datos.estadoMembresia")
+                        // console.log(datos.estadoMembresia)
+                        if(datos.estadoMembresia === 'canceled' || datos.estadoMembresia === '')
+                        {
+                          const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
+                            
+                          const d = await response.json();
+                          // console.log("FECHA HOY:")
+                          // console.log(d)
+                          // console.log("datos HOY:")
+                          // console.log(datos)
+  
+                          if(!datos.descargasDia)
+                          {
+                            datos.descargasDia = 
+                            {
+                              disponibles: context.state.descargarFree,
+                              usadas: [],
+                              fecha: d.fecha
+                            }
+                          }
+                          else if(d.fecha !== datos.descargasDia.fecha)
+                          {
+                            ///console.log("el dia cambiooooooo")
+                            datos.descargasDia.disponibles= context.state.descargarFree,
+                            datos.descargasDia.usadas = [];
+                            datos.descargasDia.fecha = d.fecha;
                           }
                         }
-                        else if(d.fecha !== datos.descargasDia.fecha)
-                        {
-                          ///console.log("el dia cambiooooooo")
-                          datos.descargasDia.disponibles= context.state.descargarFree,
-                          datos.descargasDia.usadas = [];
-                          datos.descargasDia.fecha = d.fecha;
-                        }
-                      }
+  
+                      })
+                      .catch((err)=>{
+                        console.log('Error al verificar suscripción', err);
+                      });
 
-                    })
-                    .catch((err)=>{
-                      console.log('Error al verificar suscripción', err);
-                    });
+                    }
+
 
 
                     
@@ -450,6 +476,7 @@ const createStore = () => {
             console.log("AQUIIIII NO HAY USUARIO, ES LVLUSER 0")
             context.state.datosUsuario.descargasDia.disponibles= -5;
             context.state.datosUsuario.descargasDia.usadas = [];
+
             // datos.descargasDia.fecha = d.fecha;
           }
         });
@@ -814,6 +841,7 @@ const createStore = () => {
           console.log("AQUIIIII NO HAY USUARIO, ES LVLUSER 0")
                     state.datosUsuario.descargasDia.disponibles= -5;
                     state.datosUsuario.descargasDia.usadas = [];
+          state.datosSuscripcion = {};
         }else{
           state.datosUsuario = data;
         }

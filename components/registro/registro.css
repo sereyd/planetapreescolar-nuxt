@@ -33,6 +33,10 @@
 .v-input__slot{
   min-height: 50px!important;
 }
+.v-select__slot{
+  min-height: 50px!important;
+
+}
 .v-btn{
   letter-spacing: 0em;
   text-indent: 0em;

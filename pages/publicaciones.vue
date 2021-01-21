@@ -227,9 +227,9 @@ export default {
                 ...data
               }
 
-                console.log("TIPO")
-                console.log(datos.tipo)
-                console.log(datos)
+                // console.log("TIPO")
+                // console.log(datos.tipo)
+                // console.log(datos)
                 if(datos.tipo === "memoria")
                   this.memorias.push(datos)
 
@@ -260,27 +260,27 @@ export default {
               // this.listaR.push(doc.data());
             });
 
-            console.log("this.reflexiones")
-            console.log(this.reflexiones)
-              console.log("this.planeaciones")
-              console.log(this.planeaciones)
+            // console.log("this.reflexiones")
+            // console.log(this.reflexiones)
+            //   console.log("this.planeaciones")
+            //   console.log(this.planeaciones)
 
-              console.log("this.hojastrabajo")
-              console.log(this.hojastrabajo)
+            //   console.log("this.hojastrabajo")
+            //   console.log(this.hojastrabajo)
 
-              console.log("this.materialdidactico")
-              console.log(this.materialdidactico)
+            //   console.log("this.materialdidactico")
+            //   console.log(this.materialdidactico)
 
-              console.log("this.interactivos")
-              console.log(this.interactivos)
+            //   console.log("this.interactivos")
+            //   console.log(this.interactivos)
 
-              console.log("this.otros")
-              console.log(this.otros)
+            //   console.log("this.otros")
+            //   console.log(this.otros)
 
-              console.log("this.blog")
-              console.log(this.blog)
-              console.log("this.memorias")
-              console.log(this.memorias)
+            //   console.log("this.blog")
+            //   console.log(this.blog)
+            //   console.log("this.memorias")
+            //   console.log(this.memorias)
             // console.log(this.listaR)
           });
 
