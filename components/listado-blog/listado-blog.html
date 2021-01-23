@@ -2,8 +2,13 @@
     <v-row class="px-0 ma-0" >
     
     <v-col cols="9" md="10" class="space">
-        <h2 class="primary--text space">{{titulo}}</h2>
-        <p v-if="subtitulos !== ''" class="space">{{subtitulos}}</p>
+        <!-- <v-row>
+            <v-col cols="12" md="7" sm="8"> -->
+                <h2 class="primary--text space" style="font-size: 16.7px;">{{titulo}}</h2>
+            <!-- </v-col> -->
+            <p v-if="subtitulos !== ''" class="space" style="font-size: 14px;" >{{subtitulos}}</p>
+        <!-- </v-row> -->
+        
     </v-col>
     
     <v-col cols="3" md="2"  style="text-align: right; " class="space d-flex align-center">
@@ -14,7 +19,7 @@
                 :key="'post_'+index" 
                 cols="12" md="3" sm="6" 
                 class=" mb-3" 
-                v-if="key.edopost === 'publico' || datosUsuario.id === key.idCreador"
+                v-if="key.edopost === 'publico' "
             >
                 <v-card
                     class="  d-flex justify-center align-center mx-2 "

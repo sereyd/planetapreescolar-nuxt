@@ -40,7 +40,7 @@ export default{
       ...mapActions(['changeRecursosFavoritos']),
       ...mapMutations(['changeViewOthers','changeViewPost','changeDialogPost']),
       muestrapost(p){
-        console.log(p);
+        // console.log(p);
         // const fec = p.fecha.toString();
         // // console.log(fec)
         // var fechaNueva = fec.slice(0, 10);
@@ -108,7 +108,7 @@ export default{
          xhr.onload = (event) => {
            // console.log(xhr.response);
            const blob = xhr.response;
-           console.log(blob)
+          //  console.log(blob)
            const res = blob.type.split("/");
           //  console.log("res")
           //  console.log(res)

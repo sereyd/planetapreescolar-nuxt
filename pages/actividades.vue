@@ -2,6 +2,11 @@
         <v-main >
             <!-- <v-btn @click="listaAleatoria([])">Random</v-btn> -->
                 <!---------planeaciones------------>
+                <v-row>
+                   <v-col cols="10">
+                      <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/>
+                  </v-col>
+                </v-row>
                 <div style="width:100%; height:5px;"></div>
                 <listablog 
                         :blogpost="planeaciones" :esCompleto="false" @updateBlogpost="planeaciones=$event"
@@ -57,6 +62,7 @@
 import buscador from '~/components/buscador/buscador.vue'
 import reflexiones from '~/components/reflexiones/reflexiones.vue'
 import listablog from '~/components/listado-blog/listado-blog.vue'
+
 import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
@@ -68,6 +74,8 @@ export default {
       materialdidactico:[],
       interactivos:[],
       otros:[],
+      buscando: false,
+
     };
   },
   // methods:{

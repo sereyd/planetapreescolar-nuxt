@@ -32,7 +32,8 @@
 
 <v-btn  v-if="editar===false"  class="melon white--text" @click="editar=true"> Editar perfil </v-btn>
 <!-- <p>membresia: {{datosUsuario.idMembresia}}</p> -->
-<v-btn  v-if="editar===false && datosUsuario.idMembresia"  class="melon white--text" @click="opcMembresia()"> Membresia </v-btn>
+<v-btn  v-if="editar===false && datosUsuario.idMembresia"  class="melon white--text" @click="dialogSus = true"> Ver suscripción </v-btn>
+<!-- <v-btn  v-if="editar===false && datosUsuario.idMembresia"  class="melon white--text" @click="opcMembresia()"> Membresia </v-btn> -->
 
     </v-col>
     <v-col cols="12" md="6" class="pa-10">
@@ -93,8 +94,91 @@
 
 <simpleloader :stload="loader" ></simpleloader>
 
+<v-dialog v-model="dialogSus" persistent max-width="755">
+      
+    <v-card class=" px-10">
+      <v-card-title class=" justify-space-between">
+          <v-btn icon text small color="purple"  >
+          </v-btn>
+          <h3 class="primary--text ">Detalles de la suscripción</h3>
+          <v-btn icon text small color="purple" @click="dialogSus = false" >
+              <v-icon>mdi-window-close</v-icon>
+          </v-btn>
+      </v-card-title>
+      
+      <div class="mt-5" >
+
+        <!-- <v-card class=" mt-4" > -->
+          <v-row >
+              <v-col cols="12" class="" v-if="datosSuscripcion.status">
+
+                <v-row class="">
+                    <v-col cols="4" xsm="6" md="4" lg="6" class="">
+                        <h4 class="title">Tipo suscripción:</h4>
+                    </v-col>
+                    <v-col class="mt-1">
+                        <p v-if="datosSuscripcion.plan.interval_count === 1">Semestral</p>
+                        <p v-else-if="datosSuscripcion.plan.interval_count === 3">Trimestral</p>
+                        <p v-else>Anual</p>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col cols="4" xsm="6" md="4" lg="6">
+                        <h4 class="title">Importe:</h4>
+                    </v-col>
+                    <v-col class="mt-1">
+                        <p>$ {{(datosSuscripcion.plan.amount / 100)}}</p>
+                    </v-col>
+                </v-row>
+
+                <v-row>
+                    <v-col cols="4" xsm="6" md="4" lg="6">
+                        <h4 class="title">Siguiente cobro:</h4>
+                    </v-col>
+                    <v-col class="mt-1">
+                        <p>{{fechaFormato}}</p>
+                    </v-col>
+                </v-row>
+
+                
+
+                
+              </v-col>
+              <v-col cols="12" class="" v-else>
+                  <p>No cuentas con suscripción premium</p>
+              </v-col>
+
+              <!-- <v-col cols="9" class=" d-flex  texto_comentario ">
+                  
+              </v-col> -->
+              <v-divider  class=" black mt-4"/> 
+          </v-row>
+      <!-- </v-card> -->
+              
+        <div class="d-flex justify-center pb-3">
+            <v-btn  
+                v-if="editar===false && datosSuscripcion.status"  
+                class="melon white--text" @click="opcMembresia()"
+            > Membresia </v-btn>
+           
+
+            <router-link v-else to="checkout" class="white--text menu-sec miniMovil" style="text-decoration:none; position:relative;" > 
+                <v-btn  
+                    class="melon white--text" 
+                > Ver planes </v-btn>
+            </router-link>
+
+          <!-- <v-btn  dark class="red px-10 mb-5 btn_crearG mr-2" @click="notivisto(post)"  
+            >Leído</v-btn> -->
+        </div>
+      </div>
+    </v-card>
+</v-dialog>
 
     </v-row>
+
+    
 </template>
 <style scoped>
 .textview{
@@ -124,6 +208,9 @@
 import {mapState,mapActions, mapMutations} from 'vuex'
 import simpleloader from '~/components/simpleloader/simpleloader.vue'
 import subirimagen from "~/components/subirimagen/subirimagen.vue"
+import { format } from 'date-fns'
+import fromUnixTime from 'date-fns/fromUnixTime';
+import { es } from 'date-fns/locale';
 export default {
     
 data(){
@@ -133,7 +220,7 @@ data(){
         editar:false,
         previewIedit:"",
         uploadimg:false,
-        estado:[
+         estado:[
   'Aguascalientes',
   'Baja California',
   'Baja California Sur',
@@ -165,12 +252,18 @@ data(){
 	'Tlaxcala',
 	'Veracruz de Ignacio de la Llave',
 	'Yucatan',
-	'Zacatecas',
-]
+	'Zacatecas'],
+        dialogSus: false,
+        
     }
 },
 computed:{
-    ...mapState(['datosUsuario','dominio','urlAPI','urlimg'])
+    ...mapState(['datosUsuario','dominio','urlAPI','urlimg','datosSuscripcion']),
+    fechaFormato(){
+        const f = fromUnixTime(this.datosSuscripcion.current_period_end );
+        const ff = format(f, "dd/MM/yyyy", {locale: es});
+        return ff;
+    }
 },
 methods:{
     ...mapActions(['eliminarImagen','fotostorageAsync','creaNotificacion']),
@@ -200,6 +293,7 @@ methods:{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
           },
           body: JSON.stringify({
             sessionId: this.datosUsuario.idMembresia,

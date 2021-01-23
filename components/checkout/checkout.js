@@ -124,7 +124,7 @@ export default {
         //SE ACTUALIZA EN FIREBASE LOS CAMPOS NECESARIOS
         usuarioRef.update({
           // lvluser: lvl,
-          idMembresia: res.response.id,
+          // idMembresia: res.response.id,
           // idCliente: this.idCliente,
           idSuscripcion: res.response.id,
           tipoSuscripcion: this.tipoMembresia,
@@ -133,7 +133,7 @@ export default {
         .then(() => {
           //SE ACTUALIZA EL OBJETO USUARIOS POR MEDIO DE UN ACTION QUE ESTA EN EL STORE
           // datosUsuario.lvluser = lvl;
-          datosUsuario.idMembresia =res.response.id;
+          // datosUsuario.idMembresia =res.response.id;
           // datosUsuario.idCliente = this.idCliente;
           datosUsuario.idSuscripcion= res.response.id;
           datosUsuario.tipoSuscripcion= this.tipoMembresia;

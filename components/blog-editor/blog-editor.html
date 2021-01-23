@@ -163,7 +163,7 @@
                             placeholder="Titulo"
                             required
                             outlined
-                            :rules="[v => !!v || 'Titulo es requerida']"
+                            :rules="[v => !!v || 'Titulo es requerido']"
                             @keyup.enter=""
                         ></v-text-field>
                         
@@ -196,7 +196,7 @@
                             placeholder="Grado"
                             required
                             outlined
-                            :rules="[v => !!v || 'Grado es requerida']"
+                            :rules="[v => !!v || 'Grado es requerido']"
                             @keyup.enter=""
                             v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo')"
                         ></v-text-field>
@@ -207,7 +207,7 @@
 
 
                         <div 
-                            class="d-flex flex-column flex-sm-column flex-md-row flex-lg-row flex-xl-row  justify-space-between" >
+                            class="d-flex flex-wrap justify-space-between" >
 
                             <v-radio-group
                                 v-model="datosRecurso.edopost"
@@ -243,6 +243,25 @@
                                 v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro'"
 
                             ></v-switch>
+                            <v-switch 
+                                v-model="datosRecurso.permisoadmin"  
+                                v-if="(datosUsuario.lvluser===3) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro')" 
+                                label="Validado por administador
+                            "></v-switch>
+                            <!-- <v-switch 
+                                v-model="usarnombre"  
+                                v-if="(datosUsuario.lvluser===3) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro')" 
+                                label="Nombre personal
+                            "></v-switch> -->
+
+                            <v-checkbox
+                                v-model="usarnombre"
+                                label="Nombre personal"
+                                color="primary "
+                                class="mb-3"
+                                v-if="(datosUsuario.lvluser===3) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro')" 
+                                hide-details
+                            ></v-checkbox>
                         </div>
                         <!-- :class="[tagsValido ? 'mb-2 mt-2' : 'errorTagsBorder mb-2 mt-2']" -->
                         <input-tag 

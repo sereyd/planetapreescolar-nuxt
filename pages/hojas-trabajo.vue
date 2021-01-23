@@ -1,6 +1,11 @@
 <template>
   <v-main class="px-10" v-if="bandera">
     <v-row>
+      <v-col cols="12">
+        <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col
         cols="12"
         md="12"
@@ -70,6 +75,8 @@ import validasitio from '@/mixins/validasitio.js'
 // import editorblog from "~/components/blog-editor/blog-editor.vue";
 // import cargablog from "~/components/carga-blog/carga-blog.vue";
 import listablog from "~/components/listado-blog/listado-blog.vue";
+import buscador from '~/components/buscador/buscador.vue'
+
 import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
@@ -90,6 +97,8 @@ export default {
                 imagenes:"",
             },
             bandera: false,
+            buscando: false,
+
         }
     },
     methods:{
@@ -111,7 +120,8 @@ export default {
         // grupos
         // editorblog,
         // cargablog,
-        listablog
+        listablog,
+        buscador
         //TreeFolderContents: () => import('./tree-folder-contents.vue')
     },
     computed:{

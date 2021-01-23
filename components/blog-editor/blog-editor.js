@@ -39,7 +39,7 @@ export default {
         foldercode:"",
         titulo: "",
         fecha: "",
-        edopost: "",
+        edopost: "publico",
         premium: false,
         recomendado: false,
         urlImagen: "",
@@ -54,6 +54,7 @@ export default {
         tags:[],
         permisoadmin: true,
       },
+      usarnombre: true,
       esCrear: true,
       materia: "",
       grado: "",
@@ -105,7 +106,7 @@ export default {
 
       // REGLAS PARA FORMULARIO
       sinopsisReglas: [
-        v => !!v || 'Sinopsis es requerido',
+        v => !!v || 'Sinopsis es requerida',
         v => (v && v.length <= 500) || 'Sinopsis debe tener menos de 500 caracteres',
       ],
   
@@ -181,7 +182,7 @@ export default {
       
       if(this.completado && this.listo)
       {
-        console.log("LISTO PARA CREAR NUEVO");
+        // console.log("LISTO PARA CREAR NUEVO");
 
         if(this.urlimg !== "" && this.urlimg !== "none")
           this.datosRecurso.urlImagen = this.urlimg
@@ -196,12 +197,12 @@ export default {
             urlVista: this.subtipo === 'materialdidactico' ? this.urlDescargable : this.urlVista,
             urlDescargable: this.urlDescargable,
             idCreador: id,
-            nombreCreador: `${nombre} ${apellido}`,
+            nombreCreador: this.usarnombre  ? `${nombre} ${apellido}` : "Planeta Preescolar",
             materia: this.materia,
             grado: this.grado,
             sinopsis: this.sinopsis,
             tipoCreador: lvluser === 3 ? 'administrador' : 'usuario',
-            tipo: this.subtipo,
+            tipo: this.subtipo
             // tags: this.tags
           }
 
@@ -250,11 +251,11 @@ export default {
         
         // if(this.tipoRecursoSelect === "link")
         //   this.tipoRecurso = "link";
-        console.log(this.subtipo +" "+ this.tipoRecursoSelect);
+        // console.log(this.subtipo +" "+ this.tipoRecursoSelect);
         if(this.subtipo === "interactivo" && this.tipoRecursoSelect === "file")
           this.tipoRecursoSelect = "audio"
 
-        console.log(this.subtipo +" "+ this.tipoRecursoSelect);
+        // console.log(this.subtipo +" "+ this.tipoRecursoSelect);
         
 
         if(this.tipo)
@@ -292,22 +293,20 @@ export default {
       // if(TtipoRecursoSelect === 'file')
       if(this.subtipo === "reflexion")
         this.tipoRecursoSelect = "";
+      this.usarnombre =  this.datosUsuario.lvluser === 3 ? false : true;
 
       this.creaRecurso=true
     },
     resetDatos(){
       
       this.datosRecurso= {
-        foldercode:"",titulo: "",fecha: "",edopost: "",urlImagen: "",contenido:"",tipoRecurso:"",
+        foldercode:"",titulo: "",fecha: "",edopost: "publico",urlImagen: "",contenido:"",tipoRecurso:"",
         urlRecurso:"",comentarios:[],tags: [],idCreador:"",nombreCreador:"",premium: false,
         recomendado: false, permisoadmin: true,
       };
         
         
-
-
-        
-
+      this.usarnombre= true,
       this.materia ="";
       this.grado ="";
       this.sinopsis ="";
@@ -334,6 +333,7 @@ export default {
 
 
       this.actualizaImgUpload("");
+      this.$refs.formRecurso.reset();
       this.creaRecurso = false;
     },
 
@@ -341,6 +341,8 @@ export default {
   mounted() {
     // this.datablog.user = this.datosUsuario.id;
     this.datosRecurso.idCreador = this.datosUsuario.id;
+
+    // this.usarnombre =  this.datosUsuario.lvluser === 3 ? false : true;
     // console.log(this.listaR)
 
 

@@ -15,6 +15,7 @@
             contain
             class="fotomini"
             @click="mostrarRecursoEdit(key)"
+            :lazy-src="key.urlImagen === '' || key.urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : key.urlImagen"
             
             ></v-img>
 
@@ -224,7 +225,7 @@
                     
 
                     <div 
-                            class="d-flex flex-column flex-sm-column flex-md-row flex-lg-row flex-xl-row  justify-space-between" >
+                            class="d-flex flex-wrap  justify-space-between" >
 
                             <v-radio-group
                                 v-model="datosRecursoEdit.edopost"
@@ -261,6 +262,12 @@
 
                             <v-switch v-model="datosRecursoEdit.permisoadmin"  v-if="datosUsuario.lvluser===3" label="Validado por administador
                             "></v-switch>
+
+                            <!-- <v-switch 
+                                v-model="usarnombre"  
+                                v-if="(datosUsuario.lvluser===3) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro')" 
+                                label="Nombre personal
+                            "></v-switch> -->
                         </div>
 
                     <input-tag 

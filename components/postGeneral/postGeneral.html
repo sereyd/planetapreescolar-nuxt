@@ -58,7 +58,37 @@
                         </div>
                         
                     </div>
-                    <v-btn class="melon white--text" @click="verRecurso" style="text-transform: none; border-radius: 14px;">Ver recurso</v-btn>
+                    <div v-if ="subtipo === 'hojatrabajo'" >
+                        <div  v-if ="!spinner && datosUsuario.lvluser > 0">
+                            <a 
+                                v-if="datosUsuario.estadoMembresia === 'active'|| 
+                                (
+                                    datosUsuario.descargasDia.usadas.length < datosUsuario.descargasDia.disponibles
+                                    
+                                )"
+                                :download="nombreFile"
+                                :href="urlFileB" 
+                                @click="contadorDescargar()"
+                                target="_blank"
+                                class="v-btn v-btn--contained theme--light v-size--default melon mt-3 white--text"
+                                style="text-transform: none; border-radius: 12px;"
+                            >
+                                <v-icon rigth dark> mdi-download </v-icon>
+                                Descargar
+                            </a>
+                            <v-btn
+                                v-else
+                                class="ma-2 melon white--text"
+                                style="text-transform: none; border-radius: 12px;"
+                                @click="dialogPlanes=true"
+                            >
+                                <v-icon rigth dark> mdi-download </v-icon>
+                                Descargar
+                            </v-btn>
+                        </div>    
+                    </div>
+                    <v-btn v-else class="melon white--text" @click="verRecurso" 
+                    style="text-transform: none; border-radius: 14px;">Ver recurso</v-btn>
                 </v-col>
             </v-row>
 
@@ -170,7 +200,7 @@
                                 @click="dialogPlanes=true"
                             >
                                 <v-icon rigth dark> mdi-download </v-icon>
-                                Descargar no
+                                Descargar
                             </v-btn>
                             
                             
