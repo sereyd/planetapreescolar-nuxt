@@ -36,9 +36,9 @@
 
 <v-row>
   
-<v-col cols="12" md="2" v-show="vistaValida"   class="viewmobil primary"  >   
+<v-col cols="12" md="2" v-show="vistaValida"   class="viewmobil prysec"  >   
   <!----Menu lateral------>
-  <v-list dense class="primary" :class="menufix===true ? ' primary menufixed ' : '' " > 
+  <v-list dense class="prysec" :class="menufix===true ? ' prysec menufixed ' : '' " > 
 
       <v-list-item
         v-for="item in itemsmenu"
@@ -46,14 +46,14 @@
         link
         :to="item.link"
         v-if="$validasesion($store,item) && item.visible===true"
-        
+        active-class="font-weight-black text-caption"
       >
         <v-list-item-icon >
           <v-icon class="white--text">{{ item.icon }}</v-icon>
         </v-list-item-icon>
 
-        <v-list-item-content>
-          <v-list-item-title class="white--text">{{ item.title }}</v-list-item-title>
+        <v-list-item-content class="white--text" >
+          {{ item.title }}
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -82,12 +82,19 @@
 .viewmobil{
   display:inline-block;
 }
+.v-list-item--link{
+  font-size:13px;
+}
+.v-list-item--link:before {
+  background:none; 
+}
+
 
 .menufixed{
   position:fixed;  
   top:90px;
   z-index:1; 
-} 
+}
 
 
 .menufixednavmovil{

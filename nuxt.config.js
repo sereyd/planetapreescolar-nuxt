@@ -51,7 +51,8 @@ export default {
     '@/plugins/validasesion.js',
     '@/plugins/codegenerate.js',
     '@/plugins/v-calendar.js',
-    '@/plugins/comparativa.js'
+    '@/plugins/comparativa.js',
+    ///'@/plugins/i18n.js'
     // { src: '~plugins/v-calendar.js', ssr: false }
   ],
   /*
@@ -72,7 +73,8 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/firebase',
-    'nuxt-stripe-module'
+    'nuxt-stripe-module',
+    'nuxt-i18n',
   ],
   stripe: {
     publishableKey: 'pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx',
@@ -122,7 +124,11 @@ export default {
           error: '#FF5252',
           info: '#2196F3',
           success: '#4CAF50',
-          warning: '#FFC107'
+          warning: '#FFC107',
+          prysec: '#6C0040'
+        },
+        dark:{
+          
         }
       },
      

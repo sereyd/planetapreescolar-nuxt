@@ -227,13 +227,32 @@ const createStore = () => {
     if(data.user!==''){
       idnot=data.user
     }
-      var addnotificacion= await this.$fireStore.collection('Notificaciones').doc(idnot).collection('notify').add({
-        icon:data.icon, 
-        title: data.text,
-        link:data.link,
-        date:new Date(),
-        status:0
-      })
+
+    var datos={
+      dataComentario:{
+          comentario:"",
+          idUsuario:state.datosUsuario.id,
+          nombreUsuario:state.datosUsuario.nombre+" "+state.datosUsuario.apellido,
+          urlImagen:""
+      },
+      dataRecurso:{
+          idCreador:"",
+          idRecurso:"",
+          nombreCreador:"",
+          titulo:""
+      },
+      date:new Date(),
+      icon:data.icon,
+      link:data.link,
+      status:0,
+      title:data.text
+    }
+
+
+      await this.$fireStore.collection('Notificaciones').doc(idnot).collection('notify').add(datos)
+
+
+
   },
   async notificacionComentario({state},req){
 
