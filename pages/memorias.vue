@@ -1,6 +1,11 @@
 <template>
   <v-main class="px-10" v-if="bandera">
     <v-row>
+      <v-col cols="12">
+        <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/>
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col
         cols="12"
         md="12"
@@ -70,6 +75,8 @@ import listablog from "~/components/listado-blog/listado-blog.vue";
 import validasitio from "@/mixins/validasitio.js";
 import editorblog from "~/components/blog-editor/blog-editor.vue";
 import cargablog from "~/components/carga-blog/carga-blog.vue";
+import buscador from '~/components/buscador/buscador.vue'
+
 export default {
   data() {
     return {
@@ -88,6 +95,8 @@ export default {
       misMemorias:[],
       otrasMemorias:[],
       bandera: false,
+      buscando: false,
+
     };
   },
   computed: {
@@ -101,7 +110,8 @@ export default {
   components: {
     editorblog,
     cargablog,
-    listablog
+    listablog,
+    buscador
   },
   mixins: [validasitio],
   methods: {

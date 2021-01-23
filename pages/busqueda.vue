@@ -1,15 +1,18 @@
 <template>
     <v-main >
         <div class="mx-3 text-center" >
-            <!-- <v-row>
-                <v-col cols="10"><buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/></v-col>
-                <v-col cols="2">
+            <v-row>
+                <v-col cols="12">
+                    <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/>
+                </v-col>
+                
+                <!-- <v-col cols="2">
                     <v-btn tile small  @click="opcionesFiltrado()" color="melon" class="white--text" style="text-transform: none;">
                         <v-icon class="white--text" left>mdi-format-list-bulleted</v-icon>
                         Filtrar
                     </v-btn>
-                </v-col>
-            </v-row> -->
+                </v-col> -->
+            </v-row>
             <!-- <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/> -->
             <!-- <v-btn tile small color="melon" class="white--text" style="text-transform: none;">
                 <v-icon class="white--text" left>mdi-format-list-bulleted</v-icon>
@@ -470,73 +473,73 @@ export default {
                 // console.log("MATCH NORMAL: "+response)
 
                 //REVISAR SI SE QUIERE HACER UN FILTRADO AVANZADO
-                if( (filtrovideo || filtroaudio || filtrofile || this.fechaCarga !== "") && response)
-                {
-                    // console.log("REVISANDO MATCH AVANZADO: ")
+                // if( (filtrovideo || filtroaudio || filtrofile || this.fechaCarga !== "") && response)
+                // {
+                //     // console.log("REVISANDO MATCH AVANZADO: ")
 
                     
 
-                    let resFiltro = false;
-                    // this.datosfiltrado.map(dat => {
+                //     let resFiltro = false;
+                //     // this.datosfiltrado.map(dat => {
                         
-                        if(filtrovideo)
-                            resFiltro = tipoRecurso === "link"
+                //         if(filtrovideo)
+                //             resFiltro = tipoRecurso === "link"
                         
-                // console.log("MATCH : "+resFiltro)
+                // // console.log("MATCH : "+resFiltro)
 
 
-                        if(filtroaudio && !resFiltro)
-                            resFiltro = tipo === "interactivo" && tipoRecurso !== "link"
+                //         if(filtroaudio && !resFiltro)
+                //             resFiltro = tipo === "interactivo" && tipoRecurso !== "link"
                         
-                        if(filtrofile && !resFiltro)
-                            resFiltro = tipoRecurso === "file"
+                //         if(filtrofile && !resFiltro)
+                //             resFiltro = tipoRecurso === "file"
 
-                // console.log("MATCH : "+resFiltro)
+                // // console.log("MATCH : "+resFiltro)
                         
                         
-                        if(filtropremium !== filtrofree && resFiltro)
-                        {
+                //         if(filtropremium !== filtrofree && resFiltro)
+                //         {
 
-                            // console.log("free: "+filtrofree+ "  premium: "+filtropremium)
+                //             // console.log("free: "+filtrofree+ "  premium: "+filtropremium)
 
-                            if(filtropremium)
-                                resFiltro = premium === true
+                //             if(filtropremium)
+                //                 resFiltro = premium === true
     
-                            else if(filtrofree)
-                                resFiltro = premium === false
-                        }
+                //             else if(filtrofree)
+                //                 resFiltro = premium === false
+                //         }
 
-                        if(this.fechaCarga !== "" && resFiltro)
-                        {
-                            const fec = recurso.fecha.toString();
-                            // console.log(fec)
-                            let fechaNueva = fec.slice(0, 10);
-                            // console.log(fechaNueva);
-                            const fechaN = parseInt(fechaNueva);
-                            console.log("FECHA DEL POST");
-                            console.log(fechaN);
+                //         if(this.fechaCarga !== "" && resFiltro)
+                //         {
+                //             const fec = recurso.fecha.toString();
+                //             // console.log(fec)
+                //             let fechaNueva = fec.slice(0, 10);
+                //             // console.log(fechaNueva);
+                //             const fechaN = parseInt(fechaNueva);
+                //             console.log("FECHA DEL POST");
+                //             console.log(fechaN);
                             
-                            //FECHA ACTUAL
-                            let now = Date.now() 
-                            // console.log(now);
-                            const fa = now.toString();
-                            // console.log(fa)
-                            let faNueva = fa.slice(0, 10);
-                            // console.log(faNueva);
-                            const fechaAN = parseInt(faNueva);
-                            console.log("FECHA ACTUAL");
-                            console.log(fechaAN);
+                //             //FECHA ACTUAL
+                //             let now = Date.now() 
+                //             // console.log(now);
+                //             const fa = now.toString();
+                //             // console.log(fa)
+                //             let faNueva = fa.slice(0, 10);
+                //             // console.log(faNueva);
+                //             const fechaAN = parseInt(faNueva);
+                //             console.log("FECHA ACTUAL");
+                //             console.log(fechaAN);
 
                             
-                        }
+                //         }
 
-                // console.log("MATCH : "+resFiltro)
+                // // console.log("MATCH : "+resFiltro)
 
   
-                    // })
-                    // console.log("FILTRO AVANZADO: "+resFiltro)
-                    response = resFiltro ? true : false
-                }
+                //     // })
+                //     // console.log("FILTRO AVANZADO: "+resFiltro)
+                //     response = resFiltro ? true : false
+                // }
 
             }
             else
@@ -549,35 +552,35 @@ export default {
                 ? true : false;
 
                 //REVISAR SI SE QUIERE HACER UN FILTRADO AVANZADO
-                if( (filtrovideo || filtroaudio || filtrofile || this.fechaCarga !== "" ) && response )
-                {
+                // if( (filtrovideo || filtroaudio || filtrofile || this.fechaCarga !== "" ) && response )
+                // {
 
-                    let resFiltro = false;
-                    // this.datosfiltrado.map(dat => {
+                //     let resFiltro = false;
+                //     // this.datosfiltrado.map(dat => {
                         
-                        if(filtrovideo)
-                            resFiltro = tipoRecurso === "link"
+                //         if(filtrovideo)
+                //             resFiltro = tipoRecurso === "link"
 
-                        if(filtroaudio && !resFiltro)
-                            resFiltro = tipo === "interactivo" && tipoRecurso !== "link" 
+                //         if(filtroaudio && !resFiltro)
+                //             resFiltro = tipo === "interactivo" && tipoRecurso !== "link" 
                         
-                        if(filtrofile && !resFiltro)
-                            resFiltro = tipoRecurso === "file"
+                //         if(filtrofile && !resFiltro)
+                //             resFiltro = tipoRecurso === "file"
 
-                        if(filtropremium !== filtrofree && resFiltro)
-                        {
+                //         if(filtropremium !== filtrofree && resFiltro)
+                //         {
 
-                            if(filtropremium)
-                                resFiltro = premium === true
+                //             if(filtropremium)
+                //                 resFiltro = premium === true
     
-                            else if(filtrofree)
-                                resFiltro = premium === false
-                        }
+                //             else if(filtrofree)
+                //                 resFiltro = premium === false
+                //         }
   
-                    // })
-                    // console.log("FILTRO AVANZADO: "+resFiltro)
-                    response = resFiltro ? true : false
-                }
+                //     // })
+                //     // console.log("FILTRO AVANZADO: "+resFiltro)
+                //     response = resFiltro ? true : false
+                // }
 
             }
             // console.log(response)
