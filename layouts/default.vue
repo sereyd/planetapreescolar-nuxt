@@ -8,17 +8,17 @@
     v-model="drawer"
     absolute
     temporary
-    class="secondary"
-    :class="menufix===true ? ' primary menufixednavmovil ' : '' " 
+    :class="menufix===true ? ' prysec menufixednavmovil ' : 'prysec' " 
   >
 
-    <v-list dense >
+    <v-list dense  class="prysec">
       <v-list-item
         v-for="item in itemsmenu"
         :key="item.title"
         link
         :to="item.link"
         v-if="$validasesion($store,item) && item.visible===true"
+          active-class="font-weight-black text-caption"
       >
         <v-list-item-icon >
           <v-icon class="white--text space_elements">{{ item.icon }}</v-icon>

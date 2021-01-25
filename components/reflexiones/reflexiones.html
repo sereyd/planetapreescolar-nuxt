@@ -7,21 +7,18 @@
                    
              <v-row>     
                  <v-col cols="9" class="pt-6 text-center">
-       <h2>Reflexión del día</h2></v-col><v-col cols="3"> <img :src="imagenIcono" width="100%"  /> 
+       <h3>Reflexión del día</h3></v-col><v-col cols="3"> <img :src="imagenIcono" width="100%"  /> 
     </v-col>
     </v-row>
     </v-col>
        <v-col cols="12" md="9">
        <p 
                 v-if="reflexion[0]" 
-                    style="font-size:18px; text-align:left;" 
+                    style="font-size:14px; text-align:left;" 
                     v-html="cargarecomendacion">
                 </p>
                    </v-col>
          </v-row>
-
-
-      
     </v-card-text>
 
 </v-card>
