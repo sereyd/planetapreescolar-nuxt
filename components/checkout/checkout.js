@@ -156,6 +156,41 @@ export default {
       }
 
     },
+
+    //PAGO CON MERCADO LIBRE
+    // pagarMP(){
+    //   window.this.$MPC_loaded !== true ? (window.attachEvent ? window.attachEvent('onload', $MPC_load) : window.addEventListener('load', $MPC_load, false)) : null;
+    // },
+    // $MPC_loaded(){
+    //   // <a mp-mode="dftl" href="https://www.mercadopago.com/mlm/debits/new?preapproval_plan_id=2c9380847739336f01773a8b6c050289" name="MP-payButton" class='blue-ar-l-rn-none'>Suscribirme</a>
+
+
+    //      window.this.$MPC_loaded !== true && (function() {
+    //      var s = document.createElement("script");
+    //      s.type = "text/javascript";
+    //      s.async = true;
+    //      s.src = document.location.protocol + "//secure.mlstatic.com/mptools/render.js";
+    //      var x = document.getElementsByTagName('script')[0];
+    //      x.parentNode.insertBefore(s, x);
+    //      window.this.$MPC_loaded = true;
+    //   })();
+   
+
+
+
+    // },
+
+    // $MPC_load(){
+    //   window.$MPC_loaded !== true && (function() {
+    //   var s = document.createElement("script");
+    //   s.type = "text/javascript";
+    //   s.async = true;
+    //   s.src = document.location.protocol + "//secure.mlstatic.com/mptools/render.js";
+    //   var x = document.getElementsByTagName('script')[0];
+    //   x.parentNode.insertBefore(s, x);
+    //   window.$MPC_loaded = true;
+    //  })();
+    // },
     
 
 
