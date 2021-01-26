@@ -502,6 +502,32 @@ const createStore = () => {
         return true;
       },
 
+      obtenerDatosSuscripcion({state}, idSuscripcion){
+        fetch(state.urlAPI+"/check-suscripcion?suscripcionId=" + idSuscripcion)
+          .then((result)=>{
+            return result.json()
+          })
+          .then(async(suscripcion)=>{
+
+            // console.log(suscripcion)
+            if(suscripcion.error)
+            {
+              // datos.estadoMembresia = "canceled";
+              state.datosSuscripcion.status = false;
+
+            }
+            else{
+              // datos.estadoMembresia = suscripcion.status;
+              state.datosSuscripcion.status = true;
+              state.datosSuscripcion = suscripcion;
+            }
+
+          })
+          .catch((err)=>{
+            console.log('Error al verificar suscripción', err);
+          });
+      },
+
       changeRecursosFavoritos({state}, dato)
       {
         if(!state.datosUsuario.userlogin)

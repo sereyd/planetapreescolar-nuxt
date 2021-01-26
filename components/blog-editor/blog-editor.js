@@ -52,7 +52,7 @@ export default {
         idCreador:"",
         nombreCreador:"",
         tags:[],
-        permisoadmin: true,
+        permisoadmin: false,
       },
       usarnombre: true,
       esCrear: true,
@@ -187,6 +187,9 @@ export default {
         if(this.urlimg !== "" && this.urlimg !== "none")
           this.datosRecurso.urlImagen = this.urlimg
 
+        if(this.subtipo === 'blog' && this.subtipo === 'memoria' && this.subtipo === 'reflexion')
+          this.datosRecurso.permisoadmin = true;
+
         //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
         const {id, nombre, apellido, lvluser} = this.datosUsuario;
         let nuevoRecurso = {};
@@ -202,7 +205,7 @@ export default {
             grado: this.grado,
             sinopsis: this.sinopsis,
             tipoCreador: lvluser === 3 ? 'administrador' : 'usuario',
-            tipo: this.subtipo
+            tipo: this.subtipo,
             // tags: this.tags
           }
 
@@ -302,7 +305,7 @@ export default {
       this.datosRecurso= {
         foldercode:"",titulo: "",fecha: "",edopost: "publico",urlImagen: "",contenido:"",tipoRecurso:"",
         urlRecurso:"",comentarios:[],tags: [],idCreador:"",nombreCreador:"",premium: false,
-        recomendado: false, permisoadmin: true,
+        recomendado: false, permisoadmin: false,
       };
         
         

@@ -75,6 +75,7 @@ export default {
     },
     methods: {
       ...mapMutations(['guardaDatosUsuarioStore']),
+      ...mapActions(['obtenerDatosSuscripcion']),
       subirAlumnos(){
         // console.log(this.file.files[0])
         console.log(this)
@@ -115,7 +116,7 @@ export default {
                   const {id} = datosUsuario;
 
                   //VALIDA QUE SOLO SE CAMBIA A USUARIO TIPO 1 SI EL USUARIO ES TIPO 0
-                  const lvl = datosUsuario.lvluser === 2 ? 2 : 1;
+                  const lvl = datosUsuario.lvluser <= 2 ? 2 : 3;
 
                   //SE BUSCA AL USUARIO EN LA BASE DE DATOS POR MEDIO DEL ID
                   let usuarioRef =  this.$fireStore.collection("usuarios").doc(id);
@@ -140,6 +141,13 @@ export default {
                     datosUsuario.estadoMembresia = session.payment_status === 'paid' ? 'active' : '';
 
                     this.guardaDatosUsuarioStore(datosUsuario);
+
+                    //Obtener datos de membresia
+                    this.obtenerDatosSuscripcion(session.subscription);
+                    
+
+
+
                   })
                   .catch((error) => {
                       console.error("Error al realizar pago: ", error);
