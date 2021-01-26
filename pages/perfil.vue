@@ -37,18 +37,41 @@
 
     </v-col>
     <v-col cols="12" md="6" class="pa-10">
-<label class="labelview"   v-if="editar===false" >Teléfono</label>
-        <div class="textview"  v-if="editar===false">{{datosuser.telefono}}</div >
-        <v-text-field class="inputTextView" label="Teléfono" v-model="datosuser.telefono" hide-details="auto" v-if="editar===true" ></v-text-field>
-<label class="labelview"   v-if="editar===false" >Años de experiencia</label>
-        <div class="textview"  v-if="editar===false" >{{datosuser.exp}}</div >
-        <v-text-field class="inputTextView" label="Años de experiencia" v-model="datosuser.exp" hide-details="auto"  v-if="editar===true" ></v-text-field>
+
 <label class="labelview"   v-if="editar===false"  >País</label>
         <div class="textview"  v-if="editar===false" >{{datosuser.pais}}</div >
         <v-text-field class="inputTextView" label="País" v-model="datosuser.pais" hide-details="auto"  v-if="editar===true"  ></v-text-field>
+
+<label class="labelview"   v-if="editar===false" >Estado</label>
+        <div class="textview"  v-if="editar===false" >{{datosuser.estado}}</div >
+        <v-select class="inputTextView"  label="estado" v-model="datosuser.estado" hide-details="auto" :items="estado" v-if="editar===true" ></v-select>
+
+
+
 <label class="labelview"   v-if="editar===false" >Ciudad</label>
         <div class="textview"  v-if="editar===false" >{{datosuser.ciudad}}</div >
         <v-text-field class="inputTextView"  label="Ciudad" v-model="datosuser.ciudad" hide-details="auto"  v-if="editar===true" ></v-text-field>
+
+
+
+<label class="labelview"   v-if="editar===false" >Teléfono</label>
+        <div class="textview"  v-if="editar===false">{{datosuser.telefono}}</div >
+        <v-text-field class="inputTextView" label="Teléfono" v-model="datosuser.telefono" hide-details="auto" v-if="editar===true" ></v-text-field>
+
+
+<label class="labelview"   v-if="editar===false" >Correo</label>
+        <div class="textview" >{{datosuser.correo}}</div >
+       
+
+
+
+
+
+<label class="labelview"   v-if="editar===false" >Años de experiencia</label>
+        <div class="textview"  v-if="editar===false" >{{datosuser.exp}}</div >
+        <v-text-field class="inputTextView" label="Años de experiencia" v-model="datosuser.exp" hide-details="auto"  v-if="editar===true" ></v-text-field>
+
+
 <label class="labelview"    v-if="editar===false" >¿Por que elegí esta profesión?</label>
         <div class="textview"  v-if="editar===false">{{datosuser.profesion}}</div >
         <v-text-field class="inputTextView" label="¿Por que elegí esta profesión?"  v-model="datosuser.profesion" hide-details="auto"  v-if="editar===true" ></v-text-field>
@@ -197,7 +220,41 @@ data(){
         editar:false,
         previewIedit:"",
         uploadimg:false,
+         estado:[
+  'Aguascalientes',
+  'Baja California',
+  'Baja California Sur',
+	'Campeche',
+	'Chiapas',
+	'Chihuahua',
+	'Coahuila de Zaragoza',
+	'Colima',
+	'Ciudad de México',
+	'Durango',
+	'Guanajuato',
+	'Guerrero',
+	'Hidalgo',
+	'Jalisco',
+	'Estado de Mexico',
+	'Michoacan de Ocampo',
+	'Morelos',
+	'Nayarit',
+	'Nuevo Leon',
+	'Oaxaca',
+	'Puebla',
+	'Queretaro de Arteaga',
+	'Quintana Roo',
+	'San Luis Potosi',
+	'Sinaloa',
+  'Sonora',
+	'Tabasco',
+	'Tamaulipas',
+	'Tlaxcala',
+	'Veracruz de Ignacio de la Llave',
+	'Yucatan',
+	'Zacatecas'],
         dialogSus: false,
+        
     }
 },
 computed:{

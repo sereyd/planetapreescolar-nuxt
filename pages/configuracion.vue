@@ -1,44 +1,27 @@
 <template>
     <v-container>
-        Configuración
-
-        
-
-        <v-file-input
-            dense
-            outlined
-            show-size
-            counter
-            label="Seleccione Audio"
-            prepend-icon="mdi-music-box"
-            accept="audio/*, imagen/*, video/*"
-            v-model="file"
-            @change = "changeFile"
-
-        ></v-file-input>
-
-        <v-btn
-            class="success"
-            block
-            @click="updateFile"
-        >
-            Subir archivo
-        </v-btn>
-        <!-- <Spinner v-if="spinner" /> -->
-        <div class="d-flex justify-center" v-if="porcentaje < 100">
-            <div>
-                <v-progress-circular
-                :rotate="-90"
-                :size="150"
-                :width="15"
-                :value="porcentaje"
-                color="primary"
-                >
-                    <h4>{{ porcentaje }} %</h4>
-                </v-progress-circular>
-                <h5 class="text-center"> {{bytesTranferidos}} MBs / {{bytesTotal}} MBs</h5>
-            </div>
-        </div>
+      <v-row>
+          <v-col cols="12" md="6" class="text-center" style="cursor:pointer;" @click="goto('/idioma')" >
+              <v-icon class="primary--text " style="font-size:50px;">mdi-translate</v-icon><br />
+             <h3 class="melon--text">IDIOMA</h3>
+          </v-col>
+          <v-col cols="12" md="6" class="text-center" style="cursor:pointer;" @click="goto('/tutoriales')" >
+                <v-icon class="primary--text " style="font-size:50px;">mdi-school</v-icon><br />
+             <h3 class="melon--text"> TUTORIALES</h3>
+          </v-col>   
+ <v-col cols="12" md="6" class="text-center" style="cursor:pointer;" @click="goto('/soporte')">
+       <v-icon class="primary--text " style="font-size:50px;">mdi-face-agent</v-icon><br />
+   <h3 class="melon--text">  SOPORTE</h3>
+          </v-col>
+           <v-col cols="12" md="6" class="text-center" style="cursor:pointer;" @click="goto('/faq')">
+                 <v-icon class="primary--text " style="font-size:50px;">mdi-frequently-asked-questions</v-icon><br />
+<h3 class="melon--text">PREGUNTAS FRECUENTES</h3>
+          </v-col>
+           <v-col cols="12" md="6" class="text-center" style="cursor:pointer;" @click="goto('/share')">
+                 <v-icon class="primary--text " style="font-size:50px;">mdi-share-variant</v-icon><br />
+<h3 class="melon--text">INVITA A UN AMIGO</h3>
+          </v-col>
+      </v-row>
 
     </v-container>
 </template>
@@ -68,6 +51,9 @@ export default {
         Spinner
     },
     methods: {
+        goto(p){
+            this.$router.push(p)
+        },
         async changeFile(){
             // console.log(this)
             // console.log(this.$refs)
