@@ -74,7 +74,7 @@
       <!----Espacio de carga de vistas------>
 
 <alertas />
-
+<input type="text" value="¡Copyright Sereyd 2021 Copia no permitida!" id="copyright" style="width:1px; position:absolute; z-index:0px; color:#fff;">
   </v-app>
 </template>
 <style scoped>
@@ -157,6 +157,11 @@
 
 </style>
 <script>
+
+
+
+
+
   import menulateral from '~/components/menulateral/menulateral.vue'
   import { mapState, mapMutations, mapActions } from 'vuex'
   import loader from '~/components/loader/loader.vue'
@@ -174,12 +179,31 @@ export default {
         ],
     }
   },
+  created(){
+    window.addEventListener("keyup", e => {
+   
+       if(e.keyCode === 44) 
+    {
+      setTimeout(()=>{
+
+  /* Get the text field */
+  var copyText = document.getElementById("copyright");
+  /* Select the text field */
+  copyText.select();
+  /* Copy the text inside the text field */
+  document.execCommand("copy");
+  /* Alert the copied text 
+  alert("La copia de pantalla no esta permitida");*/
+      },800)
+    }
+    });
+  },
   computed:{
     ...mapState(['dialog', 'test','itemsmenu','vistaValida','mensajealerta','staleras','tpalert','menufix'])
   },
   methods:{
 
-    ...mapMutations(['abrirRegistro']),
+    ...mapMutations(['abrirRegistro','changeScreenPrint']),
     ...mapActions(['scrollmenu'])
   },
   components:{

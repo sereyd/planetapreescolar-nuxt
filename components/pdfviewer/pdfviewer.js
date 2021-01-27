@@ -9,7 +9,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["datosUsuario"]),
+    ...mapState(["datosUsuario","screenprinf"]),
     async cargaPDF() {
         console.log(this.datosUsuario)
       if (this.datosUsuario.estadoMembresia === "active") {
