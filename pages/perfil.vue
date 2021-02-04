@@ -109,9 +109,9 @@
       <div class="mt-5" >
 
         <!-- <v-card class=" mt-4" > -->
-            <div>
+            <!-- <div>
                 {{datosSuscripcion}}
-            </div>
+            </div> -->
           <v-row >
               <v-col cols="12" class="" v-if="datosSuscripcion.status">
 

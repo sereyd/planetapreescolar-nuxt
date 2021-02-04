@@ -167,13 +167,13 @@ const createStore = () => {
       recursosFavoritos:[],
 
       //LINKS DE DOMINIO (PRODUCCION Y DESARROLLO)
-      dominio:"http://localhost:3000",
-      // dominio:"https://educadora.cf",
+      // dominio:"http://localhost:3000",
+      dominio:"https://educadora.cf",
 
       //APIS DEVELOP Y PRODUCCION
-      // urlAPI: "https://stripe-checkout-api.herokuapp.com",
-      urlAPI: "http://localhost:4242",
-      descargarFree: 1,
+      urlAPI: "https://stripe-checkout-api.herokuapp.com",
+      // urlAPI: "http://localhost:4242",
+      descargarFree: 8,
       // data para ver lista completa de post
       misPost:[],
       otrosPost:[],
@@ -348,36 +348,20 @@ const createStore = () => {
                   data.idCliente = data.idCliente ? data.idCliente : "";
                   data.idSuscripcion = data.idSuscripcion ? data.idSuscripcion : "";
                   data.descargas = data.descargas ? data.descargas : {};
-                  // : mes:{
-                  //     active: false, tipo:"", disponibles: 0,
-                  //     registro: registro.length === 0 ? [] : registro,
-                  //   };
-                  // data.descargas = data.descargas ? data.descargas : {};
                   
-
-                  // console.log(grups);
-                    // console.log(doc.id)
                        datos = {
                         id: doc.id,
-                        // idMembresia:"",
-
-                        // grupo:{},
                         ...data
                       }
-                      // console.log(datos)
-                      // context.commit("cambiastatusSesion",datos);
                 });
 
                   datos.estadoMembresia = datos.lvluser > 2 ? "active" : "";
-                  // console.log("DATOSSSS ")
-                  // console.log(datos)
 
                   //REVISAR ESTADO DE LA SUSCRIPCIÓN MIENTRAS NO SEA USUARIO ADMIN
                   if(datos.lvluser === 1 || datos.lvluser === 2)
                   {
                     //PAGO POR STRIPE
-                    console.log("datos.idSuscripcion");
-                    console.log(datos.idSuscripcion);
+                    // console.log(datos.idSuscripcion);
                     fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + datos.idSuscripcion)
                     .then((result)=>{
                       return result.json()
@@ -415,13 +399,9 @@ const createStore = () => {
                           registro: [] ,
                         };
                       }
-                      console.log("datos.descargas")
-                      console.log(datos.descargas)
+                      // console.log(datos.descargas)
 
                       context.commit("cambiastatusSesion",datos);
-
-
-                      console.log(suscripcion)
 
                       //SE REVISA EL ESTADO DE LA SUSCRIPCIÓN
                       if(suscripcion.error)
@@ -439,7 +419,7 @@ const createStore = () => {
 
                       
                       
-                      console.log("ESTADO MEMBRESIA: "+datos.estadoMembresia)
+                      
                       // console.log(datos)
                       
                       //REVISA MEMBRESIA EN CASO DE PAGO CON MERCAPAGO
@@ -471,9 +451,6 @@ const createStore = () => {
                           }
                           else{
 
-                            // console.log(data)
-                            // console.log(data.date_approved)
-
                             //CONVIERTE FORMATOS DE FECHA A UNIXTIME PARA MANEJARLOS CON DATE-FNS
 
                             let fechaInicio = parseInt((new Date(data.date_approved).valueOf() / 1000).toFixed(0))
@@ -490,19 +467,11 @@ const createStore = () => {
                             data.fechaFin = fechaFin;
                             data.interval_count = interval_count;
 
-                            //
-                            // console.log(fechaFin)
-                            const ff = fromUnixTime(1577944800);
-                            // const ff = fromUnixTime(fechaFin);
-
-                            // console.log(ff)
+                            
+                            // const ff = fromUnixTime(1577944800);
+                            const ff = fromUnixTime(fechaFin);
                             const esVencida = isPast(ff)
 
-                            
-
-                            console.log(data)
-                            console.log(data.status)
-                            console.log(esVencida)
                             if( (data.status === "approved" || data.status === "accredited") && !esVencida )
                             {
                               datos.estadoMembresia = "active";
@@ -594,31 +563,7 @@ const createStore = () => {
           });
       },
 
-      // obtenerDa({state}, idSuscripcion){
-      //   fetch(state.urlAPI+"/check-suscripcion?suscripcionId=" + idSuscripcion)
-      //     .then((result)=>{
-      //       return result.json()
-      //     })
-      //     .then(async(suscripcion)=>{
-
-      //       // console.log(suscripcion)
-      //       if(suscripcion.error)
-      //       {
-      //         // datos.estadoMembresia = "canceled";
-      //         state.datosSuscripcion.status = false;
-
-      //       }
-      //       else{
-      //         // datos.estadoMembresia = suscripcion.status;
-      //         state.datosSuscripcion.status = true;
-      //         state.datosSuscripcion = suscripcion;
-      //       }
-
-      //     })
-      //     .catch((err)=>{
-      //       console.log('Error al verificar suscripción', err);
-      //     });
-      // },
+      
 
       changeRecursosFavoritos({state}, dato)
       {

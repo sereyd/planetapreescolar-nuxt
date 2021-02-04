@@ -143,80 +143,80 @@ export default {
 
     },
 
-    checkPago(){
-      const config = {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({idPago: "1233419229"})
-      }
+    // checkPago(){
+    //   const config = {
+    //     method: 'POST',
+    //     headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({idPago: "1233419229"})
+    //   }
 
-      fetch("http://localhost:4242/estado-pago",config)
-      .then((result)=>{
-        return result.json()
-      })
-      .then(async(suscripcion)=>{
+    //   fetch("http://localhost:4242/estado-pago",config)
+    //   .then((result)=>{
+    //     return result.json()
+    //   })
+    //   .then(async(suscripcion)=>{
   
-        console.log(suscripcion)
-        if(suscripcion.error)
-        {
-          // datos.estadoMembresia = "canceled";
-          // context.state.datosSuscripcion.status = false;
+    //     console.log(suscripcion)
+    //     if(suscripcion.error)
+    //     {
+    //       // datos.estadoMembresia = "canceled";
+    //       // context.state.datosSuscripcion.status = false;
 
-          console.log("error")
-        }
-        else{
-          console.log(suscripcion.response)
-          console.log(suscripcion.response.status)
-          // if(suscripcion.response.status === "approved" || suscripcion.response.status === "accredited")
-          // {
-          //   datos.estadoMembresia = "active";
-          //   context.state.datosSuscripcion = suscripcion.response;
-          //   context.state.datosSuscripcion.status = true;
+    //       console.log("error")
+    //     }
+    //     else{
+    //       console.log(suscripcion.response)
+    //       console.log(suscripcion.response.status)
+    //       // if(suscripcion.response.status === "approved" || suscripcion.response.status === "accredited")
+    //       // {
+    //       //   datos.estadoMembresia = "active";
+    //       //   context.state.datosSuscripcion = suscripcion.response;
+    //       //   context.state.datosSuscripcion.status = true;
 
-          //   // context.state.datosUsuario.descargasMes.status = true;
+    //       //   // context.state.datosUsuario.descargasMes.status = true;
 
 
-          // }
-          // else
-          // {
-          //   datos.estadoMembresia = "canceled";
-          //   context.state.datosSuscripcion.status = false;
-          // }
+    //       // }
+    //       // else
+    //       // {
+    //       //   datos.estadoMembresia = "canceled";
+    //       //   context.state.datosSuscripcion.status = false;
+    //       // }
   
-        }
+    //     }
   
-        // if(datos.estadoMembresia === 'canceled' || datos.estadoMembresia === '')
-        // {
-        //   const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
+    //     // if(datos.estadoMembresia === 'canceled' || datos.estadoMembresia === '')
+    //     // {
+    //     //   const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
             
-        //   const d = await response.json();
+    //     //   const d = await response.json();
   
-        //   if(!datos.descargasDia)
-        //   {
-        //     datos.descargasDia = 
-        //     {
-        //       disponibles: context.state.descargarFree,
-        //       usadas: [],
-        //       fecha: d.fecha
-        //     }
-        //   }
-        //   else if(d.fecha !== datos.descargasDia.fecha)
-        //   {
-        //     ///console.log("el dia cambiooooooo")
-        //     datos.descargasDia.disponibles= context.state.descargarFree,
-        //     datos.descargasDia.usadas = [];
-        //     datos.descargasDia.fecha = d.fecha;
-        //   }
-        // }
+    //     //   if(!datos.descargasDia)
+    //     //   {
+    //     //     datos.descargasDia = 
+    //     //     {
+    //     //       disponibles: context.state.descargarFree,
+    //     //       usadas: [],
+    //     //       fecha: d.fecha
+    //     //     }
+    //     //   }
+    //     //   else if(d.fecha !== datos.descargasDia.fecha)
+    //     //   {
+    //     //     ///console.log("el dia cambiooooooo")
+    //     //     datos.descargasDia.disponibles= context.state.descargarFree,
+    //     //     datos.descargasDia.usadas = [];
+    //     //     datos.descargasDia.fecha = d.fecha;
+    //     //   }
+    //     // }
   
-      })
-      .catch((err)=>{
-        console.log('Error al verificar suscripción', err);
-      });
-    },
+    //   })
+    //   .catch((err)=>{
+    //     console.log('Error al verificar suscripción', err);
+    //   });
+    // },
 
     //PAGO CON MERCAPAGO POR OXXO
     async crearOrdenMP(){

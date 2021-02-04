@@ -50,37 +50,18 @@ export default {
       // console.log("CAMBIADO FILE")
       let folder =""
       
-      // console.log("this.ubi")
-      // console.log(this.ubi)
-      // console.log("this.foldercode")
-      // console.log(this.foldercode)
-      // console.log("this.file")
-      // console.log(this.file)
-
-      // console.log("this.nick")
-      // console.log(this.nickFile)
-
-      // console.log("this.urlFileEdit")
-      // console.log(this.urlFileEdit)
-      //SI SE CREARA UN NUEVO RECURSO
       if(!this.file && this.foldercode === "")
       {
         folder = this.$codegenerate()
         this.$emit("updateFoldercode",folder);
-        // console.log("folder era vacio")
-        // console.log(folder)
 
         this.ubi = `${this.subtipo}/${this.datosUsuario.id}/${folder}/`;
-        // console.log("ubicacion final")
-        // console.log(this.ubi)
 
       }
       //SI SE CAMBIA EL ARCHIVO Y EL RECURSO AUN NO SE CREA O CUANDO SE DESEA EDITAR UN RECURSO
       else if((this.file || !this.file) && this.foldercode !== "")
       {
         this.ubi = `${this.subtipo}/${this.datosUsuario.id}/${this.foldercode}/`;
-        // console.log("ubicacion final")
-        // console.log(this.ubi)
         folder  = this.foldercode
       }
       //SI SE CIERRA EL DIALOG CUANDO ESTAS CREANDO UN NUEVO RECURSOS
@@ -101,7 +82,6 @@ export default {
   
         let file =  this.fileInterno;
         const typeFileFull = file.type;
-        // console.log(typeFileFull)
         const metadata = {
         contentType: typeFileFull
         };
@@ -111,8 +91,6 @@ export default {
             //SE AGREGA LA FOTO AL STORAGE DE FIREBASE
   
             let storageRef = this.$fireStorage.ref(this.ubi);
-            // console.log("nombre del archivo")
-            // console.log(this.nickFile+"_"+folder);
             let uploadTask = storageRef.child(this.nickFile+"_"+folder).put(file, metadata);
   
             await uploadTask.on('state_changed', // or 'state_changed'
@@ -126,8 +104,6 @@ export default {
                 uploadTask.snapshot.ref.getDownloadURL()
                 .then( async(downloadURL) => {
                     this.urlFile = downloadURL;
-                    // console.log('File available at', downloadURL);
-                    // console.log('URLFILE', this.urlFile);
                     this.$emit("updateUrlFile", this.urlFile);
   
                     

@@ -19,13 +19,6 @@ export default{
 
             //DATA PARA COMENTARIOS
             esComentarioValido: true,
-            // comentarios:[],
-            // datosComentario:{
-            //   idUsuario:"",
-            //   comentario:"",
-            //   nombreUsuario:"",
-            //   urlImagen:""
-            // },
             allpost:[],
             contador:0,
             dialogPlanes:false,
@@ -33,14 +26,8 @@ export default{
         }
     },
     async mounted() {
-        // console.log("RELACIONADOS")
-        // console.log(this.bandera)
-        // console.log(this.posts)
-        // console.log(this.vistapost)
-        // this.guardarVistaValida(true); 
         await this.cargabaseGral()
         this.bandera = true
-        // console.log(this.bandera)
     },
     methods: {
       ...mapMutations(['changeViewPost','changeViewOthers']),
@@ -115,7 +102,6 @@ export default{
                             {
                               this.contador = (this.relacionados.length - 1)
                             }
-                            // console.log(this.contador)
                           }
                       }
 
@@ -124,9 +110,6 @@ export default{
                       // this.posts.push(datos);
                       conta++;
                     });
-                    // this.relacionados = this.relacionados.slice(0, 4);
-                    // console.log("this.RELACIONADOS solo 4 elelemntos")
-                    // console.log(this.relacionados)
                   });
               } catch (e) {
                 console.log(e);
@@ -137,8 +120,6 @@ export default{
       contadorDescargar(tipo,event){
         console.log(tipo);
         let {descargas} = this.datosUsuario;
-        // console.log(descargas);
-        // console.log(this.vistapost)
         const {idRecurso} = this.vistapost;
         const {id} = this.datosUsuario;
         let esDescargar = false;
@@ -154,7 +135,6 @@ export default{
             let f = new Date();
             let existeMes = false;
             let mesactual = (f.getMonth() +1) + " " + f.getFullYear();
-            // console.log(existeMes);
             descargas.mes.registro.map(reg => {
               if(reg.mes === mesactual)
               {
@@ -167,7 +147,6 @@ export default{
               }
               
             });
-            // console.log(existeMes);
             
             if(!existeMes){
               // const {disponibles} = descargas.mes;
@@ -178,9 +157,6 @@ export default{
               esDescargar = true;
               // descargas.mes.usadas.push(idRecurso);
             }
-            // console.log(descargas);
-            // console.log(descargas.mes);
-            // descargas.mes.disponibles= this.descargarFree;
           }
 
           if(esDescargar)
@@ -209,42 +185,28 @@ export default{
       },
 
       sliderF(data){
-        // console.log(data)
-        // console.log(this.contador)
-        // this.contador = data === "adelante" ? this.contador++ : this.contador--;
         if(data === "adelante")
           this.contador++
         else
           this.contador--
-        
-        // console.log(this.contador)
-        
-        
         this.cambioUrls();
 
       },
       cambioUrls(){
         let postS = {...this.relacionados[this.contador]}
-        console.log("POST")
-        console.log(postS)
         if(postS.tipoRecurso === 'link')
         {
           let {urlVista} = postS;
           const embed = urlVista.replace("watch?v=", "embed/");
           // this.linkembed = embed;
           this.$emit("updateLinkEmbed",embed)
-          console.log(this.linkembed);
         }
 
         const xhr = new XMLHttpRequest();
         xhr.responseType = 'blob';
         xhr.onload = (event) => {
-           // console.log(xhr.response);
            const blob = xhr.response;
-          //  console.log(blob)
            const res = blob.type.split("/");
-          //  console.log("res")
-          //  console.log(res)
            const typeFile = res[1];
            if(blob.type === "application/pdf")
            {
@@ -263,16 +225,10 @@ export default{
            else
            this.$emit("updateNombreFile", postS.titulo+'.'+typeFile)
 
-            // this.nombreFile = postS.titulo+'.'+typeFile;
-
-          // console.log("this.nombreFile");
-          // console.log(this.nombreFile);
-
  
           const urlFB = URL.createObjectURL(blob, {
             type: blob.type
           });
-          // console.log(urlFB)
           this.$emit("updateUrlFileB",urlFB)
 
           // this.spinner = false;
@@ -341,8 +297,6 @@ export default{
         let loncadena=this.vistapost.contenido.length
         let suspensivos=" ..."
         let contenido=this.vistapost.contenido.substr(0,limit)
-        // console.log(this.vistapost.contenido)
-        // console.log(contenido)
         if(loncadena<limit){
             suspensivos=""
         }

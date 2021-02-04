@@ -115,7 +115,6 @@ export default {
     ...mapMutations(["agregarCategorias","updateEditado",'almacenarFotoStorage','actualizarCategorias']),
     
     async mostrarRecursoEdit(post){
-      console.log(post)
       // console.log(this.tipo);
       let nombreFile = ""
       let nombreFile2 = ""
@@ -153,7 +152,7 @@ export default {
         if(this.urlimg !== "" && this.urlimg !== "none")
           this.datosRecursoEdit.urlImagen = this.urlimg
 
-        console.log(this.datosRecursoEdit);
+        
         let {idRecurso, titulo, contenido, edopost, tags, premium, sinopsis, recomendado, 
           urlVista, urlDescargable, materia, grado, urlImagen, permisoadmin} = this.datosRecursoEdit;
         // let permisoadmin = true;

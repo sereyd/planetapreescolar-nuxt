@@ -147,7 +147,7 @@ export default{
         let loncadena=this.vistapost.contenido.length
         let suspensivos=" ..."
         let contenido=this.vistapost.contenido.substr(0,limit)
-       console.log(this.vistapost)
+      //  console.log(this.vistapost)
         // console.log(contenido)
         if(loncadena<limit){
             suspensivos=""
