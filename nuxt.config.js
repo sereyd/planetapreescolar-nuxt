@@ -21,7 +21,8 @@ export default {
     title: process.env.npm_package_name || '',
     script: [
       {
-        src: 'https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js'
+        src: 'https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js',
+        src: 'https://www.mercadopago.com.mx/integrations/v1/web-payment-checkout.js',
       }
     ],
     meta: [
