@@ -3,7 +3,7 @@
 <v-col cols="12" md="6" class="text-center pa-10">
     <subirimagen
               ejecimagen="uploadimg"
-              v-if="editar===true && datosuser.urlImagen==='' "
+              v-if="editar===true && (datosuser.urlImagen==='' || datosuser.urlImagen==='none') "
               @updateImg="previewIedit=$event"
               titulo="Subir imagen de pefil "
             ></subirimagen>
@@ -12,14 +12,14 @@
 
     <v-avatar color="primary"
     size="300"
-    v-if="datosuser.urlImagen!==''"
+    v-if="datosuser.urlImagen!=='' && datosuser.urlImagen!=='none'"
     >
     <img  :src="datosuser.urlImagen" />
     </v-avatar>
 <br />
 
-<v-btn class="primary white--text" v-if="editar===true && datosuser.urlImagen===''" @click="subirImg()">Subir Imagen</v-btn>
-<v-btn class="red white--text" v-if="editar===true && datosuser.urlImagen!==''" @click="delimagen()">Eliminar Imagen</v-btn>
+<v-btn class="primary white--text" v-if="editar===true && (datosuser.urlImagen==='' || datosuser.urlImagen==='none')" @click="subirImg()">Subir Imagen</v-btn>
+<v-btn class="red white--text" v-if="editar===true && (datosuser.urlImagen!=='' || datosuser.urlImagen!=='none')" @click="delimagen()">Eliminar Imagen</v-btn>
 
 <h1 v-if="editar===false">{{datosuser.nombre}} {{datosuser.apellido}}</h1>
     <div v-if="editar===true">
@@ -69,8 +69,10 @@
 
 
 <label class="labelview grey--text"   v-if="editar===false" >Estado</label>
-        <div class="textview"  v-if="editar===false" >{{datosuser.estado}}</div >
-        <v-select class="inputTextView"  label="estado" v-model="datosuser.estado" hide-details="auto" :items="estados" v-if="editar===true" ></v-select>
+        <div class="textview"  v-if="editar===false" >{{datosuser.estado}}</div>
+                <v-text-field class="inputTextView"  label="Estado" v-model="datosuser.estado" hide-details="auto"  v-if="editar===true" ></v-text-field>
+
+       <!--- <v-select class="inputTextView"  label="estado" v-model="datosuser.estado" hide-details="auto" :items="estados" v-if="editar===true" ></v-select>--->
 
 
 

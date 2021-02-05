@@ -10,16 +10,18 @@
             <v-row>
                 <v-col cols="2" md="2" sm="2"></v-col>
                 <v-col cols="2" md="3" sm="3" class="white pa-0" style="border-radius:10px 0  0 10px;">
+                    
                 <v-select  class="mySelect pa-0" 
                     solo   
                     hide-details="auto" 
-                    label="Seleccione una opción":items="recursos" 
+                    label="Seleccione una opción" :items="recursos" 
                     small
                     v-model="datosBusqueda.tipo"
                     :rules="[v => !!v || 'Seleccione tipo de busqueda']"
+                    background-color="#f7eaf7"
                 >
-    
                 </v-select>
+
                 </v-col>
                 <v-col cols="5" md="4" sm="4" class="white pa-0">
                     <v-text-field 
