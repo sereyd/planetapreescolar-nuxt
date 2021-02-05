@@ -19,27 +19,15 @@ export default{
 
             //DATA PARA COMENTARIOS
             esComentarioValido: true,
-            // comentarios:[],
-            // datosComentario:{
-            //   idUsuario:"",
-            //   comentario:"",
-            //   nombreUsuario:"",
-            //   urlImagen:""
-            // },
             allpost:[],
             contador:0,
             dialogPlanes:false,
+            descargaMesActual:{},
         }
     },
     async mounted() {
-        // console.log("RELACIONADOS")
-        // console.log(this.bandera)
-        // console.log(this.posts)
-        // console.log(this.vistapost)
-        // this.guardarVistaValida(true); 
         await this.cargabaseGral()
         this.bandera = true
-        // console.log(this.bandera)
     },
     methods: {
       ...mapMutations(['changeViewPost','changeViewOthers']),
@@ -114,7 +102,6 @@ export default{
                             {
                               this.contador = (this.relacionados.length - 1)
                             }
-                            // console.log(this.contador)
                           }
                       }
 
@@ -123,9 +110,6 @@ export default{
                       // this.posts.push(datos);
                       conta++;
                     });
-                    // this.relacionados = this.relacionados.slice(0, 4);
-                    // console.log("this.RELACIONADOS solo 4 elelemntos")
-                    // console.log(this.relacionados)
                   });
               } catch (e) {
                 console.log(e);
@@ -133,76 +117,96 @@ export default{
             },
        
 
-      contadorDescargar(){
-        let {descargasDia} = this.datosUsuario;
-        console.log(descargasDia);
-        console.log(this.vistapost)
+      contadorDescargar(tipo,event){
+        console.log(tipo);
+        let {descargas} = this.datosUsuario;
         const {idRecurso} = this.vistapost;
         const {id} = this.datosUsuario;
+        let esDescargar = false;
+        
+          if(tipo === "Free" && descargas.dia.usadas.length < descargas.dia.disponibles)
+          {
+            descargas.dia.usadas.push(idRecurso);
+            descargas.dia.disponibles= this.descargarFree;
+            esDescargar = true
+          }
+          else if(tipo === "Plan")
+          {
+            let f = new Date();
+            let existeMes = false;
+            let mesactual = (f.getMonth() +1) + " " + f.getFullYear();
+            descargas.mes.registro.map(reg => {
+              if(reg.mes === mesactual)
+              {
+                existeMes = true;
+                if(reg.usadas.length < descargas.mes.disponibles )
+                {
+                  reg.usadas.push(idRecurso);
+                  esDescargar = true;
+                }
+              }
+              
+            });
+            
+            if(!existeMes){
+              // const {disponibles} = descargas.mes;
+              descargas.mes.registro = [
+                ...descargas.mes.registro,
+                { mes: mesactual, usadas:[idRecurso] }
+              ]
+              esDescargar = true;
+              // descargas.mes.usadas.push(idRecurso);
+            }
+          }
 
-        if( this.datosUsuario.estadoMembresia !== 'active')
-        {
-          descargasDia.usadas.push(idRecurso);
-          descargasDia.disponibles= this.descargarFree;
-          //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
-          let descargasFreeRef = this.$fireStore.collection("usuarios").doc(id);
-          
-          //SE ACTUALIZA EN FIREBASE EL CAMPO DE COMENTARIOS
-          descargasFreeRef.update({
-            descargasDia
-          })
-          .then(() => {
-           
-            // console.log(this.$refs.downloadFile)
-            // this.$refs.downloadFile.click();
-            // this.$refs.downloadFile.download();
-  
-            console.log("UPDATE DESCARGAR LIMITE")
-   
-          })
-          .catch((error) => {
-              console.error("ErroR al agregar nuevo comentario: ", error);
-          });
-        }
+          if(esDescargar)
+          {
+            //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
+            let descargasFreeRef = this.$fireStore.collection("usuarios").doc(id);
+            
+            //SE ACTUALIZA EN FIREBASE EL CAMPO DE COMENTARIOS
+            descargasFreeRef.update({
+              descargas
+            })
+            .then(() => {
+              console.log("UPDATE DESCARGAR LIMITE")
+      
+            })
+            .catch((error) => {
+                console.error("ErroR al agregar nuevo comentario: ", error);
+            });
+          }
+          else  
+          {
+            event.preventDefault();
+            this.dialogPlanes=true
+          }
+      
       },
 
       sliderF(data){
-        // console.log(data)
-        // console.log(this.contador)
-        // this.contador = data === "adelante" ? this.contador++ : this.contador--;
         if(data === "adelante")
           this.contador++
         else
           this.contador--
-        
-        // console.log(this.contador)
-        
-        
         this.cambioUrls();
 
       },
       cambioUrls(){
         let postS = {...this.relacionados[this.contador]}
-        console.log("POST")
-        console.log(postS)
         if(postS.tipoRecurso === 'link')
         {
           let {urlVista} = postS;
           const embed = urlVista.replace("watch?v=", "embed/");
           // this.linkembed = embed;
           this.$emit("updateLinkEmbed",embed)
-          console.log(this.linkembed);
         }
 
         const xhr = new XMLHttpRequest();
         xhr.responseType = 'blob';
         xhr.onload = (event) => {
-           // console.log(xhr.response);
            const blob = xhr.response;
-          //  console.log(blob)
            const res = blob.type.split("/");
-          //  console.log("res")
-          //  console.log(res)
            const typeFile = res[1];
            if(blob.type === "application/pdf")
            {
@@ -221,16 +225,10 @@ export default{
            else
            this.$emit("updateNombreFile", postS.titulo+'.'+typeFile)
 
-            // this.nombreFile = postS.titulo+'.'+typeFile;
-
-          // console.log("this.nombreFile");
-          // console.log(this.nombreFile);
-
  
           const urlFB = URL.createObjectURL(blob, {
             type: blob.type
           });
-          // console.log(urlFB)
           this.$emit("updateUrlFileB",urlFB)
 
           // this.spinner = false;
@@ -299,13 +297,17 @@ export default{
         let loncadena=this.vistapost.contenido.length
         let suspensivos=" ..."
         let contenido=this.vistapost.contenido.substr(0,limit)
-        // console.log(this.vistapost.contenido)
-        // console.log(contenido)
         if(loncadena<limit){
             suspensivos=""
         }
         return contenido+suspensivos
       },
+      esFree(){
+        const {usadas, disponibles} = this.datosUsuario.descargas.dia;
+        const res = usadas.length < disponibles ?  true : false
+
+        return res;
+      }
       
     },
 }

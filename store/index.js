@@ -1,5 +1,10 @@
 let observer
 import Vuex from "vuex";
+import {addMonths} from 'date-fns';
+import {fromUnixTime} from 'date-fns';
+import {isPast} from 'date-fns';
+
+
 // import router from '@/router/index'
 // var correoglobal=""
 const createStore = () => {
@@ -371,7 +376,13 @@ const createStore = () => {
         },
         idMembresia: "",
         estadoMembresia:"",
-        descargasDia:{},
+        descargas:{
+          dia: {fecha:"", disponibles:1, usabas:[] },
+          mes: {
+            active: false, tipo:"",
+            registro:[],
+          }
+        },
         vercorreo: false,
       },
       datosSuscripcion:{ status: false},
@@ -417,7 +428,7 @@ const createStore = () => {
       //APIS DEVELOP Y PRODUCCION
       urlAPI: "https://stripe-checkout-api.herokuapp.com",
       // urlAPI: "http://localhost:4242",
-      descargarFree: 1,
+      descargarFree: 8,
       // data para ver lista completa de post
       misPost:[],
       otrosPost:[],
@@ -591,137 +602,144 @@ const createStore = () => {
                   data.estadoMembresia = data.estadoMembresia ? data.estadoMembresia : "";
                   data.idCliente = data.idCliente ? data.idCliente : "";
                   data.idSuscripcion = data.idSuscripcion ? data.idSuscripcion : "";
+                  data.descargas = data.descargas ? data.descargas : {};
                   
-
-                  // console.log(grups);
-                    // console.log(doc.id)
                        datos = {
                         id: doc.id,
-                        // idMembresia:"",
-
-                        // grupo:{},
                         ...data
                       }
-                      // console.log(datos)
-                      // context.commit("cambiastatusSesion",datos);
-                  });
+                });
 
                   datos.estadoMembresia = datos.lvluser > 2 ? "active" : "";
-                  // console.log("DATOSSSS ")
-                  // console.log(datos)
 
                   //REVISAR ESTADO DE LA SUSCRIPCIÓN MIENTRAS NO SEA USUARIO ADMIN
                   if(datos.lvluser === 1 || datos.lvluser === 2)
                   {
                     //PAGO POR STRIPE
-                    console.log("datos.idSuscripcion");
-                    console.log(datos.idSuscripcion);
+                    // console.log(datos.idSuscripcion);
                     fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + datos.idSuscripcion)
                     .then((result)=>{
                       return result.json()
                     })
                     .then(async(suscripcion)=>{
 
-                      console.log(suscripcion)
+                      //OBTENER CONFIGURACION DE DESCARGAS
+                      const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
+                            
+                      const d = await response.json();
+                      
+                      //DESCARGA DIARIA GRATIS
+                      if(!datos.descargas.dia)
+                      {
+                        datos.descargas.dia = {
+                          disponibles: context.state.descargarFree,
+                          usadas: [],
+                          fecha: d.fecha,
+                        }
+                      }
+
+                      //SI LA FECHA CAMBIA SE RESETEA EL CAMPO PARA OBTENER UNA DESCARGA NUEVA
+                      else if(d.fecha !== datos.descargas.dia.fecha)
+                      {
+                        ///console.log("el dia cambiooooooo")
+                        datos.descargas.dia.disponibles= context.state.descargarFree,
+                        datos.descargas.dia.usadas = [];
+                        datos.descargas.dia.fecha = d.fecha;
+                      }
+
+                      //DESCARGAS POR MES POR DEFECTO PARA EVITAR ERRORES
+                      if(!datos.descargas.mes){
+                        datos.descargas.mes = {
+                          active: false, tipo:"", disponibles: 0,
+                          registro: [] ,
+                        };
+                      }
+                      // console.log(datos.descargas)
+
+                      context.commit("cambiastatusSesion",datos);
+
+                      //SE REVISA EL ESTADO DE LA SUSCRIPCIÓN
                       if(suscripcion.error)
                       {
                         datos.estadoMembresia = "canceled";
                         context.state.datosSuscripcion.status = false;
-
+                        datos.descargas.mes.active = false;
                       }
                       else{
                         datos.estadoMembresia = suscripcion.status;
                         context.state.datosSuscripcion.status = true;
-                        context.state.datosSuscripcion = suscripcion;
+                        console.log("SI TIENE MEMBRESIA PREMIUM")
+                        context.commit("updateDescargasPre", suscripcion);
                       }
 
-                    })
-                    .catch((err)=>{
-                      console.log('Error al verificar suscripción', err);
-                    });
-
-
-                    //PAGO POR MEDIO DE MERCAPAGO
-
-                    const config = {
-                      method: 'POST',
-                      headers: {
-                          'Accept': 'application/json',
-                          'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify({idPago: datos.idSuscripcion})
-                    }
-
-                    // fetch(this.urlAPI+"/mercadopago-oxxo",config);
-
-                    if(datos.estadoMembresia !== "active")
-                    {
-                      fetch(context.state.urlAPI+"/estado-pago",config)
-                      .then((result)=>{
-                        return result.json()
-                      })
-                      .then(async(suscripcion)=>{
-  
-                        // console.log(suscripcion)
-                        if(suscripcion.error)
-                        {
-                          datos.estadoMembresia = "canceled";
-                          context.state.datosSuscripcion.status = false;
-
-                          // console.log("error")
+                      
+                      
+                      
+                      // console.log(datos)
+                      
+                      //REVISA MEMBRESIA EN CASO DE PAGO CON MERCAPAGO
+                      if(datos.estadoMembresia !== "active")
+                      {
+                        const config = {
+                          method: 'POST',
+                          headers: {
+                              'Accept': 'application/json',
+                              'Content-Type': 'application/json',
+                          },
+                          body: JSON.stringify({idPago: datos.idSuscripcion})
                         }
-                        else{
-                          // console.log(suscripcion.response.status)
-                          if(suscripcion.response.status === "approved" || suscripcion.response.status === "accredited")
-                          {
-                            datos.estadoMembresia = "active";
-                            context.state.datosSuscripcion = suscripcion.response;
-                            context.state.datosSuscripcion.status = true;
+                        fetch(context.state.urlAPI+"/estado-pago",config)
+                        .then((result)=>{
+                          return result.json()
+                        })
+                        .then(async(suscripcion)=>{
 
-                          }
-                          else
+                          let data = suscripcion.response;
+
+                          //SE REVISA EL ESTADO DE LA SUSCRIPCIÓN
+                          if(suscripcion.error)
                           {
                             datos.estadoMembresia = "canceled";
                             context.state.datosSuscripcion.status = false;
+                            datos.descargas.mes.active = false;
+
                           }
-  
-  
-                          // console.log("no error")
-  
-                        }
-  
-                        //SI NO TIENE MEMBRESIA PREMIUM SE LIMITA LAS DESCARGAS
-                        // console.log("context.state.datosUsuario.estadoMembresia")
-                        // console.log(context.state.datosUsuario.estadoMembresia)
-                        // console.log("datos.estadoMembresia")
-                        // console.log(datos.estadoMembresia)
-                        if(datos.estadoMembresia === 'canceled' || datos.estadoMembresia === '')
-                        {
-                          const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
+                          else{
+
+                            //CONVIERTE FORMATOS DE FECHA A UNIXTIME PARA MANEJARLOS CON DATE-FNS
+
+                            let fechaInicio = parseInt((new Date(data.date_approved).valueOf() / 1000).toFixed(0))
+                            // console.log(fechaInicio)
+
+                            const interval_count = data.transaction_amount === 490 ? 1 :
+                              data.transaction_amount === 1290 ? 3 :
+                              data.transaction_amount === 2190 ? 6 : 12;
+
+                            let fechaFin = addMonths(new Date(data.date_approved), interval_count);
+                            fechaFin = parseInt((new Date(fechaFin).valueOf() / 1000).toFixed(0))
+
+                            data.fechaInicio = fechaInicio;
+                            data.fechaFin = fechaFin;
+                            data.interval_count = interval_count;
+
                             
-                          const d = await response.json();
-                          // console.log("FECHA HOY:")
-                          // console.log(d)
-                          // console.log("datos HOY:")
-                          // console.log(datos)
-  
-                          if(!datos.descargasDia)
-                          {
-                            datos.descargasDia = 
+                            // const ff = fromUnixTime(1577944800);
+                            const ff = fromUnixTime(fechaFin);
+                            const esVencida = isPast(ff)
+
+                            if( (data.status === "approved" || data.status === "accredited") && !esVencida )
                             {
-                              disponibles: context.state.descargarFree,
-                              usadas: [],
-                              fecha: d.fecha
+                              datos.estadoMembresia = "active";
+                              console.log("SI TIENE MEMBRESIA PREMIUM")
+                              // console.log(datos)
+                              context.commit("updateDescargasPreMP", data);
+                            }
+                            else
+                            {
+                              datos.estadoMembresia = "canceled";
+                              context.state.datosSuscripcion.status = false;
                             }
                           }
-                          else if(d.fecha !== datos.descargasDia.fecha)
-                          {
-                            ///console.log("el dia cambiooooooo")
-                            datos.descargasDia.disponibles= context.state.descargarFree,
-                            datos.descargasDia.usadas = [];
-                            datos.descargasDia.fecha = d.fecha;
-                          }
-                        }
   
                       })
                       .catch((err)=>{
@@ -731,13 +749,14 @@ const createStore = () => {
                     }
 
 
+                      
 
-                    
+                    })
+                    .catch((err)=>{
+                      console.log('Error al verificar suscripción', err);
+                    });              
                   }
                   
-
-
-
                   context.commit("cambiastatusSesion",datos);
 
               })
@@ -747,15 +766,59 @@ const createStore = () => {
           }
           else 
           {
-            console.log("AQUIIIII NO HAY USUARIO, ES LVLUSER 0")
-            context.state.datosUsuario.descargasDia.disponibles= -5;
-            context.state.datosUsuario.descargasDia.usadas = [];
+            console.log("NO HAY USUARIO, ES LVLUSER 0")
+            context.state.datosUsuario.descargas.dia.disponibles= -5;
+            context.state.datosUsuario.descargas.dia.usadas = [];
 
             // datos.descargasDia.fecha = d.fecha;
           }
         });
         return true;
       },
+
+      //DE STRIPE
+      obtenerDatosSuscripcion({state}, idSuscripcion){
+        fetch(state.urlAPI+"/check-suscripcion?suscripcionId=" + idSuscripcion)
+          .then((result)=>{
+            return result.json()
+          })
+          .then(async(suscripcion)=>{
+
+            // console.log(suscripcion)
+            if(suscripcion.error)
+            {
+              // datos.estadoMembresia = "canceled";
+              state.datosSuscripcion.status = false;
+
+            }
+            else{
+              // datos.estadoMembresia = suscripcion.status;
+              let sus = {
+                status: true,
+                pasarela: "stripe",
+                plan:{
+                  interval_count: suscripcion.plan.interval_count,
+                  interval: suscripcion.plan.interval,
+                  amount: suscripcion.plan.amount,
+                  active: suscripcion.plan.active,
+                  fechaFin: suscripcion.current_period_end,
+                  fechaInicio: suscripcion.current_period_start,
+                }
+              }
+              state.datosSuscripcion = sus;
+              // state.datosSuscripcion.status = true;
+              // state.datosSuscripcion.pasarela = "stripe"
+              // state.datosSuscripcion.plan.current_period_end = state.datosSuscripcion.plan.current_period_end
+
+            }
+
+          })
+          .catch((err)=>{
+            console.log('Error al verificar suscripción', err);
+          });
+      },
+
+      
 
       changeRecursosFavoritos({state}, dato)
       {
@@ -1115,8 +1178,8 @@ const createStore = () => {
           state.datosUsuario.importeSuscripcion = "";
           state.datosUsuario.tipoSuscripcion = "";
           console.log("AQUIIIII NO HAY USUARIO, ES LVLUSER 0")
-                    state.datosUsuario.descargasDia.disponibles= -5;
-                    state.datosUsuario.descargasDia.usadas = [];
+                    state.datosUsuario.descargas.dia.disponibles= -5;
+                    state.datosUsuario.descargas.dia.usadas = [];
           state.datosSuscripcion = {};
         }else{
           state.datosUsuario = data;
@@ -1158,6 +1221,149 @@ const createStore = () => {
           if(post.idRecurso === cat.idRecurso)
             cat = post;
         })
+
+      },
+
+      updateDescargasPre(state, sus){
+        console.log(sus);
+        let suscripcion = {
+          status: true,
+          pasarela: "stripe",
+          plan:{
+            interval_count: sus.plan.interval_count,
+            interval: sus.plan.interval,
+            amount: sus.plan.amount,
+            active: sus.plan.active,
+            fechaFin: sus.current_period_end,
+            fechaInicio: sus.current_period_start,
+          }
+        }
+
+        state.datosSuscripcion = suscripcion;
+        // state.datosSuscripcion.pasarela = "stripe"
+        // console.log("state.datosSuscripcion.plan.active")
+        // console.log(state.datosSuscripcion.plan.active)
+        // alert("mira datasus")
+
+        
+        // console.log(suscripcion.plan.active)
+        // alert("mira suscripcion.plan.active")
+
+        
+        if( state.datosSuscripcion.plan.active)
+        {
+          const {interval, interval_count } =  state.datosSuscripcion.plan;
+          console.log(state.datosSuscripcion.plan);
+
+          const {registro} =  state.datosUsuario.descargas.mes;
+            
+          state.datosUsuario.descargas={
+            ...state.datosUsuario.descargas,
+            // dia: {fecha:"", disponibles:1, usabas:[] },
+            mes: {
+              active: true, tipo:"", disponibles: 0,
+              registro: registro.length === 0 ? [] : registro,
+            }
+          }
+          
+          
+          // console.log(state.datosUsuario.descargas);
+          // console.log("interval");
+          // console.log(interval);
+          // console.log("interval_count");
+          // console.log(interval_count);
+
+          
+          if( interval === "month" &&  interval_count === 1)
+          {
+            state.datosUsuario.descargas.mes.tipo = "mensual";
+            state.datosUsuario.descargas.mes.disponibles = 20;
+          }
+          else if( interval === "month" &&  interval_count === 3)
+          {
+            state.datosUsuario.descargas.mes.tipo = "trimestral";
+            state.datosUsuario.descargas.mes.disponibles = 5;
+          }
+          else if(interval === "month" &&  interval_count === 6)
+          {
+            state.datosUsuario.descargas.mes.tipo = "semestral";
+            state.datosUsuario.descargas.mes.disponibles = 35;
+          }
+          else 
+          {
+            state.datosUsuario.descargas.mes.tipo = "anual";
+            state.datosUsuario.descargas.mes.disponibles = 40;
+          }
+
+        }
+        else
+          state.datosUsuario.descargas.mes.active = false;
+
+      },
+
+      updateDescargasPreMP(state, data){
+
+        console.log(data);
+        if(data.status === "approved" )
+        {
+
+          // datosSuscripcion.status
+          let suscripcion = {
+            status: true,
+            pasarela: "mercadopago",
+            plan:{
+              interval_count: data.interval_count,
+              interval: "month",
+              amount: (data.transaction_amount * 100),
+              active: true,
+              fechaFin: data.fechaFin,
+              fechaInicio: data.fechaInicio,
+            }
+          }
+          state.datosSuscripcion = suscripcion;
+
+          if( state.datosSuscripcion.plan.active)
+          {
+            const {interval, interval_count } =  state.datosSuscripcion.plan;
+
+            const {registro} =  state.datosUsuario.descargas.mes;
+            
+            state.datosUsuario.descargas={
+              ...state.datosUsuario.descargas,
+              // dia: {fecha:"", disponibles:1, usabas:[] },
+              mes: {
+                active: true, tipo:"", disponibles: 0,
+                registro: registro.length === 0 ? [] : registro,
+              }
+            }
+            
+            if( interval === "month" &&  interval_count === 1)
+            {
+              state.datosUsuario.descargas.mes.tipo = "mensual";
+              state.datosUsuario.descargas.mes.disponibles = 20;
+            }
+            else if( interval === "month" &&  interval_count === 3)
+            {
+              state.datosUsuario.descargas.mes.tipo = "trimestral";
+              state.datosUsuario.descargas.mes.disponibles = 5;
+            }
+            else if(interval === "month" &&  interval_count === 6)
+            {
+              state.datosUsuario.descargas.mes.tipo = "semestral";
+              state.datosUsuario.descargas.mes.disponibles = 35;
+            }
+            else 
+            {
+              state.datosUsuario.descargas.mes.tipo = "anual";
+              state.datosUsuario.descargas.mes.disponibles = 40;
+            }
+          }
+
+        }
+        else
+          state.datosUsuario.descargas.mes.active = false;
+
+       
 
       },
       updateVerMas(state,tipoPost){

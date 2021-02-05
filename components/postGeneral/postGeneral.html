@@ -61,14 +61,27 @@
                     <div v-if ="subtipo === 'hojatrabajo'" >
                         <div  v-if ="!spinner && datosUsuario.lvluser > 0">
                             <a 
-                                v-if="datosUsuario.estadoMembresia === 'active'|| 
+                                v-if="esFree"
+                                :download="nombreFile"
+                                :href="urlFileB" 
+                                @click="contadorDescargar('Free', $event)"
+                                target="_blank"
+                                class="v-btn v-btn--contained theme--light v-size--default melon mt-3 white--text"
+                                style="text-transform: none; border-radius: 12px;"
+                            >
+                                <v-icon rigth dark> mdi-download </v-icon>
+                                Descarga Free
+                            </a>
+                            <!-- datosUsuario.descargas.mes.usadas.length < datosUsuario.descargas.mes.disponibles    -->
+                            
+                            <a 
+                                v-else-if="datosUsuario.lvluser === 3|| 
                                 (
-                                    datosUsuario.descargasDia.usadas.length < datosUsuario.descargasDia.disponibles
-                                    
+                                    datosUsuario.descargas.mes.active  
                                 )"
                                 :download="nombreFile"
                                 :href="urlFileB" 
-                                @click="contadorDescargar()"
+                                @click="contadorDescargar('Plan', $event)"
                                 target="_blank"
                                 class="v-btn v-btn--contained theme--light v-size--default melon mt-3 white--text"
                                 style="text-transform: none; border-radius: 12px;"
@@ -268,7 +281,10 @@
               </v-btn>
           </v-card-title>
           <div class="mt-4">
-                <p class="text-center">
+                <p class="text-center"v-if="datosUsuario.descargas.mes.active">
+                    Tu plan actual solo te permite {{datosUsuario.descargas.mes.disponibles}} descargas por mes
+                </p>
+                <p class="text-center"v-else>
                     Descarga nuestro material de forma ilimitada suscribiendote a nuestros planes
                 </p>
                 <div class="d-flex justify-center mt-4">

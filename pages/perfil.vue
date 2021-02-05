@@ -113,6 +113,9 @@
       <div class="mt-5" >
 
         <!-- <v-card class=" mt-4" > -->
+            <!-- <div>
+                {{datosSuscripcion}}
+            </div> -->
           <v-row >
               <v-col cols="12" class="" v-if="datosSuscripcion.status">
 
@@ -121,8 +124,9 @@
                         <h4 class="title">Tipo suscripción:</h4>
                     </v-col>
                     <v-col class="mt-1">
-                        <p v-if="datosSuscripcion.plan.interval_count === 1">Semestral</p>
+                        <p v-if="datosSuscripcion.plan.interval_count === 1">Mensual</p>
                         <p v-else-if="datosSuscripcion.plan.interval_count === 3">Trimestral</p>
+                        <p v-else-if="datosSuscripcion.plan.interval_count === 6">Semestral</p>
                         <p v-else>Anual</p>
                     </v-col>
                 </v-row>
@@ -137,11 +141,15 @@
                 </v-row>
 
                 <v-row>
-                    <v-col cols="4" xsm="6" md="4" lg="6">
+                    <v-col cols="4" xsm="6" md="4" lg="6" v-if="datosSuscripcion.pasarela === 'stripe'">
                         <h4 class="title">Siguiente cobro:</h4>
                     </v-col>
+                    <v-col cols="4" xsm="6" md="4" lg="6" v-else>
+                        <h4 class="title">Fecha de vencimiento:</h4>
+                    </v-col>
                     <v-col class="mt-1">
-                        <p>{{fechaFormato}}</p>
+                        <p v-if="!checarVencimientoP">{{fechaFormato}}</p>
+                        <p v-else>Tu membresia a vencido</p>
                     </v-col>
                 </v-row>
 
@@ -160,9 +168,9 @@
           </v-row>
       <!-- </v-card> -->
               
-        <div class="d-flex justify-center pb-3">
+        <div class="d-flex justify-center pb-3" >
             <v-btn  
-                v-if="editar===false && datosSuscripcion.status"  
+                v-if="editar===false && datosSuscripcion.status && datosSuscripcion.pasarela === 'stripe'"  
                 class="melon white--text" @click="opcMembresia()"
             > Membresia </v-btn>
            
@@ -214,6 +222,8 @@ import simpleloader from '~/components/simpleloader/simpleloader.vue'
 import subirimagen from "~/components/subirimagen/subirimagen.vue"
 import { format } from 'date-fns'
 import fromUnixTime from 'date-fns/fromUnixTime';
+import {isPast} from 'date-fns';
+import {compareAsc} from 'date-fns';
 import { es } from 'date-fns/locale';
 export default {
     
@@ -231,10 +241,20 @@ data(){
 computed:{
     ...mapState(['datosUsuario','dominio','urlAPI','urlimg','datosSuscripcion','paises','estados']),
     fechaFormato(){
-        const f = fromUnixTime(this.datosSuscripcion.current_period_end );
+        // console.log(this.datosSuscripcion.plan.fechaFin)
+        const f = fromUnixTime(this.datosSuscripcion.plan.fechaFin );
+        // console.log(f)
         const ff = format(f, "dd/MM/yyyy", {locale: es});
         return ff;
-    }
+    },
+    checarVencimientoP(){
+
+        const ff = fromUnixTime(this.datosSuscripcion.plan.fechaFin);
+        const result = isPast(ff)
+        console.log(result)
+        return result;
+
+    },
 },
 methods:{
     ...mapActions(['eliminarImagen','fotostorageAsync','creaNotificacion']),

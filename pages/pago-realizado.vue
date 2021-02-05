@@ -74,7 +74,8 @@ export default {
     
     },
     methods: {
-      ...mapMutations(['guardaDatosUsuarioStore']),
+      ...mapMutations(['guardaDatosUsuarioStore','updateDescargasPreMP']),
+      ...mapActions(['obtenerDatosSuscripcion']),
       subirAlumnos(){
         // console.log(this.file.files[0])
         console.log(this)
@@ -115,7 +116,7 @@ export default {
                   const {id} = datosUsuario;
 
                   //VALIDA QUE SOLO SE CAMBIA A USUARIO TIPO 1 SI EL USUARIO ES TIPO 0
-                  const lvl = datosUsuario.lvluser === 2 ? 2 : 1;
+                  const lvl = datosUsuario.lvluser <= 2 ? 2 : 3;
 
                   //SE BUSCA AL USUARIO EN LA BASE DE DATOS POR MEDIO DEL ID
                   let usuarioRef =  this.$fireStore.collection("usuarios").doc(id);
@@ -140,6 +141,13 @@ export default {
                     datosUsuario.estadoMembresia = session.payment_status === 'paid' ? 'active' : '';
 
                     this.guardaDatosUsuarioStore(datosUsuario);
+
+                    //Obtener datos de membresia
+                    this.obtenerDatosSuscripcion(session.subscription);
+                    
+
+
+
                   })
                   .catch((error) => {
                       console.error("Error al realizar pago: ", error);
@@ -159,28 +167,177 @@ export default {
             });
         }
       },
+
+      obtenerClienteMP(idPago){
+        const config = {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({idPago})
+      }
+
+      fetch(this.urlAPI+"/estado-pago",config)
+      .then((result)=>{
+        return result.json()
+      })
+      .then(async(suscripcion)=>{
+  
+        console.log(suscripcion)
+        if(suscripcion.error)
+        {
+          // datos.estadoMembresia = "canceled";
+          // context.state.datosSuscripcion.status = false;
+
+          console.log("error")
+        }
+        else{
+          console.log(suscripcion.response)
+          console.log(suscripcion.response.status)
+          let data = suscripcion.response;
+
+          if(data.status === "approved" || data.status === "accredited")
+          {
+            //SE OBTIENE EL ID DEL USUARIO ACTUAL
+            let datosUsuario = JSON.parse( localStorage.getItem("user") );
+            // localStorage.setItem("user", "" );
+            this.json = "mercadopagooo"
+
+            const {id} = datosUsuario;
+
+            //VALIDA QUE SOLO SE CAMBIA A USUARIO TIPO 1 SI EL USUARIO ES TIPO 0
+            const lvl = datosUsuario.lvluser <= 2 ? 2 : 3;
+
+            this.importe = data.transaction_amount;
+            this.tipoSuscripcion = this.importe === 1290 ? "trimestral" :
+              this.importe === 2190 ? "semestral" :
+              this.importe === 3500 ? "anual" : "mensual";
+
+            let fechaInicio = parseInt((new Date(data.date_approved).valueOf() / 1000).toFixed(0))
+            console.log(fechaInicio)
+
+            const interval_count = data.transaction_amount === 490 ? 1 :
+              data.transaction_amount === 1290 ? 3 :
+              data.transaction_amount === 2190 ? 6 : 12;
+
+            let fechaFin = addMonths(new Date(data.date_approved), interval_count);
+            fechaFin = parseInt((new Date(fechaFin).valueOf() / 1000).toFixed(0))
+
+            data.fechaInicio = fechaInicio;
+            data.fechaFin = fechaFin;
+            data.interval_count = interval_count;
+            
+            // let session = suscripcion.response;
+
+
+            //SE BUSCA AL USUARIO EN LA BASE DE DATOS POR MEDIO DEL ID
+            let usuarioRef =  this.$fireStore.collection("usuarios").doc(id);
+
+            //SE ACTUALIZA EN FIREBASE LOS CAMPOS NECESARIOS
+            usuarioRef.update({
+              lvluser: lvl,
+              idMembresia: idPago,
+              idCliente: "",
+              idSuscripcion: idPago,
+              tipoSuscripcion: this.tipoSuscripcion,
+              importeSuscripcion: this.importe,
+            })
+            .then(() => {
+              //SE ACTUALIZA EL OBJETO USUARIOS POR MEDIO DE UN ACTION QUE ESTA EN EL STORE
+              datosUsuario.lvluser = lvl;
+              datosUsuario.idMembresia = idPago;
+              datosUsuario.idCliente = "";
+              datosUsuario.idSuscripcion= idPago;
+              datosUsuario.tipoSuscripcion= this.tipoSuscripcion;
+              datosUsuario.importeSuscripcion= this.importe;
+              datosUsuario.estadoMembresia = 'active';
+
+              this.guardaDatosUsuarioStore(datosUsuario);
+
+              console.log(this.datosUsuario);
+
+              this.updateDescargasPreMP(data);
+
+              //Obtener datos de membresia
+              // this.obtenerDatosSuscripcion(session.subscription);
+              
+
+
+
+            })
+            .catch((error) => {
+                console.error("Error al realizar pago: ", error);
+            });
+            
+            // datos.estadoMembresia = "active";
+            // context.state.datosSuscripcion = suscripcion.response;
+            // context.state.datosSuscripcion.status = true;
+          }
+          // else
+          // {
+          //   datos.estadoMembresia = "canceled";
+          //   context.state.datosSuscripcion.status = false;
+          // }
+  
+        }
+  
+        
+  
+      })
+      .catch((err)=>{
+        console.log('Error al verificar suscripción', err);
+      });
+      },
     },
     mounted() {
 
       this.json = localStorage.getItem("payment_intent");
-      let data= {};
+      let data= {sessionId: ""};
+      console.log(this.json)
 
       if(this.json !== "")
+      {
+        console.log("JSON NO ESTA VACIO")
         data = JSON.parse(this.json);
-      else
-        data.sessionId= "";
+      }
+      // else
+      //   data.sessionId= "";
+
+      console.log(data);
+      alert("sdsdsd")
+      console.log("sdsdsd")
 
 
       localStorage.setItem("payment_intent", "" );
-      // console.log(data);
+      console.log(data);
+      // console.log(this.$router)
+      console.log(this.$route.query)
+      console.log(this.$route.query.payment_id)
+      console.log(this.$route.query.preference_id)
+      const {payment_id} = this.$route.query;
+      console.log(payment_id)
+      
 
-      if(data.sessionId)
+
+      if(data.sessionId !== "")
       {
+        console.log("cSTRIPE")
         this.idCompra = data.sessionId;
         this.tipoSuscripcion = data.tipoSuscripcion;
         this.importe = data.importe;
         this.obtenerCliente(data.sessionId);
         
+      }
+      else if(payment_id !== "")
+      {
+        console.log("fue por mercadopago")
+         this.idCompra = this.$route.query.payment_id;
+        // this.tipoSuscripcion = data.tipoSuscripcion;
+        // this.importe = data.importe;
+        this.obtenerClienteMP(payment_id);
+
+
       }
       else
       {

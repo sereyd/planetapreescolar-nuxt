@@ -37,7 +37,7 @@ export default {
         idCreador:"",
         nombreCreador:"",
         tags:[],
-        permisoadmin: true,
+        permisoadmin: false,
       },
       usarnombre: true,
       esCrear: true,
@@ -172,6 +172,9 @@ export default {
         if(this.urlimg !== "" && this.urlimg !== "none")
           this.datosRecurso.urlImagen = this.urlimg
 
+        if(this.subtipo === 'blog' && this.subtipo === 'memoria' && this.subtipo === 'reflexion')
+          this.datosRecurso.permisoadmin = true;
+
         //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
         const {id, nombre, apellido, lvluser} = this.datosUsuario;
         let nuevoRecurso = {};
@@ -187,7 +190,7 @@ export default {
             grado: this.grado,
             sinopsis: this.sinopsis,
             tipoCreador: lvluser === 3 ? 'administrador' : 'usuario',
-            tipo: this.subtipo
+            tipo: this.subtipo,
             // tags: this.tags
           }
 
@@ -233,15 +236,8 @@ export default {
       {
         this.tagsValido = true;
         this.msjTag = ""
-        
-        // if(this.tipoRecursoSelect === "link")
-        //   this.tipoRecurso = "link";
-        // console.log(this.subtipo +" "+ this.tipoRecursoSelect);
         if(this.subtipo === "interactivo" && this.tipoRecursoSelect === "file")
           this.tipoRecursoSelect = "audio"
-
-        // console.log(this.subtipo +" "+ this.tipoRecursoSelect);
-        
 
         if(this.tipo)
         this.cargaFinal();
@@ -250,26 +246,22 @@ export default {
         
       }
 
-        // console.log("HO HAY ERRORES")
     },
     verificarTags(){
       if(this.datosRecurso.tags.length === 0)
       {
         this.tagsValido = false;
-        console.log("tags NO validos")
 
         this.msjTag = "Necesita agregar por lo menos un tag"
       }
       else{
         this.tagsValido = true;
-        console.log("tags NO validos")
 
         this.msjTag = ""
       }
     },
     abrirDialog(){
 
-      // console.log(this.subtipo);
       if(this.tipo === "RECOMENDACION")
         this.esBlog = true;
       else
@@ -287,7 +279,7 @@ export default {
       this.datosRecurso= {
         foldercode:"",titulo: "",fecha: "",edopost: "publico",urlImagen: "",contenido:"",tipoRecurso:"",
         urlRecurso:"",comentarios:[],tags: [],idCreador:"",nombreCreador:"",premium: false,
-        recomendado: false, permisoadmin: true,
+        recomendado: false, permisoadmin: false,
       };
         
         
@@ -327,8 +319,6 @@ export default {
     // this.datablog.user = this.datosUsuario.id;
     this.datosRecurso.idCreador = this.datosUsuario.id;
 
-    // this.usarnombre =  this.datosUsuario.lvluser === 3 ? false : true;
-    // console.log(this.listaR)
 
 
   },
@@ -377,7 +367,6 @@ export default {
   watch: {
     async urlimg() {
       
-        // console.log("NO SE ESTA RESETEANDO")
           await this.almacenarRecursoCollection();
 
     }

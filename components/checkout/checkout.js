@@ -13,14 +13,21 @@ export default {
       trimestralPriceId: "price_1HtDqDGqO5WLKI2Hgd1pYWoE",
       semestralPriceId: "price_1HtDnFGqO5WLKI2HjCzJ8bVM",
       anualPriceId: "price_1HtDqEGqO5WLKI2H2YHeoZbZ",
-      precioTrimenstral: 990,
-      precioSemestral: 1490,
-      precioAnual: 2490,
+      precioMensual: 490,
+      precioTrimestral: 1290,
+      precioSemestral: 2190,
+      precioAnual: 3500,
       tipoMembresia: "",
 
-      //CLAVES PARA MERCADO PAGO
-      apiKey: "TEST-20920d57-4e20-4f4c-8ae8-165479c50481",
-      accessToken:"TEST-8920658246221073-122116-fae55fc90deca1afa2cffd0207537488-392358182",
+      urlsusMP: "",
+
+      //CLAVES PARA MERCADO PAGO GMAIL
+      // apiKey: "TEST-20920d57-4e20-4f4c-8ae8-165479c50481",
+      // accessToken:"TEST-8920658246221073-122116-fae55fc90deca1afa2cffd0207537488-392358182",
+
+      //CLAVES PARA MERCADO PAGO GMAIL
+      apiKey: "TEST-0243b12a-9903-4ea0-9837-a34e8fb2a723",
+      accessToken:"TEST-5708698566465206-020216-1cbaade80cc97fab76047cc3d8b3321b-706431956",
       
       //DATA DE MERCAPAGO
       datosMP:{
@@ -29,6 +36,11 @@ export default {
         correo:"josed555@gmail.com",
       },
       dialogMP: false,
+
+      dialogFormasPago: false,
+      tipoSuscripcion: "",
+      urlMP: "",
+
       mediosPago:["oxxo"],
       medioSeleccionado:null,
       validMP:true,
@@ -73,6 +85,139 @@ export default {
     
     },
 
+
+    //PAGO CON MERCADOPAGO
+    formasPago(tipoS){
+      this.tipoSuscripcion= tipoS;
+
+      const description = tipoS === "trimestral" ? "Planeta Preescolar: Trimestral" : 
+        tipoS === "semestral" ? "Planeta Preescolar: Semestral" :
+        tipoS === "anual" ? "Planeta Preescolar: Anual" : "Planeta Preescolar: Mensual";
+      
+      const price = tipoS === "trimestral" ? this.precioTrimestral : 
+        tipoS === "semestral" ? this.precioSemestral :
+        tipoS === "anual" ? this.precioAnual : this.precioMensual
+
+      this.urlsusMP = tipoS === "trimestral" ? 
+      "https://www.mercadopago.com/mlm/debits/new?preapproval_plan_id=2c9380847726c5de01773a8cbb520dc0" : 
+      tipoS === "semestral" ? 
+      "https://www.mercadopago.com/mlm/debits/new?preapproval_plan_id=2c9380847726c5de01773a8d86190dc3" :
+      tipoS === "anual" ? 
+      "https://www.mercadopago.com/mlm/debits/new?preapproval_plan_id=2c9380847739336f01773a8e413b0290" : 
+      "https://www.mercadopago.com/mlm/debits/new?preapproval_plan_id=2c9380847739336f01773a8b6c050289";
+
+      //https://www.mercadopago.com/mlm/debits/new?preapproval_plan_id=2c9380847739336f01773a8e413b0290
+
+      var orderData = {
+        quantity: 1,
+        description,
+        price,
+        dominio: this.dominio
+      };
+      fetch(this.urlAPI+"/create_preference", {
+      // fetch("/create_preference", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify(orderData),
+      })
+      .then((response) => {
+          return response.json();
+      })
+      .then((preference) => {
+          console.log(preference);
+          this.urlMP = preference.pre.init_point;
+          // this.createCheckoutButton(preference.id);
+          this.dialogFormasPago = true; 
+          localStorage.setItem("payment_intent", "" );
+          localStorage.setItem("user", JSON.stringify(this.datosUsuario) );
+
+          
+      })
+      .catch((error) => {
+        console.log(error)
+          alert("Unexpected error");
+          // $('#checkout-btn').attr("disabled", false);
+      });
+
+    },
+
+    // checkPago(){
+    //   const config = {
+    //     method: 'POST',
+    //     headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({idPago: "1233419229"})
+    //   }
+
+    //   fetch("http://localhost:4242/estado-pago",config)
+    //   .then((result)=>{
+    //     return result.json()
+    //   })
+    //   .then(async(suscripcion)=>{
+  
+    //     console.log(suscripcion)
+    //     if(suscripcion.error)
+    //     {
+    //       // datos.estadoMembresia = "canceled";
+    //       // context.state.datosSuscripcion.status = false;
+
+    //       console.log("error")
+    //     }
+    //     else{
+    //       console.log(suscripcion.response)
+    //       console.log(suscripcion.response.status)
+    //       // if(suscripcion.response.status === "approved" || suscripcion.response.status === "accredited")
+    //       // {
+    //       //   datos.estadoMembresia = "active";
+    //       //   context.state.datosSuscripcion = suscripcion.response;
+    //       //   context.state.datosSuscripcion.status = true;
+
+    //       //   // context.state.datosUsuario.descargasMes.status = true;
+
+
+    //       // }
+    //       // else
+    //       // {
+    //       //   datos.estadoMembresia = "canceled";
+    //       //   context.state.datosSuscripcion.status = false;
+    //       // }
+  
+    //     }
+  
+    //     // if(datos.estadoMembresia === 'canceled' || datos.estadoMembresia === '')
+    //     // {
+    //     //   const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
+            
+    //     //   const d = await response.json();
+  
+    //     //   if(!datos.descargasDia)
+    //     //   {
+    //     //     datos.descargasDia = 
+    //     //     {
+    //     //       disponibles: context.state.descargarFree,
+    //     //       usadas: [],
+    //     //       fecha: d.fecha
+    //     //     }
+    //     //   }
+    //     //   else if(d.fecha !== datos.descargasDia.fecha)
+    //     //   {
+    //     //     ///console.log("el dia cambiooooooo")
+    //     //     datos.descargasDia.disponibles= context.state.descargarFree,
+    //     //     datos.descargasDia.usadas = [];
+    //     //     datos.descargasDia.fecha = d.fecha;
+    //     //   }
+    //     // }
+  
+    //   })
+    //   .catch((err)=>{
+    //     console.log('Error al verificar suscripción', err);
+    //   });
+    // },
+
     //PAGO CON MERCAPAGO POR OXXO
     async crearOrdenMP(){
 
@@ -83,7 +228,7 @@ export default {
       console.log(this.datosMP);
 
       this.importe  = 
-        this.tipoMembresia === 'trimestral' ? this.precioTrimenstral 
+        this.tipoMembresia === 'trimestral' ? this.precioTrimestral 
         : this.tipoMembresia === 'semestral' ? this.precioSemestral : this.precioAnual;
 
       const dataMP = {
@@ -156,17 +301,52 @@ export default {
       }
 
     },
+
+    //PAGO CON MERCADO LIBRE
+    // pagarMP(){
+    //   window.this.$MPC_loaded !== true ? (window.attachEvent ? window.attachEvent('onload', $MPC_load) : window.addEventListener('load', $MPC_load, false)) : null;
+    // },
+    // $MPC_loaded(){
+    //   // <a mp-mode="dftl" href="https://www.mercadopago.com/mlm/debits/new?preapproval_plan_id=2c9380847739336f01773a8b6c050289" name="MP-payButton" class='blue-ar-l-rn-none'>Suscribirme</a>
+
+
+    //      window.this.$MPC_loaded !== true && (function() {
+    //      var s = document.createElement("script");
+    //      s.type = "text/javascript";
+    //      s.async = true;
+    //      s.src = document.location.protocol + "//secure.mlstatic.com/mptools/render.js";
+    //      var x = document.getElementsByTagName('script')[0];
+    //      x.parentNode.insertBefore(s, x);
+    //      window.this.$MPC_loaded = true;
+    //   })();
+   
+
+
+
+    // },
+
+    // $MPC_load(){
+    //   window.$MPC_loaded !== true && (function() {
+    //   var s = document.createElement("script");
+    //   s.type = "text/javascript";
+    //   s.async = true;
+    //   s.src = document.location.protocol + "//secure.mlstatic.com/mptools/render.js";
+    //   var x = document.getElementsByTagName('script')[0];
+    //   x.parentNode.insertBefore(s, x);
+    //   window.$MPC_loaded = true;
+    //  })();
+    // },
     
 
 
     //PAGOS CON STRIPE
-    crearSesionSuscripcion(priceTipo){
+    crearSesionSuscripcion(){
       this.spinner = true;
 
-      this.tipoSuscripcion = priceTipo;
+      const priceTipo = this.tipoSuscripcion;
       // this.importe = priceTipo === 'trimestral' ? "$500.00 MX" : "$1500.00 MX";
       this.importe  = 
-        priceTipo === 'trimestral' ? this.precioTrimenstral 
+        priceTipo === 'trimestral' ? this.precioTrimestral 
         : priceTipo === 'semestral' ? this.precioSemestral : this.precioAnual;
 
       const locale = "es"

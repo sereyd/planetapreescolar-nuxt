@@ -40,27 +40,7 @@ export default{
       ...mapActions(['changeRecursosFavoritos']),
       ...mapMutations(['changeViewOthers','changeViewPost','changeDialogPost']),
       muestrapost(p){
-        // console.log(p);
-        // const fec = p.fecha.toString();
-        // // console.log(fec)
-        // var fechaNueva = fec.slice(0, 10);
-        // // console.log(fechaNueva);
-        // const fechaN = parseInt(fechaNueva);
-        // console.log("FECHA DEL POST");
-        // console.log(fechaN);
-        
-        // //FECHA ACTUAL
-        // var now = Date.now() 
-        // // console.log(now);
-        // const fa = now.toString();
-        // // console.log(fa)
-        // var faNueva = fa.slice(0, 10);
-        // // console.log(faNueva);
-        // const fechaAN = parseInt(faNueva);
-        // console.log("FECHA ACTUAL");
-        // console.log(fechaAN);
-
-
+       
         this.linkembed = "";
 
         this.spinner = true;
@@ -73,8 +53,6 @@ export default{
         this.vistapost.urlVista = p.urlVista ? p.urlVista : "";
         this.vistapost.urlDescargable = p.urlDescargable ? p.urlDescargable : "";
         this.fechaVisual = format(this.vistapost.fecha , "dd  MMMM yyyy", {locale: es});
-        // console.log(this.subtipo)
-        // console.log(this.vistapost.tipo)
 
         const {tipo} =this.vistapost;
 
@@ -91,12 +69,9 @@ export default{
 
       if(this.vistapost.tipoRecurso === 'link')
        {
-        // console.log("this.vistapost");
-        // console.log(this.vistapost);
          let {urlVista} = this.vistapost;
         const embed = urlVista.replace("watch?v=", "embed/");
         this.linkembed = embed;
-        // console.log(this.linkembed);
        }
 
 
@@ -106,12 +81,8 @@ export default{
          const xhr = new XMLHttpRequest();
          xhr.responseType = 'blob';
          xhr.onload = (event) => {
-           // console.log(xhr.response);
            const blob = xhr.response;
-          //  console.log(blob)
            const res = blob.type.split("/");
-          //  console.log("res")
-          //  console.log(res)
            const typeFile = res[1];
            if(blob.type === "application/pdf")
            {
@@ -130,13 +101,10 @@ export default{
            else
             this.nombreFile = this.vistapost.titulo+'.'+typeFile;
 
-          // console.log(this.nombreFile);
-
- 
            this.urlFileB = URL.createObjectURL(blob, {
              type: blob.type
            });
-          //  console.log(this.urlFileB)
+           
            this.spinner = false;
 
  
@@ -243,7 +211,6 @@ export default{
         return contenido+suspensivos
     },
     cantidadComentarios(comentarios){
-      console.log(comentarios);
       let comen = comentarios.filter(com => com.valido === true);
       return comen.length;
     },

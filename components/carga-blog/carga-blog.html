@@ -38,6 +38,21 @@
                     >mdi-delete</v-icon>
                 </v-btn> 
               </v-fab-transition>
+
+              <v-fab-transition class="mt-5" v-if="(!key.permisoadmin) && (key.tipo !== 'blog' && key.tipo !== 'memoria' && key.tipo !== 'reflexion')">
+                <v-btn
+                    :key="'permisoAdmin_'+index"
+                    color="primary"
+                    x-small
+                    absolute
+                    top
+                    left
+                    class="v-btn--example"
+                    style="top: 12px!important;"
+                >
+                    <span  class="white--text" >No aprobado</span>
+                </v-btn> 
+              </v-fab-transition>
         </v-card>
 
         <div>

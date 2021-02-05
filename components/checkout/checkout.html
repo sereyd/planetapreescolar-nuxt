@@ -25,14 +25,21 @@
                 <h4>Plan</h4>
                 <h4>trimestral</h4>
               </div>
-            <div class="price">${{precioTrimenstral}} MXN</div>
+            <div class="price">${{precioTrimestral}} MXN</div>
             </div>
+
             <div class="d-flex justify-center">
-              <v-btn class="melon white--text mb-2 btn_crearG" @click="crearSesionSuscripcion('trimestral')">¡Lo quiero!</v-btn>
+              <v-btn class="melon white--text mb-2 btn_crearG" @click="formasPago('trimestral')">¡Lo quiero!</v-btn>
             </div>
-            <div class="d-flex justify-center">
+            <!-- <div class="d-flex justify-center">
               <v-btn class="melon white--text mb-5 btn_crearG" @click="dialogMP=true; tipoMembresia='trimestral';">OXXO</v-btn>
             </div>
+            <div class="d-flex justify-center">
+              <a href="${preference.initPoint}">Pagar con Mercado Pago</a> 
+            </div> -->
+            <!-- <div class="d-flex justify-center">
+              <a mp-mode="dftl" href="https://www.mercadopago.com/mlm/debits/new?preapproval_plan_id=2c9380847739336f01773a8b6c050289" name="MP-payButton" class='blue-ar-l-rn-none'>Suscribirme</a>
+            </div> -->
           </v-card>
         </v-col>
 
@@ -54,11 +61,14 @@
             <div class="price">${{precioSemestral}} MXN</div>
             </div>
             <div class="d-flex justify-center">
+              <v-btn class="melon white--text mb-2 btn_crearG" @click="formasPago('semestral')">¡Lo quiero!</v-btn>
+            </div>
+            <!-- <div class="d-flex justify-center">
               <v-btn class="melon white--text mb-2 btn_crearG" @click="crearSesionSuscripcion('semestral')">¡Lo quiero!</v-btn>
             </div>
             <div class="d-flex justify-center">
               <v-btn class="melon white--text mb-5 btn_crearG" @click="dialogMP=true; tipoMembresia='semestral';">OXXO</v-btn>
-            </div>
+            </div> -->
           </v-card>
         </v-col>
 
@@ -80,17 +90,75 @@
             <div class="price">${{precioAnual}} MXN</div>
             </div>
             <div class="d-flex justify-center">
+              <v-btn class="melon white--text mb-2 btn_crearG" @click="formasPago('anual')">¡Lo quiero!</v-btn>
+            </div>
+            <!-- <div class="d-flex justify-center">
               <v-btn class="melon white--text mb-2 btn_crearG" @click="crearSesionSuscripcion('anual')">¡Lo quiero!</v-btn>
             </div>
             <div class="d-flex justify-center">
               <v-btn class="melon white--text mb-5 btn_crearG" @click="dialogMP=true; tipoMembresia='anual';">OXXO</v-btn>
-            </div>
+            </div> -->
           </v-card>
         </v-col>
         
       </v-row>
       </div>
     </v-container>
+
+    <v-dialog v-model="dialogFormasPago"  persistent max-width="500">
+      <v-card class=" px-10">
+        <v-card-title class=" justify-space-between">
+            <v-btn icon text small color="purple" @click="" >
+            </v-btn>
+            <h2 class="primary--text ">Formas de pago</h2>
+            <v-btn icon text small color="purple" @click="dialogFormasPago = false;" >
+                <v-icon>mdi-window-close</v-icon>
+            </v-btn>
+        </v-card-title>
+        <div>
+          <!-- <div>
+            <p>suscripción {{tipoSuscripcion}}</p>
+          </div> -->
+          <!-- <div class="d-flex justify-center">
+            <v-btn class="melon white--text mb-2 btn_crearG" @click="checkPago()">CHECK MP</v-btn>
+          </div> -->
+
+          <div class="d-flex justify-center">
+            <v-btn class="melon white--text mb-2 btn_crearG" @click="crearSesionSuscripcion()">Stripe</v-btn>
+          </div>
+
+          <div id="button-checkout" class="d-flex justify-center pb-3">
+            <a 
+              :href="urlMP" 
+              class="v-btn v-btn--contained theme--light v-size--default melon mt-3 white--text"
+              style="text-transform: none; border-radius: 12px;"
+            >
+              MercadoPago
+            </a>
+          </div>
+
+          <!-- <div id="button-checkout" class="d-flex justify-center pb-3">
+            <a 
+              :href="urlsusMP" 
+              class="v-btn v-btn--contained theme--light v-size--default melon mt-3 white--text"
+              style="text-transform: none; border-radius: 12px;"
+            >
+              MercadoPago suscripción
+            </a>
+          </div> -->
+
+          
+
+        </div>
+
+        <!-- <div class="mt-8" v-if="!completado && !spinner">
+
+        
+        </div>
+        
+        <Spinner v-else/> -->
+      </v-card>
+  </v-dialog>
 
     <v-dialog v-model="dialogMP" fullscreen>
       <v-card class=" px-10">
