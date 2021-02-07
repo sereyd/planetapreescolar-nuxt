@@ -326,6 +326,7 @@ const createStore = () => {
                 });
         */
       //  console.log("VERIFICANDO USUARIOOO...")
+      
         await this.$fireAuth.onAuthStateChanged( user => {
           // console.log("USUARIO QUE SE ESTA VERIFICANDO:")
           // console.log(user)
@@ -500,6 +501,20 @@ const createStore = () => {
                     .catch((err)=>{
                       console.log('Error al verificar suscripción', err);
                     });              
+                  }
+                  else if(datos.lvluser > 2)
+                  {
+                    datos.descargas.mes = {
+                      active: true, tipo:"", disponibles: 3000,
+                      registro: [] ,
+                    };
+                    datos.descargas.dia = {
+                      disponibles: -2,
+                      usadas: [],
+                    }
+
+            //         context.state.datosUsuario.descargas.dia.disponibles= -5;
+            // context.state.datosUsuario.descargas.dia.usadas = [];
                   }
                   
                   context.commit("cambiastatusSesion",datos);
@@ -920,9 +935,12 @@ const createStore = () => {
           state.datosUsuario.importeSuscripcion = "";
           state.datosUsuario.tipoSuscripcion = "";
           console.log("AQUIIIII NO HAY USUARIO, ES LVLUSER 0")
-                    state.datosUsuario.descargas.dia.disponibles= -5;
-                    state.datosUsuario.descargas.dia.usadas = [];
+          // state.datosUsuario.descargas.dia.disponibles= -5;
+          // state.datosUsuario.descargas.dia.usadas = [];
+          state.datosUsuario.descargas = {};
+          state.datosUsuario.grupo = {};
           state.datosSuscripcion = {};
+          
         }else{
           state.datosUsuario = data;
         }

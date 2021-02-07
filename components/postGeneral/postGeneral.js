@@ -118,12 +118,16 @@ export default{
        
 
       contadorDescargar(tipo,event){
-        console.log(tipo);
-        let {descargas} = this.datosUsuario;
-        const {idRecurso} = this.vistapost;
-        const {id} = this.datosUsuario;
-        let esDescargar = false;
-        
+
+        if(this.datosUsuario.lvl === 2 || this.datosUsuario.lvl === 1)
+        {
+
+          console.log(tipo);
+          let {descargas} = this.datosUsuario;
+          const {idRecurso} = this.vistapost;
+          const {id} = this.datosUsuario;
+          let esDescargar = false;
+          
           if(tipo === "Free" && descargas.dia.usadas.length < descargas.dia.disponibles)
           {
             descargas.dia.usadas.push(idRecurso);
@@ -170,7 +174,7 @@ export default{
             })
             .then(() => {
               console.log("UPDATE DESCARGAR LIMITE")
-      
+        
             })
             .catch((error) => {
                 console.error("ErroR al agregar nuevo comentario: ", error);
@@ -181,6 +185,7 @@ export default{
             event.preventDefault();
             this.dialogPlanes=true
           }
+        }
       
       },
 

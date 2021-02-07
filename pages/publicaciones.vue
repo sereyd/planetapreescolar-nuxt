@@ -5,7 +5,7 @@
 
 
       <!-- <v-col cols="12" md="12"> </v-col> -->
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 3">
         <h2>Mis Reflexiones</h2>
 
         <cargablog 
@@ -22,7 +22,7 @@
         </cargablog>
 
       </v-col>
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 3">
         <h2>Mis Planeaciones</h2>
 
         <cargablog 
@@ -40,7 +40,7 @@
 
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 3">
         <h2>Mis hojas de trabajo</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="hojatrabajo"  :listaR="hojastrabajo" 
@@ -56,7 +56,23 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 3">
+        <h2>Mis hojas para ilustrar</h2>
+        <cargablog 
+          tipo="CATEGORIAS" subtipo="hojailustrar"  :listaR="hojasilustrar" 
+          :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
+        >
+          <template v-slot:header>
+            <editorblog tipo="CATEGORIAS" subtipo="hojailustrar"   
+            @updateListaR="hojasilustrar=$event"
+            :listaR="hojasilustrar"
+            :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
+            @updatepost="updatepost.hojasilustrar=$event" :limitWH="{ width:0, height:0}"  ></editorblog>
+          </template>
+        </cargablog>
+      </v-col>
+
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 3">
         <h2>Mi material didáctico</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="materialdidactico"  :listaR="materialdidactico" 
@@ -72,7 +88,7 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 3">
         <h2>Mis interactivos</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="interactivo"  :listaR="interactivos" 
@@ -88,7 +104,7 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 3">
         <h2>Mis otros</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="otro"  :listaR="otros" 
@@ -104,7 +120,7 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 1 || datosUsuario.lvluser === 3">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser > 0">
         <h2>Mis Memorias</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo=" memoria"  :listaR="memorias"
@@ -119,7 +135,7 @@
           </template>
         </cargablog>
       </v-col>  
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 1  || datosUsuario.lvluser === 3">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser > 0">
         <h2>Mis Blogs</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="blog"  :listaR="blog"
@@ -151,6 +167,7 @@ export default {
         reflexiones:"",
         planeaciones:"",
         hojastrabajo:"",
+        hojasilustrar:"",
         materialdidactico:"",
         interactivos:"",
         otros:"",
@@ -162,6 +179,7 @@ export default {
         reflexiones:[],
         planeaciones:[],
         hojastrabajo:[],
+        hojasilustrar:[],
         materialdidactico:[],
         interactivos:[],
         otros:[],
@@ -193,6 +211,7 @@ export default {
         this.reflexiones=[];
         this.planeaciones=[];
         this.hojastrabajo=[];
+        this.hojasilustrar=[];
         this.materialdidactico=[];
         this.interactivos=[];
         this.otros=[];
@@ -245,7 +264,10 @@ export default {
                   this.planeaciones.push(datos)
 
                 else if(datos.tipo === "hojatrabajo")
-                  this.hojastrabajo.push(datos)
+                  this.hojastrabajo.push(datos) 
+                
+                else if(datos.tipo === "hojailustrar")
+                  this.hojasilustrar.push(datos)
 
                 else if(datos.tipo === "materialdidactico")
                   this.materialdidactico.push(datos)
@@ -319,6 +341,9 @@ export default {
 
                 else if(datos.tipo === "hojatrabajo")
                   this.hojastrabajo.push(datos)
+                
+                else if(datos.tipo === "hojailustrar")
+                  this.hojasilustrar.push(datos)
 
                 else if(datos.tipo === "materialdidactico")
                   this.materialdidactico.push(datos)

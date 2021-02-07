@@ -125,7 +125,7 @@
                     
                 </div>
 
-                <div v-if="subtipo !=='planeacion' && subtipo !=='reflexion' && subtipo !=='materialdidactico' && subtipo !=='hojatrabajo' && subtipo !=='otro'">
+                <div v-if="subtipo !=='planeacion' && subtipo !=='reflexion' && subtipo !=='materialdidactico' && subtipo !=='hojatrabajo'  && subtipo !=='hojailustrar' && subtipo !=='otro'">
                     <v-select
                         :items="tiposRecursoList"
                         label="Tipo de recurso"
@@ -170,7 +170,7 @@
                     
                 </div>
 
-                <div v-else-if="subtipo ==='materialdidactico' || subtipo ==='hojatrabajo' || subtipo ==='otro'">
+                <div v-else-if="subtipo ==='materialdidactico' || subtipo ==='hojatrabajo' || subtipo ==='hojailustrar' || subtipo ==='otro'">
                     <subirFile 
                         filesAccepts=".pdf" 
                         label="Archivo válido"
@@ -264,7 +264,7 @@
                                 inset
                                 label="Premium"
                                 small
-                                v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro')"
+                                v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' || subtipo === 'otro')"
                             ></v-switch>
     
                             <v-switch
@@ -272,7 +272,7 @@
                                 inset
                                 label="Recomendado"
                                 small
-                                v-if="datosRecursoEdit.tipo === 'planeacion' || subtipo ==='materialdidactico' || subtipo ==='hojatrabajo' || subtipo === 'interactivo' || subtipo ==='otro'"
+                                v-if="datosRecursoEdit.tipo === 'planeacion' || subtipo ==='materialdidactico' || subtipo ==='hojatrabajo' || subtipo ==='hojailustrar' || subtipo === 'interactivo'"
                             ></v-switch>
 
                             <v-switch v-model="datosRecursoEdit.permisoadmin"  v-if="datosUsuario.lvluser===3" label="Validado por administador

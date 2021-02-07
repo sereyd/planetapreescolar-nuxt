@@ -144,6 +144,13 @@ export default {
         this.labelFile="Seleccione archivo"
         this.tipoRecursoSelect ="file"
       }
+      else if(this.subtipo === "hojailustrar")
+      {
+        tipoM= "Nueva hoja para ilustrar";
+        this.tipoRecursoFile = "image/*, .ppt, .pptx, .pdf"
+        this.labelFile="Seleccione archivo"
+        this.tipoRecursoSelect ="file"
+      }
       else if(this.subtipo === "interactivo")
       {
         tipoM= "Nuevo interactivo";

@@ -23,13 +23,16 @@ export default{
     methods:{
       ...mapActions(['changeRecursosFavoritos','notificacionComentario']),
       contadorDescargar(tipo, event){
-        console.log(tipo);
-        let {descargas} = this.datosUsuario;
-        // console.log(descargas);
-        // console.log(this.vistapost)
-        const {idRecurso} = this.vistapost;
-        const {id} = this.datosUsuario;
-        let esDescargar = false;
+
+        if(this.datosUsuario.lvl === 2 || this.datosUsuario.lvl === 1)
+        {
+          console.log(tipo);
+          let {descargas} = this.datosUsuario;
+          // console.log(descargas);
+          // console.log(this.vistapost)
+          const {idRecurso} = this.vistapost;
+          const {id} = this.datosUsuario;
+          let esDescargar = false;
         
           if(tipo === "Free"  && descargas.dia.usadas.length < descargas.dia.disponibles)
           {
@@ -92,6 +95,7 @@ export default{
             event.preventDefault();
             this.dialogPlanes=true
           }
+        }
       },
       
     },

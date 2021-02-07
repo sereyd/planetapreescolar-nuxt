@@ -22,6 +22,15 @@
     />
     <div style="width:100%; height:0px;" v-if="hojastrabajo.length > 0"></div>
 
+    <!-------HOJAS PARA ILUSTRAR------------->
+    <listablog 
+            :blogpost="hojasilustrar" :esCompleto="false" @updateBlogpost="hojasilustrar=$event"
+            tipo="CATEGORIAS" subtipo="hojailustrar" 
+            titulo="Hojas para ilustrar" subtitulos="" 
+            :esFavoritos="true"  
+    />
+    <div style="width:100%; height:0px;" v-if="hojasilustrar.length > 0"></div>
+
     <!-------MATERIAL DIDÁCTICO------------->
     <listablog 
             :blogpost="materialdidactico"  @updateBlogpost="materialdidactico=$event"
@@ -114,6 +123,7 @@ export default {
 
       planeaciones:[],
       hojastrabajo:[],
+      hojasilustrar:[],
       materialdidactico:[],
       interactivos:[],
       otros:[],
@@ -217,6 +227,10 @@ export default {
         else if(cat.tipo === "hojatrabajo"  && esFav  && 
           (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
             this.hojastrabajo.push(cat)
+
+        else if(cat.tipo === "hojailustrar"  && esFav  && 
+          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+            this.hojasilustrar.push(cat)
 
         else if(cat.tipo === "interactivo"  && esFav  && 
           (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
