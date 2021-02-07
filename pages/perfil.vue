@@ -3,7 +3,7 @@
 <v-col cols="12" md="6" class="text-center pa-10">
     <subirimagen
               ejecimagen="uploadimg"
-              v-if="editar===true && datosuser.urlImagen==='' "
+              v-if="editar===true && (datosuser.urlImagen==='' || datosuser.urlImagen==='none') "
               @updateImg="previewIedit=$event"
               titulo="Subir imagen de pefil "
             ></subirimagen>
@@ -12,14 +12,14 @@
 
     <v-avatar color="primary"
     size="300"
-    v-if="datosuser.urlImagen!==''"
+    v-if="datosuser.urlImagen!=='' && datosuser.urlImagen!=='none'"
     >
     <img  :src="datosuser.urlImagen" />
     </v-avatar>
 <br />
 
-<v-btn class="primary white--text" v-if="editar===true && datosuser.urlImagen===''" @click="subirImg()">Subir Imagen</v-btn>
-<v-btn class="red white--text" v-if="editar===true && datosuser.urlImagen!==''" @click="delimagen()">Eliminar Imagen</v-btn>
+<v-btn class="primary white--text" v-if="editar===true && (datosuser.urlImagen==='' || datosuser.urlImagen==='none')" @click="subirImg()">Subir Imagen</v-btn>
+<v-btn class="red white--text" v-if="editar===true && (datosuser.urlImagen!=='' || datosuser.urlImagen!=='none')" @click="delimagen()">Eliminar Imagen</v-btn>
 
 <h1 v-if="editar===false">{{datosuser.nombre}} {{datosuser.apellido}}</h1>
     <div v-if="editar===true">
@@ -37,57 +37,61 @@
 
     </v-col>
     <v-col cols="12" md="6" class="pa-10">
+<label class="labelview grey--text"   v-if="editar===false" >Teléfono</label>
 
-<label class="labelview"   v-if="editar===false"  >País</label>
+
+        <div class="textview"  v-if="editar===false">{{datosuser.codigopais ? '+'+datosuser.codigopais : 'code' }} {{datosuser.telefono}}</div >
+
+            
+
+     <label class="labelview grey--text"   v-if="editar===true"  >Codigo de País:</label> {{ editar===true ? '+'+datosuser.codigopais : '' }}  <v-text-field class="inputTextView" label="Teléfono" v-model="datosuser.telefono" hide-details="auto" v-if="editar===true" ></v-text-field>
+
+
+
+
+<label class="labelview grey--text"   v-if="editar===false" >Años de experiencia</label>
+        <div class="textview"  v-if="editar===false"  >{{datosuser.exp}}</div >
+        <v-text-field class="inputTextView" label="Años de experiencia" v-model="datosuser.exp" hide-details="auto"  v-if="editar===true" ></v-text-field>
+
+
+<label class="labelview grey--text"   v-if="editar===false"  >País</label>
         <div class="textview"  v-if="editar===false" >{{datosuser.pais}}</div >
-        <v-text-field class="inputTextView" label="País" v-model="datosuser.pais" hide-details="auto"  v-if="editar===true"  ></v-text-field>
-
-<label class="labelview"   v-if="editar===false" >Estado</label>
-        <div class="textview"  v-if="editar===false" >{{datosuser.estado}}</div >
-        <v-select class="inputTextView"  label="estado" v-model="datosuser.estado" hide-details="auto" :items="estado" v-if="editar===true" ></v-select>
-
+        <v-select class="inputTextView"  label="paises" v-model="datosuser.pais" hide-details="auto" :items="paises" v-if="editar===true"  item-text="pais"  @change="codigopais($event)"
+       >
+            
+        </v-select>
 
 
-<label class="labelview"   v-if="editar===false" >Ciudad</label>
+
+<label class="labelview grey--text"   v-if="editar===false"  >Ciudad</label>
         <div class="textview"  v-if="editar===false" >{{datosuser.ciudad}}</div >
         <v-text-field class="inputTextView"  label="Ciudad" v-model="datosuser.ciudad" hide-details="auto"  v-if="editar===true" ></v-text-field>
 
 
+<label class="labelview grey--text"   v-if="editar===false" >Estado</label>
+        <div class="textview"  v-if="editar===false" >{{datosuser.estado}}</div>
+                <v-text-field class="inputTextView"  label="Estado" v-model="datosuser.estado" hide-details="auto"  v-if="editar===true" ></v-text-field>
 
-<label class="labelview"   v-if="editar===false" >Teléfono</label>
-        <div class="textview"  v-if="editar===false">{{datosuser.telefono}}</div >
-        <v-text-field class="inputTextView" label="Teléfono" v-model="datosuser.telefono" hide-details="auto" v-if="editar===true" ></v-text-field>
+       <!--- <v-select class="inputTextView"  label="estado" v-model="datosuser.estado" hide-details="auto" :items="estados" v-if="editar===true" ></v-select>--->
 
 
-<label class="labelview"   v-if="editar===false" >Correo</label>
+
+<label class="labelview grey--text"    v-if="editar===false" >¿Por que elegí esta profesión?</label>
+        <div class="textview"  v-if="editar===false" style="height:auto; min-height:30px;">{{datosuser.profesion}}</div >
+        <v-textarea  class="inputTextView"  rows="2" label="¿Por que elegí esta profesión?"  v-model="datosuser.profesion" hide-details="auto"  v-if="editar===true" ></v-textarea >
+
+<label class="labelview grey--text"   v-if="editar===false"  >Acerca de mi</label>
+        <div class="textview"   v-if="editar===false" style="height:auto; min-height:30px;" >{{datosuser.acerca}}</div >
+        <v-textarea class="inputTextView"   rows="2" label="Acerca de mi" v-model="datosuser.acerca" hide-details="auto"  v-if="editar===true"  ></v-textarea >
+
+
+<label class="labelview grey--text"   v-if="editar===false" >Correo</label>
         <div class="textview" >{{datosuser.correo}}</div >
        
-
-
-
-
-
-<label class="labelview"   v-if="editar===false" >Años de experiencia</label>
-        <div class="textview"  v-if="editar===false" >{{datosuser.exp}}</div >
-        <v-text-field class="inputTextView" label="Años de experiencia" v-model="datosuser.exp" hide-details="auto"  v-if="editar===true" ></v-text-field>
-
-
-<label class="labelview"    v-if="editar===false" >¿Por que elegí esta profesión?</label>
-        <div class="textview"  v-if="editar===false">{{datosuser.profesion}}</div >
-        <v-text-field class="inputTextView" label="¿Por que elegí esta profesión?"  v-model="datosuser.profesion" hide-details="auto"  v-if="editar===true" ></v-text-field>
-<label class="labelview"   v-if="editar===false" >Acerca de mi</label>
-        <div class="textview"   v-if="editar===false" >{{datosuser.acerca}}</div >
-        <v-text-field class="inputTextView" label="Acerca de mi" v-model="datosuser.acerca" hide-details="auto"  v-if="editar===true"  ></v-text-field>
-
-
-
-
-<br /><br />
             <v-btn  v-if="editar===true" class="melon white--text" @click="guardarCambios()">Guardar Cambios</v-btn>
 
 
 
-<hr />
 
   
     </v-col>
@@ -230,45 +234,12 @@ data(){
         editar:false,
         previewIedit:"",
         uploadimg:false,
-         estado:[
-  'Aguascalientes',
-  'Baja California',
-  'Baja California Sur',
-	'Campeche',
-	'Chiapas',
-	'Chihuahua',
-	'Coahuila de Zaragoza',
-	'Colima',
-	'Ciudad de México',
-	'Durango',
-	'Guanajuato',
-	'Guerrero',
-	'Hidalgo',
-	'Jalisco',
-	'Estado de Mexico',
-	'Michoacan de Ocampo',
-	'Morelos',
-	'Nayarit',
-	'Nuevo Leon',
-	'Oaxaca',
-	'Puebla',
-	'Queretaro de Arteaga',
-	'Quintana Roo',
-	'San Luis Potosi',
-	'Sinaloa',
-  'Sonora',
-	'Tabasco',
-	'Tamaulipas',
-	'Tlaxcala',
-	'Veracruz de Ignacio de la Llave',
-	'Yucatan',
-	'Zacatecas'],
         dialogSus: false,
         
     }
 },
 computed:{
-    ...mapState(['datosUsuario','dominio','urlAPI','urlimg','datosSuscripcion']),
+    ...mapState(['datosUsuario','dominio','urlAPI','urlimg','datosSuscripcion','paises','estados']),
     fechaFormato(){
         // console.log(this.datosSuscripcion.plan.fechaFin)
         const f = fromUnixTime(this.datosSuscripcion.plan.fechaFin );
@@ -290,6 +261,10 @@ methods:{
     ...mapMutations(['almacenarFotoStorage']),
     cargadatos(){
         this.datosuser=this.datosUsuario
+    },
+    codigopais(e){
+      var codepais=this.paises.find(paises=>paises.pais===e)
+this.datosuser.codigopais=codepais.code
     },
     async guardarCambios(){ 
         try{

@@ -2,13 +2,32 @@
   <div>
     <div style="display:none">
 {{cargaPDF}}
+
 </div>
-Paginas {{numPages}}
 
-    <div v-for="(key,index) in numPages" :key="index+'pag'">
+<v-row v-if="pageLoader!==numPages">
+<v-col cols="12" class="text-center">
 
 
-     <template v-if="datosUsuario.estadoMembresia!=='active' && key===2"  >
+
+<v-progress-circular
+
+indeterminate
+color="primary"
+
+></v-progress-circular>
+<br />
+<h3 class="text--primary">
+Cargando {{pageLoader}}
+de {{numPages}}  Paginas
+</h3>
+</v-col>
+</v-row>
+<v-row  v-show="pageLoader===numPages" >
+    <v-col  cols="6" v-for="(key,index) in numPages"  class="pa-1":key="index+'pag'" style="position:relative;"    >
+      <div style="background-color:#ccc; width:100%; max-width:100%; height:100%; position:absolute; top:0px; left:0px; z-index:999999999999999999999999;" v-if="screenprinf===true"></div>
+
+     <template v-if="datosUsuario.estadoMembresia!=='active' && key>1 " style="border:solid 1px #ccc;"  >
 
       <div style="position:relative;">
 
@@ -20,20 +39,24 @@ Paginas {{numPages}}
       background: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 49%, rgba(255,255,255,1) 100%);
       background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 49%, rgba(255,255,255,1) 100%);
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0 ); width:100%; max-width:100%; height:100%; bottom:0px; z-index:10; position:absolute;" >   
-<div style="bottom:20%; width:100%; position:absolute; text-align: center;">
+<div style="bottom:0px;s width:100%; position:absolute; text-align: center;">
 <img src="images/registrate.png" style="width:100%; max-width:500px;" /> <br />
               <v-btn class="melon white--text" style="text-transform: none;" to="/checkout" >¡Hazte Premium!</v-btn>
 </div>
         </div>
-        <PDF :src="src" :page="key"  style="z-index:1; "></PDF>
+        <PDF :src="src" :page="key" style="z-index:1;" @page-loaded ="loaderpage(index)"  ></PDF>
       
       </div>
 
       </template>
-     <template v-else="datosUsuario==='active'">
-      <PDF :src="src" :page="key" ></PDF>
+     <template  v-else="datosUsuario==='active'"  >
+      <PDF :src="src"  :page="key"  @page-loaded ="loaderpage(index)"  ></PDF>
      </template>
 
-    </div>
+    </v-col>
+  </v-row>
+
+
+
   </div>
 </div>

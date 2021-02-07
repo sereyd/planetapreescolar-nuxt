@@ -5,26 +5,33 @@ export default {
     return {
       paginas: [1, 2, 3],
       numPages: 0,
-      pdfload: {}
+      pdfload: {},
+      pageLoader:0
     };
   },
   computed: {
-    ...mapState(["datosUsuario"]),
+    ...mapState(["datosUsuario","screenprinf"]),
     async cargaPDF() {
-        console.log(this.datosUsuario)
-      if (this.datosUsuario.estadoMembresia === "active") {
+       
+
         var numeropaginas = (this.pdfload = await PDF.createLoadingTask(
           this.src
         ));
         this.pdfload.promise.then(data => {
           this.numPages = data._pdfInfo.numPages;
+          
+    
         });
-       
-      } else {
-        this.numPages = 2;
-      }
-
+        
       return this.numPages;
+    }
+  },
+  methods:{
+    loaderpage(p){
+      setTimeout(()=>{
+      this.pageLoader++
+      },1000)
+
     }
   },
   mounted() {},
