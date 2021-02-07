@@ -144,15 +144,20 @@ export default{
     
         },
         async almacenarUsuarioCollection(){
+          const URLactual = window.location;
+
           //SE ALMACENA EL NUEVO USUARIO EN LA COLECCION DE USUARIOS
           try {
               this.datosUsuarioR.userlogin = true,
               this.datosUsuarioR.lvluser = 1;
+              console.log(datosUsuarioR);
               await this.$fireStore.collection('usuarios').add(this.datosUsuarioR);
              ////Guarda los datos de usuario en el store con una mutación 
               this.guardaDatosUsuarioStore(this.datosUsuarioR);
               this.resetearData();
-              this.$router.push('/login')
+              // this.$router.push('/')
+              window.location.href = URLactual.origin;
+
 
           } catch (error) {
             console.log(error)

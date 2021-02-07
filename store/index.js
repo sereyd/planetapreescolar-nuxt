@@ -368,6 +368,7 @@ const createStore = () => {
                       return result.json()
                     })
                     .then(async(suscripcion)=>{
+                      // console.log(suscripcion);
 
                       //OBTENER CONFIGURACION DE DESCARGAS
                       const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
@@ -985,7 +986,7 @@ const createStore = () => {
       },
 
       updateDescargasPre(state, sus){
-        console.log(sus);
+        // console.log(sus);
         let suscripcion = {
           status: true,
           pasarela: "stripe",
@@ -1013,7 +1014,7 @@ const createStore = () => {
         if( state.datosSuscripcion.plan.active)
         {
           const {interval, interval_count } =  state.datosSuscripcion.plan;
-          console.log(state.datosSuscripcion.plan);
+          // console.log(state.datosSuscripcion.plan);
 
           const {registro} =  state.datosUsuario.descargas.mes;
             

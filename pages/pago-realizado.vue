@@ -304,9 +304,9 @@ export default {
       // else
       //   data.sessionId= "";
 
-      console.log(data);
-      alert("sdsdsd")
-      console.log("sdsdsd")
+      // console.log(data);
+      // alert("sdsdsd")
+      // console.log("sdsdsd")
 
 
       localStorage.setItem("payment_intent", "" );
