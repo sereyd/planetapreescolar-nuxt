@@ -165,7 +165,9 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import editablog from "~/components/editor-blog/editor-blog.vue";
+
 export default {
+    
   async asyncData({ params }) {
     const foro = params.foro;
     const uid = params.id;
