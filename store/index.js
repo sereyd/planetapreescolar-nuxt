@@ -428,7 +428,7 @@ const createStore = () => {
       //APIS DEVELOP Y PRODUCCION
       urlAPI: "https://stripe-checkout-api.herokuapp.com",
       // urlAPI: "http://localhost:4242",
-      descargarFree: 8,
+      // descargarFree: 8,
       // data para ver lista completa de post
       misPost:[],
       otrosPost:[],
@@ -460,7 +460,16 @@ const createStore = () => {
       directorios:[],
 
       ////foroseleccionado
-      foroselect:{}
+      foroselect:{},
+      
+      //data para la configuracion de las descargas
+      descargasConf:{
+        free:0,
+        mensual:0,
+        trimestral:0,
+        semestral:0,
+        anual:0,
+      },
 
 
     }),
@@ -612,10 +621,13 @@ const createStore = () => {
                 });
 
                   datos.estadoMembresia = datos.lvluser > 2 ? "active" : "";
-
+                  
                   //REVISAR ESTADO DE LA SUSCRIPCIÓN MIENTRAS NO SEA USUARIO ADMIN
                   if(datos.lvluser === 1 || datos.lvluser === 2)
                   {
+                    // console.log("antes de config des")
+                    context.commit("actualizarConfigDescargas")
+                    // console.log("des´pues de config des")
                     //PAGO POR STRIPE
                     // console.log(datos.idSuscripcion);
                     fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + datos.idSuscripcion)
@@ -634,7 +646,7 @@ const createStore = () => {
                       if(!datos.descargas.dia)
                       {
                         datos.descargas.dia = {
-                          disponibles: context.state.descargarFree,
+                          disponibles: context.state.descargasConf.free,
                           usadas: [],
                           fecha: d.fecha,
                         }
@@ -644,7 +656,7 @@ const createStore = () => {
                       else if(d.fecha !== datos.descargas.dia.fecha)
                       {
                         ///console.log("el dia cambiooooooo")
-                        datos.descargas.dia.disponibles= context.state.descargarFree,
+                        datos.descargas.dia.disponibles= context.state.descargasConf.free,
                         datos.descargas.dia.usadas = [];
                         datos.descargas.dia.fecha = d.fecha;
                       }
@@ -760,6 +772,11 @@ const createStore = () => {
                   }
                   else if(datos.lvluser > 2)
                   {
+                    console.log("antes de config des")
+                    context.commit("actualizarConfigDescargas")
+              //context.dispatch( "actualizarCategorias('cat')" );
+              //
+                    console.log("des´pues de config des")
                     datos.descargas.mes = {
                       active: true, tipo:"", disponibles: 3000,
                       registro: [] ,
@@ -791,6 +808,34 @@ const createStore = () => {
         });
         return true;
       },
+
+      //OBTENER DATOS DE CONFIGURACION DE DESCARGAS
+    //   async cargaConfiguracionDescargas({commit}){
+    //     let datos= {};
+    //     console.log("OBTENIENDO DATA")
+
+    //     await this.$fireStore
+    //     .collection("confDescargas")
+    //     .get()
+    //     .then(data => {
+    //      console.log(data);
+    //       data.forEach(doc => {
+    //         let dat = doc.data();
+    //         datos = {
+    //           idConfig: doc.id,
+    //           ...dat
+    //         }
+    //       });
+
+    //       commit("actualizarConfigDescargas",datos);
+    //       console.log(datos)
+    //       // this.editDescargasConf = datos;
+    //       // console.log(this.descargasConf)
+    //       // this.dialogDes = true;
+
+    //     });
+
+    // },
 
       //DE STRIPE
       obtenerDatosSuscripcion({state}, idSuscripcion){
@@ -1214,6 +1259,44 @@ const createStore = () => {
          state.datosUsuario=data.docs[0].data()
         })
      },
+
+     
+
+      async actualizarConfigDescargas(state, pay){
+      // await this.$fireStore.collection('usuarios').where('id','==',state.datosUsuario.id).get()
+      // .then((data)=>{
+        // console.log(pay);
+        if(!pay)
+        {
+
+          let datos= {};
+          // console.log("OBTENIENDO DATA")
+  
+          await this.$fireStore
+          .collection("confDescargas")
+          .get()
+          .then(data => {
+           console.log(data);
+            data.forEach(doc => {
+              let dat = doc.data();
+              datos = {
+                idConfig: doc.id,
+                ...dat
+              }
+            });
+  
+            // commit("actualizarConfigDescargas",datos);
+            // console.log(datos)
+            console.log('update store con firebase')
+            state.descargasConf = datos;
+          });
+        }
+        else{
+          state.descargasConf = pay;
+        }
+
+        
+      },
       compruebaConexion(state, data) {
         // console.log("Verificando conexion");
         // console.log(data);

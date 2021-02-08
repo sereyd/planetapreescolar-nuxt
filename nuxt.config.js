@@ -78,10 +78,13 @@ export default {
     'nuxt-i18n',
   ],
   stripe: {
-    publishableKey: 'pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx',
+    // publishableKey: 'pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx',
+    publishableKey: 'pk_live_mEJzhFjTZBwfDPcD7xeErDyU00ZBdyGGiP',
+    
   },
   env: {
     publishStripeKey: 'pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx',
+    // publishStripeKey: 'pk_live_mEJzhFjTZBwfDPcD7xeErDyU00ZBdyGGiP',
   },
   firebase: {
     config:{
