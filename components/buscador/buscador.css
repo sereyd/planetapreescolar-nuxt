@@ -7,7 +7,7 @@
 
 
 
-.v-select > .v-input__control > .v-input__slot  .v-icon__svg {
+.v-select > .v-input__control > .v-input__slot  > .v-icon__svg {
     fill:primary;
 }
 

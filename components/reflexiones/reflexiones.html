@@ -1,17 +1,17 @@
-<v-card class="px-1 mx-2 elevation-5 pa-5"> 
+<v-card class="elevation-5 pa-0 ma-2"> 
  
         
-    <v-card-text style="padding-bottom: 0px; margin-bottom: 0px;"  class="pt-0 pb-0">
+    <v-card-text style="padding-bottom: 0px; margin-bottom: 0px;"  class="pa-0">
                <v-row>
                    <v-col cols="12" md="3">
                    
              <v-row>     
-                 <v-col cols="9" class="pt-6 text-center">
-       <h2 style="font-size:15px;">Reflexión del día</h2></v-col><v-col cols="3"> <img :src="imagenIcono" width="100%"  /> 
+                 <v-col cols="9" class="pa-6 text-center">
+       <h2 style="font-size:15px;">Reflexión del día</h2></v-col><v-col cols="3" class="ma-0"> <img :src="imagenIcono" width="30"  /> 
     </v-col>
     </v-row>
     </v-col>
-       <v-col cols="12" md="9">
+       <v-col cols="12" md="9" class="pa-2">
        <p 
                 v-if="reflexion[0]" 
                     style="font-size:14px; text-align:left;" 
