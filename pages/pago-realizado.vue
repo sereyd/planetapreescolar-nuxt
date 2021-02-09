@@ -116,7 +116,7 @@ export default {
                   const {id} = datosUsuario;
 
                   //VALIDA QUE SOLO SE CAMBIA A USUARIO TIPO 1 SI EL USUARIO ES TIPO 0
-                  const lvl = datosUsuario.lvluser <= 2 ? 2 : 3;
+                  const lvl = datosUsuario.lvluser <= 1 ? 1 : 2;
 
                   //SE BUSCA AL USUARIO EN LA BASE DE DATOS POR MEDIO DEL ID
                   let usuarioRef =  this.$fireStore.collection("usuarios").doc(id);
@@ -207,7 +207,7 @@ export default {
             const {id} = datosUsuario;
 
             //VALIDA QUE SOLO SE CAMBIA A USUARIO TIPO 1 SI EL USUARIO ES TIPO 0
-            const lvl = datosUsuario.lvluser <= 2 ? 2 : 3;
+            const lvl = datosUsuario.lvluser <= 1 ? 1 : 2;
 
             this.importe = data.transaction_amount;
             this.tipoSuscripcion = this.importe === 1290 ? "trimestral" :

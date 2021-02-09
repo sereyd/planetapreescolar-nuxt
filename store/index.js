@@ -369,7 +369,7 @@ const createStore = () => {
         apellido: "",
         urlImagen: "",
         userlogin: false,
-        lvluser: 0,
+        lvluser: -1,
         grupo: {
           materias: []
           // alumnos:[],
@@ -422,8 +422,8 @@ const createStore = () => {
       recursosFavoritos:[],
 
       //LINKS DE DOMINIO (PRODUCCION Y DESARROLLO)
-      // dominio:"http://localhost:3000",
-      dominio:"https://educadora.cf",
+      dominio:"http://localhost:3000",
+      // dominio:"https://educadora.cf",
 
       //APIS DEVELOP Y PRODUCCION
       urlAPI: "https://stripe-checkout-api.herokuapp.com",
@@ -620,10 +620,10 @@ const createStore = () => {
                       }
                 });
 
-                  datos.estadoMembresia = datos.lvluser > 2 ? "active" : "";
+                  datos.estadoMembresia = datos.lvluser >= 2 ? "active" : "";
                   
                   //REVISAR ESTADO DE LA SUSCRIPCIÓN MIENTRAS NO SEA USUARIO ADMIN
-                  if(datos.lvluser === 1 || datos.lvluser === 2)
+                  if(datos.lvluser === 0 || datos.lvluser === 1)
                   {
                     // console.log("antes de config des")
                     context.commit("actualizarConfigDescargas")
@@ -635,7 +635,7 @@ const createStore = () => {
                       return result.json()
                     })
                     .then(async(suscripcion)=>{
-                      // console.log(suscripcion);
+                      console.log(suscripcion);
 
                       //OBTENER CONFIGURACION DE DESCARGAS
                       const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
@@ -681,9 +681,13 @@ const createStore = () => {
                       }
                       else{
                         datos.estadoMembresia = suscripcion.status;
-                        context.state.datosSuscripcion.status = true;
-                        console.log("SI TIENE MEMBRESIA PREMIUM")
-                        context.commit("updateDescargasPre", suscripcion);
+                        
+                        if(suscripcion.status === "active")
+                        {
+                          context.state.datosSuscripcion.status = true;
+                          console.log("SI TIENE MEMBRESIA PREMIUM")
+                          context.commit("updateDescargasPre", suscripcion);
+                        }
                       }
 
                       
@@ -770,13 +774,13 @@ const createStore = () => {
                       console.log('Error al verificar suscripción', err);
                     });              
                   }
-                  else if(datos.lvluser > 2)
+                  else if(datos.lvluser >= 2)
                   {
-                    console.log("antes de config des")
-                    context.commit("actualizarConfigDescargas")
+                    // console.log("antes de config des")
+                    // context.commit("actualizarConfigDescargas")
               //context.dispatch( "actualizarCategorias('cat')" );
               //
-                    console.log("des´pues de config des")
+                    // console.log("des´pues de config des")
                     datos.descargas.mes = {
                       active: true, tipo:"", disponibles: 3000,
                       registro: [] ,
@@ -1226,7 +1230,7 @@ const createStore = () => {
 
         if(data.salida===true){
           state.datosUsuario.userlogin=data.login
-          state.datosUsuario.lvluser=data.lvl
+          state.datosUsuario.lvluser= -1,
           state.datosUsuario.nombre = ""
           state.datosUsuario.apellido = ""
           state.datosUsuario.correo = ""

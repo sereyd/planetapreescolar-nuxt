@@ -25,7 +25,7 @@ export default{
       contadorDescargar(tipo, event){
 
         console.log(tipo);
-        if(this.datosUsuario.lvluser === 2 || this.datosUsuario.lvluser === 1)
+        if(this.datosUsuario.lvluser === 0 || this.datosUsuario.lvluser === 1)
         {
           let {descargas} = this.datosUsuario;
           // console.log(descargas);

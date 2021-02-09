@@ -5,7 +5,7 @@
 
 
       <!-- <v-col cols="12" md="12"> </v-col> -->
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 3">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 2">
         <h2>Mis Reflexiones</h2>
 
         <cargablog 
@@ -22,7 +22,7 @@
         </cargablog>
 
       </v-col>
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 3">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 2">
         <h2>Mis Planeaciones</h2>
 
         <cargablog 
@@ -40,7 +40,7 @@
 
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 3">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 2">
         <h2>Mis hojas de trabajo</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="hojatrabajo"  :listaR="hojastrabajo" 
@@ -56,7 +56,7 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 3">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 2">
         <h2>Mis hojas para ilustrar</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="hojailustrar"  :listaR="hojasilustrar" 
@@ -72,7 +72,7 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 3">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 2">
         <h2>Mi material didáctico</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="materialdidactico"  :listaR="materialdidactico" 
@@ -88,7 +88,7 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 3">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 2">
         <h2>Mis interactivos</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="interactivo"  :listaR="interactivos" 
@@ -104,7 +104,7 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser === 3">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 2">
         <h2>Mis otros</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="otro"  :listaR="otros" 
@@ -120,7 +120,7 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser > 0">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 0">
         <h2>Mis Memorias</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo=" memoria"  :listaR="memorias"
@@ -135,7 +135,7 @@
           </template>
         </cargablog>
       </v-col>  
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser > 0">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 0">
         <h2>Mis Blogs</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="blog"  :listaR="blog"
@@ -225,9 +225,9 @@ export default {
 
         // console.log(this)
         // console.log(this.$fireStore)
-        // tipo = this.datosUsuario.lvluser === 2 || datosUsuario.lvluser === 3 ? "ACTIVIDADES" : "CATEGORIAS";
+        // tipo = this.datosUsuario.lvluser === 2 || datosUsuario.lvluser >= 2 ? "ACTIVIDADES" : "CATEGORIAS";
         
-      if( this.datosUsuario.lvluser=== 3){
+      if( this.datosUsuario.lvluser >= 2){
 
         await this.$fireStore
           .collection(tipo)

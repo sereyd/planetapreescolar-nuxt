@@ -113,7 +113,7 @@ export default{
                 correo: user.email,
                 urlImagen: user.photoURL,
                 userlogin:true,
-                lvluser:1
+                lvluser:0
               };
               this.almacenarUsuarioCollection();
             }
@@ -149,7 +149,7 @@ export default{
           //SE ALMACENA EL NUEVO USUARIO EN LA COLECCION DE USUARIOS
           try {
               this.datosUsuarioR.userlogin = true,
-              this.datosUsuarioR.lvluser = 1;
+              this.datosUsuarioR.lvluser = 0;
               console.log(datosUsuarioR);
               await this.$fireStore.collection('usuarios').add(this.datosUsuarioR);
              ////Guarda los datos de usuario en el store con una mutación 
