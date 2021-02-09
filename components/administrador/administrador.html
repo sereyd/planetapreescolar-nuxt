@@ -3,12 +3,22 @@
     <!-- <v-btn @click="fullScreenUsuarios = true">Gestionar usuarios</v-btn> -->
     <v-row no-gutters>
       <v-col cols="12" md="12"  v-if="$validasesion($store,{permisos:2,logeado:true})" class="pa-10">
-          <v-btn 
+          
+        <v-btn 
             class="melon white--text" 
             @click="abrenot=true"
             >
             Notificaciones
           </v-btn>
+
+          <v-btn 
+            class="melon white--text" 
+            to="landingpage"
+            >
+            Landing Page Admin
+          </v-btn>  
+
+
       <v-dialog v-model="abrenot" max-width="850">
         <v-card>
           <v-card-title class="primary white--text">
