@@ -135,7 +135,7 @@ export default {
     updateCategoriasInicio(datos){
       datos.map(cat => {
 
-        if((cat.tipo === "planeacion" || cat.tipo === "materialdidactico" || cat.tipo === "hojatrabajo" || cat.tipo === "interactivo" ) && cat.recomendado && 
+        if((cat.tipo === "planeacion" || cat.tipo === "materialdidactico" || cat.tipo === "hojatrabajo" || cat.tipo === "hojailustrar" || cat.tipo === "interactivo" ) && cat.recomendado && 
           ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
           this.recomendaciones.push(cat)
 
@@ -150,7 +150,7 @@ export default {
           this.memorias.push(cat)
 
         else if(cat.tipo === "otro"  && 
-          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+          (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
             this.otros.push(cat)
 
       })

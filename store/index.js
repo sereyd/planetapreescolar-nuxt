@@ -635,7 +635,7 @@ const createStore = () => {
                       return result.json()
                     })
                     .then(async(suscripcion)=>{
-                      console.log(suscripcion);
+                      // console.log(suscripcion);
 
                       //OBTENER CONFIGURACION DE DESCARGAS
                       const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
@@ -1280,7 +1280,7 @@ const createStore = () => {
           .collection("confDescargas")
           .get()
           .then(data => {
-           console.log(data);
+          //  console.log(data);
             data.forEach(doc => {
               let dat = doc.data();
               datos = {
@@ -1291,7 +1291,7 @@ const createStore = () => {
   
             // commit("actualizarConfigDescargas",datos);
             // console.log(datos)
-            console.log('update store con firebase')
+            // console.log('update store con firebase')
             state.descargasConf = datos;
           });
         }
@@ -1478,24 +1478,36 @@ const createStore = () => {
         {
           // console.log("RECOMENDADOS")
           state.misPost = state.categorias.filter( 
-            post  => (post.tipo === "planeacion" && (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)))
+            post  => (post.tipo === "planeacion" && post.permisoadmin && (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)))
           )
   
           state.otrosPost = state.categorias.filter( 
             post  => 
-              ( post.tipo === "recurso" && (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)) )
+              ( post.tipo === "recurso" && post.permisoadmin &&  (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)) )
+          )
+        }
+        else if(tipoPost === "recomendados")
+        {
+          // console.log("RECOMENDADOS")
+          state.misPost = state.categorias.filter( 
+            post  => ( post.recomendado  && post.idCreador === state.datosUsuario.id && post.permisoadmin)
+          )
+  
+          state.otrosPost = state.categorias.filter( 
+            post  => 
+              ( post.recomendado  && post.edopost === "publico" && post.permisoadmin )
           )
         }
         else
         {
   
           state.misPost = state.categorias.filter( 
-            post  => (post.tipo === tipoPost && post.idCreador === state.datosUsuario.id)
+            post  => (post.tipo === tipoPost && post.idCreador === state.datosUsuario.id && post.permisoadmin)
           )
   
           state.otrosPost = state.categorias.filter( 
             post  => 
-              ( post.tipo === tipoPost && (post.idCreador !== state.datosUsuario.id && post.edopost !== "privado") )
+              ( post.tipo === tipoPost && (post.idCreador !== state.datosUsuario.id && post.edopost !== "privado") && post.permisoadmin)
           )
         }
         // console.log("state.misPost")

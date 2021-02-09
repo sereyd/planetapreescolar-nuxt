@@ -159,23 +159,23 @@ export default {
       datos.map(cat => {
 
         if(cat.tipo === "planeacion"  && 
-          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
+          ( cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
             this.planeaciones.push(cat)
   
         else if(cat.tipo === "materialdidactico"  && 
-          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+          (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
             this.materialdidactico.push(cat)
 
         else if(cat.tipo === "hojatrabajo"  && 
-          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+          (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
             this.hojastrabajo.push(cat)
 
         else if(cat.tipo === "hojailustrar"  && 
-          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+          (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
             this.hojasilustrar.push(cat)
 
         else if(cat.tipo === "interactivo"  && 
-          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+          (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
             this.interactivos.push(cat)
         
         // else if(cat.tipo === "otro"  && 
