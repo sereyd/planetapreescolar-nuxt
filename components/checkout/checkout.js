@@ -10,9 +10,15 @@ export default {
       importe:"",
 
       //CLAVES DE PAQUETES
+      mensualPriceId: "",
       trimestralPriceId: "price_1HtDqDGqO5WLKI2Hgd1pYWoE",
       semestralPriceId: "price_1HtDnFGqO5WLKI2HjCzJ8bVM",
       anualPriceId: "price_1HtDqEGqO5WLKI2H2YHeoZbZ",
+      // mensualPriceId: "price_1IISmVANenJgOhZEqbbhOoWO",
+      // trimestralPriceId: "price_1IISmVANenJgOhZEQFCe6E4l",
+      // semestralPriceId: "price_1IISmVANenJgOhZEyjxBqKE4",
+      // anualPriceId: "price_1IISmUANenJgOhZEM9nfjELS",
+
       precioMensual: 490,
       precioTrimestral: 1290,
       precioSemestral: 2190,
@@ -27,7 +33,7 @@ export default {
 
       //CLAVES PARA MERCADO PAGO GMAIL
       apiKey: "TEST-0243b12a-9903-4ea0-9837-a34e8fb2a723",
-      accessToken:"TEST-5708698566465206-020216-1cbaade80cc97fab76047cc3d8b3321b-706431956",
+      // accessToken:"TEST-5708698566465206-020216-1cbaade80cc97fab76047cc3d8b3321b-706431956",
       
       //DATA DE MERCAPAGO
       datosMP:{
@@ -143,80 +149,7 @@ export default {
 
     },
 
-    // checkPago(){
-    //   const config = {
-    //     method: 'POST',
-    //     headers: {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({idPago: "1233419229"})
-    //   }
-
-    //   fetch("http://localhost:4242/estado-pago",config)
-    //   .then((result)=>{
-    //     return result.json()
-    //   })
-    //   .then(async(suscripcion)=>{
-  
-    //     console.log(suscripcion)
-    //     if(suscripcion.error)
-    //     {
-    //       // datos.estadoMembresia = "canceled";
-    //       // context.state.datosSuscripcion.status = false;
-
-    //       console.log("error")
-    //     }
-    //     else{
-    //       console.log(suscripcion.response)
-    //       console.log(suscripcion.response.status)
-    //       // if(suscripcion.response.status === "approved" || suscripcion.response.status === "accredited")
-    //       // {
-    //       //   datos.estadoMembresia = "active";
-    //       //   context.state.datosSuscripcion = suscripcion.response;
-    //       //   context.state.datosSuscripcion.status = true;
-
-    //       //   // context.state.datosUsuario.descargasMes.status = true;
-
-
-    //       // }
-    //       // else
-    //       // {
-    //       //   datos.estadoMembresia = "canceled";
-    //       //   context.state.datosSuscripcion.status = false;
-    //       // }
-  
-    //     }
-  
-    //     // if(datos.estadoMembresia === 'canceled' || datos.estadoMembresia === '')
-    //     // {
-    //     //   const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
-            
-    //     //   const d = await response.json();
-  
-    //     //   if(!datos.descargasDia)
-    //     //   {
-    //     //     datos.descargasDia = 
-    //     //     {
-    //     //       disponibles: context.state.descargarFree,
-    //     //       usadas: [],
-    //     //       fecha: d.fecha
-    //     //     }
-    //     //   }
-    //     //   else if(d.fecha !== datos.descargasDia.fecha)
-    //     //   {
-    //     //     ///console.log("el dia cambiooooooo")
-    //     //     datos.descargasDia.disponibles= context.state.descargarFree,
-    //     //     datos.descargasDia.usadas = [];
-    //     //     datos.descargasDia.fecha = d.fecha;
-    //     //   }
-    //     // }
-  
-    //   })
-    //   .catch((err)=>{
-    //     console.log('Error al verificar suscripción', err);
-    //   });
-    // },
+    
 
     //PAGO CON MERCAPAGO POR OXXO
     async crearOrdenMP(){
@@ -302,40 +235,7 @@ export default {
 
     },
 
-    //PAGO CON MERCADO LIBRE
-    // pagarMP(){
-    //   window.this.$MPC_loaded !== true ? (window.attachEvent ? window.attachEvent('onload', $MPC_load) : window.addEventListener('load', $MPC_load, false)) : null;
-    // },
-    // $MPC_loaded(){
-    //   // <a mp-mode="dftl" href="https://www.mercadopago.com/mlm/debits/new?preapproval_plan_id=2c9380847739336f01773a8b6c050289" name="MP-payButton" class='blue-ar-l-rn-none'>Suscribirme</a>
-
-
-    //      window.this.$MPC_loaded !== true && (function() {
-    //      var s = document.createElement("script");
-    //      s.type = "text/javascript";
-    //      s.async = true;
-    //      s.src = document.location.protocol + "//secure.mlstatic.com/mptools/render.js";
-    //      var x = document.getElementsByTagName('script')[0];
-    //      x.parentNode.insertBefore(s, x);
-    //      window.this.$MPC_loaded = true;
-    //   })();
    
-
-
-
-    // },
-
-    // $MPC_load(){
-    //   window.$MPC_loaded !== true && (function() {
-    //   var s = document.createElement("script");
-    //   s.type = "text/javascript";
-    //   s.async = true;
-    //   s.src = document.location.protocol + "//secure.mlstatic.com/mptools/render.js";
-    //   var x = document.getElementsByTagName('script')[0];
-    //   x.parentNode.insertBefore(s, x);
-    //   window.$MPC_loaded = true;
-    //  })();
-    // },
     
 
 

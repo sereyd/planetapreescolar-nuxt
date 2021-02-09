@@ -15,7 +15,7 @@
                 <v-switch  v-model="datosblog.publicado" label="Publicado"></v-switch>
             </v-col>
             <v-col  cols="12" md="3">
-                <v-switch v-if="datosUsuario.lvluser===3"  v-model="datosblog.verificado" disable label="Verificado"></v-switch>
+                <v-switch v-if="datosUsuario.lvluser >= 2"  v-model="datosblog.verificado" disable label="Verificado"></v-switch>
             </v-col> 
             <v-col  cols="12" md="3">
                         <v-btn class="melon white--text" style="text-transform: none;" @click="crearBlog()" >Guardar y Finalizar</v-btn>

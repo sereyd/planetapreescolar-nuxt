@@ -23,18 +23,21 @@ export default{
     methods:{
       ...mapActions(['changeRecursosFavoritos','notificacionComentario']),
       contadorDescargar(tipo, event){
+
         console.log(tipo);
-        let {descargas} = this.datosUsuario;
-        // console.log(descargas);
-        // console.log(this.vistapost)
-        const {idRecurso} = this.vistapost;
-        const {id} = this.datosUsuario;
-        let esDescargar = false;
+        if(this.datosUsuario.lvluser === 0 || this.datosUsuario.lvluser === 1)
+        {
+          let {descargas} = this.datosUsuario;
+          // console.log(descargas);
+          // console.log(this.vistapost)
+          const {idRecurso} = this.vistapost;
+          const {id, tipoSuscripcion} = this.datosUsuario;
+          let esDescargar = false;
         
-          if(tipo === "Free"  && descargas.dia.usadas.length < descargas.dia.disponibles)
+          if(tipo === "Free"  && descargas.dia.usadas.length < this.descargasConf.free)
           {
             descargas.dia.usadas.push(idRecurso);
-            descargas.dia.disponibles= this.descargarFree;
+            descargas.dia.disponibles= this.descargasConf.free;
             esDescargar = true
           }
           else if(tipo === "Plan")
@@ -47,7 +50,14 @@ export default{
               if(reg.mes === mesactual)
               {
                 existeMes = true;
-                if(reg.usadas.length < descargas.mes.disponibles )
+                const descargasDisponibles = tipoSuscripcion === "mensual" ? this.descargasConf.mensual 
+                : tipoSuscripcion === "trimestral" ? this.descargasConf.trimestral
+                : tipoSuscripcion === "semestral" ? this.descargasConf.semestral
+                :  this.descargasConf.anual
+              
+                // console.log("descargas disponibles: "+descargasDisponibles)
+                // console.log("tipo membresia: "+tipoSuscripcion)
+                if(reg.usadas.length < descargasDisponibles )
                 {
                   reg.usadas.push(idRecurso);
                   esDescargar = true;
@@ -68,7 +78,6 @@ export default{
             }
             // console.log(descargas);
             // console.log(descargas.mes);
-            // descargas.mes.disponibles= this.descargarFree;
           }
           if(esDescargar)
           {
@@ -92,6 +101,7 @@ export default{
             event.preventDefault();
             this.dialogPlanes=true
           }
+        }
       },
       
     },
@@ -140,7 +150,7 @@ export default{
       comentarios
     },
     computed: {
-      ...mapState(['datosUsuario','itemsmenu','descargarFree']),
+      ...mapState(['datosUsuario','itemsmenu','descargasConf']),
       
       cargarecomendacion(){
         let limit=150
@@ -156,9 +166,18 @@ export default{
       },
       esFree(){
         const {usadas, disponibles} = this.datosUsuario.descargas.dia;
-        const res = usadas.length < disponibles ?  true : false
+        const res = usadas.length < this.descargasConf.free ?  true : false
 
         return res;
-      }
+      },
+      descargarPlan(){
+        const {tipoSuscripcion} = this.datosUsuario;
+        const descargasDisponibles = tipoSuscripcion === "mensual" ? this.descargasConf.mensual 
+          : tipoSuscripcion === "trimestral" ? this.descargasConf.trimestral
+          : tipoSuscripcion === "semestral" ? this.descargasConf.semestral
+          :  this.descargasConf.anual
+
+          return descargasDisponibles
+      },
     },
 }

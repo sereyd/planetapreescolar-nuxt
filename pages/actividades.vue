@@ -25,6 +25,15 @@
                 />
                 <div style="width:100%; height:0px;" v-if="hojastrabajo.length > 0"></div>
 
+                <!-------HOJAS PARA ILUSTRAR------------->
+                <listablog 
+                        :blogpost="hojasilustrar" :esCompleto="false" @updateBlogpost="hojasilustrar=$event"
+                        tipo="CATEGORIAS" subtipo="hojailustrar" 
+                        titulo="Hojas para ilustrar para los niños" subtitulos="Recortes, actividades, días especiales, ¡todo lo que necesitas!" 
+                        linkmas="hojas-ilustrar"  
+                />
+                <div style="width:100%; height:0px;" v-if="hojasilustrar.length > 0"></div>
+
                 <!-------MATERIAL DIDÁCTICO------------->
                 <listablog 
                         :blogpost="materialdidactico" :esCompleto="false" @updateBlogpost="materialdidactico=$event"
@@ -44,13 +53,13 @@
                 <div style="width:100%; height:0px;" v-if="interactivos.length > 0"></div>
 
                 <!-------OTROS------------->
-                <listablog 
+                <!-- <listablog 
                         :blogpost="otros" :esCompleto="false" @updateBlogpost="otros=$event"
                         tipo="CATEGORIAS" subtipo="otro" 
                         titulo="Otros" subtitulos="Efemérides nacionales e internacionales, convocatorias varias, Orientaciones administrativas, ¡todo lo que necesitas!" 
                         linkmas="otros"  
                 />
-                <div style="width:100%; height:0px;" v-if="otros.length > 0"></div>
+                <div style="width:100%; height:0px;" v-if="otros.length > 0"></div> -->
 
                 
                 <!-- <div style="width:100%; height:150px;" v-if="interactivos.length > 0"></div> -->
@@ -71,6 +80,7 @@ export default {
       // reflexiones:[],
       planeaciones:[],
       hojastrabajo:[],
+      hojasilustrar:[],
       materialdidactico:[],
       interactivos:[],
       otros:[],
@@ -149,24 +159,28 @@ export default {
       datos.map(cat => {
 
         if(cat.tipo === "planeacion"  && 
-          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
+          ( cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
             this.planeaciones.push(cat)
   
         else if(cat.tipo === "materialdidactico"  && 
-          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+          (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
             this.materialdidactico.push(cat)
 
         else if(cat.tipo === "hojatrabajo"  && 
-          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+          (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
             this.hojastrabajo.push(cat)
 
+        else if(cat.tipo === "hojailustrar"  && 
+          (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+            this.hojasilustrar.push(cat)
+
         else if(cat.tipo === "interactivo"  && 
-          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+          (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
             this.interactivos.push(cat)
         
-        else if(cat.tipo === "otro"  && 
-          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
-            this.otros.push(cat)
+        // else if(cat.tipo === "otro"  && 
+        //   (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+        //     this.otros.push(cat)
 
 
       })
@@ -181,14 +195,17 @@ export default {
       this.hojastrabajo = 
         this.hojastrabajo.length > 4 ? await this.listaAleatoria(this.hojastrabajo) : this.hojastrabajo.slice(0, 4) 
       
+      this.hojasilustrar = 
+        this.hojasilustrar.length > 4 ? await this.listaAleatoria(this.hojasilustrar) : this.hojasilustrar.slice(0, 4) 
+      
       this.materialdidactico = 
         this.materialdidactico.length > 4 ? await this.listaAleatoria(this.materialdidactico) : this.materialdidactico.slice(0, 4) 
 
       this.interactivos = 
         this.interactivos.length > 4 ? await this.listaAleatoria(this.interactivos) : this.interactivos.slice(0, 4) 
       
-      this.otros = 
-        this.otros.length > 4 ? await this.listaAleatoria(this.otros) : this.otros.slice(0, 4) 
+      // this.otros = 
+      //   this.otros.length > 4 ? await this.listaAleatoria(this.otros) : this.otros.slice(0, 4) 
       
     }
   },

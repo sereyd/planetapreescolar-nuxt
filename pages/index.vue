@@ -40,6 +40,14 @@
   linkmas="memorias" 
 />
 
+<div style="width:100%; height:0px;" ></div>
+<listablog 
+  :blogpost="otros" :esCompleto="false" @updateBlogpost="otros=$event"
+  tipo="CATEGORIAS" subtipo="otro" 
+  titulo="Administración" subtitulos="Efemérides nacionales e internacionales, convocatorias varias, Orientaciones administrativas, ¡todo lo que necesitas!" 
+  linkmas="otros"  
+/>
+
 
 </v-main>
 </template>
@@ -57,6 +65,7 @@ export default {
       recomendaciones:[],
       blog:[],
       memorias:[],
+      otros:[],
       bandera: false,
     };
   },
@@ -126,7 +135,7 @@ export default {
     updateCategoriasInicio(datos){
       datos.map(cat => {
 
-        if((cat.tipo === "planeacion" || cat.tipo === "materialdidactico" || cat.tipo === "hojatrabajo" || cat.tipo === "interactivo" || cat.tipo === "otro") && cat.recomendado && 
+        if((cat.tipo === "planeacion" || cat.tipo === "materialdidactico" || cat.tipo === "hojatrabajo" || cat.tipo === "hojailustrar" || cat.tipo === "interactivo" ) && cat.recomendado && 
           ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
           this.recomendaciones.push(cat)
 
@@ -140,7 +149,12 @@ export default {
           ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
           this.memorias.push(cat)
 
+        else if(cat.tipo === "otro"  && 
+          (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+            this.otros.push(cat)
+
       })
+
     },
     async sliceCategoriasInicio(){
 
@@ -152,6 +166,9 @@ export default {
       
       this.recomendaciones = 
         this.recomendaciones.length > 4 ? await this.listaAleatoria(this.recomendaciones) : this.recomendaciones.slice(0, 4) 
+
+      this.otros = 
+        this.otros.length > 4 ? await this.listaAleatoria(this.otros) : this.otros.slice(0, 4) 
   
     }
   },

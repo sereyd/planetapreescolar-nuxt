@@ -23,12 +23,12 @@
                 </v-btn>
             </div>
             <!-- <p>{{relacionados[contador].tipo}}</p> -->
-            <v-row v-if="relacionados[contador].tipo === 'planeacion' || relacionados[contador].tipo === 'materialdidactico' || relacionados[contador].tipo === 'hojatrabajo' ">
+            <v-row v-if="relacionados[contador].tipo === 'planeacion' || relacionados[contador].tipo === 'materialdidactico' || relacionados[contador].tipo === 'hojatrabajo' || relacionados[contador].tipo === 'hojailustrar' ">
                 <v-col cols="12" md="5" sm="5" class="" >
                     <v-img
                         :src="relacionados[contador].urlImagen === '' || relacionados[contador].urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : relacionados[contador].urlImagen"
                         contain
-                        :class="[relacionados[contador].tipo === 'hojatrabajo' ? 'fotohojatrabajo' : 'fotomd']"
+                        :class="[relacionados[contador].tipo === 'hojatrabajo' || relacionados[contador].tipo === 'hojailustrar' ? 'fotohojatrabajo' : 'fotomd']"
                         
                     />
                 </v-col>
@@ -50,7 +50,7 @@
                             <div class="mt-4" style="font-size:13px;" v-html="cargarecomendacion"></div>
                         </div>
         
-                        <div v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo==='recomendacion'" 
+                        <div v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' || subtipo==='recomendacion'" 
                         class=" ml-3 textos">
                             <h4>{{relacionados[contador].titulo}}</h4>
                             <p class="datos_extra">{{relacionados[contador].materia}}</p>
@@ -58,10 +58,16 @@
                         </div>
                         
                     </div>
-                    <div v-if ="subtipo === 'hojatrabajo'" >
-                        <div  v-if ="!spinner && datosUsuario.lvluser > 0">
+                    <div v-if ="subtipo === 'hojatrabajo' || relacionados[contador].tipo === 'hojatrabajo' || subtipo === 'hojailustrar' || relacionados[contador].tipo === 'hojailustrar' ">
+                        <div  v-if ="!spinner && datosUsuario.lvluser >= 0">
+                            <!-- <div>
+                                {{datosUsuario.descargas.dia.usadas.length}} < {{descargasConf.free}}
+                            </div> -->
+                            <!-- <div>
+                                {{datosUsuario.descargas.dia.usadas.length}} < {{descargasConf.free}}
+                            </div> -->
                             <a 
-                                v-if="esFree"
+                                v-if="esFree && (datosUsuario.descargas.dia.usadas.length < descargasConf.free)"
                                 :download="nombreFile"
                                 :href="urlFileB" 
                                 @click="contadorDescargar('Free', $event)"
@@ -75,7 +81,7 @@
                             <!-- datosUsuario.descargas.mes.usadas.length < datosUsuario.descargas.mes.disponibles    -->
                             
                             <a 
-                                v-else-if="datosUsuario.lvluser === 3|| 
+                                v-else-if="datosUsuario.lvluser >= 2|| 
                                 (
                                     datosUsuario.descargas.mes.active  
                                 )"
@@ -160,7 +166,7 @@
                             <p class="datos_extra" style="font-size: 14px;" v-html="relacionados[contador].contenido.substr(0,90)"></p>
                         </div>
         
-                        <div v-else-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo==='recomendacion'" 
+                        <div v-else-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' || subtipo==='recomendacion'" 
                         class=" ml-3 textos">
                             <h4>{{relacionados[contador].titulo}}</h4>
                             <p class="datos_extra">{{relacionados[contador].materia}}</p>
@@ -185,36 +191,45 @@
                             v-if="spinner" 
                         />
                         <div 
-                            v-else-if ="!spinner && datosUsuario.lvluser > 0"
+                            v-else-if ="!spinner && datosUsuario.lvluser >= 0"
                         >
 
-                            <!-- <p>{{datosUsuario.descargasDia}}</p>
-                            <p>{{datosUsuario.estadoMembresia}}</p> -->
-                            <a 
-                                v-if="datosUsuario.estadoMembresia === 'active'|| 
-                                (
-                                    datosUsuario.descargasDia.usadas.length < datosUsuario.descargasDia.disponibles
-                                    
-                                )"
-                                :download="nombreFile"
-                                :href="urlFileB" 
-                                @click="contadorDescargar()"
-                                target="_blank"
-                                class="v-btn v-btn--contained theme--light v-size--default melon mt-3 white--text"
-                                style="text-transform: none; border-radius: 12px;"
-                            >
-                                <v-icon rigth dark> mdi-download </v-icon>
-                                Descargar
-                            </a>
-                            <v-btn
-                                v-else
-                                class="ma-2 melon white--text"
-                                style="text-transform: none; border-radius: 12px;"
-                                @click="dialogPlanes=true"
-                            >
-                                <v-icon rigth dark> mdi-download </v-icon>
-                                Descargar
-                            </v-btn>
+                        <a 
+                            v-if="esFree && (datosUsuario.descargas.dia.usadas.length < descargasConf.free)"
+                            :download="nombreFile"
+                            :href="urlFileB" 
+                            @click="contadorDescargar('Free', $event)"
+                            target="_blank"
+                            class="v-btn v-btn--contained theme--light v-size--default melon mt-3 white--text"
+                            style="text-transform: none; border-radius: 12px;"
+                        >
+                        <v-icon rigth dark> mdi-download </v-icon>
+                            Descarga Free
+                        </a>
+                        <a 
+                            v-else-if="datosUsuario.lvluser >= 2 || 
+                            (
+                                datosUsuario.descargas.mes.active  
+                            )"
+                            :download="nombreFile"
+                            :href="urlFileB" 
+                            @click="contadorDescargar('Plan', $event)"
+                            target="_blank"
+                            class="v-btn v-btn--contained theme--light v-size--default melon mt-3 white--text"
+                            style="text-transform: none; border-radius: 12px;"
+                        >
+                            <v-icon rigth dark> mdi-download </v-icon>
+                            Descargar
+                        </a>
+                        <v-btn
+                            v-else
+                            class="ma-2 melon white--text"
+                            style="text-transform: none; border-radius: 12px;"
+                            @click="dialogPlanes=true"
+                        >
+                            <v-icon rigth dark> mdi-download </v-icon>
+                            Descargar
+                        </v-btn>
                             
                             
                         </div>
@@ -227,7 +242,7 @@
             </v-card>
 
             <comentarios
-                v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'recomendacion'"
+                v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' || subtipo === 'recomendacion'"
                 :post="vistapost" @updatePost="vistapost = $event"
             />
 
@@ -282,7 +297,7 @@
           </v-card-title>
           <div class="mt-4">
                 <p class="text-center"v-if="datosUsuario.descargas.mes.active">
-                    Tu plan actual solo te permite {{datosUsuario.descargas.mes.disponibles}} descargas por mes
+                    Tu plan actual solo te permite {{descargarPlan}} descargas por mes
                 </p>
                 <p class="text-center"v-else>
                     Descarga nuestro material de forma ilimitada suscribiendote a nuestros planes

@@ -101,7 +101,7 @@
                             
                         </div>
 
-                        <div v-if="subtipo !=='planeacion' && subtipo !=='reflexion' && subtipo !=='materialdidactico' && subtipo !=='hojatrabajo' && subtipo !=='otro'">
+                        <div v-if="subtipo !=='planeacion' && subtipo !=='reflexion' && subtipo !=='materialdidactico' && subtipo !=='hojatrabajo' && subtipo !=='hojailustrar' && subtipo !=='otro'">
                             <v-select
                                 :items="tiposRecursoList"
                                 label="Tipo de recurso"
@@ -144,7 +144,7 @@
                            
                         </div>
 
-                        <div v-else-if="subtipo ==='materialdidactico' || subtipo ==='hojatrabajo' || subtipo ==='otro'">
+                        <div v-else-if="subtipo ==='materialdidactico' || subtipo ==='hojatrabajo' || subtipo ==='hojailustrar' || subtipo ==='otro'">
                             <subirFile 
                                 filesAccepts=".pdf" 
                                 :label="labelFile"
@@ -176,7 +176,7 @@
                             name="input-7-4"
                             :rules="sinopsisReglas"
                             label="Sinopsis..."
-                            v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo')"
+                            v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo')"
                             @keyup.enter=""
 
                         ></v-textarea>
@@ -188,7 +188,7 @@
                             outlined
                             :rules="[v => !!v || 'Materia es requerida']"
                             @keyup.enter=""
-                            v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo')"
+                            v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo')"
                         ></v-text-field>
 
                         <v-text-field
@@ -198,7 +198,7 @@
                             outlined
                             :rules="[v => !!v || 'Grado es requerido']"
                             @keyup.enter=""
-                            v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo')"
+                            v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo')"
                         ></v-text-field>
                         
                         <span class="d-flex align-self-start" v-if="subtipo === 'interactivo'">Letra de video o canción:</span>
@@ -231,7 +231,7 @@
                                 inset
                                 label="Premium"
                                 small
-                                v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro')"
+                                v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' || subtipo === 'otro')"
 
                             ></v-switch>
     
@@ -240,17 +240,17 @@
                                 inset
                                 label="Recomendado"
                                 small
-                                v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro'"
+                                v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' "
 
                             ></v-switch>
                             <v-switch 
                                 v-model="datosRecurso.permisoadmin"  
-                                v-if="(datosUsuario.lvluser===3) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro')" 
+                                v-if="(datosUsuario.lvluser===2) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' || subtipo === 'otro')" 
                                 label="Validado por administador
                             "></v-switch>
                             <!-- <v-switch 
                                 v-model="usarnombre"  
-                                v-if="(datosUsuario.lvluser===3) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro')" 
+                                v-if="(datosUsuario.lvluser===2) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro')" 
                                 label="Nombre personal
                             "></v-switch> -->
 
@@ -259,7 +259,7 @@
                                 label="Nombre personal"
                                 color="primary "
                                 class="mb-3"
-                                v-if="(datosUsuario.lvluser===3) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro')" 
+                                v-if="(datosUsuario.lvluser===2) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' || subtipo === 'otro')" 
                                 hide-details
                             ></v-checkbox>
                         </div>

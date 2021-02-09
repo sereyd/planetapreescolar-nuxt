@@ -27,12 +27,12 @@
             })
           "
         >
-          Mis hojas de trabajo
+          Mis hojas para ilustrar
         </h2>
 
         <listablog
           :blogpost="misPost" @updateBlogpost="misPost=$event"
-          tipo="CATEGORIAS"  subtipo="hojatrabajo"
+          tipo="CATEGORIAS"  subtipo="hojailustrar"
           :userId="this.datosUsuario.id"
           titulo=""
           subtitulos=""
@@ -62,7 +62,7 @@
         <listablog
           :blogpost="otrosPost" @updateBlogpost="otrosPost=$event"
           tipo="CATEGORIAS"  subtipo="hojatrabajo"
-          titulo="Hojas de trabajo publicas"
+          titulo="Hojas para ilustrar publicas"
           subtitulos="Conoce lo que pasa en el mundo de la educación inicial"
         />
       </v-col>
@@ -104,7 +104,7 @@ export default {
     methods:{
     ...mapActions(['cargaBasePost']),
     async cargaPost(){
-      await this.cargaBasePost("hojatrabajo");
+      await this.cargaBasePost("hojailustrar");
 
     },
     },

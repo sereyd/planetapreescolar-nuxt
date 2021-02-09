@@ -102,6 +102,8 @@ export default {
         tipoM= "Editar material didactico";
       else if(this.subtipo === "hojatrabajo")
         tipoM= "Editar hoja de trabajo";
+      else if(this.subtipo === "hojailustrar")
+        tipoM= "Editar hoja para ilustrar";
       else if(this.subtipo === "interactivo")
         tipoM= "Editar interactivo";
       else if(this.subtipo === "otro")

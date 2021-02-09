@@ -22,6 +22,15 @@
     />
     <div style="width:100%; height:0px;" v-if="hojastrabajo.length > 0"></div>
 
+    <!-------HOJAS PARA ILUSTRAR------------->
+    <listablog 
+            :blogpost="hojasilustrar" :esCompleto="false" @updateBlogpost="hojasilustrar=$event"
+            tipo="CATEGORIAS" subtipo="hojailustrar" 
+            titulo="Hojas para ilustrar" subtitulos="" 
+            :esFavoritos="true"  
+    />
+    <div style="width:100%; height:0px;" v-if="hojasilustrar.length > 0"></div>
+
     <!-------MATERIAL DIDÁCTICO------------->
     <listablog 
             :blogpost="materialdidactico"  @updateBlogpost="materialdidactico=$event"
@@ -114,6 +123,7 @@ export default {
 
       planeaciones:[],
       hojastrabajo:[],
+      hojasilustrar:[],
       materialdidactico:[],
       interactivos:[],
       otros:[],
@@ -206,23 +216,27 @@ export default {
           this.recursos.push(cat)
 
         else if(cat.tipo === "planeacion" && esFav  && 
-          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
+          ( cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
           this.planeaciones.push(cat)
 
         
         else if(cat.tipo === "materialdidactico"  && esFav  && 
-          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+          (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
             this.materialdidactico.push(cat)
 
         else if(cat.tipo === "hojatrabajo"  && esFav  && 
-          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+          (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
             this.hojastrabajo.push(cat)
 
+        else if(cat.tipo === "hojailustrar"  && esFav  && 
+          (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+            this.hojasilustrar.push(cat)
+
         else if(cat.tipo === "interactivo"  && esFav  && 
-          (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
+          (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
             this.interactivos.push(cat)
         
-        else if(cat.tipo === "otro"  && esFav  && 
+        else if(cat.tipo === "otro" && cat.permisoadmin  && esFav  && 
           (cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
             this.otros.push(cat)
 

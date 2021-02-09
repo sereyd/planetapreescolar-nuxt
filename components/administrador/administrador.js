@@ -51,6 +51,7 @@ export default{
 
             dialog: false,//DATA PARA ELA VENTANA  EMERGENTE DE EDITAR USUARIO
             valid: false,  //DATA PARA VALIDAR EL FORMULARIO
+            validConfigD: false,  //DATA PARA VALIDAR EL FORMULARIO CONFIG DESCARGAS
 
             /* REGLAS DEL PRIMER FORMULARIO */
             nombreReglas: [
@@ -65,6 +66,7 @@ export default{
                 v =>  (v >= 0 && v < 3) || 'Seleccione un nivel'
             ],
             abrenot:false,
+            dialogDes:false,
             optionUsuarios:[],
             usernotselect:{},
             iconos:[
@@ -85,7 +87,14 @@ export default{
                     value:'mdi-email'
                   }
                 
-                ]
+            ],
+            editDescargasConf:{
+                free:0,
+                mensual:0,
+                trimestral:0,
+                semestral:0,
+                anual:0,
+            },
 
             
         }
@@ -93,11 +102,63 @@ export default{
     },
     computed:{
         // ...mapState(['datosUsuario']),
-        ...mapState(['datosUsuario']),
+        ...mapState(['datosUsuario','descargasConf']),
     },
     methods:{
         ...mapActions(['creaNotificacion']),
-        ...mapMutations(['cambiarStatusOpenAdmin']),
+        ...mapMutations(['cambiarStatusOpenAdmin','actualizarConfigDescargas']),
+        abrirConfigD(){
+            this.dialogDes = true;
+            this.editDescargasConf = {...this.descargasConf};
+        },
+        // async cargaConfiguracionDescargas(){
+        //     let datos= {};
+        //     console.log("OBTENIENDO DATA")
+
+        //     await this.$fireStore
+        //     .collection("confDescargas")
+        //     .get()
+        //     .then(data => {
+        //      console.log(data);
+        //       data.forEach(doc => {
+        //         let dat = doc.data();
+        //         datos = {
+        //           idConfig: doc.id,
+        //           ...dat
+        //         }
+        //       });
+        //       this.actualizarConfigDescargas(datos);
+        //       console.log(datos)
+        //       this.editDescargasConf = datos;
+        //       console.log(this.descargasConf)
+        //       this.dialogDes = true;
+
+        //     });
+
+        // },
+        editarConfigDescargas(){
+            const {idConfig} = this.descargasConf;
+            // console.log(this.descargasConf);
+            // console.log(this.editDescargasConf);
+            //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
+            let descargasFreeRef = this.$fireStore.collection("confDescargas").doc(idConfig);
+            
+            //SE ACTUALIZA EN FIREBASE EL CAMPO DE COMENTARIOS
+            descargasFreeRef.update({
+                ...this.editDescargasConf
+            })
+            .then(() => {
+              console.log("UPDATE CONFIGURACION DESCARGAR ")
+              this.actualizarConfigDescargas(this.editDescargasConf);
+            //   console.log(datos)
+            //   console.log(this.descargasConf)
+              this.dialogDes = false;
+        
+            })
+            .catch((error) => {
+                console.error("ErroR al actualizar descargas: ", error);
+            });
+        },
         enviarNotificacion(){
             this.creaNotificacion(this.usernotselect)
 
@@ -166,6 +227,15 @@ export default{
             if(this.valid)
               this.guardarModificacionUsuario();
         },
+
+        validateConfDes () {
+            const vd = this.$refs.formConfigDes.validate();
+            this.validConfigD = vd;
+            if(this.validConfigD)
+            //   this.crearUsuario()
+            this.editarConfigDescargas()
+            // console.log("todo OK")
+          },
     },
     mounted(){
         this.getElement()

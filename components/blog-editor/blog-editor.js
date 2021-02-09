@@ -129,6 +129,13 @@ export default {
         this.labelFile="Seleccione archivo"
         this.tipoRecursoSelect ="file"
       }
+      else if(this.subtipo === "hojailustrar")
+      {
+        tipoM= "Nueva hoja para ilustrar";
+        this.tipoRecursoFile = "image/*, .ppt, .pptx, .pdf"
+        this.labelFile="Seleccione archivo"
+        this.tipoRecursoSelect ="file"
+      }
       else if(this.subtipo === "interactivo")
       {
         tipoM= "Nuevo interactivo";
@@ -189,7 +196,7 @@ export default {
             materia: this.materia,
             grado: this.grado,
             sinopsis: this.sinopsis,
-            tipoCreador: lvluser === 3 ? 'administrador' : 'usuario',
+            tipoCreador: lvluser >= 2 ? 'administrador' : 'usuario',
             tipo: this.subtipo,
             // tags: this.tags
           }
@@ -270,7 +277,7 @@ export default {
       // if(TtipoRecursoSelect === 'file')
       if(this.subtipo === "reflexion")
         this.tipoRecursoSelect = "";
-      this.usarnombre =  this.datosUsuario.lvluser === 3 ? false : true;
+      this.usarnombre =  this.datosUsuario.lvluser >=2 ? false : true;
 
       this.creaRecurso=true
     },
