@@ -275,12 +275,12 @@
                                 v-if="datosRecursoEdit.tipo === 'planeacion' || subtipo ==='materialdidactico' || subtipo ==='hojatrabajo' || subtipo ==='hojailustrar' || subtipo === 'interactivo'"
                             ></v-switch>
 
-                            <v-switch v-model="datosRecursoEdit.permisoadmin"  v-if="datosUsuario.lvluser >= 2" label="Validado por administador
+                            <v-switch v-model="datosRecursoEdit.permisoadmin"  v-if="datosUsuario.lvluser >= 3" label="Validado por administador
                             "></v-switch>
 
                             <!-- <v-switch 
                                 v-model="usarnombre"  
-                                v-if="(datosUsuario.lvluser >= 2) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro')" 
+                                v-if="(datosUsuario.lvluser >= 3) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro')" 
                                 label="Nombre personal
                             "></v-switch> -->
                         </div>

@@ -196,7 +196,7 @@ export default {
             materia: this.materia,
             grado: this.grado,
             sinopsis: this.sinopsis,
-            tipoCreador: lvluser >= 2 ? 'administrador' : 'usuario',
+            tipoCreador: lvluser >= 3 ? 'administrador' : 'usuario',
             tipo: this.subtipo,
             // tags: this.tags
           }
@@ -277,7 +277,7 @@ export default {
       // if(TtipoRecursoSelect === 'file')
       if(this.subtipo === "reflexion")
         this.tipoRecursoSelect = "";
-      this.usarnombre =  this.datosUsuario.lvluser >=2 ? false : true;
+      this.usarnombre =  this.datosUsuario.lvluser >=3 ? false : true;
 
       this.creaRecurso=true
     },
