@@ -291,7 +291,7 @@ const createStore = () => {
           icon: "mdi-tag",
           link: "",
           link: "/tienda",
-          visible: true
+          visible: false
         },
         {
           title: "Mis Grupos",
@@ -299,19 +299,19 @@ const createStore = () => {
           link: "/grupos",
           logeado: true,
           permisos: 0,
-          visible: true
+          visible: false
         },
         {
           title: "Directorio",
           icon: "mdi-book-multiple",
           link: "/directorio",
-          visible: true
+          visible: false
         },
         {
           title: "Calendario",
           icon: "mdi-calendar",
           link: "/calendario",
-          visible: true
+          visible: false
         },
         {
           title: "Cuenta",
