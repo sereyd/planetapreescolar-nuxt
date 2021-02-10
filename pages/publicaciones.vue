@@ -215,18 +215,13 @@ export default {
         this.materialdidactico=[];
         this.interactivos=[];
         this.otros=[];
-    // console.log(this.tipo)
-    // console.log(this.$store.state.datosUsuario.id)
     let datos = {};
     let tipo = "CATEGORIAS";
       
       try {
         // const usuarioQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
 
-        // console.log(this)
-        // console.log(this.$fireStore)
-        // tipo = this.datosUsuario.lvluser === 2 || datosUsuario.lvluser >= 3 ? "ACTIVIDADES" : "CATEGORIAS";
-        
+       
       if( this.datosUsuario.lvluser >= 3){
 
         await this.$fireStore
@@ -248,9 +243,6 @@ export default {
                 ...data
               }
 
-                // console.log("TIPO")
-                // console.log(datos.tipo)
-                // console.log(datos)
                 if(datos.tipo === "memoria")
                   this.memorias.push(datos)
 
@@ -278,34 +270,9 @@ export default {
                 else if(datos.tipo === "otro")
                   this.otros.push(datos)
 
-              // this.listaR.push(datos);
-                // console.log("Carga tipo: "+this.tipo)
-                // console.log(doc.data())
-              // this.listaR.push(doc.data());
             });
 
-            // console.log("this.reflexiones")
-            // console.log(this.reflexiones)
-            //   console.log("this.planeaciones")
-            //   console.log(this.planeaciones)
-
-            //   console.log("this.hojastrabajo")
-            //   console.log(this.hojastrabajo)
-
-            //   console.log("this.materialdidactico")
-            //   console.log(this.materialdidactico)
-
-            //   console.log("this.interactivos")
-            //   console.log(this.interactivos)
-
-            //   console.log("this.otros")
-            //   console.log(this.otros)
-
-            //   console.log("this.blog")
-            //   console.log(this.blog)
-            //   console.log("this.memorias")
-            //   console.log(this.memorias)
-            // console.log(this.listaR)
+            
           });
 
       }else{
@@ -353,23 +320,10 @@ export default {
 
                 else if(datos.tipo === "otro")
                   this.otros.push(datos)
-              // this.listaR.push(datos);
-                // console.log("Carga tipo: "+this.tipo)
-                // console.log(doc.data())
-              // this.listaR.push(doc.data());
+              
             });
 
-            // console.log("this.reflexiones")
-            // console.log(this.reflexiones)
-            //   console.log("this.planeaciones")
-            //   console.log(this.planeaciones)
-            //   console.log("this.recursos")
-            //   console.log(this.recursos)
-            //   console.log("this.blog")
-            //   console.log(this.blog)
-            //   console.log("this.memorias")
-            //   console.log(this.memorias)
-            // console.log(this.listaR)
+            
           });
 
       }

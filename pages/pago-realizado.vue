@@ -78,10 +78,10 @@ export default {
       ...mapActions(['obtenerDatosSuscripcion']),
       subirAlumnos(){
         // console.log(this.file.files[0])
-        console.log(this)
-        console.log(this.$refs)
-        console.log(this.$refs.updateFile)
-        console.log(this.$refs.updateFile.files)
+        // console.log(this)
+        // console.log(this.$refs)
+        // console.log(this.$refs.updateFile)
+        // console.log(this.$refs.updateFile.files)
        
 
       },
@@ -294,11 +294,11 @@ export default {
 
       this.json = localStorage.getItem("payment_intent");
       let data= {sessionId: ""};
-      console.log(this.json)
+      // console.log(this.json)
 
       if(this.json !== "")
       {
-        console.log("JSON NO ESTA VACIO")
+        // console.log("JSON NO ESTA VACIO")
         data = JSON.parse(this.json);
       }
       // else
@@ -310,13 +310,13 @@ export default {
 
 
       localStorage.setItem("payment_intent", "" );
-      console.log(data);
+      // console.log(data);
       // console.log(this.$router)
-      console.log(this.$route.query)
-      console.log(this.$route.query.payment_id)
-      console.log(this.$route.query.preference_id)
+      // console.log(this.$route.query)
+      // console.log(this.$route.query.payment_id)
+      // console.log(this.$route.query.preference_id)
       const {payment_id} = this.$route.query;
-      console.log(payment_id)
+      // console.log(payment_id)
       
 
 

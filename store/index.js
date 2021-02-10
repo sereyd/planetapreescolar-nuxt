@@ -779,7 +779,7 @@ const createStore = () => {
                   else if(datos.lvluser >= 3)
                   {
                     // console.log("antes de config des")
-                    // context.commit("actualizarConfigDescargas")
+                    context.commit("actualizarConfigDescargas")
               //context.dispatch( "actualizarCategorias('cat')" );
               //
                     // console.log("des´pues de config des")
@@ -1411,7 +1411,7 @@ const createStore = () => {
 
       updateDescargasPreMP(state, data){
 
-        console.log(data);
+        // console.log(data);
         if(data.status === "approved" )
         {
 
@@ -1448,22 +1448,22 @@ const createStore = () => {
             if( interval === "month" &&  interval_count === 1)
             {
               state.datosUsuario.descargas.mes.tipo = "mensual";
-              state.datosUsuario.descargas.mes.disponibles = 20;
+              state.datosUsuario.descargas.mes.disponibles = state.descargasConf.mensual;
             }
             else if( interval === "month" &&  interval_count === 3)
             {
               state.datosUsuario.descargas.mes.tipo = "trimestral";
-              state.datosUsuario.descargas.mes.disponibles = 5;
+              state.datosUsuario.descargas.mes.disponibles = state.descargasConf.trimestral;
             }
             else if(interval === "month" &&  interval_count === 6)
             {
               state.datosUsuario.descargas.mes.tipo = "semestral";
-              state.datosUsuario.descargas.mes.disponibles = 35;
+              state.datosUsuario.descargas.mes.disponibles = state.descargasConf.semestral;
             }
             else 
             {
               state.datosUsuario.descargas.mes.tipo = "anual";
-              state.datosUsuario.descargas.mes.disponibles = 40;
+              state.datosUsuario.descargas.mes.disponibles = state.descargasConf.anual;
             }
           }
 

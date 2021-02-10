@@ -191,7 +191,7 @@ export default {
       }
     },
     updateCategoriasInicio(datos){
-      console.log(datos)
+      // console.log(datos)
        
       datos.map(cat => {
         let esFav = false;
