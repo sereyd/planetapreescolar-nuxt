@@ -422,8 +422,8 @@ const createStore = () => {
       recursosFavoritos:[],
 
       //LINKS DE DOMINIO (PRODUCCION Y DESARROLLO)
-      // dominio:"http://localhost:3000",
-      dominio:"https://educadora.cf",
+      dominio:"http://localhost:3000",
+      // dominio:"https://educadora.cf",
 
       //APIS DEVELOP Y PRODUCCION
       urlAPI: "https://stripe-checkout-api.herokuapp.com",
@@ -714,6 +714,9 @@ const createStore = () => {
                         .then(async(suscripcion)=>{
 
                           let data = suscripcion.response;
+                          // console.log(suscripcion);
+                          // console.log(data);
+
 
                           //SE REVISA EL ESTADO DE LA SUSCRIPCIÓN
                           if(suscripcion.error)
@@ -745,6 +748,8 @@ const createStore = () => {
                             // const ff = fromUnixTime(1577944800);
                             const ff = fromUnixTime(fechaFin);
                             const esVencida = isPast(ff)
+                            // console.log(data)
+                            // console.log(esVencida)
 
                             if( (data.status === "approved" || data.status === "accredited") && !esVencida )
                             {
@@ -1429,6 +1434,8 @@ const createStore = () => {
             }
           }
           state.datosSuscripcion = suscripcion;
+        // console.log(state.datosSuscripcion);
+
 
           if( state.datosSuscripcion.plan.active)
           {
