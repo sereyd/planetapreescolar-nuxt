@@ -342,7 +342,7 @@ const createStore = () => {
           icon: "mdi-speedometer",
           link: "/administrador",
           logeado: true,
-          permisos: 2,
+          permisos: 3,
           visible: true
         },
         // {
