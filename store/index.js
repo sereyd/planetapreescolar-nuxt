@@ -369,7 +369,7 @@ const createStore = () => {
         apellido: "",
         urlImagen: "",
         userlogin: false,
-        lvluser: -1,
+        lvluser: 0,
         grupo: {
           materias: []
           // alumnos:[],
@@ -620,10 +620,10 @@ const createStore = () => {
                       }
                 });
 
-                  datos.estadoMembresia = datos.lvluser >= 2 ? "active" : "";
+                  datos.estadoMembresia = datos.lvluser >= 3 ? "active" : "";
                   
                   //REVISAR ESTADO DE LA SUSCRIPCIÓN MIENTRAS NO SEA USUARIO ADMIN
-                  if(datos.lvluser === 0 || datos.lvluser === 1)
+                  if(datos.lvluser === 2 || datos.lvluser === 1)
                   {
                     // console.log("antes de config des")
                     context.commit("actualizarConfigDescargas")
@@ -685,6 +685,7 @@ const createStore = () => {
                         if(suscripcion.status === "active")
                         {
                           context.state.datosSuscripcion.status = true;
+                          datos.lvluser = 2;
                           console.log("SI TIENE MEMBRESIA PREMIUM")
                           context.commit("updateDescargasPre", suscripcion);
                         }
@@ -713,6 +714,9 @@ const createStore = () => {
                         .then(async(suscripcion)=>{
 
                           let data = suscripcion.response;
+                          // console.log(suscripcion);
+                          // console.log(data);
+
 
                           //SE REVISA EL ESTADO DE LA SUSCRIPCIÓN
                           if(suscripcion.error)
@@ -744,10 +748,13 @@ const createStore = () => {
                             // const ff = fromUnixTime(1577944800);
                             const ff = fromUnixTime(fechaFin);
                             const esVencida = isPast(ff)
+                            // console.log(data)
+                            // console.log(esVencida)
 
                             if( (data.status === "approved" || data.status === "accredited") && !esVencida )
                             {
                               datos.estadoMembresia = "active";
+                              datos.lvluser = 2;
                               console.log("SI TIENE MEMBRESIA PREMIUM")
                               // console.log(datos)
                               context.commit("updateDescargasPreMP", data);
@@ -774,10 +781,10 @@ const createStore = () => {
                       console.log('Error al verificar suscripción', err);
                     });              
                   }
-                  else if(datos.lvluser >= 2)
+                  else if(datos.lvluser >= 3)
                   {
                     // console.log("antes de config des")
-                    // context.commit("actualizarConfigDescargas")
+                    context.commit("actualizarConfigDescargas")
               //context.dispatch( "actualizarCategorias('cat')" );
               //
                     // console.log("des´pues de config des")
@@ -1230,7 +1237,7 @@ const createStore = () => {
 
         if(data.salida===true){
           state.datosUsuario.userlogin=data.login
-          state.datosUsuario.lvluser= -1,
+          state.datosUsuario.lvluser= 0
           state.datosUsuario.nombre = ""
           state.datosUsuario.apellido = ""
           state.datosUsuario.correo = ""
@@ -1373,7 +1380,7 @@ const createStore = () => {
           }
           
           
-          // console.log(state.datosUsuario.descargas);
+          console.log(state.descargasConf);
           // console.log("interval");
           // console.log(interval);
           // console.log("interval_count");
@@ -1383,22 +1390,22 @@ const createStore = () => {
           if( interval === "month" &&  interval_count === 1)
           {
             state.datosUsuario.descargas.mes.tipo = "mensual";
-            state.datosUsuario.descargas.mes.disponibles = 20;
+            state.datosUsuario.descargas.mes.disponibles = state.descargasConf.mensual;
           }
           else if( interval === "month" &&  interval_count === 3)
           {
             state.datosUsuario.descargas.mes.tipo = "trimestral";
-            state.datosUsuario.descargas.mes.disponibles = 5;
+            state.datosUsuario.descargas.mes.disponibles = state.descargasConf.trimestral;
           }
           else if(interval === "month" &&  interval_count === 6)
           {
             state.datosUsuario.descargas.mes.tipo = "semestral";
-            state.datosUsuario.descargas.mes.disponibles = 35;
+            state.datosUsuario.descargas.mes.disponibles = state.descargasConf.semestral;
           }
           else 
           {
             state.datosUsuario.descargas.mes.tipo = "anual";
-            state.datosUsuario.descargas.mes.disponibles = 40;
+            state.datosUsuario.descargas.mes.disponibles = state.descargasConf.anual;
           }
 
         }
@@ -1409,7 +1416,7 @@ const createStore = () => {
 
       updateDescargasPreMP(state, data){
 
-        console.log(data);
+        // console.log(data);
         if(data.status === "approved" )
         {
 
@@ -1427,6 +1434,8 @@ const createStore = () => {
             }
           }
           state.datosSuscripcion = suscripcion;
+        // console.log(state.datosSuscripcion);
+
 
           if( state.datosSuscripcion.plan.active)
           {
@@ -1446,22 +1455,22 @@ const createStore = () => {
             if( interval === "month" &&  interval_count === 1)
             {
               state.datosUsuario.descargas.mes.tipo = "mensual";
-              state.datosUsuario.descargas.mes.disponibles = 20;
+              state.datosUsuario.descargas.mes.disponibles = state.descargasConf.mensual;
             }
             else if( interval === "month" &&  interval_count === 3)
             {
               state.datosUsuario.descargas.mes.tipo = "trimestral";
-              state.datosUsuario.descargas.mes.disponibles = 5;
+              state.datosUsuario.descargas.mes.disponibles = state.descargasConf.trimestral;
             }
             else if(interval === "month" &&  interval_count === 6)
             {
               state.datosUsuario.descargas.mes.tipo = "semestral";
-              state.datosUsuario.descargas.mes.disponibles = 35;
+              state.datosUsuario.descargas.mes.disponibles = state.descargasConf.semestral;
             }
             else 
             {
               state.datosUsuario.descargas.mes.tipo = "anual";
-              state.datosUsuario.descargas.mes.disponibles = 40;
+              state.datosUsuario.descargas.mes.disponibles = state.descargasConf.anual;
             }
           }
 

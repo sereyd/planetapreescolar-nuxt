@@ -121,7 +121,7 @@ export default{
 
         console.log(tipo);
         // console.log(this.datosUsuario.lvluser);
-        if(this.datosUsuario.lvluser === 0 || this.datosUsuario.lvluser === 1)
+        if(this.datosUsuario.lvluser === 2 || this.datosUsuario.lvluser === 1)
         {
 
           let {descargas} = this.datosUsuario;

@@ -15,7 +15,7 @@ export default {
   },
 
   computed: {
-    ...mapState(["datosUsuario","itemsmenu","menufix"])
+    ...mapState(["datosUsuario","itemsmenu","menufix",'descargasConf','datosSuscripcion'])
   },
   methods:{
     ...mapMutations(['abrirRegistro']),

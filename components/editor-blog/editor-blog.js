@@ -54,7 +54,7 @@ export default {
                         creablog.add(this.datosblog)
                         this.datosblog={}
                         //// toma datos de usuarios lvl 3
-                        await this.$fireStore.collection('usuarios').where('lvluser','>=',2).get()
+                        await this.$fireStore.collection('usuarios').where('lvluser','>=',3).get()
                         .then((dat)=>{
                           dat.docs.forEach((datos)=>{
                            

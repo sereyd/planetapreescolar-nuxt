@@ -149,7 +149,7 @@ export default{
           //SE ALMACENA EL NUEVO USUARIO EN LA COLECCION DE USUARIOS
           try {
               this.datosUsuarioR.userlogin = true,
-              this.datosUsuarioR.lvluser = 0;
+              this.datosUsuarioR.lvluser = 1;
               console.log(datosUsuarioR);
               await this.$fireStore.collection('usuarios').add(this.datosUsuarioR);
              ////Guarda los datos de usuario en el store con una mutación 

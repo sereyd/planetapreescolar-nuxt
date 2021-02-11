@@ -5,7 +5,7 @@
 
 
       <!-- <v-col cols="12" md="12"> </v-col> -->
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 2">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 3">
         <h2>Mis Reflexiones</h2>
 
         <cargablog 
@@ -22,7 +22,7 @@
         </cargablog>
 
       </v-col>
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 2">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 3">
         <h2>Mis Planeaciones</h2>
 
         <cargablog 
@@ -40,7 +40,7 @@
 
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 2">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 3">
         <h2>Mis hojas de trabajo</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="hojatrabajo"  :listaR="hojastrabajo" 
@@ -56,7 +56,7 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 2">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 3">
         <h2>Mis hojas para ilustrar</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="hojailustrar"  :listaR="hojasilustrar" 
@@ -72,7 +72,7 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 2">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 3">
         <h2>Mi material didáctico</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="materialdidactico"  :listaR="materialdidactico" 
@@ -88,7 +88,7 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 2">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 3">
         <h2>Mis interactivos</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="interactivo"  :listaR="interactivos" 
@@ -104,7 +104,7 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 2">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 3">
         <h2>Mis otros</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="otro"  :listaR="otros" 
@@ -120,7 +120,7 @@
         </cargablog>
       </v-col>
 
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 0">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 1">
         <h2>Mis Memorias</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo=" memoria"  :listaR="memorias"
@@ -135,7 +135,7 @@
           </template>
         </cargablog>
       </v-col>  
-      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 0">
+      <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 1">
         <h2>Mis Blogs</h2>
         <cargablog 
           tipo="CATEGORIAS" subtipo="blog"  :listaR="blog"
@@ -215,19 +215,14 @@ export default {
         this.materialdidactico=[];
         this.interactivos=[];
         this.otros=[];
-    // console.log(this.tipo)
-    // console.log(this.$store.state.datosUsuario.id)
     let datos = {};
     let tipo = "CATEGORIAS";
       
       try {
         // const usuarioQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
 
-        // console.log(this)
-        // console.log(this.$fireStore)
-        // tipo = this.datosUsuario.lvluser === 2 || datosUsuario.lvluser >= 2 ? "ACTIVIDADES" : "CATEGORIAS";
-        
-      if( this.datosUsuario.lvluser >= 2){
+       
+      if( this.datosUsuario.lvluser >= 3){
 
         await this.$fireStore
           .collection(tipo)
@@ -248,9 +243,6 @@ export default {
                 ...data
               }
 
-                // console.log("TIPO")
-                // console.log(datos.tipo)
-                // console.log(datos)
                 if(datos.tipo === "memoria")
                   this.memorias.push(datos)
 
@@ -278,34 +270,9 @@ export default {
                 else if(datos.tipo === "otro")
                   this.otros.push(datos)
 
-              // this.listaR.push(datos);
-                // console.log("Carga tipo: "+this.tipo)
-                // console.log(doc.data())
-              // this.listaR.push(doc.data());
             });
 
-            // console.log("this.reflexiones")
-            // console.log(this.reflexiones)
-            //   console.log("this.planeaciones")
-            //   console.log(this.planeaciones)
-
-            //   console.log("this.hojastrabajo")
-            //   console.log(this.hojastrabajo)
-
-            //   console.log("this.materialdidactico")
-            //   console.log(this.materialdidactico)
-
-            //   console.log("this.interactivos")
-            //   console.log(this.interactivos)
-
-            //   console.log("this.otros")
-            //   console.log(this.otros)
-
-            //   console.log("this.blog")
-            //   console.log(this.blog)
-            //   console.log("this.memorias")
-            //   console.log(this.memorias)
-            // console.log(this.listaR)
+            
           });
 
       }else{
@@ -353,23 +320,10 @@ export default {
 
                 else if(datos.tipo === "otro")
                   this.otros.push(datos)
-              // this.listaR.push(datos);
-                // console.log("Carga tipo: "+this.tipo)
-                // console.log(doc.data())
-              // this.listaR.push(doc.data());
+              
             });
 
-            // console.log("this.reflexiones")
-            // console.log(this.reflexiones)
-            //   console.log("this.planeaciones")
-            //   console.log(this.planeaciones)
-            //   console.log("this.recursos")
-            //   console.log(this.recursos)
-            //   console.log("this.blog")
-            //   console.log(this.blog)
-            //   console.log("this.memorias")
-            //   console.log(this.memorias)
-            // console.log(this.listaR)
+            
           });
 
       }

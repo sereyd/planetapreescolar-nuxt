@@ -245,7 +245,7 @@
                             ></v-switch>
                             <v-switch 
                                 v-model="datosRecurso.permisoadmin"  
-                                v-if="(datosUsuario.lvluser===2) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' || subtipo === 'otro')" 
+                                v-if="(datosUsuario.lvluser===3) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' || subtipo === 'otro')" 
                                 label="Validado por administador
                             "></v-switch>
                             <!-- <v-switch 
@@ -259,7 +259,7 @@
                                 label="Nombre personal"
                                 color="primary "
                                 class="mb-3"
-                                v-if="(datosUsuario.lvluser===2) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' || subtipo === 'otro')" 
+                                v-if="(datosUsuario.lvluser===3) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' || subtipo === 'otro')" 
                                 hide-details
                             ></v-checkbox>
                         </div>

@@ -99,9 +99,9 @@ export default {
     },
     async created() {
         // this.guardarVistaValida(true); 
-      console.log(this.misPost)
+      // console.log(this.misPost)
       await this.cargaPost();
-      console.log(this.misPost)
+      // console.log(this.misPost)
 
       this.bandera = true;
     },

@@ -56,6 +56,8 @@
 <script>
 // import validasitio from '@/mixins/validasitio.js'
 import { mapState, mapMutations, mapActions } from 'vuex'
+import {addMonths} from 'date-fns';
+
 
 export default {
     data(){
@@ -74,20 +76,20 @@ export default {
     
     },
     methods: {
-      ...mapMutations(['guardaDatosUsuarioStore','updateDescargasPreMP']),
+      ...mapMutations(['guardaDatosUsuarioStore','updateDescargasPreMP','actualizarConfigDescargas']),
       ...mapActions(['obtenerDatosSuscripcion']),
       subirAlumnos(){
         // console.log(this.file.files[0])
-        console.log(this)
-        console.log(this.$refs)
-        console.log(this.$refs.updateFile)
-        console.log(this.$refs.updateFile.files)
+        // console.log(this)
+        // console.log(this.$refs)
+        // console.log(this.$refs.updateFile)
+        // console.log(this.$refs.updateFile.files)
        
 
       },
       async obtenerCliente(sessionId){
         // const sessionId = "cs_test_a1mUqFoKvHsmFzSEGNe5JHZ3sk5oJy55x715ODr3tKocJfqk3keI5Mp6XK";
-        
+        // await this.actualizarConfigDescargas();
         let customerId; 
 
         if (sessionId) {
@@ -116,7 +118,7 @@ export default {
                   const {id} = datosUsuario;
 
                   //VALIDA QUE SOLO SE CAMBIA A USUARIO TIPO 1 SI EL USUARIO ES TIPO 0
-                  const lvl = datosUsuario.lvluser <= 1 ? 1 : 2;
+                  const lvl = (datosUsuario.lvluser === 1 || datosUsuario.lvluser === 2) ? 2 : 2;
 
                   //SE BUSCA AL USUARIO EN LA BASE DE DATOS POR MEDIO DEL ID
                   let usuarioRef =  this.$fireStore.collection("usuarios").doc(id);
@@ -184,7 +186,7 @@ export default {
       })
       .then(async(suscripcion)=>{
   
-        console.log(suscripcion)
+        // console.log(suscripcion)
         if(suscripcion.error)
         {
           // datos.estadoMembresia = "canceled";
@@ -193,8 +195,8 @@ export default {
           console.log("error")
         }
         else{
-          console.log(suscripcion.response)
-          console.log(suscripcion.response.status)
+          // console.log(suscripcion.response)
+          // console.log(suscripcion.response.status)
           let data = suscripcion.response;
 
           if(data.status === "approved" || data.status === "accredited")
@@ -207,7 +209,7 @@ export default {
             const {id} = datosUsuario;
 
             //VALIDA QUE SOLO SE CAMBIA A USUARIO TIPO 1 SI EL USUARIO ES TIPO 0
-            const lvl = datosUsuario.lvluser <= 1 ? 1 : 2;
+            const lvl = (datosUsuario.lvluser === 1 || datosUsuario.lvluser === 2) ? 2 : 2;
 
             this.importe = data.transaction_amount;
             this.tipoSuscripcion = this.importe === 1290 ? "trimestral" :
@@ -215,7 +217,7 @@ export default {
               this.importe === 3500 ? "anual" : "mensual";
 
             let fechaInicio = parseInt((new Date(data.date_approved).valueOf() / 1000).toFixed(0))
-            console.log(fechaInicio)
+            // console.log(fechaInicio)
 
             const interval_count = data.transaction_amount === 490 ? 1 :
               data.transaction_amount === 1290 ? 3 :
@@ -255,7 +257,7 @@ export default {
 
               this.guardaDatosUsuarioStore(datosUsuario);
 
-              console.log(this.datosUsuario);
+              // console.log(this.datosUsuario);
 
               this.updateDescargasPreMP(data);
 
@@ -290,15 +292,15 @@ export default {
       });
       },
     },
-    mounted() {
-
+    async mounted() {
+      await this.actualizarConfigDescargas();
       this.json = localStorage.getItem("payment_intent");
       let data= {sessionId: ""};
-      console.log(this.json)
+      // console.log(this.json)
 
       if(this.json !== "")
       {
-        console.log("JSON NO ESTA VACIO")
+        // console.log("JSON NO ESTA VACIO")
         data = JSON.parse(this.json);
       }
       // else
@@ -310,19 +312,19 @@ export default {
 
 
       localStorage.setItem("payment_intent", "" );
-      console.log(data);
+      // console.log(data);
       // console.log(this.$router)
-      console.log(this.$route.query)
-      console.log(this.$route.query.payment_id)
-      console.log(this.$route.query.preference_id)
+      // console.log(this.$route.query)
+      // console.log(this.$route.query.payment_id)
+      // console.log(this.$route.query.preference_id)
       const {payment_id} = this.$route.query;
-      console.log(payment_id)
+      // console.log(payment_id)
       
 
 
       if(data.sessionId !== "")
       {
-        console.log("cSTRIPE")
+        console.log("fue por stripe")
         this.idCompra = data.sessionId;
         this.tipoSuscripcion = data.tipoSuscripcion;
         this.importe = data.importe;

@@ -132,7 +132,7 @@ export default {
           return response.json();
       })
       .then((preference) => {
-          console.log(preference);
+          // console.log(preference);
           this.urlMP = preference.pre.init_point;
           // this.createCheckoutButton(preference.id);
           this.dialogFormasPago = true; 

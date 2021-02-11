@@ -26,7 +26,7 @@
                 >
                     
                     <a 
-                        v-if="esFree"
+                        v-if="esFree && datosUsuario.lvluser !== 3"
                         :download="nombreFile"
                         :href="urlFileB" 
                         @click="contadorDescargar('Free', $event)"
