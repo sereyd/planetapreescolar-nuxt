@@ -2,108 +2,211 @@
 <div class="mx-15">
   <div v-if="!spinner">
     <h2 class="text-center primary--text">¡Conoce nuestros planes!</h2>
-    <p style="font-size:14px;">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Animi, porro? Quisquam nihil esse minus a eum est enim, ullam officiis voluptatibus at accusamus consequuntur ad! Nisi qui beatae porro iusto!. Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil aspernatur, dolorum ipsum esse, fuga numquam molestias optio iste error, culpa facere tempore quae ab veritatis alias illo saepe porro ratione.</p>
+    <p style="font-size:14px;">Planeta Preescolar es una plataforma educativa con diferentes secciones, creada para toda la comunidad de educadoras en donde podrás descargar materiales que te ayudarán en tu labor diaria. Tienes la opción de descargar 1 material diario en forma gratuita con el simple hecho de llenar la ficha de registro.</p>
+    <p style="font-size:14px;">
+      Al ser Premium podrás disfrutar de más descargas y de contenido exclusivo además de material didáctico, administrar tus grupos, generar tu calendario y llevar un control de todas tus publicaciones que subas en este portal web. El pago lo puedes hacer con tarjeta de credito o debito y en efectivo. Al suscribirte con tarjeta el cobro se hará en forma automática una vez terminando el plazo seleccionado y puede aplicar a meses sin intereses. Esto te convierte en Suscriptor(a) Vip. Puedes cancelar cuando lo desees.
+      O puedes pagar en efectivo y al momento de terminar tu periodo renovarlo nuevamente o convertirte en Suscriptor(a) Vip.</p>
   </div>
   <h2 v-else class="text-center">Redireccionando...</h2>
 
-    <v-container>
-      <Spinner v-if="spinner" />
-      <div v-else>
-      <v-row class="price-table-container ">
-        <v-col class="" cols="12" md="4" sm="6" >
-          <v-card >
-            <div class="d-flex justify-center flex-column">
-              <div class="d-flex justify-center mt-4">
-                <img
-                  src="../../static/images/trimestral.png"
-                  width="120"
-                  height="120"
-                  class=""
-                />
-              </div>
-              <div class="name">
-                <h4>Plan</h4>
-                <h4>trimestral</h4>
-              </div>
-            <div class="price">${{precioTrimestral}} MXN</div>
-            </div>
+  <v-container>
+    <v-simple-table>
+      <template v-slot:default>
+        <thead>
+          <tr>
+            <th class="text-left">
+            
+            </th>
+            <th class="text-left">
+              <img
+              src="../../static/images/trimestral.png"
+              width="120"
+              height="120"
+              class=""
+            />
 
-            <div class="d-flex justify-center">
-              <v-btn class="melon white--text mb-2 btn_crearG" @click="formasPago('trimestral')">¡Lo quiero!</v-btn>
-            </div>
-            <!-- <div class="d-flex justify-center">
-              <v-btn class="melon white--text mb-5 btn_crearG" @click="dialogMP=true; tipoMembresia='trimestral';">OXXO</v-btn>
-            </div>
-            <div class="d-flex justify-center">
-              <a href="${preference.initPoint}">Pagar con Mercado Pago</a> 
-            </div> -->
-            <!-- <div class="d-flex justify-center">
-              <a mp-mode="dftl" href="https://www.mercadopago.com/mlm/debits/new?preapproval_plan_id=2c9380847739336f01773a8b6c050289" name="MP-payButton" class='blue-ar-l-rn-none'>Suscribirme</a>
-            </div> -->
-          </v-card>
-        </v-col>
+            </th>
+            <th class="text-left">
+              <img
+              src="../../static/images/trimestral.png"
+              width="120"
+              height="120"
+              class=""
+            />
 
-        <v-col class="" cols="12" md="4" sm="6" >
-          <v-card >
-            <div class="d-flex justify-center flex-column">
-              <div class="d-flex justify-center mt-4">
-                <img
-                  src="../../static/images/semestral.png"
-                  width="120"
-                  height="120"
-                  class=""
-                />
-              </div>
-              <div class="name">
-                <h4>Plan</h4>
-                <h4>semestral</h4>
-              </div>
-            <div class="price">${{precioSemestral}} MXN</div>
-            </div>
-            <div class="d-flex justify-center">
-              <v-btn class="melon white--text mb-2 btn_crearG" @click="formasPago('semestral')">¡Lo quiero!</v-btn>
-            </div>
-            <!-- <div class="d-flex justify-center">
-              <v-btn class="melon white--text mb-2 btn_crearG" @click="crearSesionSuscripcion('semestral')">¡Lo quiero!</v-btn>
-            </div>
-            <div class="d-flex justify-center">
-              <v-btn class="melon white--text mb-5 btn_crearG" @click="dialogMP=true; tipoMembresia='semestral';">OXXO</v-btn>
-            </div> -->
-          </v-card>
-        </v-col>
+            </th>
+            <th class="text-left">
+              <img
+              src="../../static/images/trimestral.png"
+              width="120"
+              height="120"
+              class=""
+            />
 
-        <v-col class="" cols="12" md="4" sm="6" >
-          <v-card >
-            <div class="d-flex justify-center flex-column">
-              <div class="d-flex justify-center mt-4">
-                <img
-                  src="../../static/images/anual.png"
-                  width="120"
-                  height="120"
-                  class=""
-                />
-              </div>
-              <div class="name">
-                <h4>Plan</h4>
-                <h4>anual</h4>
-              </div>
-            <div class="price">${{precioAnual}} MXN</div>
-            </div>
-            <div class="d-flex justify-center">
-              <v-btn class="melon white--text mb-2 btn_crearG" @click="formasPago('anual')">¡Lo quiero!</v-btn>
-            </div>
-            <!-- <div class="d-flex justify-center">
-              <v-btn class="melon white--text mb-2 btn_crearG" @click="crearSesionSuscripcion('anual')">¡Lo quiero!</v-btn>
-            </div>
-            <div class="d-flex justify-center">
-              <v-btn class="melon white--text mb-5 btn_crearG" @click="dialogMP=true; tipoMembresia='anual';">OXXO</v-btn>
-            </div> -->
-          </v-card>
-        </v-col>
-        
-      </v-row>
-      </div>
-    </v-container>
+            </th>
+            <th class="text-left">
+              <img
+              src="../../static/images/trimestral.png"
+              width="120"
+              height="120"
+              class=""
+            />
+
+            </th>
+            <th class="text-left">
+              <img
+              src="../../static/images/trimestral.png"
+              width="120"
+              height="120"
+              class=""
+            />
+
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-right">(Prom 30 Mens) Material Free</td>
+            <td class="text-center">1 diario</td>
+            <td class="text-center">1 diario</td>
+            <td class="text-center">1 diario</td>
+            <td class="text-center">1 diario</td>
+            <td class="text-center">1 diario</td>
+          </tr>
+          <tr>
+            <td class="text-right">Material Premium Mensual</td>
+            <td class="text-center">0</td>
+            <td class="text-center">50</td>
+            <td class="text-center">60</td>
+            <td class="text-center">70</td>
+            <td class="text-center">80</td>
+          </tr>
+          <tr>
+            <td class="text-right">Total Descargas Mensuales</td>
+            <td class="text-center">30</td>
+            <td class="text-center">80</td>
+            <td class="text-center">90</td>
+            <td class="text-center">100</td>
+            <td class="text-center">110</td>
+          </tr>
+          <tr>
+            <td class="text-right">Sección Administrativa</td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Blog Educativo</td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Directorio de Servicios/td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Memorias de una Educadora</td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Participación en Foro Educativo</td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Lectura de Planeaciones</td>
+            <td class="text-center"> </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Edición de Planeaciones</td>
+            <td class="text-center"> </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Administración de Grupos</td>
+            <td class="text-center"> </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Promoción Suscriptoras VIP</td>
+            <td class="text-center"> </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Meses Sin Intereses</td>
+            <td class="text-center"> </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right"></td>
+            <td class="text-center"> 
+
+              <b>$0.00 MXN</b>   <br />
+              <v-btn class="melon white--text" to="/">Regístrate</v-btn>
+            
+            
+            </td>
+            <td class="text-center"> 
+              <b>$490.00 MXN</b>   <br />
+              <v-btn class="melon white--text" to="/">Tarjeta</v-btn>  <br /><br />
+              <v-btn class="melon white--text" to="/">Efectivo</v-btn>  
+            </td>
+            <td class="text-center"> 
+              <b>$1,290.00 MXN</b>   <br />
+              <v-btn class="melon white--text" to="/">Tarjeta</v-btn>   <br /><br />
+              <v-btn class="melon white--text" to="/">Efectivo</v-btn>  
+              
+            </td>
+            <td class="text-center">  
+              <b>$2,190.00 MXN</b>   <br />
+              <v-btn class="melon white--text" to="/">Tarjeta</v-btn>   <br /><br />
+              <v-btn class="melon white--text" to="/">Efectivo</v-btn>    
+            </td>
+            <td class="text-center"> 
+              <b>$3,490.00 MXN</b>   <br />
+              <v-btn class="melon white--text" to="/">Tarjeta</v-btn>   <br /><br />
+              <v-btn class="melon white--text" to="/">Efectivo</v-btn>    
+            </td>
+          </tr>
+        </tbody>
+      </template>
+    </v-simple-table>
+
+
+</v-container>
+
 
     <v-dialog v-model="dialogFormasPago"  persistent max-width="500">
       <v-card class=" px-10">

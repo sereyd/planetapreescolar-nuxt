@@ -93,7 +93,8 @@ export default {
 
 
     //PAGO CON MERCADOPAGO
-    formasPago(tipoS){
+formasPago(tipoS){
+  
       this.tipoSuscripcion= tipoS;
 
       const description = tipoS === "trimestral" ? "Planeta Preescolar: Trimestral" : 
@@ -104,7 +105,7 @@ export default {
         tipoS === "semestral" ? this.precioSemestral :
         tipoS === "anual" ? this.precioAnual : this.precioMensual
 
-      this.urlsusMP = tipoS === "trimestral" ? 
+    /*  this.urlsusMP = tipoS === "trimestral" ? 
       "https://www.mercadopago.com/mlm/debits/new?preapproval_plan_id=2c9380847726c5de01773a8cbb520dc0" : 
       tipoS === "semestral" ? 
       "https://www.mercadopago.com/mlm/debits/new?preapproval_plan_id=2c9380847726c5de01773a8d86190dc3" :
@@ -113,7 +114,7 @@ export default {
       "https://www.mercadopago.com/mlm/debits/new?preapproval_plan_id=2c9380847739336f01773a8b6c050289";
 
       //https://www.mercadopago.com/mlm/debits/new?preapproval_plan_id=2c9380847739336f01773a8e413b0290
-
+*/
       var orderData = {
         quantity: 1,
         description,
@@ -149,8 +150,8 @@ export default {
 
     },
 
-    
-
+ 
+/*
     //PAGO CON MERCAPAGO POR OXXO
     async crearOrdenMP(){
 
@@ -236,7 +237,7 @@ export default {
     },
 
    
-    
+*/
 
 
     //PAGOS CON STRIPE
