@@ -328,7 +328,7 @@ export default {
         this.idCompra = data.sessionId;
         this.tipoSuscripcion = data.tipoSuscripcion;
         this.importe = data.importe;
-        this.obtenerCliente(data.sessionId);
+        // this.obtenerCliente(data.sessionId);
         
       }
       else if(payment_id !== "")
@@ -337,7 +337,7 @@ export default {
          this.idCompra = this.$route.query.payment_id;
         // this.tipoSuscripcion = data.tipoSuscripcion;
         // this.importe = data.importe;
-        this.obtenerClienteMP(payment_id);
+        // this.obtenerClienteMP(payment_id);
 
 
       }
