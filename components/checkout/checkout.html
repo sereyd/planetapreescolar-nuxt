@@ -206,7 +206,18 @@
 
 
 </v-container>
-
+  <v-dialog v-model="loaderpage" max-width="200">
+    <v-card>
+      <v-card-text class="text-center">
+        <v-progress-circular
+        :size="70"
+        :width="7"
+        color="purple"
+        indeterminate
+      ></v-progress-circular>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 
     <!--<v-dialog v-model="dialogFormasPago"  persistent max-width="500">
       <v-card class=" px-10">
@@ -260,6 +271,9 @@
         <Spinner v-else/> 
       </v-card>
   </v-dialog>--->
+
+
+    
 
     <v-dialog v-model="dialogMP" fullscreen>
       <v-card class=" px-10">
