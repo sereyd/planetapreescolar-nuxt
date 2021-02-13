@@ -6,6 +6,24 @@
       Crear Nueva Pagina
     </v-btn>
 
+
+<h3>Lista de sitios</h3>
+  <v-data-table :items="sitiosLp" :headers="sitioHeader">
+
+    <template v-slot:item.url='{ item }' >
+     <a :href="protocolo+'//'+host+'/v/'+item.url" target="_blank" > {{protocolo+'//'+host+'/v/'+item.url}}</a>
+    </template>
+  
+    <template v-slot:item.editar='{item}'>
+      <v-btn class="melon white--text"><v-icon>mdi-eye</v-icon></v-btn>
+      <v-btn class="melon white--text"><v-icon>mdi-delete</v-icon></v-btn>
+      </template>
+
+  </v-data-table>
+
+
+
+
     <v-dialog
       v-model="addpage"
       fullscreen
@@ -72,7 +90,7 @@
               </v-card-text>
             </v-card>
           </v-dialog>
-          <v-btn class="melon white--text" @click="guardarCambios()"
+          <v-btn class="melon white--text" v-if="fase1===true" @click="guardarCambios()"
             >Guardar Cambios</v-btn
           >
         </v-card-text>
@@ -90,13 +108,31 @@ export default {
         permisos: 3,
         logeado: true
       },
+      protocolo:"",
+      host:"",
       addpage: false,
       datalp: {
         url: ""
       },
+
       sitioweb: "",
       fase1:false,
-      pregCont:false
+      pregCont:false,
+      sitiosLp:[],
+      sitioHeader:[
+        {
+          text:'titulo',
+          value:'titulo'
+        },
+        {
+          text:'url',
+          value:'url'
+        },
+        {
+          text:'editar',
+          value:'editar'
+        }
+      ]
     };
   },
   computed: {
@@ -106,6 +142,7 @@ export default {
         this.datalp.url = "";
       }
       sitioweb = sitioweb + "/" + this.datalp.url;
+      this.datalp.fullurl=sitioweb
       return sitioweb;
     },
     creaurlsitio() {
@@ -128,7 +165,11 @@ export default {
   components: {
     VueEditor
   },
-
+  mounted(){
+    this.cargaSitios()
+    this.protocolo=window.location.protocol
+    this.host=window.location.host
+  },
   methods: {
     async validaUrl(){
        await this.$fireStore
@@ -136,8 +177,6 @@ export default {
         .where("url", "==", this.datalp.url)
         .get()
         .then((data) => {
-
-
         if(data.docs.length>0){
           this.pregCont=true
           this.datalp=data.docs[0].data()
@@ -164,15 +203,26 @@ export default {
         .where("url", "==", this.datalp.url)
         .get()
         .then(data => {
- 
+          if(data.docs.length>0){
           data.docs.forEach(di => {
-            if (di.data().titulo) {
-              this.$fireStore.collection('landingpage').where('titulo','==',di.data().titulo).update(this.datalp)
+            console.log('actualiza datos')
+              this.$fireStore.collection("landingpage").doc(di.id).update(this.datalp)
+          });
             } else {
+              console.log('crea nuevo registro')
                this.$fireStore.collection('landingpage').add(this.datalp)
             }
-          });
         });
+      
+    },
+    async cargaSitios(){
+      await this.$fireStore.collection('landingpage').get()
+      .then((data)=>{
+        data.docs.forEach((ld)=>{
+           this.sitiosLp.push(ld.data())
+        })
+           
+      })
     }
   },
   mixins: [validasitio]
