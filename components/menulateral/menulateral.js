@@ -7,6 +7,8 @@ export default {
       drawer: null,
       menuoculto:true,
       devtest:false,  //// para realizar pruebas de sesiones
+      host:"",
+      protocol:"",
       itemsmenumni:[
         { title: 'Ver perfil',link:"/perfil" },
         { title: 'Cerrar sesión', link:"/exit" },
@@ -16,6 +18,10 @@ export default {
 
   computed: {
     ...mapState(["datosUsuario","itemsmenu","menufix",'descargasConf','datosSuscripcion'])
+  },
+  created(){
+    this.protocol=window.location.protocol
+    this.host=window.location.host
   },
   methods:{
     ...mapMutations(['abrirRegistro']),

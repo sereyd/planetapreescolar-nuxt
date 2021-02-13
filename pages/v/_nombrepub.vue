@@ -18,6 +18,7 @@
         datadeprodicto:"muestra esta variable"
         }
     },
+    
     computed:{
         nombredesitio(){
             var returl=this.url
