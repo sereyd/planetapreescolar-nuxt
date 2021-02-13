@@ -180,24 +180,24 @@
             </td>
             <td class="text-center"> 
               <b>$490.00 MXN</b>   <br />
-              <v-btn class="melon white--text" to="/">Tarjeta</v-btn>  <br /><br />
-              <v-btn class="melon white--text" @click="formasPago('mensual')">Efectivo</v-btn>  
+              <v-btn class="melon white--text" @click="crearSesionSuscripcion('mensual')">Tarjeta</v-btn>  <br /><br />
+              <v-btn class="melon white--text" @click="formasPago('mensual')" >Efectivo</v-btn>  
             </td>
             <td class="text-center"> 
               <b>$1,290.00 MXN</b>   <br />
-              <v-btn class="melon white--text" to="/">Tarjeta</v-btn>   <br /><br />
-              <v-btn class="melon white--text" @click="formasPago('trimestral')">Efectivo</v-btn>  
+              <v-btn class="melon white--text" @click="crearSesionSuscripcion('trimestral')">Tarjeta</v-btn>   <br /><br />
+              <v-btn class="melon white--text" @click="formasPago('trimestral')" >Efectivo</v-btn>  
               
             </td>
             <td class="text-center">  
               <b>$2,190.00 MXN</b>   <br />
-              <v-btn class="melon white--text" to="/">Tarjeta</v-btn>   <br /><br />
+              <v-btn class="melon white--text" @click="crearSesionSuscripcion('semestral')">Tarjeta</v-btn>   <br /><br />
               <v-btn class="melon white--text" @click="formasPago('semestral')" >Efectivo</v-btn>    
             </td>
             <td class="text-center"> 
               <b>$3,490.00 MXN</b>   <br />
-              <v-btn class="melon white--text" to="/">Tarjeta</v-btn>   <br /><br />
-              <v-btn class="melon white--text" @click="formasPago('anual')" > Efectivo</v-btn>    
+              <v-btn class="melon white--text" @click="crearSesionSuscripcion('anual')">Tarjeta</v-btn>   <br /><br />
+              <v-btn class="melon white--text" @click="formasPago('anual')" >Efectivo</v-btn>    
             </td>
           </tr>
         </tbody>

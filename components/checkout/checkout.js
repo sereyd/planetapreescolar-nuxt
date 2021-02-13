@@ -10,10 +10,10 @@ export default {
       importe:"",
 
       //CLAVES DE PAQUETES
-      mensualPriceId: "",
-      trimestralPriceId: "price_1HtDqDGqO5WLKI2Hgd1pYWoE",
-      semestralPriceId: "price_1HtDnFGqO5WLKI2HjCzJ8bVM",
-      anualPriceId: "price_1HtDqEGqO5WLKI2H2YHeoZbZ",
+      mensualPriceId: "price_1IKCoAGqO5WLKI2Hj5mvLrNe",
+      trimestralPriceId: "price_1IKCpMGqO5WLKI2HaWxukBvn",
+      semestralPriceId: "price_1IKCqbGqO5WLKI2HlHkgzs0c",
+      anualPriceId: "price_1IKCrEGqO5WLKI2HwNUc9NgY",
       // mensualPriceId: "price_1IISmVANenJgOhZEqbbhOoWO",
       // trimestralPriceId: "price_1IISmVANenJgOhZEQFCe6E4l",
       // semestralPriceId: "price_1IISmVANenJgOhZEyjxBqKE4",
@@ -44,7 +44,7 @@ export default {
       dialogMP: false,
 
       dialogFormasPago: false,
-      tipoSuscripcion: "",
+      // tipoSuscripcion: "",
       urlMP: "",
 
       mediosPago:["oxxo"],
@@ -93,9 +93,13 @@ export default {
 
 
     //PAGO CON MERCADOPAGO
-formasPago(tipoS){
-
+  formasPago(tipoS){
+  
       this.tipoSuscripcion= tipoS;
+      const external_reference = this.$codegenerate();
+
+      console.log(external_reference);
+      // return external_reference;
 
       const description = tipoS === "trimestral" ? "Planeta Preescolar: Trimestral" : 
         tipoS === "semestral" ? "Planeta Preescolar: Semestral" :
@@ -119,7 +123,9 @@ formasPago(tipoS){
         quantity: 1,
         description,
         price,
-        dominio: this.dominio
+        dominio: this.dominio,
+        external_reference
+
       };
       fetch(this.urlAPI+"/create_preference", {
       // fetch("/create_preference", {
@@ -134,9 +140,10 @@ formasPago(tipoS){
       })
       .then((preference) => {
           // console.log(preference);
-          this.urlMP = preference.pre.init_point;
+          location.href = preference.pre.init_point;
+          // this.urlMP = preference.pre.init_point;
           // this.createCheckoutButton(preference.id);
-        ////  this.dialogFormasPago = true; 
+          // this.dialogFormasPago = true; 
           localStorage.setItem("payment_intent", "" );
           localStorage.setItem("user", JSON.stringify(this.datosUsuario) );
 
@@ -242,21 +249,23 @@ formasPago(tipoS){
 
 
     //PAGOS CON STRIPE
-    crearSesionSuscripcion(){
+    crearSesionSuscripcion(tipoSuscripcion){
       this.spinner = true;
 
-      const priceTipo = this.tipoSuscripcion;
+      const priceTipo = tipoSuscripcion;
       // this.importe = priceTipo === 'trimestral' ? "$500.00 MX" : "$1500.00 MX";
       this.importe  = 
         priceTipo === 'trimestral' ? this.precioTrimestral 
-        : priceTipo === 'semestral' ? this.precioSemestral : this.precioAnual;
+        : priceTipo === 'semestral' ? this.precioSemestral 
+        : priceTipo === 'mensual' ? this.precioMensual  : this.precioAnual;
 
       const locale = "es"
       
       //SE VERIFICA QUE TIPO DE MEMBRESIA SE DESEA PAGAR
       const priceId = 
         priceTipo === 'trimestral' ? this.trimestralPriceId 
-        : priceTipo === 'semestral' ? this.semestralPriceId : this.anualPriceId;
+        : priceTipo === 'semestral' ? this.semestralPriceId 
+        : priceTipo === 'mensual' ? this.mensualPriceId : this.anualPriceId;
 
 
       let stripe = Stripe(process.env.publishStripeKey, locale);
@@ -286,7 +295,7 @@ formasPago(tipoS){
 
       .then((data) => {
         //DATOS PARA PANTALLA DE PAGO EXITOSO
-        data.tipoSuscripcion = this.tipoSuscripcion;
+        data.tipoSuscripcion = tipoSuscripcion;
         data.importe = this.importe;
 
 
