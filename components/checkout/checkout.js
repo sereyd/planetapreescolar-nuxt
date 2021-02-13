@@ -22,7 +22,7 @@ export default {
       precioMensual: 490,
       precioTrimestral: 1290,
       precioSemestral: 2190,
-      precioAnual: 3500,
+      precioAnual: 3490,
       tipoMembresia: "",
 
       urlsusMP: "",
@@ -94,7 +94,7 @@ export default {
 
     //PAGO CON MERCADOPAGO
 formasPago(tipoS){
-  
+
       this.tipoSuscripcion= tipoS;
 
       const description = tipoS === "trimestral" ? "Planeta Preescolar: Trimestral" : 
@@ -136,11 +136,12 @@ formasPago(tipoS){
           // console.log(preference);
           this.urlMP = preference.pre.init_point;
           // this.createCheckoutButton(preference.id);
-          this.dialogFormasPago = true; 
+        ////  this.dialogFormasPago = true; 
           localStorage.setItem("payment_intent", "" );
           localStorage.setItem("user", JSON.stringify(this.datosUsuario) );
 
-          
+            window.location.href=this.urlMP
+         //  console.log(this.urlMP)
       })
       .catch((error) => {
         console.log(error)

@@ -174,30 +174,30 @@
             <td class="text-center"> 
 
               <b>$0.00 MXN</b>   <br />
-              <v-btn class="melon white--text" to="/">Regístrate</v-btn>
+              <!--<v-btn class="melon white--text" to="/" >Regístrate</v-btn>-->
             
             
             </td>
             <td class="text-center"> 
               <b>$490.00 MXN</b>   <br />
               <v-btn class="melon white--text" to="/">Tarjeta</v-btn>  <br /><br />
-              <v-btn class="melon white--text" to="/">Efectivo</v-btn>  
+              <v-btn class="melon white--text" @click="formasPago('mensual')">Efectivo</v-btn>  
             </td>
             <td class="text-center"> 
               <b>$1,290.00 MXN</b>   <br />
               <v-btn class="melon white--text" to="/">Tarjeta</v-btn>   <br /><br />
-              <v-btn class="melon white--text" to="/">Efectivo</v-btn>  
+              <v-btn class="melon white--text" @click="formasPago('trimestral')">Efectivo</v-btn>  
               
             </td>
             <td class="text-center">  
               <b>$2,190.00 MXN</b>   <br />
               <v-btn class="melon white--text" to="/">Tarjeta</v-btn>   <br /><br />
-              <v-btn class="melon white--text" to="/">Efectivo</v-btn>    
+              <v-btn class="melon white--text" @click="formasPago('semestral')" >Efectivo</v-btn>    
             </td>
             <td class="text-center"> 
               <b>$3,490.00 MXN</b>   <br />
               <v-btn class="melon white--text" to="/">Tarjeta</v-btn>   <br /><br />
-              <v-btn class="melon white--text" to="/">Efectivo</v-btn>    
+              <v-btn class="melon white--text" @click="formasPago('anual')" > Efectivo</v-btn>    
             </td>
           </tr>
         </tbody>
@@ -208,7 +208,7 @@
 </v-container>
 
 
-    <v-dialog v-model="dialogFormasPago"  persistent max-width="500">
+    <!--<v-dialog v-model="dialogFormasPago"  persistent max-width="500">
       <v-card class=" px-10">
         <v-card-title class=" justify-space-between">
             <v-btn icon text small color="purple" @click="" >
@@ -219,12 +219,12 @@
             </v-btn>
         </v-card-title>
         <div>
-          <!-- <div>
+          <div>
             <p>suscripción {{tipoSuscripcion}}</p>
           </div> -->
           <!-- <div class="d-flex justify-center">
             <v-btn class="melon white--text mb-2 btn_crearG" @click="checkPago()">CHECK MP</v-btn>
-          </div> -->
+          </div> 
 
           <div class="d-flex justify-center">
             <v-btn class="melon white--text mb-2 btn_crearG" @click="crearSesionSuscripcion()">Stripe</v-btn>
@@ -240,7 +240,7 @@
             </a>
           </div>
 
-          <!-- <div id="button-checkout" class="d-flex justify-center pb-3">
+          <div id="button-checkout" class="d-flex justify-center pb-3">
             <a 
               :href="urlsusMP" 
               class="v-btn v-btn--contained theme--light v-size--default melon mt-3 white--text"
@@ -248,19 +248,18 @@
             >
               MercadoPago suscripción
             </a>
-          </div> -->
-
+          </div>
           
 
         </div>
 
-        <!-- <div class="mt-8" v-if="!completado && !spinner">
+        - <div class="mt-8" v-if="!completado && !spinner">
         
         </div>
         
-        <Spinner v-else/> -->
+        <Spinner v-else/> 
       </v-card>
-  </v-dialog>
+  </v-dialog>--->
 
     <v-dialog v-model="dialogMP" fullscreen>
       <v-card class=" px-10">
