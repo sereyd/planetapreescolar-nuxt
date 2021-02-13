@@ -22,12 +22,16 @@ export default {
     created() {
         console.log("dhshdhjs")
         this.query = this.$route.query;
-        const {id, topic} = this.query;
+        const {id, topic, } = this.query;
 
         // this.external_reference = this.$route.query;
         console.log(this.query)
-        if(topic === "payment")
-            this.obtenerClienteMP(id);
+        console.log(id)
+        console.log(topic)
+        // if(topic === "payment")
+        this.obtenerClienteMP(id);
+
+        // const idp =  
     },
     computed:{
     ...mapState(['datosUsuario','dominio','urlAPI']),
