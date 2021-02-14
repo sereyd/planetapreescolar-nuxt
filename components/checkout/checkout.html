@@ -174,7 +174,7 @@
             <td class="text-center"> 
 
               <b>$0.00 MXN</b>   <br />
-              <v-btn class="melon white--text" to="/">Regístrate</v-btn>
+              <!--<v-btn class="melon white--text" to="/" >Regístrate</v-btn>-->
             
             
             </td>
@@ -206,9 +206,20 @@
 
 
 </v-container>
+  <v-dialog v-model="loaderpage" max-width="200">
+    <v-card>
+      <v-card-text class="text-center">
+        <v-progress-circular
+        :size="70"
+        :width="7"
+        color="purple"
+        indeterminate
+      ></v-progress-circular>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 
-
-    <v-dialog v-model="dialogFormasPago"  persistent max-width="500">
+    <!--<v-dialog v-model="dialogFormasPago"  persistent max-width="500">
       <v-card class=" px-10">
         <v-card-title class=" justify-space-between">
             <v-btn icon text small color="purple" @click="" >
@@ -219,12 +230,12 @@
             </v-btn>
         </v-card-title>
         <div>
-          <!-- <div>
+          <div>
             <p>suscripción {{tipoSuscripcion}}</p>
           </div> -->
           <!-- <div class="d-flex justify-center">
             <v-btn class="melon white--text mb-2 btn_crearG" @click="checkPago()">CHECK MP</v-btn>
-          </div> -->
+          </div> 
 
           <div class="d-flex justify-center">
             <v-btn class="melon white--text mb-2 btn_crearG" @click="crearSesionSuscripcion()">Stripe</v-btn>
@@ -240,7 +251,7 @@
             </a>
           </div>
 
-          <!-- <div id="button-checkout" class="d-flex justify-center pb-3">
+          <div id="button-checkout" class="d-flex justify-center pb-3">
             <a 
               :href="urlsusMP" 
               class="v-btn v-btn--contained theme--light v-size--default melon mt-3 white--text"
@@ -248,19 +259,21 @@
             >
               MercadoPago suscripción
             </a>
-          </div> -->
-
+          </div>
           
 
         </div>
 
-        <!-- <div class="mt-8" v-if="!completado && !spinner">
+        - <div class="mt-8" v-if="!completado && !spinner">
         
         </div>
         
-        <Spinner v-else/> -->
+        <Spinner v-else/> 
       </v-card>
-  </v-dialog>
+  </v-dialog>--->
+
+
+    
 
     <v-dialog v-model="dialogMP" fullscreen>
       <v-card class=" px-10">

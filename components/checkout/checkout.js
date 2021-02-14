@@ -4,7 +4,7 @@ import Spinner from '~/components/spinner.vue'
 export default {
   data () {
     return {
-
+      loaderpage:false,
       //DATOS PRA PANTLLA DE PAGO EXITOSO
       tipoSuscripcion: "",
       importe:"",
@@ -22,7 +22,7 @@ export default {
       precioMensual: 490,
       precioTrimestral: 1290,
       precioSemestral: 2190,
-      precioAnual: 3500,
+      precioAnual: 3490,
       tipoMembresia: "",
 
       urlsusMP: "",
@@ -94,11 +94,10 @@ export default {
 
     //PAGO CON MERCADOPAGO
   formasPago(tipoS){
-  
+      this.loaderpage=true
       this.tipoSuscripcion= tipoS;
       const external_reference = this.$codegenerate();
 
-      console.log(external_reference);
       // return external_reference;
 
       const description = tipoS === "trimestral" ? "Planeta Preescolar: Trimestral" : 
@@ -139,15 +138,19 @@ export default {
           return response.json();
       })
       .then((preference) => {
+      
+
           // console.log(preference);
-          location.href = preference.pre.init_point;
-          // this.urlMP = preference.pre.init_point;
+         /// location.href = preference.pre.init_point;
+         this.urlMP = preference.pre.init_point;
           // this.createCheckoutButton(preference.id);
           // this.dialogFormasPago = true; 
           localStorage.setItem("payment_intent", "" );
           localStorage.setItem("user", JSON.stringify(this.datosUsuario) );
-
-          
+          orderData.medio="MercadoPago"
+              this.registroPago(orderData)
+            window.location.href=this.urlMP
+        
       })
       .catch((error) => {
         console.log(error)
@@ -157,100 +160,25 @@ export default {
 
     },
 
- 
-/*
-    //PAGO CON MERCAPAGO POR OXXO
-    async crearOrdenMP(){
+ registroPago(orderData){
 
-      this.spinner = true;
-      this.completado = false;
-
-      window.Mercadopago.setPublishableKey(this.apiKey);
-      console.log(this.datosMP);
-
-      this.importe  = 
-        this.tipoMembresia === 'trimestral' ? this.precioTrimestral 
-        : this.tipoMembresia === 'semestral' ? this.precioSemestral : this.precioAnual;
-
-      const dataMP = {
-        precio: this.importe,
-        tipo: this.tipoMembresia,
-        correo: this.datosMP.correo,
-        nombre: this.datosMP.nombre+" "+this.datosMP.apellido
-      }
-
-      console.log(this.urlAPI)
-      try {
-        const config = {
-          method: 'POST',
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(dataMP)
-        }
-        
-        const json = await fetch(this.urlAPI+"/mercadopago-oxxo",config);
-        let res = await json.json();
-  
-        // console.log(res.response);
-        // console.log(res.response.transaction_details.external_resource_url);
-        this.linkMP = res.response.transaction_details.external_resource_url;
-        
-        let datosUsuario = {...this.datosUsuario}
-        const {id} = datosUsuario;
-        
-        // const lvl = datosUsuario.lvluser === 2 ? 2 : 1;
-        //SE ASIGNA EL ID DEL PAGO DE OXXO AL ID DE LA SUSCRIPCIÓN
-        // datosUsuario.idSuscripcion = res.response.id;
-
-        //SE BUSCA AL USUARIO EN LA BASE DE DATOS POR MEDIO DEL ID
-        let usuarioRef =  this.$fireStore.collection("usuarios").doc(id);
-
-        //SE ACTUALIZA EN FIREBASE LOS CAMPOS NECESARIOS
-        usuarioRef.update({
-          // lvluser: lvl,
-          // idMembresia: res.response.id,
-          // idCliente: this.idCliente,
-          idSuscripcion: res.response.id,
-          tipoSuscripcion: this.tipoMembresia,
-          importeSuscripcion: this.importe,
-        })
-        .then(() => {
-          //SE ACTUALIZA EL OBJETO USUARIOS POR MEDIO DE UN ACTION QUE ESTA EN EL STORE
-          // datosUsuario.lvluser = lvl;
-          // datosUsuario.idMembresia =res.response.id;
-          // datosUsuario.idCliente = this.idCliente;
-          datosUsuario.idSuscripcion= res.response.id;
-          datosUsuario.tipoSuscripcion= this.tipoMembresia;
-          datosUsuario.importeSuscripcion= this.importe;
-          // datosUsuario.estadoMembresia = session.payment_status === 'paid' ? 'active' : '';
-
-          this.guardaDatosUsuarioStore(datosUsuario);
-        })
-        .catch((error) => {
-            console.error("Error al realizar pago: ", error);
-        });
-
-        // this.cambiastatusSesion()
-
-        this.spinner = false;
-        this.completado = true;
-
-      } catch (error) {
-        console.log(error)
-      }
-
-    },
-
-   
-*/
-
+  orderData.iduser=this.datosUsuario.id
+  orderData.status= "pending"
+  orderData.date_created=new Date()
+  orderData.collector_id=0
+  orderData.id=0
+  orderData.operation_type=""
+  orderData.payment_method_id=""
+  orderData.status_detail=""
+  orderData.payer={}
+   this.$fireStore.collection('pagos').add(orderData)
+ },
 
     //PAGOS CON STRIPE
     crearSesionSuscripcion(tipoSuscripcion){
+      this.loaderpage=true
       this.spinner = true;
-
+      const external_reference = this.$codegenerate();
       const priceTipo = tipoSuscripcion;
       // this.importe = priceTipo === 'trimestral' ? "$500.00 MX" : "$1500.00 MX";
       this.importe  = 
@@ -269,6 +197,10 @@ export default {
 
       let stripe = Stripe(process.env.publishStripeKey, locale);
 
+      var orderData={
+        priceId: priceId,
+        dominio: this.dominio
+      }
       //LLAMADA A LA API EXTERNA PARA CREAR UNA SESION DE PAGO
       // fetch("http://localhost:4242/create-checkout-session", {
       fetch(this.urlAPI+"/create-checkout-session", {
@@ -276,10 +208,7 @@ export default {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-          priceId: priceId,
-          dominio: this.dominio
-        })
+        body: JSON.stringify(orderData)
       })
       .then((result) => {
         if (!result.ok) {
@@ -296,11 +225,16 @@ export default {
         //DATOS PARA PANTALLA DE PAGO EXITOSO
         data.tipoSuscripcion = tipoSuscripcion;
         data.importe = this.importe;
-
+        orderData.tipoSuscripcion=tipoSuscripcion
+        orderData.importe=this.importe
+        orderData.external_reference=external_reference 
 
         //DATA EN STORAGE PARA COMPROBARLA AL HACERASE EL PAGO EXITOSO
         localStorage.setItem("payment_intent", JSON.stringify(data) );
         localStorage.setItem("user", JSON.stringify(this.datosUsuario) );
+
+        orderData.medio="Stripe"
+        this. registroPago(orderData)
 
         //SE EJECUTA LA VENTANA DE STRIPE PARA INSERTAR DATOS DE LA TARJETA
         stripe
