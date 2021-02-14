@@ -50,7 +50,7 @@ export default {
         this.obtenerClienteMP(datos);
 
         // const idp =  
-  },
+    },
     computed:{
     ...mapState(['datosUsuario','dominio','urlAPI']),
 
@@ -92,34 +92,47 @@ export default {
                     }
                 }
                 else{
+                    let idPago;
+                    let objPago;
+
                     console.log(suscripcion.response)
                     const {collector_id,date_created,description,
                     external_reference,id,operation_type,payer,payment_method_id,
                     transaction_amount,status,status_detail,} = suscripcion.response;
                     // const iduser = "jsjdhsdkds";
                     const medio = "MercadoPago";
-                    const pago = {
-                      collector_id,
-                      date_created,
-                      description,
-                      dominio: this.urlAPI,
-                      external_reference,
-                      id,
-                      iduser: this.datosUsuario.id,
-                      medio,
-                      operation_type,
-                      payer,
-                      payment_method_id,
-                      price: transaction_amount,
-                      quantity: 1,
-                      status,
-                      status_detail,
-                      
-                    }
+
+                    //OBETNEMOS EL PAGO QUE SE COMENZO
+                    console.log(external_reference)
+                    const pagosRef = await this.$fireStore.collection('pagos');
+
+                    const queryRef = await pagosRef.where('external_reference', '==', external_reference).get();
+                    // .where("external_reference", "==", external_reference ).get();
+
+                    console.log(queryRef)
+                    console.log(queryRef.docs)
+                    queryRef.docs.forEach(doc=>{
+                        idPago = doc.id;
+                        
+                        objPago = {...doc.data() }
+                    });
+                    console.log("objPago")
+                    console.log(objPago)
+
+                    objPago.collector_id = collector_id;
+                    objPago.id = id;
+                    objPago.operation_type = operation_type;
+                    objPago.payer = payer;
+                    objPago.payment_method_id =payment_method_id;
+                    objPago.status = status;
+                    objPago.status_detail = status_detail;
+
+                    
                     try {
-                        console.log(pago)
+                        console.log(objPago)
                         // await this.$fireStore.collection('error').add({id:123});
-                        await this.$fireStore.collection('pagos').add(pago);
+                        // await this.$fireStore.collection('pagos').add(pago);
+                        await this.$fireStore.collection('pagos').doc(idPago).update(objPago)
                     } catch (error) {
                          console.log("error al agregar pago")
                         console.log(error)
