@@ -1,7 +1,6 @@
 <template>
     <v-main>
-        {{nombredesitio}}
-        {{datadeprodicto}}
+sito landing page
     </v-main>
 </template>
 
@@ -10,7 +9,8 @@
  async asyncData({ params }) {
       const nombrepub = params.nombrepub // When calling /abc the slug will be "abc"
       return { 
-          url:nombrepub 
+          url:nombrepub,
+          datos:{}
           }
     },
     data(){
@@ -18,14 +18,19 @@
         datadeprodicto:"muestra esta variable"
         }
     },
-    
-    computed:{
-        nombredesitio(){
-            var returl=this.url
-            console.log(this.url)
-            return returl
-        }
-    }
+    created(){
+        this.cargadatos()
+    },
+    methods:{   
+        cargadatos(){
+            this.$fireStore.collection('landingpage').where('url','==',this.url).get()
+            .then((data)=>{
+               this.datos=data.docs[0].data()
+            })
+        },
+    },
+ 
+
     }
 
 </script>

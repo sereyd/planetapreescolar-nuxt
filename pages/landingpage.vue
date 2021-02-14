@@ -15,8 +15,9 @@
     </template>
   
     <template v-slot:item.editar='{item}'>
-      <v-btn class="melon white--text"><v-icon>mdi-eye</v-icon></v-btn>
-      <v-btn class="melon white--text"><v-icon>mdi-delete</v-icon></v-btn>
+
+       <v-btn class="melon white--text" @click="editarpub(item)"><v-icon>mdi-pencil-outline</v-icon></v-btn>
+      <v-btn class="melon white--text" @click="eliminapub(item)"><v-icon>mdi-delete</v-icon></v-btn>
       </template>
 
   </v-data-table>
@@ -33,7 +34,7 @@
       <v-card>
         <v-card-title class="primary white--text">
           Nueva Landing Page<v-spacer></v-spacer>
-          <v-btn class="primary white--text" @click="addpage = false"
+          <v-btn class="primary white--text" @click="cerrarPagEditor()"
             >Cerrar</v-btn
           >
         </v-card-title>
@@ -121,15 +122,15 @@ export default {
       sitiosLp:[],
       sitioHeader:[
         {
-          text:'titulo',
+          text:'Titulo',
           value:'titulo'
         },
         {
-          text:'url',
+          text:'Url',
           value:'url'
         },
         {
-          text:'editar',
+          text:'Editar',
           value:'editar'
         }
       ]
@@ -171,6 +172,23 @@ export default {
     this.host=window.location.host
   },
   methods: {
+    editarpub(p){
+      this.datalp=p
+      this.addpage=true
+      this.fase1=true
+    },
+    eliminapub(p){
+        this.$fireStore.collection('landingpage').doc(p.iddoc).delete()
+        setTimeout(()=>{
+          this.cargaSitios()
+        },1000)
+        
+    },
+    cerrarPagEditor(){
+      this.fase1=false
+      this.addpage=false
+      this.datalp={}
+    },
     async validaUrl(){
        await this.$fireStore
         .collection("landingpage")
@@ -180,6 +198,7 @@ export default {
         if(data.docs.length>0){
           this.pregCont=true
           this.datalp=data.docs[0].data()
+      
         }else{
           this.fase1=true
         }
@@ -212,14 +231,28 @@ export default {
               console.log('crea nuevo registro')
                this.$fireStore.collection('landingpage').add(this.datalp)
             }
+
+            this.addpage=false
+            this.fase1=false
+            this.datalp={}
+              setTimeout(()=>{
+                this.cargaSitios()
+            },1000)
+        
         });
       
     },
     async cargaSitios(){
+
+       this.sitiosLp=[]
+
       await this.$fireStore.collection('landingpage').get()
       .then((data)=>{
         data.docs.forEach((ld)=>{
-           this.sitiosLp.push(ld.data())
+          var payload=ld.data()
+              payload.iddoc=ld.id
+           this.sitiosLp.push(payload)
+           
         })
            
       })
