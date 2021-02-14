@@ -714,8 +714,8 @@ const createStore = () => {
                         .then(async(suscripcion)=>{
 
                           let data = suscripcion.response;
-                          // console.log(suscripcion);
-                          // console.log(data);
+                          console.log(suscripcion);
+                          console.log(data);
 
 
                           //SE REVISA EL ESTADO DE LA SUSCRIPCIÓN

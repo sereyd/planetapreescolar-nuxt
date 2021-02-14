@@ -96,7 +96,7 @@ export default {
   formasPago(tipoS){
       this.loaderpage=true
       this.tipoSuscripcion= tipoS;
-      const external_reference = this.$codegenerate();
+      const external_reference = this.$codegenerate().toString();
 
       // return external_reference;
 
@@ -178,7 +178,7 @@ export default {
     crearSesionSuscripcion(tipoSuscripcion){
       this.loaderpage=true
       this.spinner = true;
-      const external_reference = this.$codegenerate();
+      const external_reference = this.$codegenerate().toString();
       const priceTipo = tipoSuscripcion;
       // this.importe = priceTipo === 'trimestral' ? "$500.00 MX" : "$1500.00 MX";
       this.importe  = 
