@@ -5,8 +5,15 @@
 .fotomini{
     /* height:"150"; */
      /* width:calc(100% + 50px); */
+     width: 120%;
+     height: 160px;
+
+}
+.fotomd{
+    /* height:"150"; */
+     /* width:calc(100% + 50px); */
      width: 100%;
-     height: 150px;
+     height:230px;
      border-radius: 3em;
 }
 
@@ -16,7 +23,7 @@
 }
 .textos > h4 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 15px;
+    font-size: 17px;
 }
 .texto_mb{
     margin-bottom:0!important;
@@ -54,4 +61,11 @@
     /* text-transform: uppercase; */
     text-transform: none;
     /* align-items: flex-start; */
-  }
+}
+
+.space{
+    margin-bottom: 0px; 
+    padding-bottom: 0px;
+    margin-top: 0px; 
+    padding-top: 0px;
+}

@@ -5,14 +5,30 @@
     background-position: bottom;
 }
 
-.v-input__slot{
-    background-color:#fff;
+
+
+.v-select > .v-input__control > .v-input__slot  > .v-icon__svg {
+    fill:primary;
 }
 
-.modbuscador{
+.modbuscador{ 
     border-radius:15px;
 }
 
 .btn{
     cursor: pointer;
 }
+
+.style-chooser .vs__search::placeholder,
+  .style-chooser .vs__dropdown-toggle,
+  .style-chooser .vs__dropdown-menu {
+    background: #dfe5fb;
+    border: none;
+    color: #394066;
+    text-transform: lowercase;
+    font-variant: small-caps;
+  }
+
+  .v-text-field .v-input__prepend-inner, .v-text-field .v-input__append-inner {
+    color:purple;
+  }

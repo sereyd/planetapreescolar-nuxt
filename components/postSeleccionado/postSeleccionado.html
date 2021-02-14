@@ -1,0 +1,195 @@
+<div>   
+    <v-card-text style="text-align: right; " v-if="datosUsuario.userlogin || vistapost.tipo === 'blog'">
+
+        <div  max-width="100%" style="height:20px; "></div>
+        <v-container class="ma-auto elevation-3 rounded-ml" style="background-image:url('images/back/backstart.jpg'); background-position:top; background-size: 100%; background-repeat: repeat-x; text-align: left; max-width:1200px; width:100%; ">
+    
+     
+            <h2 class="primary--text pl-5"><b>{{vistapost.titulo}}</b> </h2>
+            <div class=" d-flex flex-column mb-5 texto_recurso">
+                <span class="pl-5" >Por {{vistapost.nombreCreador}}</span>
+                <span class="pl-5" >{{ fechaVisual }}</span>
+            </div>
+
+            <!-- :loading="loading3"
+            :disabled="loading3" -->
+            <!-- :href="urlFileB"  -->
+            <div 
+                v-if="vistapost.tipoRecurso !== 'link' && vistapost.urlDescargable !== '' &&
+                ( subtipo !== 'blog' && subtipo !== 'memoria' ) && urlFileB !== ''"
+            >
+                <Spinner 
+                    v-if="spinner" 
+                />
+                <div 
+                    v-else-if ="!spinner"
+                >
+                    
+                    <a 
+                        v-if="esFree && datosUsuario.lvluser !== 3"
+                        :download="nombreFile"
+                        :href="urlFileB" 
+                        @click="contadorDescargar('Free', $event)"
+                        target="_blank"
+                        class="v-btn v-btn--contained theme--light v-size--default melon mt-3 white--text"
+                        style="text-transform: none; border-radius: 12px;"
+                    >
+                    <v-icon rigth dark> mdi-download </v-icon>
+                        Descarga Free
+                    </a>
+                <!-- datosUsuario.descargas.mes.usadas.length < datosUsuario.descargas.mes.disponibles    -->
+                
+                    <a 
+                        v-else-if="datosUsuario.lvluser >= 2|| 
+                        (
+                            datosUsuario.descargas.mes.active  
+                        )"
+                        :download="nombreFile"
+                        :href="urlFileB" 
+                        @click="contadorDescargar('Plan', $event)"
+                        target="_blank"
+                        class="v-btn v-btn--contained theme--light v-size--default melon mt-3 white--text"
+                        style="text-transform: none; border-radius: 12px;"
+                    >
+                        <v-icon rigth dark> mdi-download </v-icon>
+                        Descargar
+                    </a>
+                    <v-btn
+                        v-else
+                        class="ma-2 melon white--text"
+                        style="text-transform: none; border-radius: 12px;"
+                        @click="dialogPlanes=true"
+                    >
+                        <v-icon rigth dark> mdi-download </v-icon>
+                        Descargar
+                    </v-btn>
+                    
+                    <pdfviewer :src="vistapost.urlVista" :numspages="[3,4,5]" ></pdfviewer>
+                    
+                </div>
+            </div>
+            <div class="d-flex justify-center mt-5" v-if="vistapost.tipo !== 'planeacion'">
+                
+
+                <v-img 
+                    v-if="vistapost.tipoRecurso==='image'" 
+                    :src="vistapost.urlVista"
+                    style="max-width:50%; width:50%; background-color:azure; "
+                ></v-img>
+
+
+                
+                <audio-player 
+                    v-else-if="vistapost.tipoRecurso==='audio'"
+                    style="max-width:50%; width:50%; background-color:azure; "
+                    >
+                    <source :src="vistapost.urlVista" />
+                </audio-player>
+                <div  class="d-flex justify-center">
+                    <!-- <video-player 
+                        v-if="vistapost.tipoRecurso !=='link' && vistapost.tipoRecurso !=='none' 
+                        && vistapost.tipoRecurso !=='' && vistapost.tipoRecurso !=='audio'"
+                        style="max-width:50%; width:50%; background-color:azure; "
+                    >
+                        <source :src="vistapost.urlVista" />
+                    </video-player> -->
+                    <iframe 
+                        v-if="vistapost.tipoRecurso ==='link'"
+                        width="560" height="315" 
+                        :src="linkembed" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+               
+            
+            </div>
+            
+
+            <!--- VISOR DE PDF   AQUI -->
+
+
+            <v-main class="pl-5 contenido" v-html="vistapost.contenido"  
+            style="width:100%; max-width: 100%; overflow: auto; min-height:300px; max-height:400px; height:100%;"  
+            ></v-main>
+
+            
+
+            <div class="d-flex justify-center" 
+                v-if="vistapost.tipoRecurso !=='link' && vistapost.tipoRecurso !=='none' && vistapost.tipoRecurso !==''"
+            >
+
+            </div>
+
+            <!-- <h1>{{subtipo}}</h1> -->
+            <comentarios
+                v-if="subtipo !== 'planeacion' && subtipo !== 'recurso' && subtipo !== 'recomendacion'"
+                :post="vistapost" @updatePost="vistapost = $event"
+            />
+
+
+
+    </v-container>
+    </v-card-text>
+    <v-card-text v-else>
+        <v-container>
+            <div class="d-flex justify-center">
+                 <v-img
+                     src="images/registrate.png"
+                     contain
+                     class=""
+                     style="width: 100%; height: 380px;"
+                     >
+                 </v-img>
+            </div>
+            <div class="d-flex justify-center">
+                <v-btn
+                    class="melon white--text mr-2 "
+                    @click="$router.push('/login')"
+                >Iniciar sesión</v-btn>
+                <v-btn
+                    class="melon white--text "
+                    @click="$router.push('/registro')"
+                >Registro</v-btn>
+            </div>
+        </v-container>
+    </v-card-text>
+
+
+    <v-dialog v-model="dialogPlanes" persistent max-width="755">
+            
+        <v-card class=" px-10">
+          <v-card-title class=" justify-space-between">
+              <v-btn icon text small color="purple" @click="" >
+              </v-btn>
+              <h2 class="primary--text ">¿Te gustó la planeación?</h2>
+              <v-btn icon text small color="purple" @click="dialogPlanes = false" >
+                  <v-icon>mdi-window-close</v-icon>
+              </v-btn>
+          </v-card-title>
+          <div class="mt-4">
+            <p class="text-center"v-if="datosUsuario.descargas.mes.active">
+                Tu plan actual solo te permite {{descargarPlan}} descargas por mes
+            </p>
+            <p class="text-center"v-else>
+                Descarga nuestro material de forma ilimitada suscribiendote a nuestros planes
+            </p>
+                <div class="d-flex justify-center mt-4">
+                    <img
+                      src="../../static/images/planes.png"
+                      width="380"
+                      height="280"
+                      class=""
+                    />
+                  </div>
+                <div class="d-flex justify-center">
+                    <v-btn 
+                        class="melon white--text rounded-pill mb-5 btn_crearG" to="/checkout" >Ver planes</v-btn> 
+                </div>
+                      
+                   
+          </div>
+        </v-card>
+    </v-dialog>
+</div>  

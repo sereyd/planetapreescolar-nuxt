@@ -22,11 +22,6 @@ export default{
                 nombre: '',
                 apellido: '',
                 correo: '',
-                //password: '',
-                // celular: '2222222222',
-                // experiencia: '2',
-                // pais: 'Mexico',
-                // cuidad: 'Puebla',
                 urlImagen:'',
                 userlogin:false,
                 foldercode:'',  
@@ -41,14 +36,12 @@ export default{
             confirmarCorreo: '',
             //DATA PARA VALIDAR QUE ESTEN LLENOS LOS CAMPOS DE CADA FORMULARIO
             valid: false,
-            //valid2: false,
             showPass: false,
             showPass2: false,
 
             //DATA PARA ALERTA DE ERRORES EN EL FORMULARIO
             error: false,
             mensajeError: '',
-            
 
             /* REGLAS DEL PRIMER FORMULARIO */
             nombreReglas: [
@@ -81,8 +74,6 @@ export default{
 
             /*REGLAS DEL SEGUNDO FORMULARIO */
             telefonoReglas: [
-                // v => !!v || 'Telefono es requerido',
-                ///\d/g
                 v => /^[2-9]\d{2}[2-9]\d{2}\d{4}$/.test(v) || 'Teléfono no valido',
                 v => (v && v.length === 10) || 'El número debe tener 10 digito',
             ],
@@ -97,9 +88,6 @@ export default{
     methods:{
 
       ...mapMutations(['almacenarFotoStorage','guardaDatosUsuarioStore']),
-
-       
-      
 
         //REGISTRO PARA FACEBOOK Y GOOGLE
         registroExterno(tipo){
@@ -125,7 +113,7 @@ export default{
                 correo: user.email,
                 urlImagen: user.photoURL,
                 userlogin:true,
-                lvluser:1
+                lvluser:0
               };
               this.almacenarUsuarioCollection();
             }
@@ -141,23 +129,6 @@ export default{
           });
           
         },
-      
-       
-        /*  SELECCIONA EL TIPO DE USUARIO QUE SE REGISTRARÁ */
-        // elegirRegistro( tipoUser){
-        //     this.tipoUsuarioR = tipoUser;
-        //     this.faseFormulario++; 
-        //   },
-
-        /* VALIDA QUE ESTEN LLENOS LOS CAMPOS DEL PRIMER FORMULARIO
-          PARA MOSTRAR EL SEGUNDO FORMULARIO
-        */
-        //   siguienteFormulario(){
-        //     if(this.valid){
-        //         this.faseFormulario++;
-        //     }
-        //   },
-
    
         async crearUsuario(){
           //ACTIVANDO ANIMACIÓN DE SPINNER Y ERROR FALSE PARA OCULTAR ERRORES PREVIOS
@@ -173,15 +144,20 @@ export default{
     
         },
         async almacenarUsuarioCollection(){
+          const URLactual = window.location;
+
           //SE ALMACENA EL NUEVO USUARIO EN LA COLECCION DE USUARIOS
           try {
               this.datosUsuarioR.userlogin = true,
               this.datosUsuarioR.lvluser = 1;
+              console.log(datosUsuarioR);
               await this.$fireStore.collection('usuarios').add(this.datosUsuarioR);
              ////Guarda los datos de usuario en el store con una mutación 
               this.guardaDatosUsuarioStore(this.datosUsuarioR);
               this.resetearData();
-              this.$router.push('/login')
+              // this.$router.push('/')
+              window.location.href = URLactual.origin;
+
 
           } catch (error) {
             console.log(error)
@@ -204,19 +180,13 @@ export default{
             });
           } catch (error) {
             this.error = true;
-            this.mensajeError = "Este correo ya fue registrado";;
-          //   console.log(error)
-            
-
+            this.mensajeError = "Este correo ya fue registrado";
           }
           
-
         },
 
         resetearData(){
             this.$refs.form.reset();
-          //   this.faseFormulario = 1;
-          //   this.tipoUsuarioR='';
             this.datosUsuarioR.urlImagen = this.urlImagen;
             this.checkbox = false;
             this.spinner = false;
@@ -224,16 +194,6 @@ export default{
             this.mensajeError = "";
         },
 
-        /* RETROCEDE AL FORMULARIO ANTERIOR*/
-        //  atrasFormulario(){
-        //    if(this.faseFormulario === 2)
-        //    {
-        //      this.faseFormulario--;
-        //      this.tipoUsuarioR='';
-        //    }else if(this.faseFormulario === 3){
-        //      this.faseFormulario--;
-        //    }
-        //  },
     
         /* VALIDA QUE LAS REGLAS DEL 1ER FORMULARIO SE CUMPLAN */
         validate () {
@@ -249,10 +209,6 @@ export default{
     },
     watch:{
       async urlimg(){
-
-        
-
-        console.log("entrando al watcher");
 
        this.datosUsuarioR.urlImagen=this.urlimg
         
@@ -286,13 +242,7 @@ export default{
               
             })
       
-            
-
-            }else{
-
-          this.spinner = false
-
-         }
+            }else{ this.spinner = false }
         
       }
     }

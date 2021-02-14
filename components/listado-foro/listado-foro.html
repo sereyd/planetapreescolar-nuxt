@@ -1,0 +1,62 @@
+<v-list>
+  <v-list-item>
+    <v-btn
+      class="melon white--text"
+      @click="addeditblog=true"
+      v-if="datosUsuario.userlogin===true"
+      >Crear Entrada</v-btn
+    >
+
+    <v-dialog v-model="addeditblog" max-width="800">
+      <editablog
+        :editar="blogeditable"
+        @finaliza="addeditblog=$event"
+        @actualizaforo="actualizaForos($event)"
+        tipo="crear"
+      ></editablog>
+    </v-dialog>
+
+    
+  </v-list-item>
+
+  <v-list-item v-for="(key, index) in items" :key="'pub'+index" class="ma-5"  >
+    <v-card  class="mx-auto" style="width:100%; max-width: 100%;">
+      <v-card-text >
+        <v-row>
+          <v-col cols="12" md="12">
+        <h3>{{key.titulo}}</h3>
+      </v-col>
+      <v-col cols="12" md="12">
+        <div v-html="key.cuerpo.substr(0,200)"></div>
+</v-col>
+<v-col cols="12" md="7">
+       <v-icon class="primary--text" >mdi-eye</v-icon>
+
+
+<b>{{key.views ? key.view : '0'}}</b>
+
+<v-chip v-for="l in 5" :key="l+'keuuy'" class="white ma-0 pa-0" v-if="key.calcstart!==''"  >
+  <v-icon :class="l<=key.calcstart ? 'yellow--text' : 'grey--text' ">mdi-star</v-icon>
+ </v-chip>
+
+ <v-chip v-for="l in 5" :key="l+'keuy'" class="white ma-0 pa-0" v-if="key.calcstart===''"  >
+  <v-icon class="grey--text">mdi-star</v-icon>
+ </v-chip>
+
+
+</v-col>
+<v-col cols="12" md="2" class="text-right">
+<span  v-if="datosUsuario.lvluser===3"> 
+  <v-icon class="primary--text " v-if="key.verificado===true">mdi-eye</v-icon>  
+  <v-icon v-if="key.verificado===false">mdi-eye-off</v-icon>
+</span>
+</v-col>
+<v-col cols="12" md="3" class="text-right">
+  <b>{{key.ncoment ? key.ncoment : '0'  }} comentarios</b> &nbsp;&nbsp; <v-btn class="melon white--text" style="text-transform: none; border-radius:8px;"  @click="foroselect(key)" >Leer foro</v-btn>
+</v-col>
+
+      </v-row>
+      </v-card-text>
+    </v-card>
+  </v-list-item>
+</v-list>

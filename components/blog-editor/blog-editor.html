@@ -7,11 +7,10 @@
           height="150px"
           style="background-color: #F2EAF1"
         >
-          
 
           <v-btn color="" text  @click="abrirDialog()" 
           fab
-          dark 
+          dark
           x-large
           class="m-0 p-0 btn_add_img">
               <div >
@@ -49,8 +48,14 @@
                     ref="formRecurso"
                     v-model="esRecursoValido"
                   >
-                    <div class="" v-if="!cargando">
+                    <div class="text-center" v-if="!cargando">
+
+
+
                         <subirImagen 
+                        
+                        :limitImg="limitWH"
+                        v-if="subtipo !=='reflexion'"
                             titulo=""  
                             @updateImg="datosRecurso.urlImagen=$event" 
                             ejecimagen="uploadimg" 
@@ -58,35 +63,98 @@
                             class=" d-flex justify-center mb-4"
                         />
 
-                        <v-select
-                            :items="tiposVideoList"
-                            label="Tipo de video"
-                            solo
-                            outlined
-                            v-model="tipoVideo"
-                            v-if="tipo ==='VIDEOS'"
-                        ></v-select>
-                        
-                        <v-file-input
-                            outlined
-                            :label="labelFile"
-                            prepend-icon="mdi-paperclip"
-                            :accept="tipoRecursoFile"
-                            v-model="file"
-                            @change = "changeFile"
-                            v-if="tipoVideo === 'file'"
-    
-                        ></v-file-input>
+                   
 
-                        <v-text-field
-                            v-model="datosRecurso.urlRecurso"
-                            placeholder="Link del video"
-                            required
-                            outlined
-                            :rules="[v => !!v || 'Link del video es requerida']"
-                            @keyup.enter=""
-                            v-else-if="tipoVideo === 'link'"
-                        ></v-text-field>
+                        <v-row v-if="subtipo ==='reflexion'" v-show="showicon===true" style="border:solid #ccc 1px; border-radius:10px;" >
+                            <v-col cols="2" md="2" v-for="k in 8"  :key="'pos'+k" >
+                                <v-btn @click="datosRecurso.icono='images/iconos/reflexiones/'+k+'.png';showicon=false" depressed ><img :src="'images/iconos/reflexiones/'+k+'.png'" width="50" /></v-btn>
+                            </v-col>
+                        </v-row>
+                        <v-avatar size="90" v-if="subtipo ==='reflexion'">
+                            <img :src="datosRecurso.icono" width="100%" />
+                        </v-avatar>
+                        <v-btn v-if="subtipo ==='reflexion'"  @click="showicon=true">Cambiar Icono</v-btn>
+                        <v-chip v-if="etreglas" class="grey white--text mp-5" >{{etreglas}}</v-chip>
+                        <!-- <p>{{subtipo}}</p> -->
+                        <div v-if="subtipo ==='planeacion'">
+
+                            <subirFile 
+                                filesAccepts=".doc, .docx" 
+                                label="Archivo WORD"
+                                :subtipo="subtipo"
+                                :foldercode="datosRecurso.foldercode" @updateFoldercode="datosRecurso.foldercode=$event" 
+                                :file="fileDescargable" @updateFile="fileDescargable=$event"
+                                @updateUrlFile="urlDescargable=$event"
+                                nickFile="word"
+                            />
+
+                            <subirFile
+                                filesAccepts=".pdf" 
+                                label="Archivo PDF"
+                                :subtipo="subtipo"
+                                :foldercode="datosRecurso.foldercode" @updateFoldercode="datosRecurso.foldercode=$event" 
+                                :file="fileVista" @updateFile="fileVista=$event"
+                                @updateUrlFile="urlVista=$event"
+                                nickFile="pdf"
+                            />
+                            
+                            
+                        </div>
+
+                        <div v-if="subtipo !=='planeacion' && subtipo !=='reflexion' && subtipo !=='materialdidactico' && subtipo !=='hojatrabajo' && subtipo !=='hojailustrar' && subtipo !=='otro'">
+                            <v-select
+                                :items="tiposRecursoList"
+                                label="Tipo de recurso"
+                                solo
+                                outlined
+                                v-model="tipoRecursoSelect"
+                            ></v-select>
+
+
+                            <v-text-field
+                                v-model="urlVista"
+                                placeholder="Link del video"
+                                required
+                                outlined
+                                :rules="[v => !!v || 'Link del video es requerida']"
+                                @keyup.enter=""
+                                v-if="tipoRecursoSelect === 'link'"
+                            ></v-text-field>
+                            <subirFile v-else-if="tipoRecursoSelect === 'file'"
+                                filesAccepts="audio/mp3" 
+                                label="Archivo de audio"
+                                :subtipo="subtipo"
+                                :foldercode="datosRecurso.foldercode" @updateFoldercode="datosRecurso.foldercode=$event" 
+                                :file="fileVista" @updateFile="fileVista=$event"
+                                @updateUrlFile="urlVista=$event"
+                                nickFile="subtipo"
+                            />
+                            <subirFile
+                                v-if="subtipo !=='blog' && subtipo !=='memoria'"
+                                filesAccepts=".pdf, .ppt, .pptx" 
+                                label="Archivo descargable"
+                                :subtipo="subtipo"
+                                :foldercode="datosRecurso.foldercode" @updateFoldercode="datosRecurso.foldercode=$event"
+                                :file="fileDescargable" @updateFile="fileDescargable=$event"
+                                @updateUrlFile="urlDescargable=$event"
+                                nickFile="letra"
+
+                                
+                            />
+                           
+                        </div>
+
+                        <div v-else-if="subtipo ==='materialdidactico' || subtipo ==='hojatrabajo' || subtipo ==='hojailustrar' || subtipo ==='otro'">
+                            <subirFile 
+                                filesAccepts=".pdf" 
+                                :label="labelFile"
+                                :subtipo="subtipo"
+                                :foldercode="datosRecurso.foldercode" @updateFoldercode="datosRecurso.foldercode=$event" 
+                                :file="fileDescargable" @updateFile="fileDescargable=$event"
+                                @updateUrlFile="urlDescargable=$event"
+                                nickFile="subtipo"
+                            />
+                        </div>
 
                         
     
@@ -95,59 +163,113 @@
                             placeholder="Titulo"
                             required
                             outlined
-                            :rules="[v => !!v || 'Titulo es requerida']"
+                            :rules="[v => !!v || 'Titulo es requerido']"
                             @keyup.enter=""
                         ></v-text-field>
+                        
+                       
+                        <v-textarea
+                            solo
+                            outlined
+                            required
+                            v-model="sinopsis"
+                            name="input-7-4"
+                            :rules="sinopsisReglas"
+                            label="Sinopsis..."
+                            v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo')"
+                            @keyup.enter=""
+
+                        ></v-textarea>
 
                         <v-text-field
                             v-model="materia"
                             placeholder="Materia"
                             required
                             outlined
-                            :rules="[v => !!v || 'Materia grupo es requerida']"
+                            :rules="[v => !!v || 'Materia es requerida']"
                             @keyup.enter=""
-                            v-if="esBlog"
+                            v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo')"
                         ></v-text-field>
+
                         <v-text-field
                             v-model="grado"
                             placeholder="Grado"
                             required
                             outlined
-                            :rules="[v => !!v || 'Grado es requerida']"
+                            :rules="[v => !!v || 'Grado es requerido']"
                             @keyup.enter=""
-                            v-if="esBlog"
+                            v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo')"
                         ></v-text-field>
-
-    
-                        <v-textarea
-                            v-model="datosRecurso.contenido"
-                            placeholder="contenido..."
-                            required
-                            outlined
-                            :rules="[v => !!v || 'Contenido es requerida']"
-                            @keyup.enter=""
+                        
+                        <span class="d-flex align-self-start" v-if="subtipo === 'interactivo'">Letra de video o canción:</span>
+                        <VueEditor class="elevation-3 rounded-lg" v-model="datosRecurso.contenido" :editorToolbar="customToolbar"></VueEditor>
             
-                        ></v-textarea>
-                        <v-radio-group
-                            v-model="datosRecurso.edopost"
-                            row
-                            :rules="[v => !!v || 'Seleccione privacidad']">
+
+
+                        <div 
+                            class="d-flex flex-wrap justify-space-between" >
+
+                            <v-radio-group
+                                v-model="datosRecurso.edopost"
+                                row
+                                :rules="[v => !!v || 'Seleccione privacidad']">
+        
+                                <v-radio
+                                    label="Publico"
+                                    value="publico"
+                                    small
+                                ></v-radio>
+                                <v-radio
+                                    label="Privado"
+                                    value="privado"
+                                    small
+                                ></v-radio>
+                            </v-radio-group>
     
-                            <v-radio
-                                label="Publico"
-                                value="publico"
-                            ></v-radio>
-                            <v-radio
-                                label="Privado"
-                                value="privado"
-                            ></v-radio>
-                        </v-radio-group>
+                            <v-switch
+                                v-model="datosRecurso.premium"
+                                inset
+                                label="Premium"
+                                small
+                                v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' || subtipo === 'otro')"
+
+                            ></v-switch>
+    
+                            <v-switch
+                                v-model="datosRecurso.recomendado"
+                                inset
+                                label="Recomendado"
+                                small
+                                v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' "
+
+                            ></v-switch>
+                            <v-switch 
+                                v-model="datosRecurso.permisoadmin"  
+                                v-if="(datosUsuario.lvluser===3) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' || subtipo === 'otro')" 
+                                label="Validado por administador
+                            "></v-switch>
+                            <!-- <v-switch 
+                                v-model="usarnombre"  
+                                v-if="(datosUsuario.lvluser===2) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro')" 
+                                label="Nombre personal
+                            "></v-switch> -->
+
+                            <v-checkbox
+                                v-model="usarnombre"
+                                label="Nombre personal"
+                                color="primary "
+                                class="mb-3"
+                                v-if="(datosUsuario.lvluser===3) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' || subtipo === 'otro')" 
+                                hide-details
+                            ></v-checkbox>
+                        </div>
                         <!-- :class="[tagsValido ? 'mb-2 mt-2' : 'errorTagsBorder mb-2 mt-2']" -->
                         <input-tag 
                             v-model="datosRecurso.tags" 
                             class="mb-2 mt-2"
                         >
                         </input-tag>
+                        <p><small>*Presione enter o ingrese una coma para agregar otro tag</small></p>
                         <div v-if="tagsValido === false" >
                             <p :class="[tagsValido ? '' : 'errorTags']">{{msjTag}}</p>
                         </div>
@@ -200,108 +322,10 @@
                     <!-- </v-row> -->
                     <!-- </div> -->
                   </v-form>
-      
-                          
-                       
               </div>
             </v-card>
         </v-dialog>
-      <!-- GRUPOS CREDADOS -->
- 
-    <!-- <v-btn class="btnaddpost" @click="creaRecurso=true">  
-        <v-avatar size="80" color="#48c9d9" >
-            <v-icon color="#3fefdb"  style="font-size: 80px;">mdi-plus</v-icon>
-        </v-avatar>
-
-    </v-btn>
-     -->
-    
-    <!-- <v-dialog v-model="editar" max-width="600px" persistent >
-            <v-card>
-                <v-card-title class="primary--text text-center">
-                    <h2>Nuevo(a) {{tipo}}</h2> <v-spacer></v-spacer><v-btn @click="editar=false"> X </v-btn>
-                </v-card-title>
-                <v-card-text>
-                    <v-row>
-                        <v-col cols="12" md="6" class="text-center"  v-if="imagen==='true'">
-              upload imagen perfil
-              <subirImagen v-if="imagen==='true'" @updateImg="preview=$event" ejecimagen="uploadimg" tpimg="post" titulo="Foto de Publicación" />  
-                        </v-col>
-                        
-                        <v-col cols="12" md="6">
-                            <v-text-field label="Nombre de la memoria" filled  v-model="datablog.titulo" ></v-text-field>
-                           <v-radio-group
-                            v-model="datablog.edopost"
-                            row
-                            >
-                            <v-radio
-                                label="Publico"
-                                value="publico"
-                            ></v-radio>
-                            <v-radio
-                                label="Privado"
-                                value="privado"
-                            ></v-radio>
-                            </v-radio-group>
-                           
-                        </v-col>
-                        <v-col cols="12" md="12" class="text-center">
-                            <span class="red--text">{{mensajeError1}}</span><br />
-                            <v-btn class="melon white--text" @click="creanuevopost()">crear</v-btn> 
-                            </v-col>
-
-                        </v-row>
-                </v-card-text>
-            </v-card>
-    </v-dialog>
-    <v-dialog fullscreen persistent v-model="creablog" >
-        <v-card> 
-            <v-card-title class="primary white--text">
-                {{datablog.titulo}} <v-spacer></v-spacer> <v-btn class="melon white--text" @click="cerrar()">X</v-btn>
-             </v-card-title>
-                <v-card-text class="pa-5">
-                    
-                    <v-row>
-                        <v-col cols="12" md="12">
-                    <VueEditor class="elevation-3 rounded-lg" v-model="datablog.contenido" :editorToolbar="customToolbar"></VueEditor>
-                </v-col>
-                <v-col cols="12" md="3">
-                    
-                </v-col>
-                <v-col cols="12" md="3">
-                    
-                </v-col>
-                <v-col cols="12" md="3">
-                    <v-radio-group
-                            v-model="datablog.edopost"
-                            row
-                            >
-                            <v-radio
-                                label="Publico"
-                                value="publico"
-                            ></v-radio>
-                            <v-radio
-                                label="Privado"
-                                value="privado"
-                            ></v-radio>
-                            </v-radio-group>
-                        </v-col>
-                        <v-col cols="12" md="3">
-
-                    <v-btn class="primary white--text" @click="guardarPost()">Guardar</v-btn> <v-btn class="melon white--text">Publicar</v-btn>
-                </v-col>
-                </v-row>        
-                </v-card-text>
-        </v-card>    
-    </v-dialog> -->
- 
-    <!-- <v-dialog  persistent v-model="">
-        <v-card>
-            <v-card-title>
-                <h3>Nuevo(a) {{tipo}}</h3>
-            </v-card-title>
-        </v-card>
-    </v-dialog> -->
+      
 
     
 </v-col>

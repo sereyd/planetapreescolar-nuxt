@@ -6,6 +6,7 @@ export default {
   ** See https://nuxtjs.org/api/configuration-mode
   */
   mode: 'spa',
+  dev: true,
   /*
   ** Nuxt target
   ** See https://nuxtjs.org/api/configuration-target
@@ -18,6 +19,12 @@ export default {
   head: {
     titleTemplate: '%s - ' + process.env.npm_package_name,
     title: process.env.npm_package_name || '',
+    script: [
+      {
+        src: 'https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js',
+        src: 'https://www.mercadopago.com.mx/integrations/v1/web-payment-checkout.js',
+      }
+    ],
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -45,7 +52,8 @@ export default {
     '@/plugins/validasesion.js',
     '@/plugins/codegenerate.js',
     '@/plugins/v-calendar.js',
-    '@/plugins/comparativa.js'
+    '@/plugins/comparativa.js',
+    ///'@/plugins/i18n.js'
     // { src: '~plugins/v-calendar.js', ssr: false }
   ],
   /*
@@ -66,13 +74,17 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/firebase',
-    'nuxt-stripe-module'
+    'nuxt-stripe-module',
+    'nuxt-i18n',
   ],
   stripe: {
-    publishableKey: 'pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx',
+    // publishableKey: 'pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx',
+    publishableKey: 'pk_live_mEJzhFjTZBwfDPcD7xeErDyU00ZBdyGGiP',
+    
   },
   env: {
     publishStripeKey: 'pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx',
+    // publishStripeKey: 'pk_live_mEJzhFjTZBwfDPcD7xeErDyU00ZBdyGGiP',
   },
   firebase: {
     config:{
@@ -116,7 +128,11 @@ export default {
           error: '#FF5252',
           info: '#2196F3',
           success: '#4CAF50',
-          warning: '#FFC107'
+          warning: '#FFC107',
+          prysec: '#6C0040'
+        },
+        dark:{
+          
         }
       },
      

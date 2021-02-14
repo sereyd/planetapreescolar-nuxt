@@ -1,17 +1,17 @@
-<div v-scroll="scrollmenu"> 
+<div v-scroll="scrollmenu" :class="menufix===true ? ' menufixedtop' : '' "> 
     <v-card >
         <v-card-title class="secondary white--text">
         
-        <span class="viewmobil">  <v-icon  class="white--text"  @click.stop="drawer = !drawer" > mdi-menu </v-icon>
+        <span class="viewmobil">  <v-icon  class="white--text"  @click="openMenu()" > mdi-menu </v-icon>
         </span>
 
-      
-          <img src="  images/logos/planeta_preescolar_bco.png" width="55" class="miniMovil" />
+   
+          <img :src="protocol+'//'+host+'/images/logos/planeta_preescolar_bco.png'" width="55" class="miniMovil" />
     
           &nbsp;  &nbsp; 
           
           <div class="menu-sec datamenu" v-if="datosUsuario.userlogin===true"  >
-            <div class="primary white--text pa-1 " style="border-radius:10px; width:100%; max-width:210px;" >
+            <div class="primary white--text pa-1 " style="border-radius:10px; width:100%; max-width:230px;" >
             <v-avatar
       color="secondary"
       size="36" 
@@ -43,7 +43,12 @@
                   v-for="(item, index) in itemsmenumni"
                   :key="index"
                 >
-                  <v-list-item-title ><router-link class="linkmenuuser" :to="item.link">{{ item.title }} <span class="flechalink"> > </span></router-link></v-list-item-title>
+                  <v-list-item-title >
+                    <router-link class="linkmenuuser" :to="item.link">{{ item.title }} <span class="flechalink"> 
+                      > 
+                    </span></router-link>
+                  
+                  </v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -61,40 +66,36 @@
         <v-spacer class="miniMovil"></v-spacer>
 
         <div class="minimovil"></div>
-        <div v-if="datosUsuario.userlogin===false" class="miniMovil">
-        <router-link to="login" v-if="$validasesion($store,{ sinregistro:true })" class="white--text" style="text-decoration:none;  font-size:15px;">Iniciar sesión</router-link> &nbsp;&nbsp;&nbsp;
-        <v-btn class="melon white--text pa-5"  style="border-radius: 30px; font-size:14px; text-transform:none;" v-if="$validasesion($store,{ sinregistro:true })" link to="registro">Registro </v-btn>
+        <div v-if="datosUsuario.userlogin===false" >
+        <router-link to="/login" v-if="$validasesion($store,{ sinregistro:true })" class="white--text" style="text-decoration:none;  font-size:15px;">Iniciar sesión</router-link> &nbsp;&nbsp;&nbsp;
+        <v-btn class="melon white--text pa-5"  style="border-radius: 30px; font-size:14px; text-transform:none;" v-if="$validasesion($store,{ sinregistro:true })" link to="/registro">Registro </v-btn>
         </div>
 
         <div v-if="datosUsuario.userlogin===true" >
           <!-- <p>{{datosUsuario.estadoMembresia}}</p> -->
-          <router-link v-show="datosUsuario.estadoMembresia !== 'active' && datosUsuario.lvluser === 1" to="checkout" class="white--text menu-sec miniMovil" style="text-decoration:none; position:relative;" > 
-            <img src="../../static/images/iconos/haztepremium.png" class="menu-sec-anim"  />
+          <router-link v-show="datosUsuario.estadoMembresia !== 'active' && (datosUsuario.lvluser <= 2)" to="checkout" class="white--text menu-sec miniMovil" style="text-decoration:none; position:relative;" > 
+            <img src="../../static/images/iconos/Astronauta.png" class="menu-sec-anim"  />
             <span class="vMmobilview "> <img src="../../static/images/iconos/haztepremium1.png" style="  left:-100px; 
               width:100px; 
               position:absolute;"  /></span>
           </router-link>
-          &nbsp;
-          <router-link to="#" class="white--text menu-sec miniMovil" style="text-decoration:none;">
 
-          <v-icon class="white--text">mdi-bell</v-icon>
-          &nbsp;
-         <span class="vMmobilview"> Notificaciones</span>
-        </router-link> 
-          &nbsp;
+
+          <notificaciones></notificaciones>
+
+    
         
         <router-link to="/configuracion" class="white--text menu-sec miniMovil" style="text-decoration:none;">
-          &nbsp; 
+
           <v-icon class="white--text">mdi-brightness-7</v-icon> 
-          &nbsp; 
-          <span class="vMmobilview">  Configuración</span>
+        
+          <span class="vMmobilview">Configuración</span>
         </router-link> 
-        &nbsp;
 
         <router-link to="/favoritos" class="white--text menu-sec miniMovil" style="text-decoration:none;">
-          &nbsp; 
+ 
           <v-icon class="white--text">mdi-heart</v-icon> 
-          &nbsp; 
+         
           <span class="vMmobilview">  Favoritos</span>
         </router-link> 
        <!-- &nbsp;
@@ -116,29 +117,5 @@
     <v-icon class="white--text">mdi-email</v-icon> Su correo aun no esta confirmado
       </v-card-title>
     </v-card>
-    <v-navigation-drawer
-    v-model="drawer"
-    absolute
-    temporary
-    class="secondary"
-  >
 
-    <v-list dense>
-      <v-list-item
-        v-for="item in itemsmenu"
-        :key="item.title"
-        link
-        :to="item.link"
-        v-if="$validasesion($store,item) && item.visible===true"
-      >
-        <v-list-item-icon >
-          <v-icon class="white--text space_elements">{{ item.icon }}</v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-title class="white--text">{{ item.title }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
-  </v-navigation-drawer>
 </div>

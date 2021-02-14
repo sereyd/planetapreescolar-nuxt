@@ -1,19 +1,24 @@
-<v-card class="pa-5 ma-5 elevation-5"> 
-    <v-card-text>
-        <h1 ><b>Reflexion de la semana</b></h1>
-        <br />
-        <v-row>
-        <v-col cols="12" md="11">
-            <p v-if="reflexion[0]" style="font-size:18px; text-align:left;" v-html="reflexion[0].contenido">
-                
-            </p>
-        </v-col>
-        <v-col cols="12" md="1">
-         <img src="/images/iconos/globo-estrellas.png" width="100%" />
-            </v-col>
-            <v-col cols="12" md="1"  v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:2 })"  >
-                <v-btn class="melon white--text rounded-pill" to="/reflexiones"  >Administrar</v-btn> 
-            </v-col>
-</v-row>
+<v-card class="elevation-5 pa-0 ma-2"> 
+ 
+        
+    <v-card-text style="padding-bottom: 0px; margin-bottom: 0px;"  class="pa-0">
+               <v-row>
+                   <v-col cols="12" md="3">
+                   
+             <v-row>     
+                 <v-col cols="9" class="pa-6 text-center">
+       <h2 style="font-size:15px;">Reflexión del día</h2></v-col><v-col cols="3" class="ma-0"> <img :src="imagenIcono" width="30"  /> 
+    </v-col>
+    </v-row>
+    </v-col>
+       <v-col cols="12" md="9" class="pa-2">
+       <p 
+                v-if="reflexion[0]" 
+                    style="font-size:14px; text-align:left;" 
+                    v-html="cargarecomendacion">
+                </p>
+                   </v-col>
+         </v-row>
     </v-card-text>
+
 </v-card>

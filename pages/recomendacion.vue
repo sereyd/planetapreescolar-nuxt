@@ -1,5 +1,14 @@
+
+
+
+
 <template>
-  <v-main class="pa-10">
+<v-main class="px-10" v-if="bandera">
+    <v-row>
+      <v-col cols="12">
+        <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/>
+      </v-col>
+    </v-row>
     <v-row>
       <v-col
         cols="12"
@@ -22,18 +31,19 @@
             })
           "
         >
-          Mis Recomendaciones
+          Mis recursos recomendados
         </h2>
 
         <listablog
-          tipo="RECOMENDACION"
+          :blogpost="misPost" @updateBlogpost="misPost=$event"
+          tipo="CATEGORIAS"  subtipo="recomendacion"
           :userId="this.datosUsuario.id"
           titulo=""
           subtitulos=""
           :addslot="true"
         >
-          <editorblog
-            tipo="RECOMENDACION"
+          <!-- <editorblog
+            tipo="CATEGORIAS"
             v-if="
               $validasesion($store, {
                 sinregistro: false,
@@ -41,12 +51,12 @@
                 permisos: 1
               })
             "
-            @updatepost="updatepost.recomendacion = $event"
-          ></editorblog>
+            @updatepost="updatepost.misMemorias = $event"
+          ></editorblog> -->
         </listablog>
       </v-col>
 
-      <div style="width:100%; height:20px;"></div>
+      <div style="width:100%; height:0px;"></div>
 
       <v-col
         cols="12"
@@ -54,75 +64,76 @@
       >
 
         <listablog
-          tipo="RECOMENDACION"
-          :idexclude="
-            this.datosUsuario.userlogin === true ? this.datosUsuario.id : ''
-          "
-          titulo="Conoce lo que pasa en el mundo de la educación inicial"
-          subtitulos=""
+          :blogpost="otrosPost" @updateBlogpost="otrosPost=$event"
+          tipo="CATEGORIAS"  subtipo="recomendacion"
+          titulo="Recursos recomendados publicos"
+          subtitulos="Conoce lo que pasa en el mundo de la educación inicial"
         />
       </v-col>
     </v-row>
-    
-    <!-- <v-row>
-
-      <v-col cols="12" md="12" v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:2 })">
-        <h2 class="primary--text"   v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:2 })" >Recomendaciones</h2>
-        
-        <listablog tipo="RECOMENDACION"  :userId="this.datosUsuario.id"  titulo="" subtitulos="Una sección de recursos y planeación para tu día"  :addslot="true"  >
-
-            <editorblog tipo="RECOMENDACION" v-if="$validasesion($store,{ sinregistro:false, logeado:true, permisos:1 })"  @updatepost="updatepost.memorias=$event"    ></editorblog>
-      
-        </listablog>
-
-      </v-col>  
-     
-
-
-<div style="width:100%; height:50px;"></div>
-<listablog tipo="RECOMENDACION"  :idexclude="this.datosUsuario.userlogin===true ? this.datosUsuario.id : '' " titulo="Una sección de recursos y planeación para tu día"  />
-
-
-    </v-row> -->
   </v-main>
+        
 </template>
+
 <script>
-import {mapState} from 'vuex'
-import listablog from '~/components/listado-blog/listado-blog.vue'
-import validasitio from "@/mixins/validasitio.js";
-import editorblog from "~/components/blog-editor/blog-editor.vue";
-import cargablog from "~/components/carga-blog/carga-blog.vue";
+import validasitio from '@/mixins/validasitio.js'
+// import grupos from '~/components/grupos/grupos.vue'
+// import editorblog from "~/components/blog-editor/blog-editor.vue";
+// import cargablog from "~/components/carga-blog/carga-blog.vue";
+import listablog from "~/components/listado-blog/listado-blog.vue";
+import buscador from '~/components/buscador/buscador.vue'
+
+import { mapState, mapMutations, mapActions } from 'vuex'
+
 export default {
-  data() {
-    return {
-      updatepost:{
-        memorias:"",
-        blog:"",
-        reflexiones:"",
-        recomendacion:"",
-       
-      },
-       idnext:"",
-     
-      datapage: {
-        permisos: 0,
-        logeado: false
-      }
-    };
-  },
-   computed:{
-        ...mapState(['datosUsuario'])
-      },
-  mounted(){
-    if(this.datosUsuario.userlogin===true){
-      this.idnext=this.datosUsuario.id
+    data(){
+        return {
+            datapage:{
+                permisos:0,
+                logeado:false
+            },
+
+            updatepost:{
+                memorias:"",
+                blog:"",
+                reflexiones:"",
+                recomendacion:"",
+                videos:"",
+                audios:"",
+                imagenes:"",
+            },
+            bandera: false,
+            buscando: false,
+
+        }
+    },
+    methods:{
+    ...mapActions(['cargaBasePost']),
+    async cargaPost(){
+      await this.cargaBasePost("recomendados");
+
+    },
+    },
+    async created() {
+        // this.guardarVistaValida(true); 
+      // console.log(this.misPost)
+      await this.cargaPost();
+      // console.log(this.misPost)
+
+      this.bandera = true;
+    },
+    components:{
+        // grupos
+        // editorblog,
+        // cargablog,
+        listablog,
+        buscador
+        //TreeFolderContents: () => import('./tree-folder-contents.vue')
+    },
+    computed:{
+      ...mapState(["datosUsuario","misPost","otrosPost"])
+
     }
-  },
-  components: {
-    editorblog,
-    cargablog,
-    listablog
-  },
-mixins: [validasitio]
-};
+}
+
 </script>

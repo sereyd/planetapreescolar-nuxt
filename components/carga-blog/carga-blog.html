@@ -1,4 +1,4 @@
-<v-row class="mb-6" no-gutters>
+<v-row class="mb-2" no-gutters>
     <!-- <v-col cols="12" md="4" sm="6"> -->
         <slot  name="header"></slot>
     <!-- </v-col> -->
@@ -15,18 +15,58 @@
             contain
             class="fotomini"
             @click="mostrarRecursoEdit(key)"
+            :lazy-src="key.urlImagen === '' || key.urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : key.urlImagen"
             
             ></v-img>
+
+            <v-fab-transition class="mt-5" >
+                <v-btn
+                    :key="'delete_'+index"
+                    color="red"
+                    x-small
+                    fab
+                    absolute
+                    top
+                    right
+                    class="v-btn--example"
+                    style="top: 12px!important;"
+                    @click="eliminarPost(key)"
+                >
+                    <!-- <span class="white--text" >Ver recurso</span> -->
+                    <v-icon 
+                        color="white"
+                    >mdi-delete</v-icon>
+                </v-btn> 
+              </v-fab-transition>
+
+              <v-fab-transition class="mt-5" v-if="(!key.permisoadmin) && (key.tipo !== 'blog' && key.tipo !== 'memoria' && key.tipo !== 'reflexion')">
+                <v-btn
+                    :key="'permisoAdmin_'+index"
+                    color="primary"
+                    x-small
+                    absolute
+                    top
+                    left
+                    class="v-btn--example"
+                    style="top: 12px!important;"
+                >
+                    <span  class="white--text" >No aprobado</span>
+                </v-btn> 
+              </v-fab-transition>
         </v-card>
 
         <div>
             <div class=" ml-3 textos">
                 <h4>{{key.titulo}}</h4>
                 <p :class="key.edopost==='privado' ? 'red--text texto_mb' : 'black--text texto_mb'">{{key.edopost}}</p>
-                <!-- <p class="texto_mb">{{ fechaVisual(key.fecha) }}</p> -->
+               
+                <v-chip 
+                color="primary"
+                dark  
+                v-if="datosUsuario.lvluser >= 3" >
+                {{key.nombreCreador}}
+                </v-chip>
 
-                <!-- <p class="datosGrupo">{{el.cicloEscolar}}</p>
-                <p class="datosGrupo">{{el.total}} alumnos</p> -->
             </div>
         </div>
 
@@ -50,6 +90,99 @@
                 ref="formRecursoEdit"
                 v-model="esRecursoEditValido"
               >
+                <subirImagen 
+                    v-if="subtipo !=='reflexion'"
+                    titulo=""  
+                    
+                    :urlPrevia = "datosRecursoEdit.urlImagen" @updateImg="datosRecursoEdit.urlImagen=$event" 
+                    tpimg="post"
+                    class=" d-flex justify-center mb-4"
+                />
+
+                <div v-if="subtipo ==='planeacion'">
+                    <subirFile 
+                        filesAccepts=".doc, .docx" 
+                        label="Archivo WORD"
+                        :subtipo="subtipo"
+                        :foldercode="datosRecursoEdit.foldercode" @updateFoldercode="datosRecursoEdit.foldercode=$event" 
+                        :file="fileDescargable" @updateFile="fileDescargable=$event"
+                        @updateUrlFile="datosRecursoEdit.urlDescargable=$event"
+                        nickFile="word"
+                        :urlFileEdit="datosRecursoEdit.urlDescargable"
+                    />
+
+                    <subirFile
+                        filesAccepts=".pdf" 
+                        label="Archivo PDF"
+                        :subtipo="subtipo"
+                        :foldercode="datosRecursoEdit.foldercode" @updateFoldercode="datosRecursoEdit.foldercode=$event" 
+                        :file="fileVista" @updateFile="fileVista=$event"
+                        @updateUrlFile="datosRecursoEdit.urlVista=$event"
+                        nickFile="pdf"
+                        :urlFileEdit="datosRecursoEdit.urlVista"
+                    />
+                    
+                    
+                </div>
+
+                <div v-if="subtipo !=='planeacion' && subtipo !=='reflexion' && subtipo !=='materialdidactico' && subtipo !=='hojatrabajo'  && subtipo !=='hojailustrar' && subtipo !=='otro'">
+                    <v-select
+                        :items="tiposRecursoList"
+                        label="Tipo de recurso"
+                        solo
+                        outlined
+                        v-model="tipoRecursoSelect"
+                        @change="cambioSelect()"
+                    ></v-select>
+
+                    <!-- {{tipoRecursoSelect}} -->
+                    <v-text-field
+                        v-model="datosRecursoEdit.urlVista"
+                        placeholder="Link del video"
+                        required
+                        outlined
+                        :rules="[v => !!v || 'Link del video es requerida']"
+                        @keyup.enter=""
+                        v-if="tipoRecursoSelect === 'link'"
+                    ></v-text-field>
+                    <subirFile v-else-if="tipoRecursoSelect === 'file'"
+                        filesAccepts="audio/mp3" 
+                        label="Archivo de mp3"
+                        :subtipo="subtipo"
+                        :foldercode="datosRecursoEdit.foldercode" @updateFoldercode="datosRecursoEdit.foldercode=$event" 
+                        :file="fileVista" @updateFile="fileVista=$event"
+                        @updateUrlFile="datosRecursoEdit.urlVista=$event"
+                        nickFile="subtipo"
+                        :urlFileEdit="datosRecursoEdit.urlVista"
+                    />
+                    <subirFile
+                        filesAccepts=".pdf, .ppt, .pptx" 
+                        label="Letra de video/música"
+                        :subtipo="subtipo"
+                        :foldercode="datosRecursoEdit.foldercode" @updateFoldercode="datosRecursoEdit.foldercode=$event"
+                        :file="fileDescargable" @updateFile="fileDescargable=$event"
+                        @updateUrlFile="datosRecursoEdit.urlDescargable=$event"
+                        nickFile="letra"
+                        :urlFileEdit="datosRecursoEdit.urlDescargable"
+
+                        
+                    />
+                    
+                </div>
+
+                <div v-else-if="subtipo ==='materialdidactico' || subtipo ==='hojatrabajo' || subtipo ==='hojailustrar' || subtipo ==='otro'">
+                    <subirFile 
+                        filesAccepts=".pdf" 
+                        label="Archivo válido"
+                        :subtipo="subtipo"
+                        :foldercode="datosRecursoEdit.foldercode" @updateFoldercode="datosRecursoEdit.foldercode=$event" 
+                        :file="fileDescargable" @updateFile="fileDescargable=$event"
+                        @updateUrlFile="datosRecursoEdit.urlDescargable=$event"
+                        nickFile="subtipo"
+                        :urlFileEdit="datosRecursoEdit.urlDescargable"
+                    />
+                </div>
+
                     
 
                     <v-text-field
@@ -60,6 +193,19 @@
                         :rules="[v => !!v || 'titulo del post es requerida']"
                         @keyup.enter=""
                     ></v-text-field>
+                    <v-textarea
+                        solo
+                        outlined
+                        required
+                        v-model="datosRecursoEdit.sinopsis"
+                        name="input-7-4"
+                        :rules="sinopsisReglas"
+                        label="Sinopsis..."
+                        v-if="(subtipo === 'planeacion' || subtipo === 'recurso')"
+
+                        @keyup.enter=""
+
+                    ></v-textarea>
 
                     <v-text-field
                             v-model="datosRecursoEdit.materia"
@@ -68,7 +214,7 @@
                             outlined
                             :rules="[v => !!v || 'Materia grupo es requerida']"
                             @keyup.enter=""
-                            v-if="esBlog"
+                            v-if="datosRecursoEdit.tipo === 'planeacion' || datosRecursoEdit.tipo === 'recurso'"
                     ></v-text-field>
                     <v-text-field
                         v-model="datosRecursoEdit.grado"
@@ -77,47 +223,74 @@
                         outlined
                         :rules="[v => !!v || 'Grado es requerida']"
                         @keyup.enter=""
-                        v-if="esBlog"
+                        v-if="datosRecursoEdit.tipo === 'planeacion' || datosRecursoEdit.tipo === 'recurso'"
+
                     ></v-text-field>
 
-                    <v-textarea
-                        v-model="datosRecursoEdit.contenido"
-                        placeholder="contenido..."
-                        required
-                        outlined
-                        :rules="[v => !!v || 'Contendio del post es requerida']"
-                        @keyup.enter=""
-        
-                    ></v-textarea>
-                    <!-- <VueEditor 
+                   
+                    <VueEditor 
                         class="elevation-3 rounded-lg" 
                         v-model="datosRecursoEdit.contenido" 
                         :editorToolbar="customToolbar"
                         required
                         outlined
                         :rules="[v => !!v || 'Contendio del post es requerida']"
-                    /> -->
-                    
-                    <v-radio-group
-                        v-model="datosRecursoEdit.edopost"
-                        row
-                        :rules="[v => !!v || 'Seleccione privacidad']">
+                    ></VueEditor>
 
-                        <v-radio
-                            label="Publico"
-                            value="publico"
-                        ></v-radio>
-                        <v-radio
-                            label="Privado"
-                            value="privado"
-                        ></v-radio>
-                    </v-radio-group>
+                    
+
+                    <div 
+                            class="d-flex flex-wrap  justify-space-between" >
+
+                            <v-radio-group
+                                v-model="datosRecursoEdit.edopost"
+                                row
+                                :rules="[v => !!v || 'Seleccione privacidad']">
+        
+                                <v-radio
+                                    label="Publico"
+                                    value="publico"
+                                    small
+                                ></v-radio>
+                                <v-radio
+                                    label="Privado"
+                                    value="privado"
+                                    small
+                                ></v-radio>
+                            </v-radio-group>
+    
+                            <v-switch
+                                v-model="datosRecursoEdit.premium"
+                                inset
+                                label="Premium"
+                                small
+                                v-if="(subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' || subtipo === 'otro')"
+                            ></v-switch>
+    
+                            <v-switch
+                                v-model="datosRecursoEdit.recomendado"
+                                inset
+                                label="Recomendado"
+                                small
+                                v-if="datosRecursoEdit.tipo === 'planeacion' || subtipo ==='materialdidactico' || subtipo ==='hojatrabajo' || subtipo ==='hojailustrar' || subtipo === 'interactivo'"
+                            ></v-switch>
+
+                            <v-switch v-model="datosRecursoEdit.permisoadmin"  v-if="datosUsuario.lvluser >= 3" label="Validado por administador
+                            "></v-switch>
+
+                            <!-- <v-switch 
+                                v-model="usarnombre"  
+                                v-if="(datosUsuario.lvluser >= 3) && (subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'interactivo' || subtipo === 'otro')" 
+                                label="Nombre personal
+                            "></v-switch> -->
+                        </div>
 
                     <input-tag 
                             v-model="datosRecursoEdit.tags" 
                             class="mb-2 mt-2 tags_input"
                         >
                     </input-tag>
+                    <p><small>*Presione enter o ingrese una coma para agregar otro tag</small></p>
                     <div v-if="tagsValido === false" >
                         <p :class="[tagsValido ? '' : 'errorTags']">{{msjTag}}</p>
                     </div>
@@ -139,34 +312,5 @@
     </v-dialog>
 
 
-
-
-
 </v-row>
 
-<!-- <v-row>
-<v-col cols="12" md="3">
-    <slot  name="header"></slot>
-  
-</v-col>
-<v-col cols="12" md="3" v-for="(key,index) in listapost" :key="'post'+index">
-    
-    <v-card >
-        <v-card-text class="pa-2">
-            <v-skeleton-loader v-if="key.urlImagen===''"
-            class="mx-auto "
-            max-width="100%"
-            type="image"
-          ></v-skeleton-loader>
-            <img v-if="key.urlImagen!==''" :src="key.urlImagen"   width="100%" />    
-     
-            <h2>{{key.titulo}}</h2>
-            <p>{{key.fecha}}</p>
-            <p :class="key.edopost==='privado' ? 'red--text' : 'black--text'">{{key.edopost}}</p>
-          
-        </v-card-text>
-    </v-card>
-
-</v-col>
-</v-col>
-</v-row> -->

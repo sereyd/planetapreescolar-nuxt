@@ -1,0 +1,14 @@
+.btn_crearG{
+    border-radius: 13px;
+    font-weight: bold;
+    color: white;
+    letter-spacing: 0em;
+    text-indent: 0em;
+    text-transform: none;
+}
+.v-main{
+    display:block;
+}
+.invalido{
+    background-color: darkgray;
+}

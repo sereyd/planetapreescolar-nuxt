@@ -36,7 +36,7 @@ export default{
     },
     computed:{
         // ...mapState(['datosUsuario']),
-        ...mapState(['datosUsuario']),
+        ...mapState(['datosUsuario','dominio']),
         setDatos:{
             get () {
                 return this.datosUsuario
@@ -115,7 +115,14 @@ export default{
         //LOGIN PARA FACEBOOK Y GOOGLE
         loginExterno(tipo){
             //ACTIVANDO ANIMACIÓN DE SPINNER
+
             this.spinner = true;
+            const URLactual = window.location;
+            // console.log(URLactual);
+            // console.log(this.$route);
+            // console.log(this.$router);
+            // return;
+            // alert("dsdsdsdsd")
   
             const provider = tipo === 'google' 
             ? new this.$fireAuthObj.GoogleAuthProvider() 
@@ -126,14 +133,19 @@ export default{
 
             this.$fireAuth.signInWithPopup(provider).then((result) => {
                 const user = result.user;
+                console.log(user);
                 //TOKEN EXTERNO QUE PUEDE UTILIZARSE
                 // const token = result.credential.accessToken;
-                this.$router.push("/");
+                // this.$router.push("/");
+                // console.log(this.$route);
+
+                window.location.href = URLactual.origin;
+                // location.reload();
             }).catch((error) => {
               console.log(error)
             });
             
-          },
+        },
 
           validate () {
             const vd = this.$refs.form.validate();

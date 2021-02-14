@@ -2,6 +2,63 @@
 <div class="grey lighten-5 mx-16 mt-5">
     <!-- <v-btn @click="fullScreenUsuarios = true">Gestionar usuarios</v-btn> -->
     <v-row no-gutters>
+      <v-col cols="12" md="12"  v-if="$validasesion($store,{permisos:2,logeado:true})" class="pa-10">
+          
+        <v-btn 
+            class="melon white--text" 
+            @click="abrenot=true"
+            >
+            Notificaciones
+          </v-btn>
+
+          <v-btn 
+            class="melon white--text" 
+            to="landingpage"
+            >
+            Landing Page Admin
+          </v-btn>  
+
+
+          <v-btn 
+            class="melon white--text" 
+            @click="abrirConfigD"
+            >
+            Descargas
+          </v-btn>
+      <v-dialog v-model="abrenot" max-width="850">
+        <v-card>
+          <v-card-title class="primary white--text">
+            Crea Notificaciones
+          </v-card-title>
+          <v-card-text>
+          <v-row>
+            <v-col cols="12" md="12">
+            <v-select v-model="usernotselect.user" :items="optionUsuarios" >
+            </v-select>
+          </v-col>
+          <v-col cols="12" md="12">
+            <v-text-field v-model="usernotselect.text" label="mensaje de notificación" ></v-text-field>
+           </v-col>
+           <v-col cols="12" md="8">
+            <v-select v-model="usernotselect.icon" :items="iconos"></v-select>
+          </v-col>
+          <v-col cols="12" md="4">
+              <v-icon>{{usernotselect.icon}}</v-icon>
+          </v-col>
+          <v-col cols="12" md="12">
+            <v-text-field v-model="usernotselect.link" label="http:// | https:// | /enlacedelsitio"></v-text-field>
+          </v-col>
+          <v-col cols="12" md="12">
+            <v-btn class="melon white--text" style="text-transform: none;" @click="enviarNotificacion()">Enviar</v-btn>
+          </v-col>
+          
+        </v-row>
+          </v-card-text>
+
+        </v-card>
+      </v-dialog>
+    
+      </v-col>
       <v-col cols="12" :class="fullScreenUsuarios ? 'principal ' : 'p'   ">
         <div  >
           <div class="nav primary">
@@ -310,6 +367,123 @@
         <v-btn color="red lighten-1"  @click="dialog=false">Cancelar</v-btn>
         <v-btn color="green lighten-1"  @click="validarFormulario">Guardar</v-btn>
       </v-card-actions>
+    </v-card>
+  </v-dialog>
+
+
+  <v-dialog v-model="dialogDes" persistent max-width="755">
+      
+    <v-card class=" px-10">
+      <v-card-title class=" justify-space-between">
+          <v-btn icon text small color="purple"  >
+          </v-btn>
+          <h3 class="primary--text ">Datos de descargas</h3>
+          <v-btn icon text small color="purple" @click="dialogDes = false" >
+              <v-icon>mdi-window-close</v-icon>
+          </v-btn>
+      </v-card-title>
+      
+      <div class="mt-5" >
+
+        <v-form ref="formConfigDes" v-model="validConfigD" lazy-validation>
+        <div>
+          <div class=" d-flex justify-center align-center">
+            </div> 
+                <!-- <v-select
+                    v-model="datosUsuarioR.tipo"
+                    :items="tipos"
+                    :rules="[v => !!v || 'Seleccione un tipo']"
+                    placeholder="Tipo:"
+                    required
+                    
+                    outlined
+                    hide-details
+                    cols="4" sm="4"
+                    style="width: 40%; margin-bottom: 10px;"
+                ></v-select> -->
+                <v-text-field
+                  v-model="editDescargasConf.free"
+                  label="Plan free:"
+                  required
+                  outlined
+                  dense
+                  height="20px"
+                  type="number"
+                  :rules="[v => !!v || 'Valor es requerido']"
+                  @keyup.enter="validateConfDes"
+                  class="mb-2"
+                ></v-text-field>
+                <v-text-field
+                    v-model="editDescargasConf.mensual"
+                    label="Plan mensual:"
+                    required
+                    outlined
+                    dense
+                    height="20px"
+                    type="number"
+                    :rules="[v => !!v || 'Valor es requerido']"
+                    @keyup.enter="validateConfDes"
+                    class="mb-2"
+                ></v-text-field>
+
+                <v-text-field
+                    v-model="editDescargasConf.trimestral"
+                    label="Plan trimestral:"
+                    required
+                    outlined
+                    dense
+                    height="20px"
+                    type="number"
+                    :rules="[v => !!v || 'Valor es requerido']"
+                    @keyup.enter="validateConfDes"
+                    class="mb-2"
+                ></v-text-field>
+                <v-text-field
+                    v-model="editDescargasConf.semestral"
+                    label="Plan semestral:"
+                    required
+                    outlined
+                    dense
+                    height="20px"
+                    type="number"
+                    :rules="[v => !!v || 'Valor es requerido']"
+                    @keyup.enter="validateConfDes"
+                    class="mb-2"
+                ></v-text-field> 
+                <v-text-field
+                    v-model="editDescargasConf.anual"
+                    label="Plan anual:"
+                    required
+                    outlined
+                    dense
+                    height="20px"
+                    type="number"
+                    :rules="[v => !!v || 'Valor es requerido']"
+                    @keyup.enter="validateConfDes"
+                    class="mb-2"
+                ></v-text-field>   
+               
+
+                <div class="d-flex justify-center pb-3">
+                  <v-btn 
+                  dark 
+                  class="primary btn_crearCuenta mr-3" 
+                  @click="validateConfDes">Guardar</v-btn>
+                  <v-btn 
+                  dark 
+                  class="primary btn_crearCuenta" 
+                  @click="dialogDes = false">Cancelar</v-btn>
+                </div>
+
+                <!-- <v-alert v-if="error" type="error" class="mt-2">
+                    {{mensajeError}}
+                </v-alert> -->
+        </div>
+      
+    </v-form>
+
+        
+      </div>
     </v-card>
   </v-dialog>
   </div>

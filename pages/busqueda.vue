@@ -1,163 +1,232 @@
 <template>
-    <v-main>
+    <v-main >
+        <div class="mx-3 text-center" >
+            <v-row>
+                <v-col cols="12">
+                    <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/>
+                </v-col>
+                
+                <!-- <v-col cols="2">
+                    <v-btn tile small  @click="opcionesFiltrado()" color="melon" class="white--text" style="text-transform: none;">
+                        <v-icon class="white--text" left>mdi-format-list-bulleted</v-icon>
+                        Filtrar
+                    </v-btn>
+                </v-col> -->
+            </v-row>
+            <!-- <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/> -->
+            <!-- <v-btn tile small color="melon" class="white--text" style="text-transform: none;">
+                <v-icon class="white--text" left>mdi-format-list-bulleted</v-icon>
+                Filtrar
+            </v-btn> -->
+        </div>
         
-        <Spinner v-if="spinner" />
-        <div v-else-if="datosBusqueda.tipo !== 'TODOS LOS RECURSOS'">
-            <h2 class="pirmary--text" v-if="busquedaFiltrada.length !== 0" >{{tituloResultados}}</h2>
-            <h2 class="pirmary--text" v-else >No se encontraron coincidencias</h2>
-        </div>
-
-        <div v-if="datosBusqueda.tipo !== 'TODOS LOS RECURSOS'">
-            <listablog 
-                :esBusqueda="true" 
-                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
-                :tipo="this.datosBusqueda.tipo" 
-                titulo="" 
-                subtitulos=""
-                
-            />
-        </div>
-
-        <!-- <v-row 
-            class="mb-6" no-gutters
-            v-if="datosBusqueda.tipo !== 'TODOS LOS RECURSOS'"
-        >
-            <v-col v-for="(el, index) in busquedaFiltrada" 
-            :key="index" cols="12" md="3" sm="6" class=" mb-3">
-
-                <v-card
-                    class=" grey lighten-3 d-flex justify-center align-center mx-2"
-                    height="150px"
-                >
-                    <v-img
-                    :src="el.urlImagen"
-                    class="fotomini"
-                    @click="mostrarElemento(el)"
-                    
-                    ></v-img>
-                </v-card>
-
-                <div>
-                    <div class=" ml-3 textos">
-                        <h4>{{el.titulo}}</h4>
-                        <p class="texto_busqueda">{{el.nombreCreador}}</p>
-                        <p 
-                            v-if="datosBusqueda.tipo === 'RECOMENDACION'" 
-                            class="texto_busqueda">{{el.materia}}
-                        </p>
-                        <p 
-                            v-if="datosBusqueda.tipo === 'RECOMENDACION'" 
-                            class="texto_busqueda">{{el.grado}}
-                        </p>
-
-                    </div>
-                </div>
-
-          </v-col>
-        </v-row> -->
-
-        <div v-else-if="datosBusqueda.tipo === 'TODOS LOS RECURSOS' && !spinner">
-            <div>
-                <h2  class="pirmary--text" v-if="!spinner" >Resultados:</h2>
-                <!-- <h2 class="pirmary--text" v-else >No se encontraron coincidencias</h2> -->
+        <div v-if="verResultados">
+            <Spinner v-if="spinner" />
+            <div v-else-if="datosBusqueda.tipo !== 'todos'">
+                <h2 class="pirmary--text" v-if="busquedaFiltrada.length !== 0" >{{tituloResultados}}</h2>
+                <h2 class="pirmary--text" v-else >No se encontraron coincidencias</h2>
             </div>
-            <!------recomendaciones----->
-            <!-- <div style="width:100%; height:50px;"></div> -->
-            <listablog 
-                :esBusqueda="true" 
-                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
-                tipo="RECOMENDACION" 
-                titulo="Recomendaciones" 
-                subtitulos=""   
-            />
 
-            <!-------Blog------------->
-            <!-- <div style="width:100%; height:50px;"></div> -->
-            <listablog 
-                :esBusqueda="true" 
-                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
-                tipo="BLOG" 
-                titulo="Blogs" 
-                subtitulos="" 
-            />
+            <div v-if="datosBusqueda.tipo !== 'todos'">
+                <listablog 
+                    :blogpost="busquedaFiltrada" @updateBlogpost="busquedaFiltrada=$event"
+                    tipo="CATEGORIAS"  :subtipo="this.datosBusqueda.tipo" 
+                    titulo="" 
+                    subtitulos=""
+                />
 
-            <!---------memorias------------>
-            <!-- <div style="width:100%; height:50px;"></div> -->
-            <listablog 
-                :esBusqueda="true" 
-                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
-                tipo="MEMORIA" 
-                titulo="Memorias" 
-                subtitulos=""
-            />
+            </div>
 
-            <!-- RECURSOS TIPO FILE -->
-            <listablog 
-                :esBusqueda="true" 
-                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
-                tipo="AUDIOS" 
-                titulo="Audios" 
-                subtitulos=""
-            />
-            <listablog 
-                :esBusqueda="true" 
-                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
-                tipo="VIDEOS" 
-                titulo="Videos" 
-                subtitulos=""
-            />
-            <listablog 
-                :esBusqueda="true" 
-                :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+            
+
+            <div v-else-if="datosBusqueda.tipo === 'todos' && !spinner">
+                <div>
+                    <h2  class="pirmary--text" v-if="!spinner" >Resultados:</h2>
+                    <!-- <h2 class="pirmary--text" v-else >No se encontraron coincidencias</h2> -->
+                </div>
+                <!------planeaciones----->
+                <!-- <div style="width:100%; height:50px;"></div> -->
+                <listablog 
+                    :blogpost="planeaciones" @updateBlogpost="planeaciones=$event"
+                    tipo="CATEGORIAS"  subtipo="planeacion"  
+                    :datoBuscar= "this.datosBusqueda.clave.toLowerCase()" 
+                    titulo="Planeaciones" 
+                    subtitulos=""   
+                />
+
+                <!------hojas de trabajo----->
+                <!-- <div style="width:100%; height:50px;"></div> -->
+                <listablog 
+                    :blogpost="hojastrabajo" @updateBlogpost="hojastrabajo=$event"
+                    tipo="CATEGORIAS"  subtipo="hojatrabajo"  
+                    :datoBuscar= "this.datosBusqueda.clave.toLowerCase()" 
+                    titulo="Hojas de trabajo" 
+                    subtitulos=""   
+                />
+
+                <!------material didactico----->
+                <!-- <div style="width:100%; height:50px;"></div> -->
+                <listablog 
+                    :blogpost="materialdidactico" @updateBlogpost="materialdidactico=$event"
+                    tipo="CATEGORIAS"  subtipo="materialdidactico"  
+                    :datoBuscar= "this.datosBusqueda.clave.toLowerCase()" 
+                    titulo="Material didáctico" 
+                    subtitulos=""   
+                />
+
+                <!------interactivos----->
+                <!-- <div style="width:100%; height:50px;"></div> -->
+                <listablog 
+                    :blogpost="interactivos" @updateBlogpost="interactivos=$event"
+                    tipo="CATEGORIAS"  subtipo="interactivo"  
+                    :datoBuscar= "this.datosBusqueda.clave.toLowerCase()" 
+                    titulo="Interactivos" 
+                    subtitulos=""   
+                />
+
+                <!------otros----->
+                <!-- <div style="width:100%; height:50px;"></div> -->
+                <listablog 
+                    :blogpost="otros" @updateBlogpost="otros=$event"
+                    tipo="CATEGORIAS"  subtipo="otro"  
+                    :datoBuscar= "this.datosBusqueda.clave.toLowerCase()" 
+                    titulo="Otros" 
+                    subtitulos=""   
+                />
+
+                <!-------Blog------------->
+                <!-- <div style="width:100%; height:50px;"></div> -->
+                <listablog 
+                    :blogpost="blogs" @updateBlogpost="blogs=$event"
+                    tipo="CATEGORIAS"  subtipo="blog"  
+                    :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+                    titulo="Blogs" 
+                    subtitulos="" 
+                />
+
+                
+
+                <!---------memorias------------>
+                <!-- <div style="width:100%; height:50px;"></div> -->
+                <listablog 
+                    :blogpost="memorias" @updateBlogpost="memorias=$event"
+                    tipo="CATEGORIAS"  subtipo="memoria"  
+                    :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+                    titulo="Memorias" 
+                    subtitulos=""
+                />
+
+                <!-- Reflexion -->
+                <listablog 
+                    :blogpost="reflexiones" @updateBlogpost="reflexiones=$event"
+                    tipo="CATEGORIAS"  subtipo="reflexion"  
+                    :datoBuscar= "this.datosBusqueda.clave.toLowerCase()"
+                    titulo="Reflexiones" 
+                    subtitulos=""
+                />
+                
+                <!-- <listablog 
+                :esCompleto="false" 
                 tipo="IMAGENES" 
-                titulo="Imagenes" 
-                subtitulos=""
-            />
-            <!-- <listablog 
-            :esCompleto="false" 
-            tipo="IMAGENES" 
-            titulo="Imagenes de la educadora" 
-            subtitulos="fotos o imágenes de apoyo para clases"  
-            linkmas="imagenes" /> -->
+                titulo="Imagenes de la educadora" 
+                subtitulos="fotos o imágenes de apoyo para clases"  
+                linkmas="imagenes" /> -->
 
 
+            </div>
         </div>
 
-        <!-- <v-dialog v-model="vistaElemento" fullscreen >
-            <v-card >
-                <v-card-text style="text-align: right; ">
-                    <span class="primary--text" style="font-weight: bold; text-align: right;" @click="vistaElemento=false">X</span>
 
-                    <div  max-width="100%" style="height:100px; "></div>
-                    <v-container class="ma-auto elevation-3 rounded-ml fondo">
+        <v-dialog v-model="dialogF" max-width="750">
+            <v-card>
+                <v-card-title class=" justify-space-between">
+                    <v-btn icon text small color="purple">
+                    <!-- <v-icon>mdi-arrow-left-bold</v-icon> -->
+                    </v-btn>
+                    <h3 class="primary--text ">Filtrado de datos</h3>
+                    <v-btn icon text small color="purple" @click="dialogF = false">
+                    <v-icon>mdi-window-close</v-icon>
+                    </v-btn>
+                </v-card-title>
+                <div class="pb-3 " >
+                    <v-form>
+                        <v-row>
+                            <v-col cols="6">
+                                <div class="ml-3">
+                                    <h4 class="mt-2">Tipo:</h4>
+                                    <v-checkbox
+                                        v-model="datosfiltrado.filtrovideo"
+                                        label="videos"
+                                        color="primary"
+                                        hide-details
+                                    ></v-checkbox>
+                                    <v-checkbox
+                                        v-model="datosfiltrado.filtroaudio"
+                                        label="audios"
+                                        color="primary"
+                                        hide-details
+                                    ></v-checkbox>
+                                    <v-checkbox
+                                        v-model="datosfiltrado.filtrofile"
+                                        label="archivos"
+                                        color="primary"
+                                        hide-details
+                                    ></v-checkbox>
+
+                                    <h4 class="mt-4">Fecha:</h4>
+                                    <v-radio-group
+                                        v-model="fechaCarga"
+                                        column
+                                    >
+                                        <v-radio
+                                            label="Esta semana"
+                                            color="melon"
+                                            value="semana"
+                                        ></v-radio>
+                                        <v-radio
+                                            label="Este mes"
+                                            color="melon"
+                                            value="mes"
+                                        ></v-radio>
+                                        
+                                    </v-radio-group>
+                                </div>
+                            </v-col>
+                            <v-col cols="6">
+                                <div class="ml-3">
+                                    <h4 class="mt-2">Estado:</h4>
+                                    <v-checkbox
+                                        v-model="datosfiltrado.filtropremium"
+                                        label="premium"
+                                        color="primary"
+                                        hide-details
+                                    ></v-checkbox>
+                                    <v-checkbox
+                                        v-model="datosfiltrado.filtrofree"
+                                        label="free"
+                                        color="primary"
+                                        hide-details
+                                    ></v-checkbox>
+                                </div>
+                            </v-col>
+                        </v-row>
+                        
+                        <v-btn small class="melon white--text" style="text-transform: none;" @click="filtarDatos()">Filtrar</v-btn>
+                    </v-form>
+                </div>
                 
-                        <div  max-width="100%" style="height:90px; "></div>
-                        <h2 class="primary--text pa-5"><b>{{elementoSeleccionado.titulo}}</b> </h2>
-                        <span >{{elementoSeleccionado.nombre}} {{elementoSeleccionado.apellido}}</span>
-
-                        <v-section class="pa-5" v-html="elementoSeleccionado.contenido"  >
-                            
-                        </v-section>
-
-                        <v-img  
-                            :src="elementoSeleccionado.urlImagen!=='' ? elementoSeleccionado.urlImagen : 'images/logos/planeta_preescolar_logo.png'" 
-                            style="max-width:100%;  width:100%; background-color:azure; " >
-                        </v-img> 
-
-                    </v-container>
-                </v-card-text>
             </v-card>
-        </v-dialog> -->
-
-        <!-- {{mostrando}} -->
-
+        </v-dialog>
     </v-main>
+
 </template>
 <script>
 
 import { mapState, mapMutations, mapActions } from 'vuex'
 import listablog from '~/components/listado-blog/listado-blog.vue'
 import Spinner from '~/components/spinner.vue'
+import buscador from '~/components/buscador/buscador.vue'
+
 
 
 
@@ -170,65 +239,192 @@ export default {
             elementoSeleccionado: {},
             spinner: true,
             datos: [],
-            // recursos:[
-            //     'BLOG',
-            //     'MEMORIA',
-            //     'RECOMENDACION',
-            //     'REFLEXIONES',
+            subtipo:"",
+            reflexiones:[],
+            blogs:[],
+            memorias:[],
+            planeaciones:[],
+            materialdidactico:[],
+            hojastrabajo:[],
+            interactivos:[],
+            otros:[],
+            recursos:[
+                'todos',
+                'blog',
+                'memoria',
+                'reflexion',
+                'planeacion',
+                'recurso',
+            ],
+            validBusqueda: true,
+            buscando: false,
+            verResultados: true,
+            tipoCat: null,
+            cont: 0,
+            dialogF: false,
+            // datosfiltrado:[
+            //     {tipo:"video", estado: false},
+            //     {tipo:"audio", estado: false},
+            //     {tipo:"premium", estado: true},
+            //     {tipo:"free", estado: true},
             // ],
+            fechaCarga: "",
+            datosfiltrado:{
+                filtrovideo:false,
+                filtroaudio:false,
+                filtrofile:false,
+                filtropremium:true,
+                filtrofree: true
+            }
         }
     },
     components:{
         listablog,
-        Spinner
+        Spinner,
+        buscador
     },
     computed: {
-        ...mapState(['datosUsuario','datosBusqueda','recursosBusqueda']),
+        ...mapState(['datosUsuario','datosBusqueda','categorias']),
         tituloResultados(){
+            console.log("this.datosBusqueda.tipo")
+            if(this.cont !== 0)
+                this.tipoCat = this.datosBusqueda.tipo;
+            else
+                this.cont++;
+            console.log(this.datosBusqueda.tipo)
             let tipoM = "";
-            if(this.datosBusqueda.tipo === "REFLEXIONES")
+            if(this.datosBusqueda.tipo === "reflexion")
                 tipoM= "Resultados reflexiones";
-            else if(this.datosBusqueda.tipo === "RECOMENDACION")
-                tipoM= "Resultados recomendaciones";
-            else if(this.datosBusqueda.tipo === "MEMORIA")
+            else if(this.datosBusqueda.tipo === "memoria")
                 tipoM= "Resultados memorias";
-            else if(this.datosBusqueda.tipo === "BLOG")
+            else if(this.datosBusqueda.tipo === "blog")
                 tipoM= "Resultados blogs";
+            else if(this.datosBusqueda.tipo === "'planeacion")
+                tipoM= "Resultados planeaciones";
+
+            else if(this.datosBusqueda.tipo === "hojatrabajo")
+                tipoM= "Resultados hojas de trabajo";
+            else if(this.datosBusqueda.tipo === "materialdidactico")
+                tipoM= "Resultados material didáctico";
+            else if(this.datosBusqueda.tipo === "interactivo")
+                tipoM= "Resultados interactivos";
+            else if(this.datosBusqueda.tipo === "otro")
+                tipoM= "Resultados otros";
+            
             return tipoM;
         }
     },
-    async mounted(){
+     mounted(){
         
         
-        await this.initProceso();
+        this.buscando = !this.buscando;
+        // console.log(this.tipoCat)
+        // this.tipoCat = this.datosBusqueda.tipo
 
     },
     methods: {
         ...mapActions(['obtenerRecursos']),
         async initProceso(){
-            // this.buscandoDatos();
             await this.obtenerRecursos()
-            // alert("paso1")
+            // console.log(this.categorias)
+
 
             
             this.filtarDatos();
             // alert("paso3")
         },
         filtarDatos(){
-            // console.log(this.recursosBusqueda);
 
-            this.datos = [...this.recursosBusqueda]
-            // console.log(this.datos);
+            // if(!this.dialogF)
+            // {
+                this.datos = [...this.categorias]
+                const {tipo} = this.datosBusqueda;
+                // console.log(this.datosBusqueda.tipo)
+                let recursos = [... this.datos];
+            // }
+            const clave = this.datosBusqueda.clave.toLowerCase().normalize("NFD");
+
             // alert("aqui 1")
 
-            const clave = this.datosBusqueda.clave.toLowerCase().normalize("NFD");
-            let recursos = [... this.datos];
-            // console.log("clave")
-            // console.log(clave)
 
-            this.busquedaFiltrada = recursos.filter(recurso =>
-                (recurso.tags.includes(clave) && recurso.edopost === "publico")
-            )
+            if(this.datosBusqueda.tipo !== "todos")
+            {
+                console.log("SOLO DE UN TIPO")
+                console.log(this.datosBusqueda.tipo)
+                this.busquedaFiltrada = recursos.filter(recurso =>
+                    (this.esMatch(recurso, clave) && (recurso.edopost === "publico" && recurso.tipo === tipo))
+                )
+            }
+            else
+            {
+                
+                this.memorias = [], this.blogs=[], this.reflexiones=[], this.planeaciones=[], 
+                this.materialdidactico=[], this.hojastrabajo=[], this.interactivos=[], this.otros=[],
+                recursos.map(recurso =>
+                {
+                    // console.log(recurso)
+                    let matched = this.esMatch(recurso, clave)
+                    // console.log("HUBO MATCH : "+matched)
+                    if( (matched && recurso.edopost === "publico"))
+                    {
+                        if(recurso.tipo === "memoria")
+                            this.memorias.push(recurso);
+
+                        if(recurso.tipo === "blog")
+                            this.blogs.push(recurso);
+
+                        if(recurso.tipo === "reflexion")
+                            this.reflexiones.push(recurso);
+
+                        if(recurso.tipo === "planeacion")
+                            this.planeaciones.push(recurso);
+
+                        if(recurso.tipo === "materialdidactico")
+                            this.materialdidactico.push(recurso);
+
+                        if(recurso.tipo === "hojatrabajo")
+                            this.hojastrabajo.push(recurso);
+
+                        if(recurso.tipo === "interactivo")
+                            this.interactivos.push(recurso);
+
+                        if(recurso.tipo === "otro")
+                            this.otros.push(recurso);
+
+
+                    }
+
+                })
+            //    this.blogs = recursos.filter(recurso =>
+            //         (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+            //         recurso.tipo === "blog"
+            //     )
+            //     this.reflexiones = recursos.filter(recurso =>
+            //         (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+            //         recurso.tipo === "reflexion"
+            //     )
+            //     this.planeaciones = recursos.filter(recurso =>
+            //         (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+            //         recurso.tipo === "planeacion"
+            //     )
+            //     this.materialdidactico = recursos.filter(recurso =>
+            //         (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+            //         recurso.tipo === "materialdidactico"
+            //     )
+            //     this.hojastrabajo = recursos.filter(recurso =>
+            //         (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+            //         recurso.tipo === "hojatrabajo"
+            //     )
+            //     this.interactivos = recursos.filter(recurso =>
+            //         (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+            //         recurso.tipo === "interactivo"
+            //     )
+            //     this.otros = recursos.filter(recurso =>
+            //         (this.esMatch(recurso, clave) && recurso.edopost === "publico") &&
+            //         recurso.tipo === "otro"
+            //     )
+            }
+
 
             // console.log(this.tipo)
             // console.log(this.busquedaFiltrada)
@@ -238,15 +434,191 @@ export default {
 
             // console.log(this.busquedaFiltrada);
             this.spinner =false;
+            this.verResultados= true;
+            this.dialogF= false;
 
+            
+
+
+        },
+        
+        esMatch(recurso, clave){
+            let {tags, titulo, contenido, sinopsis, materia, tipo, tipoRecurso, premium} = recurso;
+            let response = false;
+
+            if(tipo !== "blog" || tipo !== "reflexion" || tipo !== "memoria")
+                premium =  typeof(premium) === "undefined" ? false : premium
+            // console.log(recurso)
+
+            const {filtrovideo, filtroaudio, filtrofile, filtropremium, filtrofree} = this.datosfiltrado;
+
+            if(recurso.tipo === "planeacion" || recurso.tipo === "materialdidactico" || recurso.tipo === "hojatrabajo" || recurso.tipo === "interactivo")
+            {
+                let {sinopsis, materia} = recurso;
+                materia = materia ? materia : "";
+                sinopsis = sinopsis ? sinopsis : "";
+               
+
+                response = 
+                ( 
+                    tags.includes(clave) || 
+                    titulo.toLowerCase().normalize("NFD").includes(clave) || 
+                    contenido.toLowerCase().normalize("NFD").includes(clave) || 
+                    sinopsis.toLowerCase().normalize("NFD").includes(clave) || 
+                    materia.toLowerCase().normalize("NFD").includes(clave) 
+                )
+                    
+                ? true : false;
+
+                // console.log("MATCH NORMAL: "+response)
+
+                //REVISAR SI SE QUIERE HACER UN FILTRADO AVANZADO
+                // if( (filtrovideo || filtroaudio || filtrofile || this.fechaCarga !== "") && response)
+                // {
+                //     // console.log("REVISANDO MATCH AVANZADO: ")
+
+                    
+
+                //     let resFiltro = false;
+                //     // this.datosfiltrado.map(dat => {
+                        
+                //         if(filtrovideo)
+                //             resFiltro = tipoRecurso === "link"
+                        
+                // // console.log("MATCH : "+resFiltro)
+
+
+                //         if(filtroaudio && !resFiltro)
+                //             resFiltro = tipo === "interactivo" && tipoRecurso !== "link"
+                        
+                //         if(filtrofile && !resFiltro)
+                //             resFiltro = tipoRecurso === "file"
+
+                // // console.log("MATCH : "+resFiltro)
+                        
+                        
+                //         if(filtropremium !== filtrofree && resFiltro)
+                //         {
+
+                //             // console.log("free: "+filtrofree+ "  premium: "+filtropremium)
+
+                //             if(filtropremium)
+                //                 resFiltro = premium === true
+    
+                //             else if(filtrofree)
+                //                 resFiltro = premium === false
+                //         }
+
+                //         if(this.fechaCarga !== "" && resFiltro)
+                //         {
+                //             const fec = recurso.fecha.toString();
+                //             // console.log(fec)
+                //             let fechaNueva = fec.slice(0, 10);
+                //             // console.log(fechaNueva);
+                //             const fechaN = parseInt(fechaNueva);
+                //             console.log("FECHA DEL POST");
+                //             console.log(fechaN);
+                            
+                //             //FECHA ACTUAL
+                //             let now = Date.now() 
+                //             // console.log(now);
+                //             const fa = now.toString();
+                //             // console.log(fa)
+                //             let faNueva = fa.slice(0, 10);
+                //             // console.log(faNueva);
+                //             const fechaAN = parseInt(faNueva);
+                //             console.log("FECHA ACTUAL");
+                //             console.log(fechaAN);
+
+                            
+                //         }
+
+                // // console.log("MATCH : "+resFiltro)
+
+  
+                //     // })
+                //     // console.log("FILTRO AVANZADO: "+resFiltro)
+                //     response = resFiltro ? true : false
+                // }
+
+            }
+            else
+            {
+                response = 
+                ( 
+                    tags.includes(clave) || 
+                    titulo.toLowerCase().normalize("NFD").includes(clave) || 
+                    contenido.toLowerCase().normalize("NFD").includes(clave) )
+                ? true : false;
+
+                //REVISAR SI SE QUIERE HACER UN FILTRADO AVANZADO
+                // if( (filtrovideo || filtroaudio || filtrofile || this.fechaCarga !== "" ) && response )
+                // {
+
+                //     let resFiltro = false;
+                //     // this.datosfiltrado.map(dat => {
+                        
+                //         if(filtrovideo)
+                //             resFiltro = tipoRecurso === "link"
+
+                //         if(filtroaudio && !resFiltro)
+                //             resFiltro = tipo === "interactivo" && tipoRecurso !== "link" 
+                        
+                //         if(filtrofile && !resFiltro)
+                //             resFiltro = tipoRecurso === "file"
+
+                //         if(filtropremium !== filtrofree && resFiltro)
+                //         {
+
+                //             if(filtropremium)
+                //                 resFiltro = premium === true
+    
+                //             else if(filtrofree)
+                //                 resFiltro = premium === false
+                //         }
+  
+                //     // })
+                //     // console.log("FILTRO AVANZADO: "+resFiltro)
+                //     response = resFiltro ? true : false
+                // }
+
+            }
+            // console.log(response)
+            return response;
+        },
+        opcionesFiltrado(){
+            this.dialogF = true;
         },
         mostrarElemento(elemento){
             this.vistaElemento = true
             this.elementoSeleccionado = elemento
         },
+        buscarDato(){
+            // console.log(this.datosBusqueda)
+            this.$router.push('/busqueda')
+
+        },
+        validateBusqueda () {
+            const vd = this.$refs.formBusqueda.validate();
+            this.validBusqueda = vd;
+            if(this.validBusqueda)
+              this.buscarDato()
+          },
         
         
     },
+    watch: {
+    async buscando() {
+        // this.verResultados= false;
+        await this.initProceso();
+    },
+    async tipoCat(){
+        console.log("BUSQUEDA CAMBIO")
+        this.verResultados= false;
+
+    }
+
+  }
 }
 </script>
 
@@ -268,4 +640,28 @@ export default {
         margin-bottom:0!important;
         font-size: 13.5px;
     }
+
+    /* ESTILOS DE BUSCADOR */
+    /*css de buscador */
+.backbuscador{
+    background-image:url('/images/nubes.png');
+    background-size: 100%;
+    background-position: bottom;
+}
+
+.v-input__slot{
+    background-color:#fff;
+}
+
+.modbuscador{
+    border-radius:15px;
+}
+
+.btn{
+    cursor: pointer;
+}
+.v-input--selection-controls{
+    margin-top: 0px!important;
+}
+
 </style>

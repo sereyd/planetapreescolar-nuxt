@@ -14,7 +14,7 @@
     <!-- <h3>Crear cuenta como</h3> -->
 
         <!-- <v-col cols="12" md="3" class=""> </v-col> -->
-        <v-col
+        <!-- <v-col
           cols="12"
           md="3"
           style="cursor:pointer; text-align:center;"
@@ -27,9 +27,9 @@
             class="pointerimagen"
           />
           <h1 class="primary--text">Educadora</h1>
-        </v-col>
+        </v-col> -->
         <!-- <v-col cols="10" md="auto" lg="1" sm="2" class=""> </v-col>  -->
-        <v-col
+        <!-- <v-col
           cols="12"
           md="3"
           style="cursor:pointer; text-align:center;"
@@ -43,7 +43,7 @@
           />
           <h1 class="primary--text">Padres</h1>
           <strong class="text--disabled" >Próximamente</strong>
-        </v-col>
+        </v-col> -->
         <!-- <v-col cols="12" md="3" class=""> </v-col> -->
       </v-row>
     </div>
@@ -60,7 +60,7 @@
       <!-- <v-dialog v-model="esEducadora" fullscreen > -->
       <div>
         <h3 class="primary--text  pl-15 mt-4">
-          <v-icon class="primary--text" @click="tipo_registro = ''; esEducadora = false;">
+          <v-icon class="primary--text" @click="$router.push('/')">
             mdi-arrow-left-bold-circle</v-icon
           >Regístrate
         </h3>
@@ -83,7 +83,8 @@
       class="ma-0 pa-0"
       v-if="tipo_registro != '' && tipo_registro === 'educadora'"
     >
-      <img src="/images/img-registro.png" width="100%" />
+      <img src="/images/img-registro-2.png" class="fondoRe1" width="100%" />
+
     </v-col>
 
     <v-col
@@ -111,7 +112,7 @@
       class="ma-0 pa-0"
       v-if="tipo_registro != '' && tipo_registro === 'padres'"
     >
-      <img src="/images/img-registro.png" width="100%" />
+      <img src="/images/img-registro-2.png" width="100%" />
     </v-col>
   </v-row>
   <!-- </div> -->
@@ -133,6 +134,7 @@
   background-image:url('/images/fondo-lg.png'); 
   background-size:100%;
 }
+
 /*
   $body-font-family: 'Montserrat', sans-serif;
 $heading-font-family: 'Montserrat';
@@ -173,7 +175,7 @@ export default {
       datapage: {
         sinregistro: true
       },
-      tipo_registro: "",
+      tipo_registro: "educadora",
       esEducadora: false,
 
     };

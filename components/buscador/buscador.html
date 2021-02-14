@@ -1,25 +1,29 @@
-<v-card class="secondary ma-3  modbuscador" >
+<!-- <v-card class="secondary ma-3  modbuscador" >
     <v-card-text class="backbuscador text-center white--text pa-12 rounded-2">
         <h1 class="medidah1">¡Muchos recursos para ti!</h1>
-        <p class="medidap">Encuentra cantos, imágenes, planeaciones, todo para ti, educadora</p>
+        <p class="medidap">Encuentra cantos, imágenes, planeaciones, todo para ti, educadora</p> -->
         <v-form
             ref="formBusqueda"
             v-model="validBusqueda"
             lazy-validation
         >
             <v-row>
-                <v-col cols="12" md="2"></v-col>
-                <v-col cols="12" md="2" class="white pa-0" style="border-radius:10px 0  0 10px;">
-                <v-select  class="pa-0" solo   hide-details="auto" 
-                    label="Seleccione una opción":items="recursos" 
+                <v-col cols="2" md="2" sm="2"></v-col>
+                <v-col cols="2" md="3" sm="3" class="white pa-0" style="border-radius:10px 0  0 10px;">
+                    
+                <v-select  class="mySelect pa-0" 
+                    solo   
+                    hide-details="auto" 
+                    label="Seleccione una opción" :items="recursos" 
+                    small
                     v-model="datosBusqueda.tipo"
                     :rules="[v => !!v || 'Seleccione tipo de busqueda']"
-    
+                    background-color="#f7eaf7"
                 >
-    
                 </v-select>
+
                 </v-col>
-                <v-col cols="12" md="5" class="white pa-0">
+                <v-col cols="5" md="4" sm="4" class="white pa-0">
                     <v-text-field 
                         class="buscador"  
                         solo  hide-details="auto" 
@@ -27,16 +31,16 @@
                         :rules="[v => !!v || 'Escriba lo que desea buscar']"
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12" md="1" 
-                    class="melon pa-0 btn" style="border-radius:0 10px  10px 0;"
+                <v-col cols="1" md="1" sm="1"
+                    class="melon pa-0 btn text-center" style="border-radius:0 10px  10px 0;"
                     @click="validateBusqueda"
                 >
                 <!-- <router-link to="/busqueda">  -->
                     <v-icon class="white--text mt-2" large >mdi-magnify</v-icon>
                 <!-- </router-link> -->
                 </v-col>
-                <v-col cols="12" md="2"></v-col>
+                <v-col cols="2" md="2" sm="2"></v-col>
             </v-row>
         </v-form>
-    </v-card-text>
-</v-card>
+    <!-- </v-card-text>
+</v-card> -->

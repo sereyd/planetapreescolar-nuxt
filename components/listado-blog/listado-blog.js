@@ -1,383 +1,149 @@
 import { VueEditor } from "vue2-editor";
-// import audioPlayer from 'vuetify-media-player/src/components/audio-player.vue'
-// import videoPlayer from 'vuetify-media-player/src/components/video-player.vue'
-// import { audioPlayer } from 'vue-md-player'
-// import 'vuetify-media-player/src/style.styl'
 import { audioPlayer, videoPlayer } from 'vue-md-player'
 import 'vue-md-player/dist/vue-md-player.css'
 import { mapState, mapActions, mapMutations } from "vuex";
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale';
 import Spinner from '~/components/spinner.vue'
-
-
+import fechaComponent from '~/components/fecha.vue'
+import postSeleccionado from '~/components/postSeleccionado/postSeleccionado.vue'
+import postGeneral from '~/components/postGeneral/postGeneral.vue'
 
 
 export default{
     data(){
+        // name:"listablog",
         return {
-            blogpost:[],
-            editpost:{},
-            edit:false,
-            customToolbar: [
-              [{ 'font': [] }],
-              [{ 'header': [false, 1, 2, 3, 4, 5, 6, ] }],
-              [{ 'size': ['small', false, 'large', 'huge'] }],
-              ['bold', 'italic', 'underline', 'strike'],
-              [{'align': ''}, {'align': 'center'}, {'align': 'right'}, {'align': 'justify'}],
-              [{ 'header': 1 }, { 'header': 2 }],
-              ['blockquote'],
-              [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
-              [{ 'script': 'sub'}, { 'script': 'super' }],
-              [{ 'indent': '-1'}, { 'indent': '+1' }],
-              [{ 'color': [] }, { 'background': [] }],
-              ['link', 'video', 'formula'],
-              [{ 'direction': 'rtl' }],
-              ['clean'],
-            ],
-            viewpost:false,
+           
+            dialogPost:false,
+            // viewpost:false,
+            // viewothers: false,
             vistapost:{
               comentarios:[],
+              urlVista:"",
+              urlDescargable:"",
               // creador:{}
             },
             fechaVisual:"",
-
-            //DATA PARA COMENTARIOS
-            esComentarioValido: true,
-            comentarios:[],
-            datosComentario:{
-              idUsuario:"",
-              comentario:"",
-              nombreUsuario:"",
-              urlImagen:""
-            },
 
             //PARA DESCARGAR RECURSO
             nombreFile: "",
             urlFileB: "",
             spinner:true,
 
-            linkembed:"",
+            linkembed:"https://www.youtube.com/embed/AddqzrFdR4Q",
+
+            // dialogPlanes:false,
         }
     },
     methods:{
       ...mapActions(['changeRecursosFavoritos']),
-      contadorDescargar(descargasDia){
-        console.log(descargasDia);
-        console.log(this.vistapost)
-        const {idRecurso} = this.vistapost;
-        const {id} = this.datosUsuario;
-
-        descargasDia.usadas.push(idRecurso);
-
-
-        //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
-        let descargasFreeRef = this.$fireStore.collection("usuarios").doc(id);
-        
-        //SE ACTUALIZA EN FIREBASE EL CAMPO DE COMENTARIOS
-        descargasFreeRef.update({
-          descargasDia
-        })
-        .then(() => {
-         
-
-          console.log("UPDATE DESCARGAR LIMITE")
- 
-        })
-        .catch((error) => {
-            console.error("ErroR al agregar nuevo comentario: ", error);
-        });
-        
-      },
+      ...mapMutations(['changeViewOthers','changeViewPost','changeDialogPost']),
       muestrapost(p){
+       
         this.linkembed = "";
 
         this.spinner = true;
-        console.log(p)
-        this.viewpost=true
-        // var d = new Date("2015-03-25");
-        // console.log(d);
-        // var g = new Date(this.vistapost.fecha);
-        // console.log(g);
+        this.dialogPost=true;
+        // this.changeDialogPost(true);
+        // this.viewothers = true;
+        this.changeViewOthers(true);
         this.vistapost=p
         this.vistapost.tipoRecurso = p.tipoRecurso ? p.tipoRecurso : 'image';
-        this.vistapost.urlRecurso = p.urlRecurso ? p.urlRecurso : "none";
-        console.log(this.vistapost);
+        this.vistapost.urlVista = p.urlVista ? p.urlVista : "";
+        this.vistapost.urlDescargable = p.urlDescargable ? p.urlDescargable : "";
         this.fechaVisual = format(this.vistapost.fecha , "dd  MMMM yyyy", {locale: es});
 
-        // this.file = new File(p.urlRecurso);
-        // this.urlImagenPrevia = URL.createObjectURL(
-        //   this.$refs.fileupload.files[0]
-        // );
+        const {tipo} =this.vistapost;
 
-       if(this.vistapost.tipoRecurso !== 'none' && this.vistapost.tipoRecurso !== 'link')
+        if(tipo !=='planeacion' && tipo !=='materialdidactico' && tipo !=='hojatrabajo' && tipo !=='interactivo' && tipo !=='otro')
+        {
+          // this.viewothers = false;
+          this.changeViewOthers(false);
+
+          // this.viewpost = true;
+          this.changeViewPost(true);
+
+
+        }
+
+      if(this.vistapost.tipoRecurso === 'link')
        {
+         let {urlVista} = this.vistapost;
+        const embed = urlVista.replace("watch?v=", "embed/");
+        this.linkembed = embed;
+       }
+
+
+       if(this.vistapost.tipoRecurso !== 'none'  && this.vistapost.tipoRecurso !== '')
+       {
+        
          const xhr = new XMLHttpRequest();
          xhr.responseType = 'blob';
          xhr.onload = (event) => {
-           // console.log(xhr.response);
            const blob = xhr.response;
-           console.log(blob)
            const res = blob.type.split("/");
            const typeFile = res[1];
-           this.nombreFile = this.vistapost.titulo+'.'+typeFile;
- 
+           if(blob.type === "application/pdf")
+           {
+            this.nombreFile = this.vistapost.titulo+'.pdf';
+           }
+           else if(blob.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+           {
+            this.nombreFile = this.vistapost.titulo+'.docx';
+           }
+           else if(blob.type === "application/vnd.openxmlformats-officedocument.presentationml.presentation")
+           {
+            this.nombreFile = this.vistapost.titulo+'.pptx';
+           }
+           else if(this.vistapost.tipoRecurso !== "audio" && this.vistapost.tipoRecurso !== "image" )
+            this.nombreFile = this.vistapost.titulo+'.'+this.vistapost.tipoRecurso;
+           else
+            this.nombreFile = this.vistapost.titulo+'.'+typeFile;
+
            this.urlFileB = URL.createObjectURL(blob, {
              type: blob.type
            });
+           
            this.spinner = false;
+
  
-           // console.log( this.urlFileB);
-           // const fileB = new File([blob], "filename")
-           // console.log(fileB);
          };
-         xhr.open('GET', p.urlRecurso);
-         xhr.send();
-       }
-       else if(this.vistapost.tipoRecurso === 'link')
-       {
-         let {urlRecurso} = this.vistapost;
-        const embed = urlRecurso.replace("watch?v=", "embed/");
-        this.linkembed = embed;
-        // this.linkembed = "https://www.youtube.com/embed/Y-HIJFxM264";
-        //                   https://www.youtube.com/watch?v=Y-HIJFxM264
-        console.log(this.linkembed)
-       }
 
-
-        // xhr.send()
-
-        // console.log("this.file")
-        // console.log(this.file)
-      },
-      editapost(t){
-        this.edit=true
-        this.editpost=t
-      },
-      async  cargabaseGral(){
-        try {
-          if(!this.esCompleto)
-            await this.$fireStore
-              .collection(this.tipo).orderBy("fecha", "desc").limit(4)
-              .get()
-              .then((data) => {
-                data.forEach((doc) => {
-                  let data = doc.data();
-                  data.tags = data.tags ? data.tags : [];
-                  data.favoritos = data.favoritos ? data.favoritos : [];
-                  delete data['idRecurso'];
-
-
-                  const datos = {
-                      idRecurso: doc.id,
-                      ...data
-                    }
-                  this.blogpost.push(datos);
-                });
-                  // this.blogpost = [...this.blogpost].slice(0,4);
-                // console.log(this.blogpost);
-              });
-            else
-              await this.$fireStore
-                .collection(this.tipo).orderBy("fecha", "desc")
-                .get()
-                .then((data) => {
-                  data.forEach((doc) => {
-                    let data = doc.data();
-                    data.tags = data.tags ? data.tags : [];
-                    data.favoritos = data.favoritos ? data.favoritos : [];
-                    delete data['idRecurso'];
-
-
-                    const datos = {
-                        idRecurso: doc.id,
-                        ...data
-                      }
-                    this.blogpost.push(datos);
-                  });
-                    // this.blogpost = [...this.blogpost].slice(0,4);
-                  // console.log(this.blogpost);
-                });
-          } catch (e) {
-            console.log(e);
+          if( p.urlDescargable !== "none" && p.urlDescargable !== "")
+          {
+            xhr.open('GET', p.urlDescargable);
+            xhr.send();
           }
-        },
-
-
-    async  cargabaseUser(){
-      try { 
-        if(!this.esCompleto)
-        {
-          console.log("no completo")
-          await this.$fireStore
-            .collection(this.tipo)
-            .where("idCreador","==",this.userId)
-            .get()  
-            .then((data) => {
-              data.forEach((doc) => {
-                let data = doc.data();
-                data.tags = data.tags ? data.tags : [];
-                data.favoritos = data.favoritos ? data.favoritos : [];
-                delete data['idRecurso'];
-
-
-                const datos = {
-                    idRecurso: doc.id,
-                    ...data
-                  }
-                this.blogpost.push(datos);
-              });
-                // this.blogpost = [...this.blogpost].slice(0,4);
-            });
         }
-        else{
-          console.log(" completo")
-
-          await this.$fireStore
-          .collection(this.tipo)
-          .where("idCreador","==",this.userId)
-          .get()  
-          .then((data) => {
-            data.forEach((doc) => {
-              let data = doc.data();
-              data.tags = data.tags ? data.tags : [];
-              data.favoritos = data.favoritos ? data.favoritos : [];
-              delete data['idRecurso'];
-
-
-              const datos = {
-                  idRecurso: doc.id,
-                  ...data
-                }
-              this.blogpost.push(datos);
-            });
-              // this.blogpost = [...this.blogpost].slice(0,4);
-          });
-        }
-
-          } catch (e) {
-                console.log(e);
-              }
-            },
-
-
-            async  cargabaseExclude(){
-                try {
-                  if(!this.esCompleto)
-                    await this.$fireStore
-                      .collection(this.tipo)
-                      .where("idCreador","!=",this.idexclude)
-                      .get()
-                      .then((data) => {
-                        data.forEach((doc) => {
-                          let data = doc.data();
-                          data.tags = data.tags ? data.tags : [];
-                          data.favoritos = data.favoritos ? data.favoritos : [];
-                          delete data['idRecurso'];
-
-
-                          const datos = {
-                              idRecurso: doc.id,
-                              ...data
-                            }
-                          this.blogpost.push(datos);
-                        });
-                          // this.blogpost = [...this.blogpost].slice(0,4);
-                      });
-                    else
-                      await this.$fireStore
-                      .collection(this.tipo)
-                      .where("idCreador","!=",this.idexclude)
-                      .get()
-                      .then((data) => {
-                        data.forEach((doc) => {
-                          let data = doc.data();
-                          data.tags = data.tags ? data.tags : [];
-                          data.favoritos = data.favoritos ? data.favoritos : [];
-                          delete data['idRecurso'];
-
-
-                          const datos = {
-                              idRecurso: doc.id,
-                              ...data
-                            }
-                          this.blogpost.push(datos);
-                        });
-                          // this.blogpost = [...this.blogpost].slice(0,4);
-                      });
-                  } catch (e) {
-                    console.log(e);
-                  }
-                },
-
-      //  METODOS PARA COMENTARIOS
-      async agregarComentario(){
-        const {id, nombre, apellido, urlImagen} = this.datosUsuario;
-        
-        this.datosComentario.idUsuario = id;
-        this.datosComentario.nombreUsuario = `${nombre} ${apellido}`;
-        this.datosComentario.urlImagen = urlImagen;
-        console.log(this.datosComentario)
-        console.log(this.tipo)
-        console.log(this.vistapost);
-        //OBTENEMOS EL ID DEL RECURSO (MEMORIA, RELFEXION, RECOMENDACION, ETC)
-        const {idRecurso} = this.vistapost;
-        this.vistapost.comentarios.push({...this.datosComentario});
-
-        //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
-        let recursoComentariosRef = this.$fireStore.collection(this.tipo).doc(idRecurso);
-        
-        //SE ACTUALIZA EN FIREBASE EL CAMPO DE COMENTARIOS
-        recursoComentariosRef.update({
-             comentarios: [...this.vistapost.comentarios]
-        })
-        .then(() => {
-          this.datosComentario.idUsuario = "";
-          this.datosComentario.nombreUsuario = "";
-          this.datosComentario.urlImagen = "";
-          // this.datosComentario.comentario = "";
-          // this.esComentarioValido = true;
-          this.$refs.formComentario.reset();
-
-          console.log("reset data")
- 
-        })
-        .catch((error) => {
-            console.error("ErroR al agregar nuevo comentario: ", error);
-        });
-
-      },
-      validarFormularioComentario(){
-        // console.log("revision")
-        this.esComentarioValido =this.$refs.formComentario.validate();
-        if(this.esComentarioValido)
-          this.agregarComentario();
-        // console.log("biennnn")
-      },
-      descargarRecurso(link){
+     
 
       },
 
-      //AGREGAR O QUITAR DE FAVORITOS
-      // changeFavorito(estado, recurso){
+      cerrarDialog(){
+        this.dialogPost = false; 
+        // this.changeDialogPost(false);
+        this.changeViewPost(false); 
+        this.changeViewOthers(false);
+      },
+      
 
-
-      //   if(estado === "add")
-      //     recurso.favoritos.push(this.datosUsuario.id);
-      //   else
-      //     recurso.favoritos = recurso.favoritos.filter( r => this.datosUsuario.id !== r)
-
-        
-        
-
-
-      // }
     },
     props:{
         tipo:{
             default:()=>{
                 return 'BLOG'
             }
+        },
+        subtipo:{
+          default:()=>{
+              return 'BLOG'
+          }
+        },
+        
+        blogpost:{
+          type: Array,
+          default: () => []
         },
         titulo:{
             default:()=>{
@@ -414,92 +180,40 @@ export default{
           type: Boolean,
           default: true,
         },
-        esBusqueda:{
-          type: Boolean,
-          default: false,
-        },
         esFavoritos:{
           type: Boolean,
           default: false,
         },
-        datoBuscar:{
-          type:String,
-          default:""
-        }
     },
     components:{
       VueEditor,
       videoPlayer,
       audioPlayer,
       Spinner,
+      fechaComponent,
+      postSeleccionado: () => import('~/components/postSeleccionado/postSeleccionado.vue'),
+      postGeneral: () => import('~/components/postGeneral/postGeneral.vue'),
     },
-    async mounted(){
-        // console.log("this.blogpost")
-        
-        // console.log("Es completo: "+this.esCompleto);
-        if(this.userId==='' && this.idexclude===''){
-          console.log("aqui1")
-           await this.cargabaseGral()
-        }
-        if(this.userId){
-          console.log("aqui2")
+    // async mounted(){
 
-            await this.cargabaseUser()
-        }
-        if(this.idexclude){
-          console.log("aqui3")
-           await this.cargabaseExclude()    
-        }
 
-        // console.log(this.esBusqueda)
-        // console.log(this.blogpost)
-        if(this.esBusqueda)
-        {
-          // console.log(this.titulo)
-          // console.log("dato a buscar en todas las listas")
-          const clave = this.datoBuscar.toLowerCase().normalize("NFD");
-          // console.log(clave)
-          let recursos = [... this.blogpost];
-          // console.log("RECURSOS")
-          // console.log(recursos)
-          this.blogpost = [...recursos.filter(recurso =>
-            (
-              recurso.tags.includes(clave) && 
-              ( 
-                recurso.edopost === "publico" || 
-                ( recurso.edopost === "privado" && recurso.idCreador === this.datosUsuario.id ) 
-              ) 
-            )
-          )]
-
-          // console.log("FILTRADOS")
-          // console.log(this.blogpost)
-            
-           
-        }
-
-        if(this.esFavoritos)
-        {
-
-          //const favs = recetas.data.filter( receta =>(receta.votantes.includes(usuario.correo)) );
-          let recursos = [... this.blogpost];
-          this.blogpost = [...recursos.filter(recurso =>
-            recurso.favoritos.includes(this.datosUsuario.id) 
-          )]
-          // console.log("FAVORITOS DE: "+this.tipo);
-          // console.log(this.blogpost);
-        }
-        
-
-    },
+    // },
     computed: {
-      ...mapState(['datosUsuario','itemsmenu']),
-      fechaVisualC(vm, payload){
-        console.log(vm)
-        console.log(payload)
-        // const fecha = format(payload, "dd 'de' MMMM 'de' yyyy", {locale: es});
-        // console.log(fecha)
-        return vm;
-      }
+      ...mapState(['datosUsuario','itemsmenu','descargarFree','viewothers','viewpost']),
+      cargarecomendacion(){
+        var limit=350
+        var loncadena= this.reflexionSeleccionada.contenido.length
+        var suspensivos="..."
+        var contenido= this.reflexionSeleccionada.contenido.substr(0,limit)
+        if(loncadena<limit){
+            suspensivos=""
+        }
+        return contenido+suspensivos
+    },
+    cantidadComentarios(comentarios){
+      let comen = comentarios.filter(com => com.valido === true);
+      return comen.length;
+    },
+    
     },
 }

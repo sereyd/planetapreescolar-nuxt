@@ -1,0 +1,27 @@
+.card-div{
+    flex: 0 1 100%;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    column-gap: 2rem;
+    /* background-color: red; */
+}
+.textos > p{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12.5px;
+}
+.textos > h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 17px;
+}
+
+@media (max-width: 575.98px) { 
+
+    .textos > div > p{
+        font-family: 'Montserrat', sans-serif;
+        font-size: 12px;
+    }
+    .textos > h4 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 16px;
+    }
+ }

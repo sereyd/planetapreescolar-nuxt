@@ -62,3 +62,8 @@
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
 }
+
+small{
+    font-size: 13px;
+    color: darkgrey;
+  }

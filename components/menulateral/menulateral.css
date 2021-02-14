@@ -1,11 +1,9 @@
-.menufix{
-    position:fixed;
-    top:0px;
-    left:0px;
-    width:100%;
-    max-width:100%;
+.menufixedtop{
+    position:fixed; 
+    width:100%; 
+    max-width: 100%; 
+    z-index:10;
 }
-
 
 
 .menu-sec{
@@ -20,7 +18,7 @@
 }
 .menu-sec-anim{
   
-    position:absolute; top:-20px; left:-160px; width:60px;
+    position:absolute; top:-20px; left:-160px; width:100px;
 }
 
 .menu-sec-premium{
@@ -35,7 +33,7 @@
 
 .datamenu{
     width: 100%;
-    max-width:350px;
+    max-width:450px;
     border-radius:10px;
     position:relative;
  
@@ -75,6 +73,10 @@
     margin-right: 12px!important;
 }
 
+.vMmobilview{
+    font-size: 12px;
+}
+
 /*   vista mobil */
 @media (max-width:959px){
 .vMmobilview{
@@ -92,7 +94,7 @@
 
 .datamenu{
     width: 100%;
-    max-width:115px;
+    max-width:160px;
     border-radius:10px;
     position:relative;
  

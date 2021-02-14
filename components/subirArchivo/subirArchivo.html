@@ -1,0 +1,22 @@
+<v-main>
+    <v-file-input
+        outlined
+        :label="label"
+        prepend-icon="mdi-paperclip"
+        :accept="filesAccepts"
+        v-model="fileInterno"
+        @change = "changeFile"
+        v-if="!cargando"
+    ></v-file-input>
+    
+    <v-progress-linear
+        class="mb-6"
+        v-model="porcentaje"
+        color="primary"
+        height="20"
+        v-else
+    >
+        <strong class="white--text" style="font-size: 14px;">{{ Math.ceil(porcentaje) }}%</strong>
+    </v-progress-linear>
+    
+</v-main>

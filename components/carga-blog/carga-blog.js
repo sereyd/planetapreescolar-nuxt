@@ -2,6 +2,12 @@ import { VueEditor } from "vue2-editor";
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale';
 import InputTag from 'vue-input-tag';
+import subirFile from "@/components/subirArchivo/subirArchivo.vue"
+import subirImagen from "@/components/subirimagen/subirimagen.vue";
+import Spinner from '~/components/spinner.vue'
+import { mapState, mapActions, mapMutations } from "vuex";
+
+var urlVistaCache="";
 
 export default {
   data() {
@@ -21,9 +27,13 @@ export default {
         // user:"",
         contenido:"",
         tipoRecurso:"",
-        urlRecurso:"",
-        tags:[]
+        urlRecurso: ["",""],
+        tags:[],
+        premium: false,
+        recomendado: false,
+        permisoadmin:true,
         },
+        sinopsis:"",
         customToolbar: [
           [{ 'font': [] }],
           [{ 'header': [false, 1, 2, 3, 4, 5, 6, ] }],
@@ -45,149 +55,172 @@ export default {
 
         tagsValido: null,
         msjTag: "",
+
+        // REGLAS PARA FORMULARIO
+      sinopsisReglas: [
+        v => !!v || 'Sinopsis es requerido',
+        v => (v && v.length <= 500) || 'Sinopsis debe tener menos de 500 caracteres',
+      ],
+
+      file: null,
+
+      urlDescargable:"",
+      urlVista:"",
+      fileVista: null,
+      fileDescargable: null,
+
+      esUrlimgR: false,
+      completado:false,
+      listo: false,
+      tipoRecursoSelect: "",
+      tiposRecursoList: ["link","file"],
     };
   },
   components: {
     VueEditor,
-    InputTag
+    InputTag,
+    Spinner,
+    subirFile,
+    subirImagen
   },
   computed: {
+    ...mapState(["urlimg", "datosUsuario"]),
     fechaVisual(payload){
-      console.log(payload)
-      // const fecha = format(payload, "dd 'de' MMMM 'de' yyyy", {locale: es});
-      // console.log(fecha)
-      //return (id) => this.itemById(id).description;
       return (payload) => format(payload, "dd 'de' MMMM 'de' yyyy", {locale: es});
     },
     tituloEditar(){
       let tipoM = "";
-      if(this.tipo === "REFLEXIONES")
+      if(this.subtipo === "reflexion")
         tipoM= "Editar reflexión";
-      else if(this.tipo === "RECOMENDACION")
-        tipoM= "Editar recomendación";
-      else if(this.tipo === "MEMORIA")
+      else if(this.subtipo === "memoria")
         tipoM= "Editar memoria";
-      else if(this.tipo === "BLOG")
+      else if(this.subtipo === "blog")
         tipoM= "Editar blog";
-      else if(this.tipo === "AUDIOS")
-        tipoM= "Editar recurso";
-      else if(this.tipo === "VIDEOS")
-        tipoM= "Editar recurso";
-      else if(this.tipo === "IMAGENES")
-        tipoM= "Editar recurso";
+      else if(this.subtipo === "planeacion")
+        tipoM= "Editar planeación";
+      else if(this.subtipo === "materialdidactico")
+        tipoM= "Editar material didactico";
+      else if(this.subtipo === "hojatrabajo")
+        tipoM= "Editar hoja de trabajo";
+      else if(this.subtipo === "hojailustrar")
+        tipoM= "Editar hoja para ilustrar";
+      else if(this.subtipo === "interactivo")
+        tipoM= "Editar interactivo";
+      else if(this.subtipo === "otro")
+        tipoM= "Editar interactivo";
+        
           
       return tipoM;
     }
   },
   methods: {
-    async cargaPost() {
-    // console.log(this.tipo)
-    // console.log(this.$store.state.datosUsuario.id)
-    let datos = {};
-      
-      try {
-        // const usuarioQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
+    ...mapMutations(["agregarCategorias","updateEditado",'almacenarFotoStorage','actualizarCategorias']),
+    
+    async mostrarRecursoEdit(post){
+      // console.log(this.tipo);
+      let nombreFile = ""
+      let nombreFile2 = ""
+      let response = "";
+      let data = "";
+      let metadata = {};
 
-        // console.log(this)
-        // console.log(this.$fireStore)
-   
-        await this.$fireStore
-          .collection(this.tipo)
-          .where("idCreador", "==",this.$store.state.datosUsuario.id)
-          .where("tipo", "==",this.subtipo)
-          // .where("tipo","==",this.tipo)  
-          .get()
-          .then((data) => {
-            data.forEach((doc) => {
-              let data = doc.data();
-              data.tags = data.tags ? data.tags : [];
-              data.favoritos = data.favoritos ? data.favoritos : [];
-              delete data['idRecurso'];
+      this.datosRecursoEdit = {...post};
+      this.datosRecursoEdit.premium = !this.datosRecursoEdit.premium ? false : this.datosRecursoEdit.premium;
+      this.datosRecursoEdit.recomendado = !this.datosRecursoEdit.recomendado ? false : this.datosRecursoEdit.recomendado;
 
-
-              datos = {
-                idRecurso: doc.id,
-                ...data
-              }
-
-              this.listaR.push(datos);
-                // console.log("Carga tipo: "+this.tipo)
-                // console.log(doc.data())
-              // this.listaR.push(doc.data());
-            });
-            // console.log(this.listaR)
-          });
-      } catch (e) {
-        console.log(e);
+      if(this.datosRecursoEdit.tipoRecurso === "link")
+      {
+        this.tipoRecursoSelect = "link"
       }
+      else{
+        this.tipoRecursoSelect = "file"
 
-  
-    },
-
-
-    mostrarRecursoEdit(post){
-      console.log(post)
-      console.log(this.tipo);
+      }
+      
+      
       if(this.tipo === "RECOMENDACION")
         this.esBlog = true;
       else
         this.esBlog = false;
 
       this.editRecurso = true;
-      // console.log(post);
-      this.datosRecursoEdit = {...post};
-      // console.log(this.datosRecursoEdit)
-      // console.log(this.tipo)
-
 
     },
     modificarRecurso(){
 
-      console.log(this.datosRecursoEdit);
-      // alert("altooo");
-      const {idRecurso, titulo, contenido, edopost, tags} = this.datosRecursoEdit;
-      
+      if(this.completado && this.listo )
+      {
+        console.log(this.urlimg)
+        if(this.urlimg !== "" && this.urlimg !== "none")
+          this.datosRecursoEdit.urlImagen = this.urlimg
 
-      //SE OBTIENE EL RECURSO POR MEDIO DEL ID
-      let usuarioRecursosRef =  this.$fireStore.collection(this.tipo).doc(idRecurso);
-      
-      //SE ACTUALIZA EN FIREBASE EL RECURSO SELECCIONADO
-      usuarioRecursosRef.update({
-        titulo, contenido, edopost,tags
-      })
-      .then(() => {
-          // console.log(this.grupo);
-          // alert("paso 1")
-          // this.$router.push('/publicaciones')
-          //ACTUALIZAR RECURSO LISTAR DE PROPS
-          // console.log("Antes de cambio this.listaR")
-          // console.log(this.listaR)
-          // alert("1")
-          this.listaR.map( (lista) => {
-            // console.log(lista.id +"==="+ id)
-            // console.log(lista)
-            if(lista.idRecurso === idRecurso)
-            {
-              lista.titulo = titulo;
-              lista.contenido = contenido ;
-              lista.edopost = edopost;
-              lista.tags = tags;
-              
-            }
-          })
-          this.editRecurso = false;
+        
+        let {idRecurso, titulo, contenido, edopost, tags, premium, sinopsis, recomendado, 
+          urlVista, urlDescargable, materia, grado, urlImagen, permisoadmin} = this.datosRecursoEdit;
+        // let permisoadmin = true;
 
-          // console.log("Despues de cambio this.listaR")
-          // console.log(this.listaR)
-          // alert("2")
+        
+  
+        //SE OBTIENE EL RECURSO POR MEDIO DEL ID
+        let usuarioRecursosRef =  this.$fireStore.collection("CATEGORIAS").doc(idRecurso);
+  
+        //SE ACTUALIZA EN FIREBASE EL RECURSO SELECCIONADO
+        if(this.subtipo === 'materialdidactico')
+        {
+          urlVista = urlDescargable;
+        }
+        usuarioRecursosRef.update({
+          titulo, contenido, edopost,tags, premium, recomendado, sinopsis, urlVista, 
+          urlDescargable, materia, grado, urlImagen, permisoadmin
+        })
+        .then(() => {
+           
+            this.listaR.map( (lista) => {
+             
+              if(lista.idRecurso === idRecurso)
+              {
+                lista.titulo = titulo;
+                lista.contenido = contenido ;
+                lista.edopost = edopost;
+                lista.tags = tags;
+                lista.premium = premium;
+                lista.recomendado = recomendado;
+                lista.sinopsis = sinopsis;
+                lista.urlDescargable= urlDescargable;
+                lista.urlVista= urlVista;
+                lista.urlImagen= urlImagen;
+                lista.materia= materia;
+                lista.grado= grado;
+                lista.permisoadmin = permisoadmin;
+                this.updateEditado(lista);
+                
+              }
+            })
+            this.editRecurso = false;
+            this.completado = false;
+            this.listo = false; 
+   
+        })
+        .catch((error) => {
+            console.error("ErroR al modifcar recurso: ", error);
+        });
+      }
 
- 
-      })
-      .catch((error) => {
-          console.error("ErroR al modifcar recurso: ", error);
-      });
 
     },
+
+    cambioSelect(){
+      console.log("Cambio de select")
+      if(this.datosRecursoEdit.tipoRecurso === "link")
+      {
+        urlVistaCache = this.datosRecursoEdit.urlVista;
+        this.datosRecursoEdit.urlVista = "";
+      }else{
+        this.datosRecursoEdit.urlVista = urlVistaCache;
+
+      }
+    },
+
     validarFormularioRecursoEdit(){
       // console.log("revision")
       this.esRecursoEditValido =this.$refs.formRecursoEdit.validate();
@@ -197,7 +230,12 @@ export default {
         this.tagsValido = true;
         this.msjTag = ""
         console.log("tags validos")
-        this.modificarRecurso()
+        
+        const ubi = `${this.subtipo}/${this.datosUsuario.id}/${this.datosRecursoEdit.foldercode}/`;
+        this.completado = true;
+        this.listo = true;
+        this.almacenarFotoStorage(ubi);
+
       }
 
       if(this.datosRecursoEdit.tags.length === 0)
@@ -208,15 +246,67 @@ export default {
         this.msjTag = "Necesita agregar por lo menos un tag"
       }
       
-        // console.log("biennnn")
-    }
-  },
-  mounted() {
-    // console.log("this.listaR")
-    // console.log(this.listaR)
-    // alert("cargando ListaR")
-    this.cargaPost();
+        // console.log("biennnn")-
+    },
+    async eliminarPost(data){
+      if (confirm("¿Deseas eliminar este recurso?") === true) {
+        // console.log("ELIMINADO")
+        // console.log(data);
+        const {foldercode, tipo, idRecurso} = data;
+        const {id} = this.datosUsuario
+        const ruta = `${tipo}/${id}/${foldercode}`;
+        // console.log(ruta)
 
+        var storageRef = this.$fireStorage.ref();
+        // Create a reference 
+        var mountainsRef = storageRef.child(ruta);
+
+        // Now we get the references of these files
+        mountainsRef.listAll().then( (result) => {
+            result.items.forEach( (file) => {
+              // console.log(file)le
+               file.delete();
+            });
+            // console.log("terminadmos de recorrer")
+
+            //BORRANDO POST SELECCIONADO
+            this.$fireStore.collection("CATEGORIAS").doc(idRecurso).delete()
+            .then(() => {
+
+              // console.log(this.listaR)
+              this.listaR.filter( (lista) => lista.idRecurso !== idRecurso)
+              // console.log(this.listaR)
+              this.actualizarCategorias([]);
+              this.$emit('updateRefresh',!this.refreshPost)
+
+
+
+            }).catch((error) => {
+                console.error("Error removing document: ", error);
+            });
+
+        }).catch( (error) => {
+            alert("ALGO SALIO MAL")
+
+        });
+
+      } else {
+        console.log("SALVADO")
+
+      }
+    },
+  },
+  watch: {
+    async urlimg() {
+
+      if(!this.esUrlimgR)
+      {
+        await this.modificarRecurso()
+      }
+      else{
+        this.esUrlimgR = false; 
+      }
+    }
   },
   props: {
     tipo: {
@@ -230,6 +320,10 @@ export default {
     listaR:{
       type: Array,
       default: () => []
-    }
+    },
+    refreshPost:{
+      type: Boolean,
+      default: false,
+    },
   }
 };

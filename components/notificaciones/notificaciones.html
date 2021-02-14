@@ -1,0 +1,130 @@
+<span class="bntstyle">
+
+  
+   <v-menu offset-y>
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn
+      color="secondary"
+      v-bind="attrs"
+      v-on="on"
+      class="elevation-0"
+      style="text-transform: none;"
+      >
+
+        <v-badge
+        v-if="itemsnotifi.length>0"
+        color="melon"
+        :content="noticount"
+        class="white--text"
+        overlap
+      >
+  
+          <v-icon class="white--text">mdi-bell</v-icon>  
+     
+      </v-badge>
+
+      <v-icon   v-if="itemsnotifi.length===0" class="white--text">mdi-bell</v-icon>  
+
+
+          <span class="vMmobilview">  Notificaciones</span>
+    </v-btn>
+    
+    </template>
+    <v-list  style="width:100%; max-width:500px;" >
+      <v-list-item
+        v-for="(item, index) in itemsnotifi"
+        :key="index"
+      >
+        <v-list-item-title >
+<v-row>
+
+
+          <v-col cols="1" md="1" class="text-center">
+            <v-icon class="primary--text">{{item.data().icon}}</v-icon>
+          </v-col>
+
+
+          <v-col cols="7" md="7"  class="text-center">
+            {{ item.data().title}}  
+          </v-col>
+
+
+            <v-col cols="2" md="2"  class="text-center">           
+            <v-btn class="white text-center" @click="notivisto(item)" depressed v-if="!item.data().dataRecurso">
+              <v-icon class="primary--text text-center" >mdi-close-circle-outline</v-icon>
+            </v-btn>
+            <!-- <v-btn class="white text-center" @click="verCometario = true; post = item" depressed v-else> -->
+              <v-btn class="white text-center" @click="verCometario = true; post = item" depressed v-else>
+              <v-icon class="primary--text text-center" >mdi-eye</v-icon>
+            </v-btn>
+            </v-col>
+
+
+            <v-col cols="1" md="1"  class="text-center  text-center">
+              <v-btn class="white  text-center" depressed  v-if="item.data().link && item.data().link!=='#' && item.data().link!==''" @click="abrirLink(item)"> <v-icon class="primary--text">mdi-play</v-icon></v-btn>
+          </v-col>
+
+        </v-row>
+        </v-list-item-title>
+      </v-list-item>
+    </v-list>
+
+  </v-menu>
+  <v-dialog v-model="verCometario" persistent max-width="755">
+      
+    <v-card class=" px-10">
+      <v-card-title class=" justify-space-between">
+          <v-btn icon text small color="purple" @click="" >
+          </v-btn>
+          <h3 class="primary--text ">Detalles del comentario</h3>
+          <v-btn icon text small color="purple" @click="verCometario = false" >
+              <v-icon>mdi-window-close</v-icon>
+          </v-btn>
+      </v-card-title>
+      
+      <div class="mt-8" v-if="post !== null">
+
+        <h3>En publicación: {{post.data().dataRecurso.titulo}}</h3>
+
+        <v-card class="card_border mt-4" >
+          <v-row >
+              <v-col cols="3" class="">
+                  <div class="pl-7">
+                      <v-avatar size="38" > 
+                          
+                          <v-img
+                          :src=" post.data().dataComentario.urlImagen === 'none' || post.data().dataComentario.urlImagen==='' ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : post.data().dataComentario.urlImagen"
+                          alt="foto"
+                          ></v-img>
+                      </v-avatar>
+                  </div>
+                  <div class="pl-5 texto_usuario">
+                      <span>{{post.data().dataComentario.nombreUsuario}}</span>
+                  </div>
+              </v-col>
+              <v-col cols="9" class=" d-flex  texto_comentario ">
+                  <div class="pr-1">
+                      <span >{{post.data().dataComentario.comentario}}</span>
+                  </div>
+              </v-col>
+              <v-divider  class=" black mt-4"/> 
+              
+          </v-row>
+      </v-card>
+          
+            
+        <div class="d-flex justify-center mt-3">
+          <v-btn  dark class="red px-10 mb-5 btn_crearG mr-2" @click="notivisto(post)"  
+            >Leído</v-btn>
+            <!-- <v-btn  dark class="red px-10 mb-5 btn_crearG mr-2" @click="verPost()"  
+            >Ver publicación</v-btn> -->
+            <!--<v-btn  dark class="red px-10 mb-5 btn_crearG"  @click="accion('eliminar')"  
+            >Eliminar</v-btn> -->
+        </div>
+
+      </div>
+    </v-card>
+</v-dialog>
+
+  
+</span>

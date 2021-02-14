@@ -1,61 +1,83 @@
 <template>
-    <v-main>
-        <v-row>
-      <v-col cols="12" md="12"> </v-col>
-      <v-col cols="12" md="12">
-        <h2>Mis Audios</h2>
+  <v-main class="pa-10" v-if="bandera">
+    <v-row>
+      <v-col
+        cols="12"
+        md="12"
+        v-if="
+          $validasesion($store, {
+            sinregistro: false,
+            logeado: true,
+            permisos: 1
+          })
+        "
+      >
+        <h2
+          class="primary--text"
+          v-if="
+            $validasesion($store, {
+              sinregistro: false,
+              logeado: true,
+              permisos: 1
+            })
+          "
+        >
+          Mis recursos
+        </h2>
 
-        <cargablog tipo="AUDIOS"   :listaR="audios" >
-          <template v-slot:header>
-            <editorblog tipo="AUDIOS" 
-            @updateListaR="audios=$event"
-            :listaR="audios"
-            @updatepost="updatepost.audios=$event"  imagen="false" ></editorblog>
-          </template>
-        </cargablog>
-
+        <listablog
+          :blogpost="misPost" @updateBlogpost="misPost=$event"
+          tipo="CATEGORIAS"  subtipo="recurso"
+          :userId="this.datosUsuario.id"
+          titulo=""
+          subtitulos=""
+          :addslot="true"
+        >
+          <!-- <editorblog
+            tipo="CATEGORIAS"
+            v-if="
+              $validasesion($store, {
+                sinregistro: false,
+                logeado: true,
+                permisos: 1
+              })
+            "
+            @updatepost="updatepost.misMemorias = $event"
+          ></editorblog> -->
+        </listablog>
       </v-col>
-      <v-col cols="12" md="12">
-        <h2>Mis Videos</h2>
 
-        <cargablog tipo="VIDEOS"  :listaR="videos"  >
-          <template v-slot:header>
-            <editorblog tipo="VIDEOS"   
-            @updateListaR="videos=$event"
-            :listaR="videos"
-            @updatepost="updatepost.videos=$event"   ></editorblog>
-          </template>
-        </cargablog>
+      <div style="width:100%; height:50px;"></div>
 
+      <v-col
+        cols="12"
+        md="12"
+      >
+
+        <listablog
+          :blogpost="otrosPost" @updateBlogpost="otrosPost=$event"
+          tipo="CATEGORIAS"  subtipo="recurso"
+          titulo="Recursos publicos"
+          subtitulos="Conoce lo que pasa en el mundo de la educación inicial"
+        />
       </v-col>
-      <v-col cols="12" md="12">
-        <h2>Mis Imagenes</h2>
-        <cargablog tipo="IMAGENES"  :listaR="imagenes" >
-          <template v-slot:header>
-            <editorblog tipo="IMAGENES"  
-            @updateListaR="imagenes=$event"
-            :listaR="imagenes"
-            @updatepost="updatepost.imagenes=$event"    ></editorblog>
-          </template>
-        </cargablog>
-      </v-col>  
-      
     </v-row>
-    </v-main>
+  </v-main>
 </template>
 <script>
 import validasitio from '@/mixins/validasitio.js'
 // import grupos from '~/components/grupos/grupos.vue'
-import editorblog from "~/components/blog-editor/blog-editor.vue";
-import cargablog from "~/components/carga-blog/carga-blog.vue";
+// import editorblog from "~/components/blog-editor/blog-editor.vue";
+// import cargablog from "~/components/carga-blog/carga-blog.vue";
+import listablog from "~/components/listado-blog/listado-blog.vue";
 import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
     data(){
         return {
             datapage:{
-                permisos:2,
-                logeado:true
+                permisos:0,
+                logeado:false
             },
 
             updatepost:{
@@ -67,28 +89,34 @@ export default {
                 audios:"",
                 imagenes:"",
             },
-            // {
-                memorias:[],
-                blog:[],
-                reflexiones:[],
-                recomendacion:[],
-
-                videos:[],
-                audios:[],
-                imagenes:[],
+            bandera: false,
         }
     },
     methods:{
-    // ...mapMutations(['guardarVistaValida']),
+    ...mapActions(['cargaBasePost']),
+    async cargaPost(){
+      await this.cargaBasePost("recurso");
+
     },
-    created() {
+    },
+    async created() {
         // this.guardarVistaValida(true); 
+      // console.log(this.misPost)
+      await this.cargaPost();
+      // console.log(this.misPost)
+
+      this.bandera = true;
     },
     components:{
         // grupos
-        editorblog,
-        cargablog
+        // editorblog,
+        // cargablog,
+        listablog
+        //TreeFolderContents: () => import('./tree-folder-contents.vue')
     },
-    mixins:[validasitio]
+    computed:{
+      ...mapState(["datosUsuario","misPost","otrosPost"])
+
+    }
 }
 </script>

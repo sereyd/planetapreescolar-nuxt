@@ -1,279 +1,342 @@
 
-<div>
+<div class="mx-15">
+  <div v-if="!spinner">
+    <h2 class="text-center primary--text">¡Conoce nuestros planes!</h2>
+    <p style="font-size:14px;">Planeta Preescolar es una plataforma educativa con diferentes secciones, creada para toda la comunidad de educadoras en donde podrás descargar materiales que te ayudarán en tu labor diaria. Tienes la opción de descargar 1 material diario en forma gratuita con el simple hecho de llenar la ficha de registro.</p>
+    <p style="font-size:14px;">
+      Al ser Premium podrás disfrutar de más descargas y de contenido exclusivo además de material didáctico, administrar tus grupos, generar tu calendario y llevar un control de todas tus publicaciones que subas en este portal web. El pago lo puedes hacer con tarjeta de credito o debito y en efectivo. Al suscribirte con tarjeta el cobro se hará en forma automática una vez terminando el plazo seleccionado y puede aplicar a meses sin intereses. Esto te convierte en Suscriptor(a) Vip. Puedes cancelar cuando lo desees.
+      O puedes pagar en efectivo y al momento de terminar tu periodo renovarlo nuevamente o convertirte en Suscriptor(a) Vip.</p>
+  </div>
+  <h2 v-else class="text-center">Redireccionando...</h2>
 
-  <h1 v-if="!spinner" class="text-center">Selcciona el tipo de paquete</h1>
-  <h1 v-else class="text-center">Redireccionando...</h1>
-
-    <v-container>
-      <Spinner v-if="spinner" />
-      <v-card v-else>
-      <v-row class="price-table-container">
-        <v-col class=" d-flex justify-center">
-          <section>
-            <img
-              src="../../static/images/logo-planeta.png"
-              width="120"
-              height="120"
-            />
-            <div class="name">Trimestral</div>
-            <div class="price">${{precioTrimenstral}} MXN</div>
-            <!-- <div class="duration">Trimestral</div> -->
-            <!-- <button id="basic-plan-btn">Select</button> -->
-            <v-btn color="primary" @click="crearSesionSuscripcion('trimestral')">Seleccionar</v-btn>
-          </section>
-        </v-col>
-        <v-col class=" d-flex justify-center">
-          <section>
-            <img
-              src="../../static/images/logo-planeta.png"
-              width="120"
-              height="120"
-            />
-            <div class="name">Anual</div>
-            <div class="price">${{precioAnual}} MXN</div>
-            <!-- <div class="duration">Anual</div> -->
-            <!-- <button id="pro-plan-btn">Select</button> -->
-            <v-btn color="primary" @click="crearSesionSuscripcion('anual')">Seleccionar</v-btn>
-
-          </section>
-        </v-col>
-      </v-row>
-      </v-card>
-    </v-container>
-
-        <!-- <div class="price-table-container">
-          <section>
-            <img
-              src="../../static/images/logo-planeta.png"
-              width="120"
-              height="120"
-            />
-            <div class="name">Starter</div>
-            <div class="price">$500 MXN</div>
-            <div class="duration">Trimestral</div>
-            <button id="basic-plan-btn">Select</button>
-          </section>
-
-          <section>
-            <img
-              src="../../static/images/logo-planeta.png"
-              width="120"
-              height="120"
-            />
-            <div class="name">Professional</div>
-            <div class="price">$1500 MXN</div>
-            <div class="duration">Anual</div>
-            <button id="pro-plan-btn">Select</button>
-          </section>
-        </div>
-        <div id="error-message"></div> -->
-
-  <!-- <form id="signup-form">
-    <div>
-      <input id="email" type="text" placeholder="Email address" required />
-    </div>
-​
-    <v-btn id="email-submit" color="primary" @click="crearCliente">
-      <span id="button-text">Sign up</span>
-    </v-btn>
-  </form> -->
-
- <!-- <div v-show="clienteCreado">
-    <div>
-      
-
-    </div>
-    <form id="subscription-form">
-      <div id="card-element" class="MyCardElement">
-        Elements will create input elements here
-      </div>
-  
-      We'll put the error messages in this element
-      <div id="card-errors" role="alert"></div>
-      <button type="submit">Subscribe</button>
-    </form>
-  </div> -->
-
-  <!-- <div class='credit-card-inputs' :class='{ complete }'>
-    <card-number class='stripe-element card-number'
-      ref='cardNumber'
-      stripe='pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx'
-      :options='stripeOptions'
-      @change='number = $event.complete'
-    />
-    <card-expiry class='stripe-element card-expiry'
-      ref='cardExpiry'
-      stripe='pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx'
-      :options='stripeOptions'
-      @change='expiry = $event.complete'
-    />
-    <card-cvc class='stripe-element card-cvc'
-      ref='cardCvc'
-      stripe='pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx'
-      :options='stripeOptions'
-      @change='cvc = $event.complete'
-    />
-  </div> -->
-
-
-  <!-- <div>
-    <div id='payment_form'>
-      <h2>Please give us your payment details:</h2>
-      <p>4000000000009995</p>
-      <p>08/24 123  94107</p>
-      <card id="card-element" class=' '
-        :class='{ complete }'
-        stripe='pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx'
-        :options='stripeOptions'
-        @change='complete = $event.complete'
-      />
-      <v-btn block class='pay-with-stripe primary mt-2' @click='pay' :disabled='!complete'>Pagar</v-btn>
-    </div>
-  </div> -->
-
-    <!-- Display a payment form -->
-    <!-- <h3>Tarjeta ejemplo:</h3>
-    <p>pago exitoso: 4242424242424242</p>
-    <p>pago declinado: 4000000000009995</p>
-    <p>08/24 cvc: 123  zip: 94107</p> -->
-
-    <!-- <v-container>
-      <v-card height="400px d-flex justify-stretch">
-        <div height="400px" class="red detalles_compra" >
-
-        </div>
-  
-        <div height="400px" class="blue detalles_tarjeta" >
-  
-        </div>
-      </v-card>
-    </v-container> -->
-
-
-    <!-- FORMULARIO BUENO -->
-
-    <!-- <v-container class=" lighten-5">
-      <v-card>
-      <v-row no-gutters >
-        <v-col  cols="12" md="5" sm="12"  xs="12">
-          <div class=" grey lighten-4 detalles_compra d-flex align-center justify-center">
+  <v-container>
+    <v-simple-table>
+      <template v-slot:default>
+        <thead>
+          <tr>
+            <th class="text-left">
             
-            <div
-              class="  lighten-3 d-flex flex-column justify-center align-center"
-              width="100%" 
-            >
+            </th>
+            <th class="text-left">
               <img
-                src="../../static/images/logo-planeta.png"
+              src="../../static/images/trimestral.png"
+              width="120"
+              height="120"
+              class=""
+            />
 
-                class="fotomini"
-              ></img>
-              <div class="mt-4">
-                <span>Membresia Planeta Preescolar</span>
-                <h1 class="text-center" >$500 MX</h1>
-              </div>
-            </div>  
+            </th>
+            <th class="text-left">
+              <img
+              src="../../static/images/trimestral.png"
+              width="120"
+              height="120"
+              class=""
+            />
 
+            </th>
+            <th class="text-left">
+              <img
+              src="../../static/images/trimestral.png"
+              width="120"
+              height="120"
+              class=""
+            />
+
+            </th>
+            <th class="text-left">
+              <img
+              src="../../static/images/trimestral.png"
+              width="120"
+              height="120"
+              class=""
+            />
+
+            </th>
+            <th class="text-left">
+              <img
+              src="../../static/images/trimestral.png"
+              width="120"
+              height="120"
+              class=""
+            />
+
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-right">(Prom 30 Mens) Material Free</td>
+            <td class="text-center">1 diario</td>
+            <td class="text-center">1 diario</td>
+            <td class="text-center">1 diario</td>
+            <td class="text-center">1 diario</td>
+            <td class="text-center">1 diario</td>
+          </tr>
+          <tr>
+            <td class="text-right">Material Premium Mensual</td>
+            <td class="text-center">0</td>
+            <td class="text-center">50</td>
+            <td class="text-center">60</td>
+            <td class="text-center">70</td>
+            <td class="text-center">80</td>
+          </tr>
+          <tr>
+            <td class="text-right">Total Descargas Mensuales</td>
+            <td class="text-center">30</td>
+            <td class="text-center">80</td>
+            <td class="text-center">90</td>
+            <td class="text-center">100</td>
+            <td class="text-center">110</td>
+          </tr>
+          <tr>
+            <td class="text-right">Sección Administrativa</td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Blog Educativo</td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Directorio de Servicios/td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Memorias de una Educadora</td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Participación en Foro Educativo</td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Lectura de Planeaciones</td>
+            <td class="text-center"> </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Edición de Planeaciones</td>
+            <td class="text-center"> </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Administración de Grupos</td>
+            <td class="text-center"> </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Promoción Suscriptoras VIP</td>
+            <td class="text-center"> </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right">Meses Sin Intereses</td>
+            <td class="text-center"> </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+            <td class="text-center">◉ </td>
+          </tr>
+          <tr>
+            <td class="text-right"></td>
+            <td class="text-center"> 
+
+              <b>$0.00 MXN</b>   <br />
+              <!--<v-btn class="melon white--text" to="/" >Regístrate</v-btn>-->
+            
+            
+            </td>
+            <td class="text-center"> 
+              <b>$490.00 MXN</b>   <br />
+              <v-btn class="melon white--text" @click="crearSesionSuscripcion('mensual')">Tarjeta</v-btn>  <br /><br />
+              <v-btn class="melon white--text" @click="formasPago('mensual')" >Efectivo</v-btn>  
+            </td>
+            <td class="text-center"> 
+              <b>$1,290.00 MXN</b>   <br />
+              <v-btn class="melon white--text" @click="crearSesionSuscripcion('trimestral')">Tarjeta</v-btn>   <br /><br />
+              <v-btn class="melon white--text" @click="formasPago('trimestral')" >Efectivo</v-btn>  
+              
+            </td>
+            <td class="text-center">  
+              <b>$2,190.00 MXN</b>   <br />
+              <v-btn class="melon white--text" @click="crearSesionSuscripcion('semestral')">Tarjeta</v-btn>   <br /><br />
+              <v-btn class="melon white--text" @click="formasPago('semestral')" >Efectivo</v-btn>    
+            </td>
+            <td class="text-center"> 
+              <b>$3,490.00 MXN</b>   <br />
+              <v-btn class="melon white--text" @click="crearSesionSuscripcion('anual')">Tarjeta</v-btn>   <br /><br />
+              <v-btn class="melon white--text" @click="formasPago('anual')" >Efectivo</v-btn>    
+            </td>
+          </tr>
+        </tbody>
+      </template>
+    </v-simple-table>
+
+
+</v-container>
+  <v-dialog v-model="loaderpage" max-width="200">
+    <v-card>
+      <v-card-text class="text-center">
+        <v-progress-circular
+        :size="70"
+        :width="7"
+        color="purple"
+        indeterminate
+      ></v-progress-circular>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
+
+    <!--<v-dialog v-model="dialogFormasPago"  persistent max-width="500">
+      <v-card class=" px-10">
+        <v-card-title class=" justify-space-between">
+            <v-btn icon text small color="purple" @click="" >
+            </v-btn>
+            <h2 class="primary--text ">Formas de pago</h2>
+            <v-btn icon text small color="purple" @click="dialogFormasPago = false;" >
+                <v-icon>mdi-window-close</v-icon>
+            </v-btn>
+        </v-card-title>
+        <div>
+          <div>
+            <p>suscripción {{tipoSuscripcion}}</p>
+          </div> -->
+          <!-- <div class="d-flex justify-center">
+            <v-btn class="melon white--text mb-2 btn_crearG" @click="checkPago()">CHECK MP</v-btn>
+          </div> 
+
+          <div class="d-flex justify-center">
+            <v-btn class="melon white--text mb-2 btn_crearG" @click="crearSesionSuscripcion()">Stripe</v-btn>
           </div>
-        </v-col>
 
-        <v-col class="  detalles_compra" cols="12" md="7" sm="12" xs="12">
-          <div class=" px-3 d-flex align-center justify-center">
-            <v-form id="payment_form" ref="formTarjeta" v-model="valid"
-            lazy-validation class="">
-              <h3 class="text-center mb-4">Pagar con tarjeta</h3>
-      
-              <label for="">Correo:</label>
-              <v-text-field v-model="correo" 
-                class="stripe-element mb-6" 
-                type="text" id="name"  placeholder="Nombre" 
-                required
-                solo
-                :rules=correoReglas
-                
-              ></v-text-field>
-              
-              
-              <label for="" >Datos de tarjeta:</label>
-              
-              <div id='payment_form mb-6'>
-                
-              </div>
-
-              <label for="" >Nombre en la tarjeta:</label>
-              <v-text-field v-model="nombre" 
-                class="stripe-element mb-8" 
-                type="text" id="name"  placeholder="Nombre" 
-                required
-                solo
-                :rules=nombreReglas
-                
-              ></v-text-field>
-              
-              
-              <v-btn class="boton_checkout primary mt-2" 
-                v-show="(!spinner && !pagoHecho ) "  
-                @click="validatarDatosTarjeta"
-              >
-                <span id="button-text">Pagar</span>
-              </v-btn >
-        
-              
-            </v-form>
+          <div id="button-checkout" class="d-flex justify-center pb-3">
+            <a 
+              :href="urlMP" 
+              class="v-btn v-btn--contained theme--light v-size--default melon mt-3 white--text"
+              style="text-transform: none; border-radius: 12px;"
+            >
+              MercadoPago
+            </a>
           </div>
-        </v-col>
-        
-      </v-row>
-      </v-card>
-    </v-container> -->
-    <!-- FORMULARIO BUENO -->
 
+          <div id="button-checkout" class="d-flex justify-center pb-3">
+            <a 
+              :href="urlsusMP" 
+              class="v-btn v-btn--contained theme--light v-size--default melon mt-3 white--text"
+              style="text-transform: none; border-radius: 12px;"
+            >
+              MercadoPago suscripción
+            </a>
+          </div>
+          
 
-    <!-- FORMULARIO 2 -->
-    <!-- <div class="d-flex justify-center mt-5 mb-5"> 
-
-      <v-card class="product  lighten-3   " width="auto" >
-
-        <div
-          class="  lighten-3 d-flex justify-center align-center mx-16 px-16"
-          width="70%" 
-        >
-          <img
-            src="../../static/images/PlanetaEscolar.jpg"
-
-            class="fotomini"
-          ></img>
-        </div> 
-
-        <div class="description mx-16 px-16 mb-4">
-          <h3>Membresia Planeta Escolar</h3>
-          <h5>$500.00</h5>
-          <v-btn block @click="pagarConTarjeta" class="primary">Comprar membresia</v-btn>
         </div>
 
-      </v-card>
-    </div> -->
-
-
-    <!-- DIALOG DE REGISTRO DE GRUPOS -->
-    <!-- <v-dialog v-model="modalPago" persistent max-width="400">
+        - <div class="mt-8" v-if="!completado && !spinner">
         
-      <v-card class="">
-        <v-card-title class=" justify-center">
-            <h2 class="headline purple--text ">PROCESANDO PAGO</h2>
+        </div>
+        
+        <Spinner v-else/> 
+      </v-card>
+  </v-dialog>--->
 
+
+    
+
+    <v-dialog v-model="dialogMP" fullscreen>
+      <v-card class=" px-10">
+        <v-card-title class=" justify-space-between">
+            <v-btn icon text small color="purple" @click="" >
+            </v-btn>
+            <h2 class="primary--text ">Mercadopago</h2>
+            <v-btn icon text small color="purple" @click="dialogMP = false; completado = true;" >
+                <v-icon>mdi-window-close</v-icon>
+            </v-btn>
         </v-card-title>
-        <v-container class="blue pb-2">
-          <Spinner v-if="spinner" />
-          <v-alert v-if="error === true" type="error" class="">
-            {{errorMensaje}}
-          </v-alert>
-          <v-alert v-if="error === false" type="success" class="">
-            {{errorMensaje}}
-          </v-alert>
-        
-          <v-btn v-if="error === false " :disabled="spinner"  to="/"    color="primary" block   >Aceptar</v-btn>
-          <v-btn v-else-if=" error === true " :disabled="spinner"  color="primary" block  @click="cerrarModal"  >Reintentar</v-btn>
-        </v-container>
+
+        <div class="mt-8" v-if="!completado && !spinner">
+
+          <v-form
+            ref="formMP"
+            v-model="validMP"
+            lazy-validation
+          >
+              
+            <v-text-field 
+                class=""  
+                label="Nombre"
+                outlined 
+                v-model="datosMP.nombre"
+                :rules="[v => !!v || 'Escriba el nombre']"
+            ></v-text-field>
+            <v-text-field 
+                class=""  
+                outlined
+                label="Apellidos" 
+                v-model="datosMP.apellido"
+                :rules="[v => !!v || 'Escriba los apellidos']"
+            ></v-text-field>
+            <v-text-field 
+                class=""  
+                outlined
+                label="Correo"
+                v-model="datosMP.correo"
+                :rules="correoReglas"
+            ></v-text-field>
+            <div class="pb-7 mt-3">
+              <v-btn block class="primary" @click="validarMP()">Pagar</v-btn>
+            </div>
+                
+          </v-form>
+
+
+        </div>
+        <div v-else-if="completado && !spinner">
+          <div class="d-flex flex-column justify-center"  >
+            <h4 class="text-center mb-4">¡Descarga la clave para poder pagar en OXXO!</h4>
+            <v-icon  style="font-size: 60px;" color="success">
+              mdi-checkbox-marked-circle
+            </v-icon>
+            <!-- <div> -->
+              <a class="align-self-center" :href="linkMP" target="_blank">Documento MercaPago</a>
+            <!-- </div> -->
+          </div>
+        </div>
+        <Spinner v-else/>
       </v-card>
-    </v-dialog> -->
+  </v-dialog>
+
+
 </div>
