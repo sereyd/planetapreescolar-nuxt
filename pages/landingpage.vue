@@ -58,6 +58,11 @@
           <v-label class="primary white--text" v-if="fase1===true">
             {{ urldesitio }}
           </v-label>
+          <br />
+
+
+          <v-text-field v-model="datalp.desc" label="Descripción" v-if="fase1===true">
+          </v-text-field>
 
           <br />
           <v-combobox
