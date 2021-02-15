@@ -138,7 +138,7 @@ export default{
             descargas.dia.disponibles= this.descargasConf.free;
             esDescargar = true
           }
-          else if(tipo === "Plan")
+          else if(tipo === "Plan" && this.datosSuscripcion.plan)
           {
             const {tipoSuscripcion} = this.datosSuscripcion.plan;
 
