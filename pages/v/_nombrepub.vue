@@ -21,11 +21,7 @@
           keywords:""
           }
     },
-    data(){
-        return{
-        datadeprodicto:"muestra esta variable"
-        }
-    },
+   
     created(){
         this.cargadatos()
  
@@ -45,23 +41,23 @@
     },
     head() {
       return {
-        title: this.datos.titulo,
+        title: "landing page",
         meta: [
           // hid is used as unique identifier. Do not use `vmid` for it as it will not work
           {
             hid: 'description',
             name: 'description',
-            content: this.datos.desc
+            content: "datos landing page"
           },
           {
             hid: 'keywords',
             name: 'keywords',
-            content: this.keywords
+            content: "palabras | landing page"
           },
           {
               hid:'robots',
-              name:'robots',
-            content:'index'
+              name:"robots",
+            content:"index"
           }
         ]
       }    
