@@ -31,9 +31,7 @@
 
 
 <v-btn  v-if="editar===false"  class="melon white--text" @click="editar=true"> Editar perfil </v-btn>
-<!-- <p>membresia: {{datosUsuario.idMembresia}}</p> -->
-<v-btn  v-if="editar===false && datosUsuario.idMembresia"  class="melon white--text" @click="dialogSus = true"> Ver suscripción </v-btn>
-<!-- <v-btn  v-if="editar===false && datosUsuario.idMembresia"  class="melon white--text" @click="opcMembresia()"> Membresia </v-btn> -->
+<v-btn  v-if="editar===false && datosPago.collector_id !== 0"  class="melon white--text" @click="dialogSus = true"> Ver suscripción </v-btn>
 
     </v-col>
     <v-col cols="12" md="6" class="pa-10">
@@ -157,8 +155,20 @@
 
                 
               </v-col>
+              <v-col cols="12" class="" v-else-if="datosSuscripcion.external_resource_url">
+                  <div class="d-flex justify-center">
+                      <div>
+                        <p>En espera del pago</p>
+                       
+                      </div>
+                  </div>
+              </v-col>
               <v-col cols="12" class="" v-else>
-                  <p>No cuentas con suscripción premium</p>
+                  <div class="d-flex justify-center">
+                      <div>
+                        <p>No cuentas con suscripción premium</p>                       
+                      </div>
+                  </div>
               </v-col>
 
               <!-- <v-col cols="9" class=" d-flex  texto_comentario ">
@@ -173,6 +183,16 @@
                 v-if="editar===false && datosSuscripcion.status && datosSuscripcion.pasarela === 'stripe'"  
                 class="melon white--text" @click="opcMembresia()"
             > Membresia </v-btn>
+
+            <a
+                v-else-if="datosSuscripcion.external_resource_url"
+                 :href="datosSuscripcion.external_resource_url" 
+                 target="_blank"
+                 class="v-btn v-btn--contained theme--light v-size--default melon mt-3 white--text"
+                 style="text-transform: none; border-radius: 12px;"
+             >
+                 Ver referencia
+             </a>
            
 
             <router-link v-else to="checkout" class="white--text menu-sec miniMovil" style="text-decoration:none; position:relative;" > 
@@ -239,7 +259,7 @@ data(){
     }
 },
 computed:{
-    ...mapState(['datosUsuario','dominio','urlAPI','urlimg','datosSuscripcion','paises','estados']),
+    ...mapState(['datosUsuario','dominio','urlAPI','urlimg','datosSuscripcion','paises','estados','datosPago']),
     fechaFormato(){
         // console.log(this.datosSuscripcion.plan.fechaFin)
         const f = fromUnixTime(this.datosSuscripcion.plan.fechaFin );
@@ -291,7 +311,7 @@ this.datosuser.codigopais=codepais.code
             'Access-Control-Allow-Origin': '*',
           },
           body: JSON.stringify({
-            sessionId: this.datosUsuario.idMembresia,
+            sessionId: this. datosPago.collector_id,
             dominio: `${this.dominio}/perfil`
           }),
         })

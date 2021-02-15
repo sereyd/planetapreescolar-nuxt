@@ -31,7 +31,7 @@ export default{
           // console.log(descargas);
           // console.log(this.vistapost)
           const {idRecurso} = this.vistapost;
-          const {id, tipoSuscripcion} = this.datosUsuario;
+          const {id} = this.datosUsuario;
           let esDescargar = false;
         
           if(tipo === "Free"  && descargas.dia.usadas.length < this.descargasConf.free)
@@ -42,6 +42,7 @@ export default{
           }
           else if(tipo === "Plan")
           {
+            const {tipoSuscripcion} = this.datosSuscripcion.plan;
             let f = new Date();
             let existeMes = false;
             let mesactual = (f.getMonth() +1) + " " + f.getFullYear();
@@ -171,7 +172,7 @@ export default{
         return res;
       },
       descargarPlan(){
-        const {tipoSuscripcion} = this.datosUsuario;
+        const {tipoSuscripcion} = this.datosSuscripcion.plan;
         const descargasDisponibles = tipoSuscripcion === "mensual" ? this.descargasConf.mensual 
           : tipoSuscripcion === "trimestral" ? this.descargasConf.trimestral
           : tipoSuscripcion === "semestral" ? this.descargasConf.semestral

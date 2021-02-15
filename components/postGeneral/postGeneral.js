@@ -126,7 +126,7 @@ export default{
 
           let {descargas} = this.datosUsuario;
           const {idRecurso} = this.vistapost;
-          const {id, tipoSuscripcion} = this.datosUsuario;
+          const {id} = this.datosUsuario;
           let esDescargar = false;
 
           // console.log(descargas.dia.usadas.length)
@@ -140,23 +140,27 @@ export default{
           }
           else if(tipo === "Plan")
           {
+            const {tipoSuscripcion} = this.datosSuscripcion.plan;
+
             let f = new Date();
             let existeMes = false;
             let mesactual = (f.getMonth() +1) + " " + f.getFullYear();
             descargas.mes.registro.map(reg => {
               if(reg.mes === mesactual)
               {
+                console.log(reg.mes)
                 existeMes = true;
-
-                const descargasDisponibles = tipoSuscripcion === "mensual" ? this.descargasConf.mensual 
-                  : tipoSuscripcion === "trimestral" ? this.descargasConf.trimestral
-                  : tipoSuscripcion === "semestral" ? this.descargasConf.semestral
-                  :  this.descargasConf.anual
                 
-                  // console.log("descargas disponibles: "+descargasDisponibles)
-                  // console.log("tipo membresia: "+tipoSuscripcion)
-                  // console.log(descargasDisponibles)
-
+                const descargasDisponibles = tipoSuscripcion === "mensual" ? this.descargasConf.mensual 
+                : tipoSuscripcion === "trimestral" ? this.descargasConf.trimestral
+                : tipoSuscripcion === "semestral" ? this.descargasConf.semestral
+                :  this.descargasConf.anual
+                
+                // console.log("descargas disponibles: "+descargasDisponibles)
+                // console.log("tipo membresia: "+tipoSuscripcion)
+                console.log(reg.usadas.length)
+                console.log(descargasDisponibles)
+                
                 if(reg.usadas.length < descargasDisponibles )
                 {
                   reg.usadas.push(idRecurso);
@@ -309,7 +313,7 @@ export default{
     },
     
     computed: {
-      ...mapState(['datosUsuario','itemsmenu','descargasConf']),
+      ...mapState(['datosUsuario','itemsmenu','descargasConf','datosSuscripcion']),
       
       cargarecomendacion(){
         let limit=150
@@ -328,7 +332,7 @@ export default{
         return res;
       },
       descargarPlan(){
-        const {tipoSuscripcion} = this.datosUsuario;
+        const {tipoSuscripcion} = this.datosSuscripcion.plan;
         const descargasDisponibles = tipoSuscripcion === "mensual" ? this.descargasConf.mensual 
           : tipoSuscripcion === "trimestral" ? this.descargasConf.trimestral
           : tipoSuscripcion === "semestral" ? this.descargasConf.semestral

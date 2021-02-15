@@ -154,7 +154,7 @@ export default {
       })
       .catch((error) => {
         console.log(error)
-          alert("Unexpected error");
+          // alert("Unexpected error");
           // $('#checkout-btn').attr("disabled", false);
       });
 
@@ -172,6 +172,7 @@ export default {
   orderData.status_detail=""
   orderData.payer={}
    this.$fireStore.collection('pagos').add(orderData)
+  //  alert("up nueva orden")
  },
 
     //PAGOS CON STRIPE
@@ -234,7 +235,7 @@ export default {
         localStorage.setItem("user", JSON.stringify(this.datosUsuario) );
 
         orderData.medio="Stripe"
-        this. registroPago(orderData)
+        this.registroPago(orderData)
 
         //SE EJECUTA LA VENTANA DE STRIPE PARA INSERTAR DATOS DE LA TARJETA
         stripe

@@ -82,7 +82,7 @@ export default{
                     let data = doc.data();
 
                     data.grupo = data.grupo ? data.grupo : {};
-                    data.idMembresia = data.idMembresia ? data.idMembresia : "";
+                    // data.idMembresia = data.idMembresia ? data.idMembresia : "";
                     data.estadoMembresia = data.estadoMembresia ? data.estadoMembresia : "";
                     data.idCliente = data.idCliente ? data.idCliente : "";
                     data.idSuscripcion = data.idSuscripcion ? data.idSuscripcion : "";
