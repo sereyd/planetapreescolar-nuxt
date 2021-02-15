@@ -55,8 +55,9 @@ export default{
         this.fechaVisual = format(this.vistapost.fecha , "dd  MMMM yyyy", {locale: es});
 
         const {tipo} =this.vistapost;
+        console.log(tipo);
 
-        if(tipo !=='planeacion' && tipo !=='materialdidactico' && tipo !=='hojatrabajo' && tipo !=='interactivo' && tipo !=='otro')
+        if(tipo !=='planeacion' && tipo !=='materialdidactico' && tipo !=='hojatrabajo' && tipo !=='hojailustrar' && tipo !=='interactivo' && tipo !=='otro')
         {
           // this.viewothers = false;
           this.changeViewOthers(false);

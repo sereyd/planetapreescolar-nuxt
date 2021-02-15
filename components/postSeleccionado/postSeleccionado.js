@@ -151,7 +151,7 @@ export default{
       comentarios
     },
     computed: {
-      ...mapState(['datosUsuario','itemsmenu','descargasConf']),
+      ...mapState(['datosUsuario','itemsmenu','descargasConf','datosSuscripcion']),
       
       cargarecomendacion(){
         let limit=150
@@ -172,6 +172,7 @@ export default{
         return res;
       },
       descargarPlan(){
+        // console.log(this.datosSuscripcion)
         const {tipoSuscripcion} = this.datosSuscripcion.plan;
         const descargasDisponibles = tipoSuscripcion === "mensual" ? this.descargasConf.mensual 
           : tipoSuscripcion === "trimestral" ? this.descargasConf.trimestral

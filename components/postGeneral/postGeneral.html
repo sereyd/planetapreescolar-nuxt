@@ -295,7 +295,7 @@
                   <v-icon>mdi-window-close</v-icon>
               </v-btn>
           </v-card-title>
-          <div class="mt-4">
+          <div class="mt-4" v-if=" datosUsuario.lvluser > 0 && datosUsuario.lvluser < 3">
                 <p class="text-center"v-if="datosUsuario.descargas.mes.active">
                     Tu plan actual solo te permite {{descargarPlan}} descargas por mes
                 </p>
