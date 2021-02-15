@@ -875,6 +875,7 @@ const createStore = () => {
                         datos.estadoMembresia = "canceled";
                         context.state.datosSuscripcion.status = false;
                         datos.descargas.mes.active = false;
+                        datos.lvluser = 1
                       }
 
                     })
