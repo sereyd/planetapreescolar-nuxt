@@ -374,7 +374,7 @@ const createStore = () => {
           materias: []
           // alumnos:[],
         },
-        idMembresia: "",
+        // idMembresia: "",
         estadoMembresia:"",
         descargas:{
           dia: {fecha:"", disponibles:1, usabas:[] },
@@ -470,6 +470,7 @@ const createStore = () => {
         semestral:0,
         anual:0,
       },
+      datosPago:{medio:""},
 
 
     }),
@@ -608,7 +609,7 @@ const createStore = () => {
 
                   //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
                   data.grupo = data.grupo ? data.grupo : {};
-                  data.idMembresia = data.idMembresia ? data.idMembresia : "";
+                  // data.idMembresia = data.idMembresia ? data.idMembresia : "";
                   data.estadoMembresia = data.estadoMembresia ? data.estadoMembresia : "";
                   data.idCliente = data.idCliente ? data.idCliente : "";
                   data.idSuscripcion = data.idSuscripcion ? data.idSuscripcion : "";
@@ -621,102 +622,128 @@ const createStore = () => {
                 });
 
                   datos.estadoMembresia = datos.lvluser >= 3 ? "active" : "";
+
+                  //se busca el pago que coincida con el id del usuario y el id_externo
+                  
+                  context.commit("actualizarConfigDescargas")
+
                   
                   //REVISAR ESTADO DE LA SUSCRIPCIÓN MIENTRAS NO SEA USUARIO ADMIN
                   if(datos.lvluser === 2 || datos.lvluser === 1)
                   {
-                    // console.log("antes de config des")
-                    context.commit("actualizarConfigDescargas")
-                    // console.log("des´pues de config des")
-                    //PAGO POR STRIPE
-                    // console.log(datos.idSuscripcion);
-                    fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + datos.idSuscripcion)
-                    .then((result)=>{
-                      return result.json()
-                    })
-                    .then(async(suscripcion)=>{
-                      // console.log(suscripcion);
 
-                      //OBTENER CONFIGURACION DE DESCARGAS
-                      const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
-                            
-                      const d = await response.json();
-                      
-                      //DESCARGA DIARIA GRATIS
-                      if(!datos.descargas.dia)
-                      {
-                        datos.descargas.dia = {
-                          disponibles: context.state.descargasConf.free,
-                          usadas: [],
-                          fecha: d.fecha,
+                    //OBTENER CONFIGURACION DE DESCARGAS
+                    const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
+                    const d = await response.json();
+
+                    //DESCARGAS POR MES POR DEFECTO PARA EVITAR ERRORES
+                    if(!datos.descargas.mes){
+                      datos.descargas.mes = {
+                        active: false, tipo:"", disponibles: 0,
+                        registro: [] ,
+                      };
+                    }
+
+                    //DESCARGA DIARIA GRATIS POR DEFECTO
+                    if(!datos.descargas.dia)
+                    {
+                      datos.descargas.dia = {
+                        disponibles: context.state.descargasConf.free,
+                        usadas: [],
+                        fecha: d.fecha,
+                      }
+                    }
+
+                    //SI LA FECHA CAMBIA SE RESETEA EL CAMPO PARA OBTENER UNA DESCARGA NUEVA
+                    else if(d.fecha !== datos.descargas.dia.fecha)
+                    {
+                      ///console.log("el dia cambiooooooo")
+                      datos.descargas.dia.disponibles= context.state.descargasConf.free,
+                      datos.descargas.dia.usadas = [];
+                      datos.descargas.dia.fecha = d.fecha;
+                    }
+                    // context.commit("actualizarConfigDescargas")
+                    let dp= {};
+
+
+                    //ontenermos los datos del pago
+                    console.log("dp")
+                      console.log(dp)
+                    const pagoQuery =  this.$fireStore.collection('pagos')
+                    .where("iduser", "==", datos.id)
+                    .where("external_reference", "==", datos.idSuscripcion);
+                    pagoQuery.get()
+                    .then( (querySnapshot) => {
+                      console.log("dp")
+                      console.log(dp)
+                      querySnapshot.forEach( (doc) => {
+                        let data = doc.data();
+                        dp = {
+                          id: doc.id,
+                          ...data
                         }
-                      }
-
-                      //SI LA FECHA CAMBIA SE RESETEA EL CAMPO PARA OBTENER UNA DESCARGA NUEVA
-                      else if(d.fecha !== datos.descargas.dia.fecha)
+                      });
+                      console.log("dp")
+                      console.log(Object.keys(dp).length)
+                      if(Object.keys(dp).length === 0)
                       {
-                        ///console.log("el dia cambiooooooo")
-                        datos.descargas.dia.disponibles= context.state.descargasConf.free,
-                        datos.descargas.dia.usadas = [];
-                        datos.descargas.dia.fecha = d.fecha;
+                        context.state.datosPago.medio="";
+                        context.state.datosPago.collector_id=0;
+
                       }
+                      else
+                        context.state.datosPago = dp;
 
-                      //DESCARGAS POR MES POR DEFECTO PARA EVITAR ERRORES
-                      if(!datos.descargas.mes){
-                        datos.descargas.mes = {
-                          active: false, tipo:"", disponibles: 0,
-                          registro: [] ,
-                        };
-                      }
-                      // console.log(datos.descargas)
+                      console.log("AQUI DENTRO DEL EXTENRL")
 
-                      context.commit("cambiastatusSesion",datos);
+                      console.log("this.datosPago")
+                      console.log("this.datosPago")
+                      console.log(context.state.datosPago)
+                    
+                      //PAGO POR STRIPE
+                      console.log("this.datosPago");
+                      console.log(context.state.datosPago);
 
-                      //SE REVISA EL ESTADO DE LA SUSCRIPCIÓN
-                      if(suscripcion.error)
+                      
+
+                      if(context.state.datosPago.medio === "Stripe")
                       {
-                        datos.estadoMembresia = "canceled";
-                        context.state.datosSuscripcion.status = false;
-                        datos.descargas.mes.active = false;
-                      }
-                      else{
-                        datos.estadoMembresia = suscripcion.status;
-                        
-                        if(suscripcion.status === "active")
-                        {
-                          context.state.datosSuscripcion.status = true;
-                          datos.lvluser = 2;
-                          console.log("SI TIENE MEMBRESIA PREMIUM")
-                          context.commit("updateDescargasPre", suscripcion);
-                        }
-                      }
 
-                      
-                      
-                      
-                      // console.log(datos)
-                      
-                      //REVISA MEMBRESIA EN CASO DE PAGO CON MERCAPAGO
-                      if(datos.estadoMembresia !== "active")
-                      {
-                        const config = {
-                          method: 'POST',
-                          headers: {
-                              'Accept': 'application/json',
-                              'Content-Type': 'application/json',
-                          },
-                          body: JSON.stringify({idPago: datos.idSuscripcion})
-                        }
-                        fetch(context.state.urlAPI+"/estado-pago",config)
+                        fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + datos.idSuscripcion)
                         .then((result)=>{
                           return result.json()
                         })
                         .then(async(suscripcion)=>{
+                          // console.log(suscripcion);
 
-                          let data = suscripcion.response;
-                          console.log(suscripcion);
-                          console.log(data);
+                          // //OBTENER CONFIGURACION DE DESCARGAS
+                          // const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
+                                
+                          // const d = await response.json();
+                          
+                          // //DESCARGA DIARIA GRATIS
+                          // if(!datos.descargas.dia)
+                          // {
+                          //   datos.descargas.dia = {
+                          //     disponibles: context.state.descargasConf.free,
+                          //     usadas: [],
+                          //     fecha: d.fecha,
+                          //   }
+                          // }
 
+                          // //SI LA FECHA CAMBIA SE RESETEA EL CAMPO PARA OBTENER UNA DESCARGA NUEVA
+                          // else if(d.fecha !== datos.descargas.dia.fecha)
+                          // {
+                          //   ///console.log("el dia cambiooooooo")
+                          //   datos.descargas.dia.disponibles= context.state.descargasConf.free,
+                          //   datos.descargas.dia.usadas = [];
+                          //   datos.descargas.dia.fecha = d.fecha;
+                          // }
+
+                          
+                          // console.log(datos.descargas)
+
+                          context.commit("cambiastatusSesion",datos);
 
                           //SE REVISA EL ESTADO DE LA SUSCRIPCIÓN
                           if(suscripcion.error)
@@ -724,67 +751,144 @@ const createStore = () => {
                             datos.estadoMembresia = "canceled";
                             context.state.datosSuscripcion.status = false;
                             datos.descargas.mes.active = false;
-
                           }
                           else{
-
-                            //CONVIERTE FORMATOS DE FECHA A UNIXTIME PARA MANEJARLOS CON DATE-FNS
-
-                            let fechaInicio = parseInt((new Date(data.date_approved).valueOf() / 1000).toFixed(0))
-                            // console.log(fechaInicio)
-
-                            const interval_count = data.transaction_amount === 490 ? 1 :
-                              data.transaction_amount === 1290 ? 3 :
-                              data.transaction_amount === 2190 ? 6 : 12;
-
-                            let fechaFin = addMonths(new Date(data.date_approved), interval_count);
-                            fechaFin = parseInt((new Date(fechaFin).valueOf() / 1000).toFixed(0))
-
-                            data.fechaInicio = fechaInicio;
-                            data.fechaFin = fechaFin;
-                            data.interval_count = interval_count;
-
+                            datos.estadoMembresia = suscripcion.status;
                             
-                            // const ff = fromUnixTime(1577944800);
-                            const ff = fromUnixTime(fechaFin);
-                            const esVencida = isPast(ff)
-                            // console.log(data)
-                            // console.log(esVencida)
-
-                            if( (data.status === "approved" || data.status === "accredited") && !esVencida )
+                            if(suscripcion.status === "active")
                             {
-                              datos.estadoMembresia = "active";
+                              context.state.datosSuscripcion.status = true;
                               datos.lvluser = 2;
                               console.log("SI TIENE MEMBRESIA PREMIUM")
-                              // console.log(datos)
-                              context.commit("updateDescargasPreMP", data);
+                              context.commit("updateDescargasPre", suscripcion);
                             }
-                            else
+                          }
+
+                          
+
+                        })
+                        .catch((err)=>{
+                          console.log('Error al verificar suscripción', err);
+                        });
+                      }
+                      
+                      else if(context.state.datosPago.medio === "MercadoPago")
+                      {
+
+                        //REVISA MEMBRESIA EN CASO DE PAGO CON MERCAPAGO
+                        
+                          const config = {
+                            method: 'POST',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({idPago: context.state.datosPago.id})
+                          }
+                          fetch(context.state.urlAPI+"/estado-pago",config)
+                          .then((result)=>{
+                            return result.json()
+                          })
+                          .then(async(suscripcion)=>{
+
+                            let data = suscripcion.response;
+                            console.log(suscripcion);
+                            console.log(data);
+
+                            //DESCARGAS POR MES POR DEFECTO PARA EVITAR ERRORES
+                            if(!datos.descargas.mes){
+                              datos.descargas.mes = {
+                                active: false, tipo:"", disponibles: 0,
+                                registro: [] ,
+                              };
+                            }
+                          // console.log(datos.descargas)
+
+                          context.commit("cambiastatusSesion",datos);
+
+
+                            //SE REVISA EL ESTADO DE LA SUSCRIPCIÓN
+                            if(suscripcion.error)
                             {
                               datos.estadoMembresia = "canceled";
                               context.state.datosSuscripcion.status = false;
+                              datos.descargas.mes.active = false;
+
                             }
-                          }
-  
-                      })
-                      .catch((err)=>{
-                        console.log('Error al verificar suscripción', err);
-                      });
+                            else{
 
-                    }
+                              //CONVIERTE FORMATOS DE FECHA A UNIXTIME PARA MANEJARLOS CON DATE-FNS
 
+                              let fechaInicio = parseInt((new Date(data.date_approved).valueOf() / 1000).toFixed(0))
+                              // console.log(fechaInicio)
 
-                      
+                              const interval_count = data.transaction_amount === 490 ? 1 :
+                                data.transaction_amount === 1290 ? 3 :
+                                data.transaction_amount === 2190 ? 6 : 12;
+
+                              let fechaFin = addMonths(new Date(data.date_approved), interval_count);
+                              fechaFin = parseInt((new Date(fechaFin).valueOf() / 1000).toFixed(0))
+
+                              data.fechaInicio = fechaInicio;
+                              data.fechaFin = fechaFin;
+                              data.interval_count = interval_count;
+
+                              
+                              // const ff = fromUnixTime(1577944800);
+                              const ff = fromUnixTime(fechaFin);
+                              const esVencida = isPast(ff)
+                              console.log(data)
+                              console.log(esVencida)
+
+                              if( (data.status === "approved" || data.status === "accredited") && !esVencida )
+                              {
+                                datos.estadoMembresia = "active";
+                                datos.lvluser = 2;
+                                console.log("SI TIENE MEMBRESIA PREMIUM")
+                                // console.log(datos)
+                                context.commit("updateDescargasPreMP", data);
+                              }
+                              else if(data.status === "pending" )
+                              {
+                                console.log("pago pendiente")
+                                const {external_resource_url} = data.transaction_details
+                                datos.estadoMembresia = "canceled";
+                                context.state.datosSuscripcion.status = false;
+                                context.state.datosSuscripcion.external_resource_url = external_resource_url;
+                                context.state.datosSuscripcion.date_of_expiration = data.date_of_expiration;
+                              }
+                              else
+                              {
+                                console.log("AQUII")
+                                datos.estadoMembresia = "canceled";
+                                context.state.datosSuscripcion.status = false;
+                              }
+                            }
+    
+                          })
+                          .catch((err)=>{
+                            console.log('Error al verificar suscripción', err);
+                          });
+                      }
+                      else{
+                        //SUSCRIPCION TERMINADA
+                        datos.estadoMembresia = "canceled";
+                        context.state.datosSuscripcion.status = false;
+                        datos.descargas.mes.active = false;
+                        datos.lvluser = 1
+                      }
 
                     })
-                    .catch((err)=>{
-                      console.log('Error al verificar suscripción', err);
-                    });              
+                    
+
+
+                    
+                  
                   }
                   else if(datos.lvluser >= 3)
                   {
                     // console.log("antes de config des")
-                    context.commit("actualizarConfigDescargas")
+                    // context.commit("actualizarConfigDescargas")
               //context.dispatch( "actualizarCategorias('cat')" );
               //
                     // console.log("des´pues de config des")
@@ -1243,7 +1347,7 @@ const createStore = () => {
           state.datosUsuario.correo = ""
           state.datosUsuario.id = ""
           state.datosUsuario.grupo =  {};
-          state.datosUsuario.idMembresia = "";
+          // state.datosUsuario.idMembresia = "";
           state.datosUsuario.estadoMembresia = "";
           state.datosUsuario.idCliente = "";
           state.datosUsuario.idSuscripcion = "";
@@ -1390,21 +1494,25 @@ const createStore = () => {
           if( interval === "month" &&  interval_count === 1)
           {
             state.datosUsuario.descargas.mes.tipo = "mensual";
+            state.datosSuscripcion.plan.tipoSuscripcion = "mensual";
             state.datosUsuario.descargas.mes.disponibles = state.descargasConf.mensual;
           }
           else if( interval === "month" &&  interval_count === 3)
           {
             state.datosUsuario.descargas.mes.tipo = "trimestral";
+            state.datosSuscripcion.plan.tipoSuscripcion = "trimestral";
             state.datosUsuario.descargas.mes.disponibles = state.descargasConf.trimestral;
           }
           else if(interval === "month" &&  interval_count === 6)
           {
             state.datosUsuario.descargas.mes.tipo = "semestral";
+            state.datosSuscripcion.plan.tipoSuscripcion = "semestral";
             state.datosUsuario.descargas.mes.disponibles = state.descargasConf.semestral;
           }
           else 
           {
             state.datosUsuario.descargas.mes.tipo = "anual";
+            state.datosSuscripcion.plan.tipoSuscripcion = "anual";
             state.datosUsuario.descargas.mes.disponibles = state.descargasConf.anual;
           }
 
@@ -1455,21 +1563,25 @@ const createStore = () => {
             if( interval === "month" &&  interval_count === 1)
             {
               state.datosUsuario.descargas.mes.tipo = "mensual";
+              state.datosSuscripcion.plan.tipoSuscripcion = "mensual";
               state.datosUsuario.descargas.mes.disponibles = state.descargasConf.mensual;
             }
             else if( interval === "month" &&  interval_count === 3)
             {
               state.datosUsuario.descargas.mes.tipo = "trimestral";
+              state.datosSuscripcion.plan.tipoSuscripcion = "trimestral";
               state.datosUsuario.descargas.mes.disponibles = state.descargasConf.trimestral;
             }
             else if(interval === "month" &&  interval_count === 6)
             {
               state.datosUsuario.descargas.mes.tipo = "semestral";
+              state.datosSuscripcion.plan.tipoSuscripcion = "semestral";
               state.datosUsuario.descargas.mes.disponibles = state.descargasConf.semestral;
             }
             else 
             {
               state.datosUsuario.descargas.mes.tipo = "anual";
+              state.datosSuscripcion.plan.tipoSuscripcion = "anual";
               state.datosUsuario.descargas.mes.disponibles = state.descargasConf.anual;
             }
           }

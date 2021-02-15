@@ -1,6 +1,6 @@
 <template>
    
-  <v-container v-show="json !== ''">
+  <v-container v-show="datosSuscripcion.status">
     <v-card>
       <v-card-title class="primary d-flex flex-column">
         <div>
@@ -27,7 +27,7 @@
                   <h5 class="title">Tipo suscripción:</h5>
                 </v-col>
                 <v-col>
-                  <p>{{tipoSuscripcion}}</p>
+                  <p>{{datosSuscripcion.plan.tipoSuscripcion}}</p>
                 </v-col>
               </v-row>
 
@@ -36,7 +36,7 @@
                   <h5 class="title">Importe:</h5>
                 </v-col>
                 <v-col>
-                  <p>${{importe}} MXN</p>
+                  <p>${{datosSuscripcion.plan.amount/100}} MXN</p>
                 </v-col>
               </v-row>
             </v-col>
@@ -72,7 +72,7 @@ export default {
         }
     },
     computed:{
-    ...mapState(['datosUsuario','dominio','urlAPI']),
+    ...mapState(['datosUsuario','dominio','urlAPI','datosSuscripcion']),
     
     },
     methods: {
