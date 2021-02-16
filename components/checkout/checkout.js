@@ -200,7 +200,8 @@ export default {
 
       var orderData={
         priceId: priceId,
-        dominio: this.dominio
+        dominio: this.dominio,
+        external_reference,
       }
       //LLAMADA A LA API EXTERNA PARA CREAR UNA SESION DE PAGO
       // fetch("http://localhost:4242/create-checkout-session", {
@@ -238,6 +239,7 @@ export default {
         this.registroPago(orderData)
 
         //SE EJECUTA LA VENTANA DE STRIPE PARA INSERTAR DATOS DE LA TARJETA
+        // console.log(data.sessionId)
         stripe
           .redirectToCheckout({
             sessionId: data.sessionId
