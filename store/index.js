@@ -709,39 +709,15 @@ const createStore = () => {
                       if(context.state.datosPago.medio === "Stripe")
                       {
 
-                        fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + datos.idSuscripcion)
+                        const {id} = context.state.datosPago
+
+                        fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + id)
                         .then((result)=>{
                           return result.json()
                         })
                         .then(async(suscripcion)=>{
                           // console.log(suscripcion);
 
-                          // //OBTENER CONFIGURACION DE DESCARGAS
-                          // const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
-                                
-                          // const d = await response.json();
-                          
-                          // //DESCARGA DIARIA GRATIS
-                          // if(!datos.descargas.dia)
-                          // {
-                          //   datos.descargas.dia = {
-                          //     disponibles: context.state.descargasConf.free,
-                          //     usadas: [],
-                          //     fecha: d.fecha,
-                          //   }
-                          // }
-
-                          // //SI LA FECHA CAMBIA SE RESETEA EL CAMPO PARA OBTENER UNA DESCARGA NUEVA
-                          // else if(d.fecha !== datos.descargas.dia.fecha)
-                          // {
-                          //   ///console.log("el dia cambiooooooo")
-                          //   datos.descargas.dia.disponibles= context.state.descargasConf.free,
-                          //   datos.descargas.dia.usadas = [];
-                          //   datos.descargas.dia.fecha = d.fecha;
-                          // }
-
-                          
-                          // console.log(datos.descargas)
 
                           context.commit("cambiastatusSesion",datos);
 

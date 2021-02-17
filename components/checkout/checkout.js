@@ -131,6 +131,7 @@ export default {
               method: "POST",
               headers: {
                   "Content-Type": "application/json",
+                  'Access-Control-Allow-Origin': '*',
               },
               body: JSON.stringify(orderData),
       })
@@ -200,14 +201,27 @@ export default {
 
       var orderData={
         priceId: priceId,
-        dominio: this.dominio
+        dominio: this.dominio,
+        external_reference,
       }
+      // fetch(this.urlAPI+'/customer-portal', {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       'Access-Control-Allow-Origin': '*',
+      //     },
+      //     body: JSON.stringify({
+      //       sessionId: this. datosPago.collector_id,
+      //       dominio: `${this.dominio}/perfil`
+      //     }),
+      //   })
       //LLAMADA A LA API EXTERNA PARA CREAR UNA SESION DE PAGO
       // fetch("http://localhost:4242/create-checkout-session", {
       fetch(this.urlAPI+"/create-checkout-session", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Access-Control-Allow-Origin': '*',
         },
         body: JSON.stringify(orderData)
       })
@@ -238,6 +252,7 @@ export default {
         this.registroPago(orderData)
 
         //SE EJECUTA LA VENTANA DE STRIPE PARA INSERTAR DATOS DE LA TARJETA
+        // console.log(data.sessionId)
         stripe
           .redirectToCheckout({
             sessionId: data.sessionId
