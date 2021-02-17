@@ -21,10 +21,8 @@
           keywords:""
           }
     },
-   
     created(){
         this.cargadatos()
- 
 
     },
     methods:{   
@@ -41,18 +39,18 @@
     },
     head() {
       return {
-        title: "landing page",
+        title:  this.datos.titulo,
         meta: [
           // hid is used as unique identifier. Do not use `vmid` for it as it will not work
           {
             hid: 'description',
             name: 'description',
-            content: "datos landing page"
+            content: this.datos.desc
           },
           {
             hid: 'keywords',
             name: 'keywords',
-            content: "palabras | landing page"
+            content: this.keywords
           },
           {
               hid:'robots',
@@ -61,7 +59,6 @@
           }
         ]
       }    
-
     }
     }
 </script>
