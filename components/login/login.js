@@ -156,8 +156,7 @@ export default{
           },
 
           restablecerPassword(){
-              console.log("Restableciendo...")
-              
+            console.log("Restableciendo...")
             console.log(this.$fireAuthObj())
             const auth = this.$fireAuthObj();
             this.$fireAuthObj().languageCode = 'es';
@@ -165,10 +164,12 @@ export default{
             const {correo} = this.dataLogin
 
             auth.sendPasswordResetEmail(correo).then(() => {
-                console.log("enviando correo");
+                console.log("enviando correo..");
             // Email sent.
             }).catch(function(error) {
             // An error happened.
+            console.log("error al enviar correo")
+            console.log(error)
             });
 
           }
