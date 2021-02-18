@@ -92,6 +92,7 @@ export default{
                     data.tipoSuscripcion = data.tipoSuscripcion ? data.tipoSuscripcion : "";
                     if(data.userlogin===false){
                         alert('Tiene un bloqueo de sistema por favor reportelo con nuestra area de soporte ')
+                        this.$router.push('reporte')
                     }
                     const datos = {
                         id: doc.id,
