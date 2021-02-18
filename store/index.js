@@ -549,6 +549,8 @@ const createStore = () => {
 
   },    
   async tomanotificaciones({state}){
+      console.log("state.datosUsuario")
+      console.log(state.datosUsuario)
     let tomaNotifi=this.$fireStore.collection('Notificaciones').doc(state.datosUsuario.id).collection('notify').where('status','==',0)
     tomaNotifi.onSnapshot((data)=>{
       state.itemsnotifi=data.docs
@@ -599,29 +601,52 @@ const createStore = () => {
           // console.log(user)
           if(user)
           {
-              let datos = {};
-              const usuarioQuery =  this.$fireStore.collection('usuarios').where("correo", "==", user.email);
-              usuarioQuery.get()
-              .then(async (querySnapshot) => {
-                querySnapshot.forEach( async(doc) => {
-                  let data = doc.data();
-                  // console.log(doc.data());
-                  // console.log(doc.data);
-                  // console.log(doc.data.grupos);
 
-                  //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
-                  data.grupo = data.grupo ? data.grupo : {};
-                  // data.idMembresia = data.idMembresia ? data.idMembresia : "";
-                  data.estadoMembresia = data.estadoMembresia ? data.estadoMembresia : "";
-                  data.idCliente = data.idCliente ? data.idCliente : "";
-                  data.idSuscripcion = data.idSuscripcion ? data.idSuscripcion : "";
-                  data.descargas = data.descargas ? data.descargas : {};
+            /**
+                     * 
+                     async tomanotificaciones({state}){
+                      let tomaNotifi=this.$fireStore.collection('Notificaciones').doc(state.datosUsuario.id).collection('notify').where('status','==',0)
+                      tomaNotifi.onSnapshot((data)=>{
+                        state.itemsnotifi=data.docs
+                      })
+                    },    
+                     */
+              let datos = {};
+              // let sinsuscripcion;
+              console.log("1")
+              // console.log(user)
+
+              // if(user.email)
+              // {
+                console.log("2")
+                // console.log(user)
+
+                const usuarioQuery =  this.$fireStore.collection('usuarios')
+                .where("correo", "==", user.email);
+                usuarioQuery.get()
+                .then(async (querySnapshot) => {
+                  querySnapshot.forEach( async(doc) => {
+                    let data = doc.data();
+                    // console.log(doc.data());
+                    // console.log(doc.data);
+                    // console.log(doc.data.grupos);
+  
+                    //CREAR DATOS EN VACIO PARA EVITAR ERRORES EN LA VISTA
+                    data.grupo = data.grupo ? data.grupo : {};
+                    // data.idMembresia = data.idMembresia ? data.idMembresia : "";
+                    data.estadoMembresia = data.estadoMembresia ? data.estadoMembresia : "";
+                    data.idCliente = data.idCliente ? data.idCliente : "";
+                    data.idSuscripcion = data.idSuscripcion ? data.idSuscripcion : "";
+                    data.descargas = data.descargas ? data.descargas : {};
+                    
+                         datos = {
+                          id: doc.id,
+                          ...data
+                        }
+                  });
+                  // console.log(datos)
                   
-                       datos = {
-                        id: doc.id,
-                        ...data
-                      }
-                });
+                 
 
                   datos.estadoMembresia = datos.lvluser >= 3 ? "active" : "";
 
@@ -667,26 +692,32 @@ const createStore = () => {
                     // context.commit("actualizarConfigDescargas")
                     let dp= {};
 
+                    
+
 
                     //ontenermos los datos del pago
-                    console.log("dp")
-                      console.log(dp)
+                    // console.log("dp")
+                    //   console.log(dp)
+                      // let usuarioQuery =  this.$fireStore.collection('usuarios')
+                      // .where("correo", "==", user.email);
+                      // usuarioQuery.onSnapshot(async (data)=>{
                     const pagoQuery =  this.$fireStore.collection('pagos')
                     .where("iduser", "==", datos.id)
                     .where("external_reference", "==", datos.idSuscripcion);
-                    pagoQuery.get()
-                    .then( (querySnapshot) => {
-                      console.log("dp")
-                      console.log(dp)
-                      querySnapshot.forEach( (doc) => {
+                    pagoQuery.onSnapshot(async (data) => {
+
+                      data.docs.map(doc=> {
                         let data = doc.data();
                         dp = {
                           id: doc.id,
                           ...data
                         }
+                        // context.commit("cambiastatusSesion",datos);
                       });
-                      console.log("dp")
-                      console.log(Object.keys(dp).length)
+                        
+                      // });
+                      // console.log("dp")
+                      // console.log(Object.keys(dp).length)
                       if(Object.keys(dp).length === 0)
                       {
                         context.state.datosPago.medio="";
@@ -696,11 +727,11 @@ const createStore = () => {
                       else
                         context.state.datosPago = dp;
 
-                      console.log("AQUI DENTRO DEL EXTENRL")
+                      // console.log("AQUI DENTRO DEL EXTENRL")
 
-                      console.log("this.datosPago")
-                      console.log("this.datosPago")
-                      console.log(context.state.datosPago)
+                      // console.log("this.datosPago")
+                      // console.log("this.datosPago")
+                      // console.log(context.state.datosPago)
                     
                       //PAGO POR STRIPE
                       console.log("this.datosPago");
@@ -885,10 +916,17 @@ const createStore = () => {
                   
                   context.commit("cambiastatusSesion",datos);
 
+              
+
+                  // state.itemsnotifi=data.docs
+                // })
               })
               .catch((error) =>{
                   console.log("Error: ", error);
               });
+          
+              
+              
           }
           else 
           {
