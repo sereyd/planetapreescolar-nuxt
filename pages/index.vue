@@ -59,30 +59,7 @@ import listablog from '~/components/listado-blog/listado-blog.vue'
 import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
-   head() {
-      return {
-        title: "landing page",
-        meta: [
-          // hid is used as unique identifier. Do not use `vmid` for it as it will not work
-          {
-            hid: 'description',
-            name: 'description',
-            content: "datos landing page"
-          },
-          {
-            hid: 'keywords',
-            name: 'keywords',
-            content: "palabras | landing page"
-          },
-          {
-              hid:'robots',
-              name:"robots",
-            content:"index"
-          }
-        ]
-      }    
 
-    },
   data() {
     return {
       // reflexiones:[],

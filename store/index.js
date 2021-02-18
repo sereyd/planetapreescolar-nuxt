@@ -475,8 +475,10 @@ const createStore = () => {
 
     }),
     actions: {
-      async loginStore(context, data) {
-        context.commit("cambiastatusSesion", data);
+      async loginStore({commit}, data) {
+        console.log('cambia en store')
+        console.log(data)
+        commit("cambiastatusSesion", data);
       },
       scrollmenu({state}){
 

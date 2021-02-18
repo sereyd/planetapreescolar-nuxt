@@ -73,14 +73,16 @@ export default{
             }
                 
 
-            // const correo = this.dataLogin.correo;
+            ///const correo = this.dataLogin.correo;
+       
             const productoQuery = await this.$fireStore.collection('usuarios').where("correo", "==", this.dataLogin.correo);
             // console.log(productoQuery);
             productoQuery.get()
             .then((querySnapshot) => {
+               
                 querySnapshot.forEach( (doc) => {
                     let data = doc.data();
-
+                   
                     data.grupo = data.grupo ? data.grupo : {};
                     // data.idMembresia = data.idMembresia ? data.idMembresia : "";
                     data.estadoMembresia = data.estadoMembresia ? data.estadoMembresia : "";
@@ -88,7 +90,9 @@ export default{
                     data.idSuscripcion = data.idSuscripcion ? data.idSuscripcion : "";
                     data.importeSuscripcion = data.importeSuscripcion ? data.importeSuscripcion : "";
                     data.tipoSuscripcion = data.tipoSuscripcion ? data.tipoSuscripcion : "";
-
+                    if(data.userlogin===false){
+                        alert('Tiene un bloqueo de sistema por favor reportelo con nuestra area de soporte ')
+                    }
                     const datos = {
                         id: doc.id,
                         // idMembresia:"",
@@ -98,8 +102,11 @@ export default{
                       }
                 //    console.log(doc.data());
                     // this.previo = doc.data();
+                 
+                 
                     this.loginStore(datos);
                 });
+                
             })
             .catch(function(error) {
                 console.log("Error getting documents: ", error);
