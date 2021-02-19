@@ -81,27 +81,62 @@
                             </div> -->
                             
                         </div>
-                        <a @click ="restablecerPassword" class="">Restablecer contraseña</a>
+                        <a @click ="dialogpassword = true" class="">Restablecer contraseña</a>
                         <v-alert v-if="error" type="error" class="mt-3">
                             {{mensajeError}}
                         </v-alert>
                     </div>
                 </v-form>
-                <!-- SPINNER -->
-                <!-- <div v-if="spinner" class=" d-flex justify-center align-center mt-4">
-                    <div class=" sk-chase">
-                        <div class="sk-chase-dot"></div>
-                        <div class="sk-chase-dot"></div>
-                        <div class="sk-chase-dot"></div>
-                        <div class="sk-chase-dot"></div>
-                        <div class="sk-chase-dot"></div>
-                        <div class="sk-chase-dot"></div>
-                    </div>
-                </div> -->
                 <Spinner v-if="spinner" />
                       
             </div>
           </v-container>
         </v-card-text>
-      </v-card>
+
+        <v-dialog v-model="dialogpassword"  persistent max-width="600">
+            <v-card class=" px-10">
+                <div class="">
+                    
+                    <h3 class="primary--text text-center mb-3" v-if="dataLogin.correo !== ''">{{dataLogin.correo}}</h3>
+                    <h3 class="primary--text text-center mb-3" v-else>Correo</h3>
+                </div>
+                <div>
+                    <div>
+                        <p style="font-size: 16px;"v-if="dataLogin.correo !== ''">
+                            {{msjrestablecer}} 
+                            <!-- <span style="color:blue;">{{dataLogin.correo}}</span> -->
+                        </p>
+                        <v-form ref="formReset" v-model="validreset" lazy-validation v-else>
+                            <div >
+                                <v-text-field
+                                    v-model="passwordreset"
+                                    placeholder="Correo:"
+                                    required
+                                    single-line
+                                    solo
+                                    :rules="correoReglas"
+                                    @keyup.enter="validateReset"
+                                ></v-text-field>
+                                
+                            </div>
+                            <div v-if="errorRestablecerP">
+                                <p>{{msjrestablecer}}</p>
+                            </div>
+                            <div v-else="msjrestablecer !== 'Este correo no se encuentra registrado, asegurese de que el correo sea el correcto'">
+                                <p>{{msjrestablecer}}</p>
+                            </div>
+                        </v-form>
+                    </div> 
+                    <Spinner v-if="spinnerreset" />
+                    <div class="d-flex justify-center" v-else>
+                        <v-btn class="melon white--text mb-2 mr-2 btn_crearG" @click="validateReset()">Enviar</v-btn>
+                        <v-btn class="melon white--text mb-2 btn_crearG" @click="cerrarPassword()">Cerrar</v-btn>
+                    </div>
+                </div>
+
+            </v-card>
+        </v-dialog>
+
+
+    </v-card>
 <!-- </div> -->

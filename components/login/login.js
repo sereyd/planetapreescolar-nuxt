@@ -19,6 +19,15 @@ export default{
             //DATA PARA ALERTA DE ERRORES EN EL FORMULARIO
             error: false,
             mensajeError: '',
+
+            //DATA PARA RESTABLECER CONTRASEÑA
+            passwordreset:"",
+            validreset: false,
+            dialogpassword: false,
+            msjrestablecer: "Se enviará una liga para restablecer la contraseña al siguiente correo",
+            errorRestablecerP:false,
+            spinnerreset:false,
+
             
 
             /* REGLAS DEL FORMULARIO */
@@ -162,23 +171,61 @@ export default{
               this.login();
                // this.siguienteFormulario()
           },
+          validateReset () {
+            this.spinnerreset = true;
+            if(this.dataLogin.correo === "")
+            {
+                const vd = this.$refs.formReset.validate();
+                this.validreset = vd;
+                if(this.validreset)
+                this.restablecerPassword();
+            }
+            else
+            this.restablecerPassword();
+
+               // this.siguienteFormulario()
+          },
 
           restablecerPassword(){
             console.log("Restableciendo...")
-            console.log(this.$fireAuthObj())
+            // console.log(this.$fireAuthObj())
             const auth = this.$fireAuthObj();
             this.$fireAuthObj().languageCode = 'es';
+            let correo;
 
-            const {correo} = this.dataLogin
+            if(this.dataLogin.correo !== '')
+                correo = this.dataLogin.correo
+            else
+                correo = this.passwordreset
 
             auth.sendPasswordResetEmail(correo).then(() => {
+                this.msjrestablecer = "El correo fue enviado con éxito, revise su bandeja de entrada o correos no deseados"
+                this.errorRestablecerP=false;
+                this.spinnerreset = false;
+
+
                 console.log("enviando correo..");
             // Email sent.
-            }).catch(function(error) {
+            }).catch((error) => {
             // An error happened.
+            if(error.code === "auth/user-not-found")
+            this.msjrestablecer = "Este correo no se encuentra registrado."
+            this.errorRestablecerP=true;
+            this.spinnerreset = false;
+
+
+
             console.log("error al enviar correo")
             console.log(error)
             });
+
+          },
+          cerrarPassword(){
+            this.dialogpassword=false;
+            this.errorRestablecerP=false;
+
+            this.msjrestablecer = "Se enviará una liga para restablecer la contraseña al siguiente correo"
+            this.title="Correo"
 
           }
     },

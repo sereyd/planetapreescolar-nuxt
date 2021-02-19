@@ -142,6 +142,7 @@ export default {
       
 
           // console.log(preference);
+          // alert("stopppp")
          /// location.href = preference.pre.init_point;
          this.urlMP = preference.pre.init_point;
           // this.createCheckoutButton(preference.id);

@@ -163,13 +163,29 @@
           <v-card-title class=" justify-space-between">
               <v-btn icon text small color="purple" @click="" >
               </v-btn>
-              <h2 class="primary--text ">¿Te gustó la planeación?</h2>
+              <!-- <h2 class="primary--text ">¿Te gustó la planeación?</h2> -->
               <v-btn icon text small color="purple" @click="dialogPlanes = false" >
                   <v-icon>mdi-window-close</v-icon>
               </v-btn>
           </v-card-title>
-          <div class="mt-4" v-if=" datosUsuario.lvluser > 0 && datosUsuario.lvluser < 3">
-            <p class="text-center"v-if="datosUsuario.descargas.mes.active">
+          <div class="" v-if=" datosUsuario.lvluser > 0 && datosUsuario.lvluser < 3">
+            <div class="d-flex justify-center mt-4" v-if="datosUsuario.descargas.mes.active">
+                <img
+                  src="../../static/pantallas/9Agotaste todas tus descargas.png"
+                  width="520"
+                  height="400"
+                  class=""
+                />
+            </div>
+            <div class="d-flex justify-center mt-4" v-else>
+                <img
+                  src="../../static/pantallas/8Agotaste tu descarga.png"
+                  width="520"
+                  height="400"
+                  class=""
+                />
+            </div>
+            <!-- <p class="text-center"v-if="datosUsuario.descargas.mes.active">
                 Tu plan actual solo te permite {{descargarPlan}} descargas por mes
             </p>
             <p class="text-center"v-else>
@@ -186,7 +202,7 @@
                 <div class="d-flex justify-center">
                     <v-btn 
                         class="melon white--text rounded-pill mb-5 btn_crearG" to="/checkout" >Ver planes</v-btn> 
-                </div>
+                </div> -->
                       
                    
           </div>

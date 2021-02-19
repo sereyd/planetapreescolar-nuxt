@@ -549,8 +549,8 @@ const createStore = () => {
 
   },    
   async tomanotificaciones({state}){
-      console.log("state.datosUsuario")
-      console.log(state.datosUsuario)
+      // console.log("state.datosUsuario")
+      // console.log(state.datosUsuario)
     let tomaNotifi=this.$fireStore.collection('Notificaciones').doc(state.datosUsuario.id).collection('notify').where('status','==',0)
     tomaNotifi.onSnapshot((data)=>{
       state.itemsnotifi=data.docs
@@ -734,8 +734,8 @@ const createStore = () => {
                       // console.log(context.state.datosPago)
                     
                       //PAGO POR STRIPE
-                      console.log("this.datosPago");
-                      console.log(context.state.datosPago);
+                      // console.log("this.datosPago");
+                      // console.log(context.state.datosPago);
 
                       
 
@@ -801,8 +801,8 @@ const createStore = () => {
                           .then(async(suscripcion)=>{
 
                             let data = suscripcion.response;
-                            console.log(suscripcion);
-                            console.log(data);
+                            // console.log(suscripcion);
+                            // console.log(data);
 
                             //DESCARGAS POR MES POR DEFECTO PARA EVITAR ERRORES
                             if(!datos.descargas.mes){
@@ -846,7 +846,7 @@ const createStore = () => {
                               // const ff = fromUnixTime(1577944800);
                               const ff = fromUnixTime(fechaFin);
                               const esVencida = isPast(ff)
-                              console.log(data)
+                              // console.log(data)
                               console.log(esVencida)
 
                               if( (data.status === "approved" || data.status === "accredited") && !esVencida )
