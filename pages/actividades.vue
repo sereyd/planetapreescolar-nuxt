@@ -4,7 +4,7 @@
                 <!---------planeaciones------------>
                 <v-row>
                    <v-col cols="10">
-                      <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/>
+                      <buscador :esBuscando ="buscando"  @updateBuscando="buscando=$event"/>
                   </v-col>
                 </v-row>
                 <div style="width:100%; height:5px;"></div>

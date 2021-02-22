@@ -83,7 +83,7 @@ export default{
       subirImagen
     },
     computed:{
-        ...mapState(['datosUsuario','urlimg']),
+        ...mapState(['datosUsuario','urlimg','dominio']),
     },
     methods:{
 
@@ -136,7 +136,7 @@ export default{
           this.error = false;
         
          var codigo=this.$codegenerate();
-          var codigo1=this.$codecorreo();
+        var codigo1=this.$codecorreo();
          this.datosUsuarioR.foldercode=codigo
          this.datosUsuarioR.codigocorreo=codigo1
          
@@ -144,19 +144,18 @@ export default{
     
         },
         async almacenarUsuarioCollection(){
-          const URLactual = window.location;
+        // const URLactual = window.location;
 
           //SE ALMACENA EL NUEVO USUARIO EN LA COLECCION DE USUARIOS
           try {
               this.datosUsuarioR.userlogin = true,
               this.datosUsuarioR.lvluser = 1;
-              console.log(datosUsuarioR);
-              await this.$fireStore.collection('usuarios').add(this.datosUsuarioR);
+           await this.$fireStore.collection('usuarios').add(this.datosUsuarioR);
              ////Guarda los datos de usuario en el store con una mutación 
-              this.guardaDatosUsuarioStore(this.datosUsuarioR);
-              this.resetearData();
+           this.guardaDatosUsuarioStore(this.datosUsuarioR);
+           this.resetearData();
               // this.$router.push('/')
-              window.location.href = URLactual.origin;
+         ///  window.location.href = URLactual.origin;
 
 
           } catch (error) {
@@ -221,12 +220,13 @@ export default{
              this.succesreg=true
               var payload={
                 tipo:'confirmacion',
-                datos:this.datosUsuarioR
+                datos:this.datosUsuarioR,
+                url:this.dominio
               }
               
               ///envia correo de confirmación 
 
-             fetch('https://tiendasereyd.ml/mailsender/',
+             fetch(this.$store.state.configAll.url+'/mailsender/',
               {
                 method:'POST',
                 headers:{
@@ -242,7 +242,9 @@ export default{
               
             })
       
-            }else{ this.spinner = false }
+            }else{ 
+              this.spinner = false 
+            }
         
       }
     }

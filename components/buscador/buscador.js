@@ -7,6 +7,7 @@ export default {
                 'todos',
                 'Planeaciones',
                 'Hojas de trabajo',
+                'Hojas para ilustrar',
                 'Material didáctico',
                 'Material interactivo',
                 'Administración',
@@ -20,11 +21,18 @@ export default {
 
         }
     },
+    mounted(){
+      if(this.selectopt){
+            console.log(this.selectopt)
+            this.cambiaselecionbusqueda(this.selectopt)
+        }
+    },
     computed: {
         ...mapState(['datosUsuario','datosBusqueda'])
     },
     methods: {
         ...mapActions(['obtenerRecursos']),
+        ...mapMutations(['cambiaselecionbusqueda']),
         buscarDato(){
             // console.log( "this.$router")
             // console.log( this.$router.history.current.fullPath)
@@ -48,6 +56,7 @@ export default {
             type:Boolean,
             default:false
         },
+        selectopt:""
     }
     
 }

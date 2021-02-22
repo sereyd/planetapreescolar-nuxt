@@ -1,121 +1,139 @@
 <div v-scroll="scrollmenu" :class="menufix===true ? ' menufixedtop' : '' "> 
-    <v-card >
-        <v-card-title class="secondary white--text">
-        
-        <span class="viewmobil">  <v-icon  class="white--text"  @click="openMenu()" > mdi-menu </v-icon>
-        </span>
+  <v-card >
+      <v-card-title class="secondary white--text">
+      
+      <span class="viewmobil">  <v-icon  class="white--text"  @click="openMenu()" > mdi-menu </v-icon>
+      </span>
 
-   
-          <img :src="protocol+'//'+host+'/images/logos/planeta_preescolar_bco.png'" width="70" class="miniMovil" />
-    
-          &nbsp;  &nbsp; 
-          
-          <div class="menu-sec datamenu" v-if="datosUsuario.userlogin===true"  >
-            <div class="primary white--text pa-1 " style="border-radius:10px; width:100%; max-width:230px;" >
-            <v-avatar
-      color="secondary"
-      size="36" 
-    >
-     <img 
-      v-if="datosUsuario.urlImagen" 
-      :src="datosUsuario.urlImagen === 'none' || datosUsuario.urlImagen==='' ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : datosUsuario.urlImagen" width="100%" 
-    />
-    </v-avatar>
-
-           <span class="vMmobilview" >{{ (datosUsuario.nombre+" "+ datosUsuario.apellido).substr(0,13) }}</span> 
-
-         
-       
-            <v-menu offset-y>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="primary"
-                  dark
-                  v-bind="attrs"
-                  v-on="on"
-                  class="elevation-0"
-                >
-                ▼
-                </v-btn>
-              </template>
-              <v-list  style="width:210px;" >
-                <v-list-item
-                  v-for="(item, index) in itemsmenumni"
-                  :key="index"
-                >
-                  <v-list-item-title >
-                    <router-link class="linkmenuuser" :to="item.link">{{ item.title }} <span class="flechalink"> 
-                      > 
-                    </span></router-link>
-                  
-                  </v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </div>
-
-          </div>
-        
-      <div v-if="devtest===true">
-        <v-btn @click="$store.commit('cambiastatusSesion',{login:false,lvl:0})">user sin registro</v-btn>
-        <v-btn @click="$store.commit('cambiastatusSesion',{login:true,lvl:0})">user registro gratis</v-btn>
-        <v-btn @click="$store.commit('cambiastatusSesion',{login:true,lvl:1})">user registro premium</v-btn>
-        <v-btn @click="$store.commit('cambiastatusSesion',{login:true,lvl:2})">user registro administrador</v-btn>
-    </div>
-
-        <v-spacer class="miniMovil"></v-spacer>
-
-        <div class="minimovil"></div>
-        <div v-if="datosUsuario.userlogin===false" >
-        <router-link to="/login" v-if="$validasesion($store,{ sinregistro:true })" class="white--text" style="text-decoration:none;  font-size:15px;">Iniciar sesión</router-link> &nbsp;&nbsp;&nbsp;
-        <v-btn class="melon white--text pa-5"  style="border-radius: 30px; font-size:14px; text-transform:none;" v-if="$validasesion($store,{ sinregistro:true })" link to="/registro">Registro </v-btn>
-        </div>
-
-        <div v-if="datosUsuario.userlogin===true" >
-          <!-- <p>{{datosUsuario.estadoMembresia}}</p> -->
-          <router-link v-show="datosUsuario.estadoMembresia !== 'active' && (datosUsuario.lvluser <= 2)" to="checkout" class="white--text menu-sec miniMovil" style="text-decoration:none; position:relative;" > 
-            <img src="../../static/images/iconos/Astronauta.png" class="menu-sec-anim"  />
-            <span class="vMmobilview "> <img src="../../static/images/iconos/haztepremium1.png" style="  left:-100px; 
-              width:100px; 
-              position:absolute;"  /></span>
-          </router-link>
-
-
-          <notificaciones></notificaciones>
-
-    
-        
-        <router-link to="/configuracion" class="white--text menu-sec miniMovil" style="text-decoration:none;">
-
-          <v-icon class="white--text">mdi-brightness-7</v-icon> 
-        
-          <span class="vMmobilview">Configuración</span>
-        </router-link> 
-
-        <router-link to="/favoritos" class="white--text menu-sec miniMovil" style="text-decoration:none;">
  
-          <v-icon class="white--text">mdi-heart</v-icon> 
-         
-          <span class="vMmobilview">  Favoritos</span>
-        </router-link> 
-       <!-- &nbsp;
-        <router-link to="configuracion" class="white--text" style="text-decoration:none;" >
+        <img :src="protocol+'//'+host+'/images/logos/planeta_preescolar_bco.png'" width="70" class="miniMovil" />
   
-              <img src="images/iconos/haztepremium.png" width="50" class="pa-0 ma-0" /><img src="images/iconos/haztepremium1.png" width="100"  class="pa-0 ma-0" />
-
-        </router-link> 
-        &nbsp;--> 
+        &nbsp;  &nbsp; 
         
+        <div class="menu-sec datamenu" v-if="datosUsuario.userlogin===true"  >
+          <div class="primary white--text pa-1 " style="border-radius:10px; width:100%; max-width:230px;" >
+          <v-avatar
+    color="secondary"
+    size="36" 
+  >
+   <img 
+    v-if="datosUsuario.urlImagen" 
+    :src="datosUsuario.urlImagen === 'none' || datosUsuario.urlImagen==='' ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : datosUsuario.urlImagen" width="100%" 
+  />
+  </v-avatar>
 
+         <span class="vMmobilview" >{{ (datosUsuario.nombre+" "+ datosUsuario.apellido).substr(0,13) }}</span> 
+
+       
+     
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                color="primary"
+                dark
+                v-bind="attrs"
+                v-on="on"
+                class="elevation-0"
+              >
+              ▼
+              </v-btn>
+            </template>
+            <v-list  style="width:210px;" >
+              <v-list-item
+                v-for="(item, index) in itemsmenumni"
+                :key="index"
+              >
+                <v-list-item-title >
+                  <router-link class="linkmenuuser" :to="item.link">{{ item.title }} <span class="flechalink"> 
+                    > 
+                  </span></router-link>
+                
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </div>
 
+        </div>
+      
+    <div v-if="devtest===true">
+      <v-btn @click="$store.commit('cambiastatusSesion',{login:false,lvl:0})">user sin registro</v-btn>
+      <v-btn @click="$store.commit('cambiastatusSesion',{login:true,lvl:0})">user registro gratis</v-btn>
+      <v-btn @click="$store.commit('cambiastatusSesion',{login:true,lvl:1})">user registro premium</v-btn>
+      <v-btn @click="$store.commit('cambiastatusSesion',{login:true,lvl:2})">user registro administrador</v-btn>
+  </div>
 
-        </v-card-title>
-    </v-card   > 
-    <v-card v-if="datosUsuario.userlogin===true && datosUsuario.vercorre===false" class="menuMovil">
-      <v-card-title class="melon white--text">
-    <v-icon class="white--text">mdi-email</v-icon> Su correo aun no esta confirmado
+      <v-spacer class="miniMovil"></v-spacer>
+
+      <div class="minimovil"></div>
+      <div v-if="datosUsuario.userlogin===false" >
+      <router-link to="/login" v-if="$validasesion($store,{ sinregistro:true })" class="white--text" style="text-decoration:none;  font-size:15px;">Iniciar sesión</router-link> &nbsp;&nbsp;&nbsp;
+      <v-btn class="melon white--text pa-5"  style="border-radius: 30px; font-size:14px; text-transform:none;" v-if="$validasesion($store,{ sinregistro:true })" link to="/registro">Registro </v-btn>
+      </div>
+
+      <div v-if="datosUsuario.userlogin===true" >
+        <!-- <p>{{datosUsuario.estadoMembresia}}</p> -->
+        <router-link v-show="datosUsuario.estadoMembresia !== 'active' && (datosUsuario.lvluser <= 2)" to="checkout" class="white--text menu-sec miniMovil" style="text-decoration:none; position:relative;" > 
+          <img src="../../static/images/iconos/Astronauta.png" class="menu-sec-anim"  />
+          <span class="vMmobilview "> <img src="../../static/images/iconos/haztepremium1.png" style="  left:-100px; 
+            width:100px; 
+            position:absolute;"  /></span>
+        </router-link>
+
+
+        <notificaciones></notificaciones>
+
+  
+      
+      <router-link to="/configuracion" class="white--text menu-sec miniMovil" style="text-decoration:none;">
+
+        <v-icon class="white--text">mdi-brightness-7</v-icon> 
+      
+        <span class="vMmobilview">Configuración</span>
+      </router-link> 
+
+      <router-link to="/favoritos" class="white--text menu-sec miniMovil" style="text-decoration:none;">
+
+        <v-icon class="white--text">mdi-heart</v-icon> 
+       
+        <span class="vMmobilview">  Favoritos</span>
+      </router-link> 
+     <!-- &nbsp;
+      <router-link to="configuracion" class="white--text" style="text-decoration:none;" >
+
+            <img src="images/iconos/haztepremium.png" width="50" class="pa-0 ma-0" /><img src="images/iconos/haztepremium1.png" width="100"  class="pa-0 ma-0" />
+
+      </router-link> 
+      &nbsp;--> 
+      
+
+      </div>
+
+
       </v-card-title>
-    </v-card>
+  </v-card   > 
+  <v-card v-if="datosUsuario.userlogin===true && datosUsuario.vercorre===false" class="menuMovil">
+    <v-card-title class="melon white--text">
+  <v-icon class="white--text">mdi-email</v-icon> Su correo aun no esta confirmado 
+  <v-spacer></v-spacer>
+  
+  <v-tooltip bottom>
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn
+      class="melon"
+      depressed
+        v-bind="attrs"
+        v-on="on"
+        to="/reporte"
+      > <v-icon  class="white--text ">mdi-alert-circle-outline</v-icon>
+    </v-btn>
+    </template>
+    <span>Si tiene problemas para recibir el correo de confirmación levanta un reporte</span>
+  </v-tooltip>
+
+
+
+    </v-card-title>
+  </v-card>
 
 </div>

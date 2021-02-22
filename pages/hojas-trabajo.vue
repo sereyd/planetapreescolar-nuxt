@@ -2,7 +2,7 @@
   <v-main class="px-10" v-if="bandera">
     <v-row>
       <v-col cols="12">
-        <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/>
+        <buscador :esBuscando ="buscando" :selectopt="'Hojas de trabajo'"  @updateBuscando="buscando=$event"/>
       </v-col>
     </v-row>
     <v-row>

@@ -12,7 +12,7 @@ export default {
   },
   methods:{
     redTienda(){
-        window.open(this.$store.state.linktienda,"_blank")
+        window.open(this.$store.state.configAll.tienda,"_blank")
         this.$router.push('/')
     }
   },

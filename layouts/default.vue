@@ -1,7 +1,21 @@
 <template>
   <v-app>
 
-      <loader />
+      <loader :stload="loader" />
+<v-dialog fullscreen v-model="gralconfig.mantenimineto">
+  <v-card>
+    <v-card-title class="melon white--text">
+      Sitio en Mantenimiento o contrucción
+    </v-card-title>
+    <v-card-text>
+      Para entrar ingrese la contraseña de desarrollo
+      <v-text-field type="password" label="Ingrese la contraseña"  v-model="clavedesb"></v-text-field>
+      <v-btn class="primary white--text" @click="entrarMantenimiento()">Entrar</v-btn>
+      {{menMant}}
+    </v-card-text>
+  </v-card>
+  </v-dialog>
+
          <menulateral @abremenu="drawer=$event" />
 
     <v-navigation-drawer
@@ -64,9 +78,8 @@
 
       <!----Espacio de carga de vistas------>
       <v-main class="ma-0 pa-0">
-        
-        <nuxt />
 
+          <nuxt />
 
       </v-main>
 </v-col>
@@ -150,26 +163,21 @@
   }
 
 }
-
-
-
-
-
 </style>
 <script>
-
-
-
-
-
   import menulateral from '~/components/menulateral/menulateral.vue'
   import { mapState, mapMutations, mapActions } from 'vuex'
   import loader from '~/components/loader/loader.vue'
   import alertas from "~/components/alertas/alertas.vue"
     export default {
+
       data () {
         return {
           drawer: false,
+          loader:false,
+          clavedesb:"",
+          menMant:"",
+          gralconfig:{},
           validsesion:true,
           // dialog: false,
             items: [
@@ -180,6 +188,15 @@
         }
       },
       created(){
+        this.$fireStore.collection('ConfiguracionGeneral').get()
+        .then((data)=>{
+         const configall=data.docs[0].data()
+          this.gralconfig=configall
+          this.cargaConfiGral(configall)
+          this.loader=true
+        })
+        
+        
         window.addEventListener("keyup", e => {
       
           if(e.keyCode === 44) 
@@ -197,20 +214,33 @@
           },800)
         }
         });
+
+
       },
       computed:{
         ...mapState(['dialog', 'test','itemsmenu','vistaValida','mensajealerta','staleras','tpalert','menufix'])
       },
       methods:{
 
-        ...mapMutations(['abrirRegistro','changeScreenPrint']),
-        ...mapActions(['scrollmenu'])
+        ...mapMutations(['abrirRegistro','changeScreenPrint','cambioMantenimiento','cargaConfiGral']),
+        ...mapActions(['scrollmenu']),
+        entrarMantenimiento(){
+          if(this.clavedesb===this.configall.passmantent){
+            this.cambioMantenimiento(false)
+            
+          }else{
+            this.menMant="La contraseña no es correcta"
+            setTimeout(()=>{
+              this.menMant=""
+            },3000)
+          }
+        }
       },
       components:{
         menulateral,
         loader,
         alertas
-      } 
+      },
       
     }
 </script>

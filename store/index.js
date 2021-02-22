@@ -10,6 +10,7 @@ import {isPast} from 'date-fns';
 const createStore = () => {
   return new Vuex.Store({
     state: () => ({
+      configAll:{},
       estados:[
         'Aguascalientes',
         'Baja California',
@@ -390,8 +391,6 @@ const createStore = () => {
       imgupload: "",
       urlimg: "",
       stripeObj: null,
-      linktienda: "https://tiendasereyd.ml",
-
       vistaValida: true,
       grupo: {},
       clasesCreadas: [],
@@ -475,6 +474,7 @@ const createStore = () => {
 
     }),
     actions: {
+      
       async loginStore({commit}, data) {
         console.log('cambia en store')
         console.log(data)
@@ -613,12 +613,12 @@ const createStore = () => {
                      */
               let datos = {};
               // let sinsuscripcion;
-              console.log("1")
+            //  console.log("1")
               // console.log(user)
 
               // if(user.email)
               // {
-                console.log("2")
+              //  console.log("2")
                 // console.log(user)
 
                 const usuarioQuery =  this.$fireStore.collection('usuarios')
@@ -1239,12 +1239,22 @@ const createStore = () => {
         cerrarconexion(){
           console.log('action close conexion')
           observer()
-        }
+        },
+
     },
 
 
 
     mutations: {
+      cargaConfiGral(state,data){
+        state.configAll=data
+      },
+      cambioMantenimiento(state,data){
+        state.mantenimiento=data
+      },
+      cambiaselecionbusqueda(state,data){
+        state.datosBusqueda.tipo=data
+      },
       changeScreenPrint(state,edo){
         state.screenprinf=edo
       },
