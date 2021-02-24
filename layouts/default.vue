@@ -80,7 +80,7 @@
       <v-main class="ma-0 pa-0">
 
           <nuxt />
-
+  <boletin />
       </v-main>
 </v-col>
 </v-row>     
@@ -169,6 +169,7 @@
   import { mapState, mapMutations, mapActions } from 'vuex'
   import loader from '~/components/loader/loader.vue'
   import alertas from "~/components/alertas/alertas.vue"
+  import boletin from "~/components/boletin/boletin.vue"
     export default {
 
       data () {
@@ -239,7 +240,8 @@
       components:{
         menulateral,
         loader,
-        alertas
+        alertas,
+        boletin
       },
       
     }

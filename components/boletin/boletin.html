@@ -1,0 +1,43 @@
+<v-main>
+    <v-btn
+    v-if="valconex===true && stboletin===false" 
+    color="melon"
+    dark
+    fixed
+    bottom
+    right
+
+    @click="stboletin=true"
+  >
+   <v-icon>mdi-text-box-plus-outline</v-icon> Boletin
+  </v-btn>
+
+    <v-dialog v-model="stboletin"  max-width="600">
+<v-card >
+    <v-card-title class="center">
+        Registrate a nuestro Boletín
+    </v-card-title>
+    <v-card-text>
+        <v-text-field  v-model="reg.nombre" label="Ingrese su Nombre Completo" ></v-text-field>
+        <v-text-field  v-model="reg.correo" label="Ingrese su correo" ></v-text-field>
+        <v-select
+        v-model="reg.interes"
+        :items="intereses"
+        attach
+        chips
+        :menu-props="{ maxHeight: '200' }"
+        label="Seleccione los temas de su interes"
+        multiple
+      ></v-select>
+
+        <v-label>
+     Ingrese su fecha de nacimiento
+        </v-label>
+        <v-text-field  v-model="reg.fecha"  type="Date"></v-text-field>
+        <v-banner class="error white--text text-center" v-if="menerror" v-html="menerror"></v-banner>
+        
+        <v-btn class="primary white--text" width="100%" @click="registrarBoletin()">Registrar</v-btn>
+    </v-card-text>
+</v-card>
+</v-dialog>
+</v-main>

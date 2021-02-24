@@ -10,20 +10,13 @@ export default {
       importe:"",
 
       //CLAVES DE PAQUETES
-      mensualPriceId: "price_1IKCoAGqO5WLKI2Hj5mvLrNe",
-      trimestralPriceId: "price_1IKCpMGqO5WLKI2HaWxukBvn",
-      semestralPriceId: "price_1IKCqbGqO5WLKI2HlHkgzs0c",
-      anualPriceId: "price_1IKCrEGqO5WLKI2HwNUc9NgY",
+      apikeystripe:"",
       // mensualPriceId: "price_1IISmVANenJgOhZEqbbhOoWO",
       // trimestralPriceId: "price_1IISmVANenJgOhZEQFCe6E4l",
       // semestralPriceId: "price_1IISmVANenJgOhZEyjxBqKE4",
       // anualPriceId: "price_1IISmUANenJgOhZEM9nfjELS",
 
-      precioMensual: 490,
-      precioTrimestral: 1290,
-      precioSemestral: 2190,
-      precioAnual: 3490,
-      tipoMembresia: "",
+
 
       urlsusMP: "",
 
@@ -64,16 +57,17 @@ export default {
     }
   },
   computed:{
-    ...mapState(['datosUsuario','dominio','urlAPI']),
+    ...mapState(['datosUsuario','dominio','urlAPI','configAll']),
     
   },
   components:{Spinner},
- 
+  created(){
+   this.apikeystripe=this.configAll.pagos.stripe.modoprueba === true ? this.configAll.pagos.stripe.apikeytest : this.configAll.pagos.stripe.apikeyprod
+  },
   methods: {
     ...mapMutations(['guardaDatosUsuarioStore','guardarStripeObj']),
     //PAGOS CON MERCADO LIBRE
     generarCobro(){
-
       window.Mercadopago.setPublishableKey(this.apiKey);
       console.log(this.datosMP);
     },
@@ -97,7 +91,7 @@ export default {
       this.loaderpage=true
       this.tipoSuscripcion= tipoS;
       const external_reference = this.$codegenerate().toString();
-
+      this.urlMP=this.configAll.pagos.mercadopago.urlApi
       // return external_reference;
 
       const description = tipoS === "trimestral" ? "Planeta Preescolar: Trimestral" : 
@@ -126,7 +120,10 @@ export default {
         external_reference
 
       };
-      fetch(this.urlAPI+"/create_preference", {
+
+
+
+      fetch(this.urlMP+"/create_preference", {
       // fetch("/create_preference", {
               method: "POST",
               headers: {
@@ -182,7 +179,7 @@ export default {
       this.loaderpage=true
       this.spinner = true;
       const external_reference = this.$codegenerate().toString();
-      const priceTipo = tipoSuscripcion;
+      const priceTipo =this.configAll.pagos.stripe.idsus[tipoSuscripcion];
       // this.importe = priceTipo === 'trimestral' ? "$500.00 MX" : "$1500.00 MX";
       this.importe  = 
         priceTipo === 'trimestral' ? this.precioTrimestral 
@@ -197,8 +194,10 @@ export default {
         : priceTipo === 'semestral' ? this.semestralPriceId 
         : priceTipo === 'mensual' ? this.mensualPriceId : this.anualPriceId;
 
-
-      let stripe = Stripe(process.env.publishStripeKey, locale);
+      
+      
+      
+      let stripe = Stripe(this.apikeystripe, locale);
 
       var orderData={
         priceId: priceId,
@@ -218,7 +217,7 @@ export default {
       //   })
       //LLAMADA A LA API EXTERNA PARA CREAR UNA SESION DE PAGO
       // fetch("http://localhost:4242/create-checkout-session", {
-      fetch(this.urlAPI+"/create-checkout-session", {
+      fetch(this.configAll.pagos.stripe.urlApi+"/create-checkout-session", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

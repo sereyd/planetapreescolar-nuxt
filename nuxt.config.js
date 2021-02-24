@@ -19,7 +19,7 @@ export default {
   */
   head: {
     titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    title: 'Planeta Preescolar',
     script: [
       {
         // src: 'https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js',
@@ -29,8 +29,8 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' },
-     
+      { hid: 'description', name: 'description', content: 'Descarga recursos de aprendizaje preescolar, como: planeaciones editables, hojas de trabajo, material didáctico, cantos y mucho más. Realiza tu registro trimestral, semestral o anual para mayores beneficios.'},
+      { hid: 'keywords', name: 'keywords', content: 'Material educativo gratuito | Material para educadora | Libros para niños | Juegos educativos gratis | Artículos didácticos | Material educativa | Materiales de aprendizaje | Cuadernillo de trabajo | Actividad para niños | Juegos didácticos | Actividades para preescolar | Actividad para niños | Actividad para preescolar | Recursos para educación preescolar | Recursos de aprendizaje preescolar'},
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -77,16 +77,17 @@ export default {
     '@nuxtjs/firebase',
     'nuxt-stripe-module',
     'nuxt-i18n',
-  ],
-  stripe: {
-    // publishableKey: 'pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx',
-    publishableKey: 'pk_live_mEJzhFjTZBwfDPcD7xeErDyU00ZBdyGGiP',
+    'nuxt-facebook-pixel-module',
     
+  ],
+  facebook: {
+    /* module options */
+    track: 'PageView',
+    pixelId: '2871388423188636',
+    autoPageView: true,
+    disabled: false
   },
-  env: {
-    publishStripeKey: 'pk_test_51HYuyhGqO5WLKI2Hu5m73PN4c8yz2iBOd1ewOcUYP8cVFfRvoXhUA0t7wpXFQBTawWYN8bjbpLdP4QGd9NhxiF7t00i4J0tzOx',
-    // publishStripeKey: 'pk_live_mEJzhFjTZBwfDPcD7xeErDyU00ZBdyGGiP',
-  },
+
   firebase: {
     config:{
       apiKey: "AIzaSyB8GyvM9PdvjufoAyEZv2uRQLVhVQM-Z-o",
