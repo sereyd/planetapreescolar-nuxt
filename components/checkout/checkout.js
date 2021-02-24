@@ -63,7 +63,9 @@ export default {
   components:{Spinner},
   created(){
    this.apikeystripe=this.configAll.pagos.stripe.modoprueba === true ? this.configAll.pagos.stripe.apikeytest : this.configAll.pagos.stripe.apikeyprod
-  },
+  
+    console.log(this.apikeytest)
+    },
   methods: {
     ...mapMutations(['guardaDatosUsuarioStore','guardarStripeObj']),
     //PAGOS CON MERCADO LIBRE
@@ -179,23 +181,17 @@ export default {
       this.loaderpage=true
       this.spinner = true;
       const external_reference = this.$codegenerate().toString();
-      const priceTipo =this.configAll.pagos.stripe.idsus[tipoSuscripcion];
+ 
       // this.importe = priceTipo === 'trimestral' ? "$500.00 MX" : "$1500.00 MX";
-      this.importe  = 
-        priceTipo === 'trimestral' ? this.precioTrimestral 
-        : priceTipo === 'semestral' ? this.precioSemestral 
-        : priceTipo === 'mensual' ? this.precioMensual  : this.precioAnual;
+      this.importe  = this.configAll.pagos.stripe.idpagos[tipoSuscripcion];
 
       const locale = "es"
       
       //SE VERIFICA QUE TIPO DE MEMBRESIA SE DESEA PAGAR
-      const priceId = 
-        priceTipo === 'trimestral' ? this.trimestralPriceId 
-        : priceTipo === 'semestral' ? this.semestralPriceId 
-        : priceTipo === 'mensual' ? this.mensualPriceId : this.anualPriceId;
+      const priceId = this.configAll.pagos.stripe.idsus[tipoSuscripcion];
 
       
-      
+      console.log(this.apikeystripe)
       
       let stripe = Stripe(this.apikeystripe, locale);
 

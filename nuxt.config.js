@@ -7,7 +7,7 @@ export default {
   */
   mode: 'spa',
   dev: true,
-  ssr: false,
+  ssr: true,
   /*
   ** Nuxt target
   ** See https://nuxtjs.org/api/configuration-target
@@ -85,7 +85,8 @@ export default {
     track: 'PageView',
     pixelId: '2871388423188636',
     autoPageView: true,
-    disabled: false
+    disabled: false,
+    debug: true
   },
 
   firebase: {
@@ -147,6 +148,7 @@ export default {
   defaultAssets: false
      
   },
+Middlewere:['compra'],
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
