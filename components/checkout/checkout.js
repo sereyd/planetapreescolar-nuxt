@@ -57,7 +57,7 @@ export default {
     }
   },
   computed:{
-    ...mapState(['datosUsuario','dominio','urlAPI','configAll']),
+    ...mapState(['datosUsuario','dominio','configAll']),
     
   },
   components:{Spinner},
@@ -93,16 +93,14 @@ export default {
       this.loaderpage=true
       this.tipoSuscripcion= tipoS;
       const external_reference = this.$codegenerate().toString();
-      this.urlMP=this.configAll.pagos.mercadopago.urlApi
+      this.urlMP=this.configAll.pagos.mercadopago.modoprueba === true ? this.configAll.pagos.mercadopago.apiUrltest : this.configAll.pagos.mercadopago.apiUrlprod
       // return external_reference;
 
       const description = tipoS === "trimestral" ? "Planeta Preescolar: Trimestral" : 
         tipoS === "semestral" ? "Planeta Preescolar: Semestral" :
         tipoS === "anual" ? "Planeta Preescolar: Anual" : "Planeta Preescolar: Mensual";
       
-      const price = tipoS === "trimestral" ? this.precioTrimestral : 
-        tipoS === "semestral" ? this.precioSemestral :
-        tipoS === "anual" ? this.precioAnual : this.precioMensual
+      const price = this.configAll.pagos.mercadopago.idpagos[tipoS];
 
     /*  this.urlsusMP = tipoS === "trimestral" ? 
       "https://www.mercadopago.com/mlm/debits/new?preapproval_plan_id=2c9380847726c5de01773a8cbb520dc0" : 
@@ -122,10 +120,10 @@ export default {
         external_reference
 
       };
+      var urlendpoint=this.configAll.pagos.mercadopago.modoprueba === true ? this.configAll.pagos.mercadopago.apiUrltest : this.configAll.pagos.mercadopago.apiUrlprod
 
 
-
-      fetch(this.urlMP+"/create_preference", {
+      fetch(urlendpoint+"/create_preference", {
       // fetch("/create_preference", {
               method: "POST",
               headers: {
@@ -138,9 +136,8 @@ export default {
           return response.json();
       })
       .then((preference) => {
-      
-
-          // console.log(preference);
+    
+          console.log(preference);
           // alert("stopppp")
          /// location.href = preference.pre.init_point;
          this.urlMP = preference.pre.init_point;
@@ -149,8 +146,8 @@ export default {
           localStorage.setItem("payment_intent", "" );
           localStorage.setItem("user", JSON.stringify(this.datosUsuario) );
           orderData.medio="MercadoPago"
-              this.registroPago(orderData)
-            window.location.href=this.urlMP
+              this.registroPago(orderData)  
+           window.location.href=this.urlMP
         
       })
       .catch((error) => {
@@ -190,8 +187,8 @@ export default {
       //SE VERIFICA QUE TIPO DE MEMBRESIA SE DESEA PAGAR
       const priceId = this.configAll.pagos.stripe.idsus[tipoSuscripcion];
 
-      
-      console.log(this.apikeystripe)
+      var urlendpoint=this.configAll.pagos.stripe.modoprueba === true ? this.configAll.pagos.stripe.apiUrltest : this.configAll.pagos.stripe.apiUrlprod
+ 
       
       let stripe = Stripe(this.apikeystripe, locale);
 
@@ -213,7 +210,7 @@ export default {
       //   })
       //LLAMADA A LA API EXTERNA PARA CREAR UNA SESION DE PAGO
       // fetch("http://localhost:4242/create-checkout-session", {
-      fetch(this.configAll.pagos.stripe.urlApi+"/create-checkout-session", {
+      fetch(urlendpoint+"/create-checkout-session", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

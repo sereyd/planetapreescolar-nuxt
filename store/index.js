@@ -425,7 +425,7 @@ const createStore = () => {
       dominio:"https://educadora.cf",
 
       //APIS DEVELOP Y PRODUCCION
-      urlAPI: "https://stripe-checkout-api.herokuapp.com",
+      ///urlAPI: "https://stripe-checkout-api.herokuapp.com",
       // urlAPI: "http://localhost:4242",
       // descargarFree: 8,
       // data para ver lista completa de post
@@ -474,7 +474,11 @@ const createStore = () => {
 
     }),
     actions: {
-      
+      nuxtServerInit () {
+       console.log('nuxt server init')
+      },
+
+
       async loginStore({commit}, data) {
         console.log('cambia en store')
         console.log(data)
@@ -579,6 +583,9 @@ const createStore = () => {
         }
       },
       async autenticarUsuario(context) {
+       
+       
+      
        // console.log("Verificando si hay sesion abierta");
         context.commit("compruebaConexion", "usuarios");
         setTimeout(() => {
@@ -596,9 +603,16 @@ const createStore = () => {
         */
       //  console.log("VERIFICANDO USUARIOOO...")
       
+
         await this.$fireAuth.onAuthStateChanged( user => {
           // console.log("USUARIO QUE SE ESTA VERIFICANDO:")
           // console.log(user)
+         
+          var urlapistrip=context.state.configAll.pagos.stripe.modoprueba===true ? context.state.configAll.pagos.stripe.apiUrltest : context.state.configAll.pagos.stripe.apiUrlprod
+
+          console.log(urlapistrip)
+    
+
           if(user)
           {
 
@@ -660,7 +674,7 @@ const createStore = () => {
                   {
 
                     //OBTENER CONFIGURACION DE DESCARGAS
-                    const response = await fetch(context.state.urlAPI+"/obtenerFechaActual")
+                    const response = await fetch(urlapistrip+"/obtenerFechaActual")
                     const d = await response.json();
 
                     //DESCARGAS POR MES POR DEFECTO PARA EVITAR ERRORES
@@ -737,55 +751,67 @@ const createStore = () => {
                       // console.log("this.datosPago");
                       // console.log(context.state.datosPago);
 
-                      
+                     
 
                       if(context.state.datosPago.medio === "Stripe")
                       {
 
                         const {id} = context.state.datosPago
+                       
+                        this.$fireStore.collection('ConfiguracionGeneral').get()
+                        then((datasec)=>{
 
-                        fetch(context.state.urlAPI+"/check-suscripcion?suscripcionId=" + id)
-                        .then((result)=>{
-                          return result.json()
-                        })
-                        .then(async(suscripcion)=>{
-                          // console.log(suscripcion);
+                          var dtweb= datasec.docs[0].data().pagos.stripe.modoprueba===true ? datasec.docs[0].data().pagos.stripe.apiUrltest : datasec.docs[0].data().pagos.stripe.apiUrlprod
 
-
-                          context.commit("cambiastatusSesion",datos);
-
-                          //SE REVISA EL ESTADO DE LA SUSCRIPCIÓN
-                          if(suscripcion.error)
-                          {
-                            datos.estadoMembresia = "canceled";
-                            context.state.datosSuscripcion.status = false;
-                            datos.descargas.mes.active = false;
-                          }
-                          else{
-                            datos.estadoMembresia = suscripcion.status;
-                            
-                            if(suscripcion.status === "active")
+                          fetch(dtweb+"/check-suscripcion?suscripcionId=" + id)
+                          .then((result)=>{
+                            return result.json()
+                          })
+                          .then(async(suscripcion)=>{
+                            // console.log(suscripcion);
+  
+  
+                            context.commit("cambiastatusSesion",datos);
+  
+                            //SE REVISA EL ESTADO DE LA SUSCRIPCIÓN
+                            if(suscripcion.error)
                             {
-                              context.state.datosSuscripcion.status = true;
-                              datos.lvluser = 2;
-                              console.log("SI TIENE MEMBRESIA PREMIUM")
-                              context.commit("updateDescargasPre", suscripcion);
+                              datos.estadoMembresia = "canceled";
+                              context.state.datosSuscripcion.status = false;
+                              datos.descargas.mes.active = false;
                             }
-                          }
-
-                          
+                            else{
+                              datos.estadoMembresia = suscripcion.status;
+                              
+                              if(suscripcion.status === "active")
+                              {
+                                context.state.datosSuscripcion.status = true;
+                                datos.lvluser = 2;
+                                console.log("SI TIENE MEMBRESIA PREMIUM")
+                                context.commit("updateDescargasPre", suscripcion);
+                              }
+                            }
+  
+                            
+  
+                          })
+                          .catch((err)=>{
+                            console.log('Error al verificar suscripción', err);
+                          });
 
                         })
-                        .catch((err)=>{
-                          console.log('Error al verificar suscripción', err);
-                        });
+                      
                       }
                       
                       else if(context.state.datosPago.medio === "MercadoPago")
                       {
 
                         //REVISA MEMBRESIA EN CASO DE PAGO CON MERCAPAGO
-                        
+                        this.$fireStore.collection('ConfiguracionGeneral').get()
+                        then((datasec)=>{
+
+                          var dtweb= datasec.docs[0].data().pagos.mercadopago.modoprueba===true ? datasec.docs[0].data().pagos.mercadopago.apiUrltest : datasec.docs[0].data().pagos.mercadopago.apiUrlprod
+
                           const config = {
                             method: 'POST',
                             headers: {
@@ -794,7 +820,7 @@ const createStore = () => {
                             },
                             body: JSON.stringify({idPago: context.state.datosPago.id})
                           }
-                          fetch(context.state.urlAPI+"/estado-pago",config)
+                          fetch(dtweb+"/estado-pago",config)
                           .then((result)=>{
                             return result.json()
                           })
@@ -878,6 +904,8 @@ const createStore = () => {
                           .catch((err)=>{
                             console.log('Error al verificar suscripción', err);
                           });
+
+                        })
                       }
                       else{
                         //SUSCRIPCION TERMINADA
@@ -888,11 +916,6 @@ const createStore = () => {
                       }
 
                     })
-                    
-
-
-                    
-                  
                   }
                   else if(datos.lvluser >= 3)
                   {
@@ -969,8 +992,10 @@ const createStore = () => {
     // },
 
       //DE STRIPE
-      obtenerDatosSuscripcion({state}, idSuscripcion){
-        fetch(state.urlAPI+"/check-suscripcion?suscripcionId=" + idSuscripcion)
+      obtenerDatosSuscripcion({state}, data){
+        
+        //////////////////////////////////////////
+        fetch(data.url+"/check-suscripcion?suscripcionId=" + data.idSuscripcion)
           .then((result)=>{
             return result.json()
           })
@@ -1008,6 +1033,9 @@ const createStore = () => {
           .catch((err)=>{
             console.log('Error al verificar suscripción', err);
           });
+              //////////////////////////////////////////
+
+
       },
 
       
@@ -1317,7 +1345,7 @@ const createStore = () => {
         state.viewpost = payload;
       },
       changeDialogPost(state, payload){
-        console.log("mosytrando post")
+        console.log("mostrando post")
         state.dialogPost = payload;
       },
       

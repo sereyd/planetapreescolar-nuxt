@@ -170,6 +170,7 @@
   import loader from '~/components/loader/loader.vue'
   import alertas from "~/components/alertas/alertas.vue"
   import boletin from "~/components/boletin/boletin.vue"
+
     export default {
 
       data () {
@@ -189,6 +190,7 @@
         }
       },
       created(){
+       console.log(this.$configGral)
         this.$fireStore.collection('ConfiguracionGeneral').get()
         .then((data)=>{
          const configall=data.docs[0].data()

@@ -72,7 +72,7 @@ export default {
         }
     },
     computed:{
-    ...mapState(['datosUsuario','dominio','urlAPI','datosSuscripcion']),
+    ...mapState(['datosUsuario','dominio','urlAPI','datosSuscripcion','configAll']),
     
     },
     methods: {
@@ -145,8 +145,19 @@ export default {
                     this.guardaDatosUsuarioStore(datosUsuario);
 
                     //Obtener datos de membresia
-                    this.obtenerDatosSuscripcion(session.subscription);
+                    this.$fireStore.collection('ConfiguracionGeneral').get()
+                    .then((data)=>{
+                        var urlweb=data.docs[0].data().pagos.stripe.modoprueba===true ? data.docs[0].data().pagos.stripe.apiUrltest : data.docs[0].data().pagos.stripe.apiUrlprod 
+
+
+                       var payload={
+                         url:urlweb,
+                      idSuscripcion:session.subscription
+                    }
+                    this.obtenerDatosSuscripcion(payload);
                     
+                    })
+                   
 
 
 

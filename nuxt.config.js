@@ -1,5 +1,6 @@
 import colors from 'vuetify/es5/util/colors'
-
+import firebase from 'firebase'
+import Vue from 'vue'
 export default {
   /*
   ** Nuxt rendering mode
@@ -105,8 +106,10 @@ export default {
       auth: true, // Just as example. Can be any other service.
       firestore:true,
       storage: true
-    }
+    },
+   
   },
+ 
   /*
   ** Axios module configuration
   ** See https://axios.nuxtjs.org/options
@@ -148,12 +151,17 @@ export default {
   defaultAssets: false
      
   },
-Middlewere:['compra'],
+Middleware:['configral'],
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
 
+    extend(config, ctx) {
+      
+      
+    }
+    
   }
   }

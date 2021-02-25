@@ -11,7 +11,7 @@
                 <listablog 
                         :blogpost="planeaciones" :esCompleto="false" @updateBlogpost="planeaciones=$event"
                         tipo="CATEGORIAS" subtipo="planeacion" 
-                        titulo="Planeaciones" subtitulos="¡Planea tu día con muchas actividades!"  
+                        titulo="Planeaciones" subtitulos="Biblioteca con cientos de planeaciones, no te quedes sin ideas."  
                         linkmas="planeaciones" 
                 />
                 <div style="width:100%; height:0px;" v-if="planeaciones.length > 0"></div>
@@ -20,7 +20,7 @@
                 <listablog 
                         :blogpost="hojastrabajo" :esCompleto="false" @updateBlogpost="hojastrabajo=$event"
                         tipo="CATEGORIAS" subtipo="hojatrabajo" 
-                        titulo="Hojas de trabajo para los niños" subtitulos="Recortes, actividades, días especiales, ¡todo lo que necesitas!" 
+                        titulo="Hojas de trabajo para los niños" subtitulos="Actividades para reforzar los aprendizajes en forma divertida" 
                         linkmas="hojas-trabajo"  
                 />
                 <div style="width:100%; height:0px;" v-if="hojastrabajo.length > 0"></div>
@@ -38,7 +38,7 @@
                 <listablog 
                         :blogpost="materialdidactico" :esCompleto="false" @updateBlogpost="materialdidactico=$event"
                         tipo="CATEGORIAS" subtipo="materialdidactico" 
-                        titulo="Material didáctico para los niños" subtitulos="Recortes, actividades, días especiales, ¡todo lo que necesitas!" 
+                        titulo="Material didáctico para los niños" subtitulos="Loterías, memoramas, juegos, dominós, frisos, gafetes, reglamentos a todo color." 
                         linkmas="material-didactico"  
                 />
                 <div style="width:100%; height:0px;" v-if="materialdidactico.length > 0"></div>
@@ -47,7 +47,7 @@
                 <listablog 
                         :blogpost="interactivos" :esCompleto="false" @updateBlogpost="interactivos=$event"
                         tipo="CATEGORIAS" subtipo="interactivo" 
-                        titulo="Interactivos para los niños" subtitulos="Videos y audios, ¡todo lo que necesitas!" 
+                        titulo="Interactivos para los niños" subtitulos="Cantos, cuentos, videos y actividades interactivas" 
                         linkmas="interactivos"  
                 />
                 <div style="width:100%; height:0px;" v-if="interactivos.length > 0"></div>
