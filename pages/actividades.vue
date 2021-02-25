@@ -75,6 +75,10 @@ import listablog from '~/components/listado-blog/listado-blog.vue'
 import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
+  head: {
+    title:'Planeaciones editables, hojas de trabajo,material didáctico, cantos y juegos| Planeta Preescolar',
+      
+  },
   data() {
     return {
       // reflexiones:[],
