@@ -90,6 +90,7 @@
                 outlined
                 name="input-7-4"
                 label="Ingrese su comentario"
+                height="70px"
                 v-model="comentario"
               ></v-textarea>
 
@@ -114,11 +115,15 @@
                   class="pa-0"
                 >
                   <v-row>
-                    <v-col cols="12" md="4" class="text-center">
-                      <v-avatar size="50">
-                        <v-img :src="com.imagen"></v-img> </v-avatar
-                      ><br />
-                      <h4>{{ com.nombre }}</h4>
+                    <v-col cols="12" md="4" class="">
+                      <div class="pl-7">
+                        <v-avatar size="38">
+                          <v-img :src="com.imagen !== '' && com.imagen !== 'none' ? com.imagen : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' "></v-img> </v-avatar
+                        ><br />
+                      </div>
+                      <div class="pl-5 texto_usuario">
+                        <span>{{com.nombre}}</span>
+                      </div>
 
                       <v-icon v-if="datosforo.iduser === datosUsuario.id && com.validado===true" class="success--text" >mdi-check</v-icon>
                       <v-icon v-if="datosforo.iduser === datosUsuario.id && com.validado===false" class="error--text" >mdi-eye-off</v-icon>
@@ -142,8 +147,8 @@
                         ><v-icon class="white--text">mdi-delete</v-icon></v-btn
                       >
                     </v-col>
-                    <v-col cols="12" md="8">
-                      {{ com.comentario }}
+                    <v-col cols="12" md="8" class="texto_comentario">
+                      <span>{{ com.comentario }}</span>
                     </v-col>
                   </v-row>
                 </v-card-text>
@@ -198,16 +203,17 @@ export default {
       this.lcomentarios = [];
       if (this.datosforo.comentarios) {
         this.datosforo.comentarios.forEach(coment => {
-          if (
-            this.datosUsuario.userlogin === true &&
-            this.datosUsuario.id === this.datosforo.iduser
-          ) {
-            this.lcomentarios.push(coment);
-          } else {
-            if (coment.validado === true) {
-              this.lcomentarios.push(coment);
-            }
-          }
+          this.lcomentarios.push(coment);
+          // if (
+          //   this.datosUsuario.userlogin === true &&
+          //   this.datosUsuario.id === this.datosforo.iduser
+          // ) {
+          //   this.lcomentarios.push(coment);
+          // } else {
+          //   if (coment.validado === true) {
+          //     this.lcomentarios.push(coment);
+          //   }
+          // }
         });
       }
       return this.lcomentarios.length;
@@ -220,7 +226,8 @@ export default {
     if(this.datosforo.estrellas && this.datosforo.estrellas.length>0){
         var resultado = this.datosforo.estrellas.find(estrella=>estrella.iduser === this.datosUsuario.id)
         console.log('Resultado de find estrellas')
-        if(resultado.cal){
+        console.log(resultado)
+        if(resultado){
           this.verestrellas=false
         }else{
           this.verestrellas=true
@@ -315,8 +322,17 @@ console.log('suma de '+sumstar+" de "+totalstart+' calificación de estrellas '+
         fecha: new Date(),
         validado: false
       };
+      console.log("this.datosComentario")
+      console.log(this.datosComentario)
+
+      console.log(" this.datosforo.comentarios")
+      console.log( this.datosforo.comentarios)
+      alert("123")
       this.datosforo.comentarios.push(this.datosComentario);
       this.comentario = "";
+      console.log(" this.datosforo.comentarios")
+      console.log( this.datosforo.comentarios)
+      alert("333")
 
       ///// guarda comentario en firebase
 
@@ -354,6 +370,8 @@ console.log('suma de '+sumstar+" de "+totalstart+' calificación de estrellas '+
       this.datosforo = this.foroselect;
         setTimeout(()=>{this.verifEstrella()},1000)
     }
+    console.log(this.datosforo);
+
     }
   },
   mounted() {

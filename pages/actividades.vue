@@ -29,7 +29,7 @@
                 <listablog 
                         :blogpost="hojasilustrar" :esCompleto="false" @updateBlogpost="hojasilustrar=$event"
                         tipo="CATEGORIAS" subtipo="hojailustrar" 
-                        titulo="Hojas para ilustrar para los niños" subtitulos="Recortes, actividades, días especiales, ¡todo lo que necesitas!" 
+                        titulo="Hojas para colorear" subtitulos="" 
                         linkmas="hojas-ilustrar"  
                 />
                 <div style="width:100%; height:0px;" v-if="hojasilustrar.length > 0"></div>

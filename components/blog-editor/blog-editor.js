@@ -170,6 +170,9 @@ export default {
     
     //METODOS PARA LA CARGA DE RECURSOS A FIREBASE
     async almacenarRecursoCollection(){
+      // this.datosRecurso.recomendado = false;
+      // console.log("this.datosRecurso antes de almacenar");
+      // console.log(this.datosRecurso);
 
       
       if(this.completado && this.listo)
@@ -200,8 +203,10 @@ export default {
             tipo: this.subtipo,
             // tags: this.tags
           }
+          // nuevoRecurso.recomendado = nuevo
 
         try {
+          // console.log(nuevoRecurso);
           await this.$fireStore.collection(this.tipo).add(nuevoRecurso);
           this.listaR.push(this.datosRecurso)
           this.actualizarCategorias([]);
@@ -283,11 +288,8 @@ export default {
     },
     resetDatos(){
       
-      this.datosRecurso= {
-        foldercode:"",titulo: "",fecha: "",edopost: "publico",urlImagen: "",contenido:"",tipoRecurso:"",
-        urlRecurso:"",comentarios:[],tags: [],idCreador:"",nombreCreador:"",premium: false,
-        recomendado: false, permisoadmin: false,
-      };
+      
+
         
         
       this.usarnombre= true,
@@ -318,6 +320,12 @@ export default {
 
       this.actualizaImgUpload("");
       this.$refs.formRecurso.reset();
+      // this.datosRecurso.recomendado = false;
+      this.datosRecurso= {
+        foldercode:"",titulo: "",fecha: "",edopost: "publico",urlImagen: "",contenido:"",tipoRecurso:"",
+        urlRecurso:"",comentarios:[],tags: [],idCreador:"",nombreCreador:"",premium: false,
+        recomendado: false, permisoadmin: false,
+      };
       this.creaRecurso = false;
     },
 

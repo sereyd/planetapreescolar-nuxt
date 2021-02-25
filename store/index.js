@@ -435,20 +435,24 @@ const createStore = () => {
       //DATA DE TODOS LOS RECURSOS
       categorias:[],
       categoriasblog:[{
-        text:'Planeaciones',
-        value:'planeaciones'
+        text:'Pedagógico',
+        value:'pedagogico'
       },
       {
-        text:'Escuelas',
-        value:'escuelas'
+        text:'Administrativo',
+        value:'administrativo'
       },
       {
-        text:'Educación',
-        value:'educacion'
+        text:'Asuntos generales',
+        value:'asuntos generales'
       },
       {
-        text:'Niños',
-        value:'niños'
+        text:'Consejos',
+        value:'consejos'
+      },
+      {
+        text:'Ultimas noticias',
+        value:'ultimas noticias'
       }
       ],
       viewpost: false,
@@ -674,18 +678,14 @@ const createStore = () => {
                     .then((datasec)=>{
                       var dtweb= datasec.docs[0].data().pagos.stripe.modoprueba===true ? datasec.docs[0].data().pagos.stripe.apiUrltest : datasec.docs[0].data().pagos.stripe.apiUrlprod
 
-                 // const f = new Date();
-    let dateee =  new Date()
-    // console.log(dateee)
-    const d = dateee.getDay()+"/"+dateee.getMonth()+"/"+dateee.getFullYear();
-               console.log(d)
+                const d = this.$moment().format('D/MM/YYYY')
                       ///DESCARGAS POR MES POR DEFECTO PARA EVITAR ERRORES
                       if(!datos.descargas.mes){
                         datos.descargas.mes = {
                           active: false, tipo:"", disponibles: 0,
                           registro: [] ,
                         };
-                      }
+                      } 
   
                       //DESCARGA DIARIA GRATIS POR DEFECTO
                       if(!datos.descargas.dia)

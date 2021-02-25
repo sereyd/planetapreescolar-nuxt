@@ -67,7 +67,12 @@ export default {
   */
   buildModules: [
     '@nuxtjs/vuetify',
+    '@nuxtjs/moment'
   ],
+  moment: {
+    defaultTimezone: 'America/Los_Angeles',
+    locales: ['es']
+  },
   /*
   ** Nuxt.js modules
   */

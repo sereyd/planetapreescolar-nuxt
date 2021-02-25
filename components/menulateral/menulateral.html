@@ -17,8 +17,8 @@
     size="36" 
   >
    <img 
-    v-if="datosUsuario.urlImagen" 
-    :src="datosUsuario.urlImagen === 'none' || datosUsuario.urlImagen==='' ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : datosUsuario.urlImagen" width="100%" 
+    
+    :src=" (datosUsuario.urlImagen === 'none' || datosUsuario.urlImagen==='') ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : datosUsuario.urlImagen" width="100%" 
   />
   </v-avatar>
 

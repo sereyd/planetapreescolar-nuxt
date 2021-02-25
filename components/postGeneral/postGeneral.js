@@ -119,12 +119,12 @@ export default{
 
       contadorDescargar(tipo,event){
 
-        console.log(tipo);
+        // console.log(tipo);
         // console.log(this.datosUsuario.lvluser);
-        if(this.datosUsuario.lvluser === 2 || this.datosUsuario.lvluser === 1)
+        if(this.datosUsuario.lvluser === 2 || this.datosUsuario.lvluser === 1 )
         {
 
-          let {descargas} = this.datosUsuario;
+          let { descargas }= this.datosUsuario;
           const {idRecurso} = this.vistapost;
           const {id} = this.datosUsuario;
           let esDescargar = false;
@@ -148,7 +148,7 @@ export default{
             descargas.mes.registro.map(reg => {
               if(reg.mes === mesactual)
               {
-                console.log(reg.mes)
+                // console.log(reg.mes)
                 existeMes = true;
                 
                 const descargasDisponibles = tipoSuscripcion === "mensual" ? this.descargasConf.mensual 
@@ -158,8 +158,8 @@ export default{
                 
                 // console.log("descargas disponibles: "+descargasDisponibles)
                 // console.log("tipo membresia: "+tipoSuscripcion)
-                console.log(reg.usadas.length)
-                console.log(descargasDisponibles)
+                // console.log(reg.usadas.length)
+                // console.log(descargasDisponibles)
                 
                 if(reg.usadas.length < descargasDisponibles )
                 {
@@ -191,7 +191,7 @@ export default{
               descargas
             })
             .then(() => {
-              console.log("UPDATE DESCARGAR LIMITE")
+              // console.log("UPDATE DESCARGAR LIMITE")
         
             })
             .catch((error) => {

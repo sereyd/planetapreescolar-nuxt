@@ -5,7 +5,7 @@
               ejecimagen="uploadimg"
               v-if="editar===true && (datosuser.urlImagen==='' || datosuser.urlImagen==='none') "
               @updateImg="previewIedit=$event"
-              titulo="Subir imagen de pefil "
+              titulo="Subir imagen de perfil "
             ></subirimagen>
 
 
@@ -15,6 +15,12 @@
     v-if="datosuser.urlImagen!=='' && datosuser.urlImagen!=='none'"
     >
     <img  :src="datosuser.urlImagen" />
+    </v-avatar>
+    <v-avatar color="primary"
+    size="300"
+    v-else-if ="(datosuser.urlImagen==='' || datosuser.urlImagen==='none') && editar===false "
+    >
+    <img  src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" />
     </v-avatar>
 <br />
 

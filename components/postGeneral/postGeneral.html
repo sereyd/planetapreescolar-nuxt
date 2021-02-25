@@ -67,7 +67,7 @@
                                 {{datosUsuario.descargas.dia.usadas.length}} < {{descargasConf.free}}
                             </div> -->
                             <a 
-                                v-if="esFree && (datosUsuario.descargas.dia.usadas.length < descargasConf.free)  && datosUsuario.lvluser !== 3"
+                                v-if="esFree && (datosUsuario.descargas.dia.usadas.length < descargasConf.free)  && datosUsuario.lvluser !== 3 && !relacionados[contador].premium "
                                 :download="nombreFile"
                                 :href="urlFileB" 
                                 @click="contadorDescargar('Free', $event)"
@@ -81,7 +81,7 @@
                             <!-- datosUsuario.descargas.mes.usadas.length < datosUsuario.descargas.mes.disponibles    -->
                             
                             <a 
-                                v-else-if="datosUsuario.lvluser >= 2|| 
+                                v-else-if="datosUsuario.lvluser >= 2||  datosUsuario.descargas &&
                                 (
                                     datosUsuario.descargas.mes.active  
                                 )"
@@ -126,7 +126,7 @@
                         />
                         <!-- v-if="relacionados[contador].tipoRecurso==='audio'" -->
                         <audio-player 
-                            v-if="relacionados[contador].tipo === 'interactivo'"
+                            v-if="relacionados[contador].tipo === 'interactivo' && relacionados[contador].urlVista !== '' "
                             style="max-width:100%; width:100%; background-color:azure; "
                             >
                             <source :src="relacionados[contador].urlVista" />
@@ -207,7 +207,7 @@
                             Descarga Free
                         </a>
                         <a 
-                            v-else-if="datosUsuario.lvluser >= 2 || 
+                            v-else-if="datosUsuario.lvluser >= 2 ||  datosUsuario.descargas && 
                             (
                                 datosUsuario.descargas.mes.active  
                             )"

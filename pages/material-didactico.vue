@@ -17,7 +17,7 @@
           })
         "
       >
-        <h2
+        <!-- <h2
           class="primary--text"
           v-if="
             $validasesion($store, {
@@ -28,13 +28,13 @@
           "
         >
           Mi material didáctico
-        </h2>
+        </h2> -->
 
         <listablog
           :blogpost="misPost" @updateBlogpost="misPost=$event"
           tipo="CATEGORIAS"  subtipo="materialdidactico"
           :userId="this.datosUsuario.id"
-          titulo=""
+          titulo="Mi material didáctico"
           subtitulos=""
           :addslot="true"
         >

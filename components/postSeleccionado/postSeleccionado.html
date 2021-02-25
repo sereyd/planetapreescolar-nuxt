@@ -26,7 +26,7 @@
                 >
                     
                     <a 
-                        v-if="esFree && datosUsuario.lvluser !== 3"
+                        v-if="esFree && datosUsuario.lvluser !== 3 && !vistapost.premium"
                         :download="nombreFile"
                         :href="urlFileB" 
                         @click="contadorDescargar('Free', $event)"
