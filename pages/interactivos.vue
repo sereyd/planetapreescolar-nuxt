@@ -17,7 +17,7 @@
           })
         "
       >
-        <h2
+        <!-- <h2
           class="primary--text"
           v-if="
             $validasesion($store, {
@@ -28,13 +28,13 @@
           "
         >
           Mis interactivos
-        </h2>
+        </h2> -->
 
         <listablog
           :blogpost="misPost" @updateBlogpost="misPost=$event"
           tipo="CATEGORIAS"  subtipo="interactivo"
           :userId="this.datosUsuario.id"
-          titulo=""
+          titulo="Mis interactivos"
           subtitulos=""
           :addslot="true"
         >

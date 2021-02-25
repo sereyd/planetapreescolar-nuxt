@@ -27,7 +27,7 @@ export default {
     ...mapMutations(['abrirRegistro']),
     ...mapActions(['scrollmenu']),
     openMenu(){
-console.log('abre menu')
+// console.log('abre menu')
       this.$emit('abremenu',true)
     }
   },

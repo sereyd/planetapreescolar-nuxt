@@ -17,7 +17,7 @@
           })
         "
       >
-        <h2
+        <!-- <h2
           class="primary--text"
           v-if="
             $validasesion($store, {
@@ -28,13 +28,13 @@
           "
         >
           Mis otros
-        </h2>
+        </h2> -->
 
         <listablog
           :blogpost="misPost" @updateBlogpost="misPost=$event"
           tipo="CATEGORIAS"  subtipo="otro"
           :userId="this.datosUsuario.id"
-          titulo=""
+          titulo="Mis otros"
           subtitulos=""
           :addslot="true"
         >

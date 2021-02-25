@@ -26,7 +26,7 @@
     <listablog 
             :blogpost="hojasilustrar" :esCompleto="false" @updateBlogpost="hojasilustrar=$event"
             tipo="CATEGORIAS" subtipo="hojailustrar" 
-            titulo="Hojas para ilustrar" subtitulos="" 
+            titulo="Hojas para colorear" subtitulos="" 
             :esFavoritos="true"  
     />
     <div style="width:100%; height:0px;" v-if="hojasilustrar.length > 0"></div>

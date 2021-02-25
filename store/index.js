@@ -435,20 +435,24 @@ const createStore = () => {
       //DATA DE TODOS LOS RECURSOS
       categorias:[],
       categoriasblog:[{
-        text:'Planeaciones',
-        value:'planeaciones'
+        text:'Pedagógico',
+        value:'pedagogico'
       },
       {
-        text:'Escuelas',
-        value:'escuelas'
+        text:'Administrativo',
+        value:'administrativo'
       },
       {
-        text:'Educación',
-        value:'educacion'
+        text:'Asuntos generales',
+        value:'asuntos generales'
       },
       {
-        text:'Niños',
-        value:'niños'
+        text:'Consejos',
+        value:'consejos'
+      },
+      {
+        text:'Ultimas noticias',
+        value:'ultimas noticias'
       }
       ],
       viewpost: false,
@@ -608,7 +612,8 @@ const createStore = () => {
           // console.log("USUARIO QUE SE ESTA VERIFICANDO:")
           // console.log(user)
          
-          var urlapistrip=context.state.configAll.pagos.stripe.modoprueba===true ? context.state.configAll.pagos.stripe.apiUrltest : context.state.configAll.pagos.stripe.apiUrlprod
+          // var urlapistrip=context.state.configAll.pagos.stripe.modoprueba===true ? context.state.configAll.pagos.stripe.apiUrltest : context.state.configAll.pagos.stripe.apiUrlprod
+          var urlapistrip="https://checkout-pruebas.herokuapp.com"
 
           console.log(urlapistrip)
     
@@ -759,7 +764,7 @@ const createStore = () => {
                         const {id} = context.state.datosPago
                        
                         this.$fireStore.collection('ConfiguracionGeneral').get()
-                        then((datasec)=>{
+                        .then((datasec)=>{
 
                           var dtweb= datasec.docs[0].data().pagos.stripe.modoprueba===true ? datasec.docs[0].data().pagos.stripe.apiUrltest : datasec.docs[0].data().pagos.stripe.apiUrlprod
 
@@ -808,7 +813,7 @@ const createStore = () => {
 
                         //REVISA MEMBRESIA EN CASO DE PAGO CON MERCAPAGO
                         this.$fireStore.collection('ConfiguracionGeneral').get()
-                        then((datasec)=>{
+                        .then((datasec)=>{
 
                           var dtweb= datasec.docs[0].data().pagos.mercadopago.modoprueba===true ? datasec.docs[0].data().pagos.mercadopago.apiUrltest : datasec.docs[0].data().pagos.mercadopago.apiUrlprod
 

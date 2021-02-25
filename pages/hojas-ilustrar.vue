@@ -17,7 +17,7 @@
           })
         "
       >
-        <h2
+        <!-- <h2
           class="primary--text"
           v-if="
             $validasesion($store, {
@@ -27,14 +27,14 @@
             })
           "
         >
-          Mis hojas para ilustrar
-        </h2>
+          Mis Hojas para colorear
+        </h2> -->
 
         <listablog
           :blogpost="misPost" @updateBlogpost="misPost=$event"
           tipo="CATEGORIAS"  subtipo="hojailustrar"
           :userId="this.datosUsuario.id"
-          titulo=""
+          titulo="Mis Hojas para colorear"
           subtitulos=""
           :addslot="true"
         >
@@ -62,8 +62,8 @@
         <listablog
           :blogpost="otrosPost" @updateBlogpost="otrosPost=$event"
           tipo="CATEGORIAS"  subtipo="hojatrabajo"
-          titulo="Hojas para ilustrar publicas"
-          subtitulos="Conoce lo que pasa en el mundo de la educación inicial"
+          titulo="Hojas para colorear"
+          subtitulos=""
         />
       </v-col>
     </v-row>

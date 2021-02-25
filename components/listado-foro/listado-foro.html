@@ -4,7 +4,7 @@
       class="melon white--text"
       @click="addeditblog=true"
       v-if="datosUsuario.userlogin===true"
-      >Crear Entrada</v-btn
+      >Crear nueva pregunta</v-btn
     >
 
     <v-dialog v-model="addeditblog" max-width="800">
@@ -52,7 +52,7 @@
 </span>
 </v-col>
 <v-col cols="12" md="3" class="text-right">
-  <b>{{key.ncoment ? key.ncoment : '0'  }} comentarios</b> &nbsp;&nbsp; <v-btn class="melon white--text" style="text-transform: none; border-radius:8px;"  @click="foroselect(key)" >Leer foro</v-btn>
+  <b>{{key.comentarios.length }} comentarios</b> &nbsp;&nbsp; <v-btn class="melon white--text" style="text-transform: none; border-radius:8px;"  @click="foroselect(key)" >Leer foro</v-btn>
 </v-col>
 
       </v-row>

@@ -24,7 +24,7 @@ export default{
       ...mapActions(['changeRecursosFavoritos','notificacionComentario']),
       contadorDescargar(tipo, event){
 
-        console.log(tipo);
+        // console.log(tipo);
         if(this.datosUsuario.lvluser === 2 || this.datosUsuario.lvluser === 1)
         {
           let {descargas} = this.datosUsuario;
@@ -90,7 +90,7 @@ export default{
               descargas
             })
             .then(() => {
-              console.log("UPDATE DESCARGAR LIMITE")
+              // console.log("UPDATE DESCARGAR LIMITE")
       
             })
             .catch((error) => {
