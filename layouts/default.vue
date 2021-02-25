@@ -190,7 +190,7 @@
         }
       },
       created(){
-       console.log(this.$configGral)
+
         this.$fireStore.collection('ConfiguracionGeneral').get()
         .then((data)=>{
          const configall=data.docs[0].data()

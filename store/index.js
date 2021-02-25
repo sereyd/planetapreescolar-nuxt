@@ -608,11 +608,7 @@ const createStore = () => {
           // console.log("USUARIO QUE SE ESTA VERIFICANDO:")
           // console.log(user)
          
-          var urlapistrip=context.state.configAll.pagos.stripe.modoprueba===true ? context.state.configAll.pagos.stripe.apiUrltest : context.state.configAll.pagos.stripe.apiUrlprod
-
-          console.log(urlapistrip)
-    
-
+     
           if(user)
           {
 
@@ -674,41 +670,46 @@ const createStore = () => {
                   {
 
                     //OBTENER CONFIGURACION DE DESCARGAS
-                    const response = await fetch(urlapistrip+"/obtenerFechaActual")
-                    const d = await response.json();
+                    this.$fireStore.collection('ConfiguracionGeneral').get()
+                    .then((datasec)=>{
+                      var dtweb= datasec.docs[0].data().pagos.stripe.modoprueba===true ? datasec.docs[0].data().pagos.stripe.apiUrltest : datasec.docs[0].data().pagos.stripe.apiUrlprod
 
-                    //DESCARGAS POR MES POR DEFECTO PARA EVITAR ERRORES
-                    if(!datos.descargas.mes){
-                      datos.descargas.mes = {
-                        active: false, tipo:"", disponibles: 0,
-                        registro: [] ,
-                      };
-                    }
-
-                    //DESCARGA DIARIA GRATIS POR DEFECTO
-                    if(!datos.descargas.dia)
-                    {
-                      datos.descargas.dia = {
-                        disponibles: context.state.descargasConf.free,
-                        usadas: [],
-                        fecha: d.fecha,
+                 // const f = new Date();
+    let dateee =  new Date()
+    // console.log(dateee)
+    const d = dateee.getDay()+"/"+dateee.getMonth()+"/"+dateee.getFullYear();
+               console.log(d)
+                      ///DESCARGAS POR MES POR DEFECTO PARA EVITAR ERRORES
+                      if(!datos.descargas.mes){
+                        datos.descargas.mes = {
+                          active: false, tipo:"", disponibles: 0,
+                          registro: [] ,
+                        };
                       }
-                    }
+  
+                      //DESCARGA DIARIA GRATIS POR DEFECTO
+                      if(!datos.descargas.dia)
+                      {
+                        datos.descargas.dia = {
+                          disponibles: context.state.descargasConf.free,
+                          usadas: [],
+                          fecha: d.fecha,
+                        }
+                      }
+  
+                      //SI LA FECHA CAMBIA SE RESETEA EL CAMPO PARA OBTENER UNA DESCARGA NUEVA
+                      else if(d.fecha !== datos.descargas.dia.fecha)
+                      {
+                        ///console.log("el dia cambiooooooo")
+                        datos.descargas.dia.disponibles= context.state.descargasConf.free,
+                        datos.descargas.dia.usadas = [];
+                        datos.descargas.dia.fecha = d.fecha;
+                        
+                      }
 
-                    //SI LA FECHA CAMBIA SE RESETEA EL CAMPO PARA OBTENER UNA DESCARGA NUEVA
-                    else if(d.fecha !== datos.descargas.dia.fecha)
-                    {
-                      ///console.log("el dia cambiooooooo")
-                      datos.descargas.dia.disponibles= context.state.descargasConf.free,
-                      datos.descargas.dia.usadas = [];
-                      datos.descargas.dia.fecha = d.fecha;
-                    }
-                    // context.commit("actualizarConfigDescargas")
                     let dp= {};
-
-                    
-
-
+                  context.commit("actualizarConfigDescargas")
+                  
                     //ontenermos los datos del pago
                     // console.log("dp")
                     //   console.log(dp)
@@ -727,6 +728,7 @@ const createStore = () => {
                           ...data
                         }
                         // context.commit("cambiastatusSesion",datos);
+                        return true;
                       });
                         
                       // });
@@ -736,7 +738,7 @@ const createStore = () => {
                       {
                         context.state.datosPago.medio="";
                         context.state.datosPago.collector_id=0;
-
+                        return true;
                       }
                       else
                         context.state.datosPago = dp;
@@ -757,12 +759,10 @@ const createStore = () => {
                       {
 
                         const {id} = context.state.datosPago
+                    
+                          console.log('carga datos de stripe')
+                    
                        
-                        this.$fireStore.collection('ConfiguracionGeneral').get()
-                        then((datasec)=>{
-
-                          var dtweb= datasec.docs[0].data().pagos.stripe.modoprueba===true ? datasec.docs[0].data().pagos.stripe.apiUrltest : datasec.docs[0].data().pagos.stripe.apiUrlprod
-
                           fetch(dtweb+"/check-suscripcion?suscripcionId=" + id)
                           .then((result)=>{
                             return result.json()
@@ -779,6 +779,7 @@ const createStore = () => {
                               datos.estadoMembresia = "canceled";
                               context.state.datosSuscripcion.status = false;
                               datos.descargas.mes.active = false;
+                              return true;
                             }
                             else{
                               datos.estadoMembresia = suscripcion.status;
@@ -789,6 +790,7 @@ const createStore = () => {
                                 datos.lvluser = 2;
                                 console.log("SI TIENE MEMBRESIA PREMIUM")
                                 context.commit("updateDescargasPre", suscripcion);
+                                return true;
                               }
                             }
   
@@ -797,9 +799,10 @@ const createStore = () => {
                           })
                           .catch((err)=>{
                             console.log('Error al verificar suscripción', err);
+                            return true;
                           });
 
-                        })
+                    
                       
                       }
                       
@@ -809,7 +812,8 @@ const createStore = () => {
                         //REVISA MEMBRESIA EN CASO DE PAGO CON MERCAPAGO
                         this.$fireStore.collection('ConfiguracionGeneral').get()
                         then((datasec)=>{
-
+                          console.log('carga datos de mercadopago')
+                          console.log(datasec)
                           var dtweb= datasec.docs[0].data().pagos.mercadopago.modoprueba===true ? datasec.docs[0].data().pagos.mercadopago.apiUrltest : datasec.docs[0].data().pagos.mercadopago.apiUrlprod
 
                           const config = {
@@ -848,7 +852,7 @@ const createStore = () => {
                               datos.estadoMembresia = "canceled";
                               context.state.datosSuscripcion.status = false;
                               datos.descargas.mes.active = false;
-
+                              return true;
                             }
                             else{
 
@@ -882,6 +886,8 @@ const createStore = () => {
                                 console.log("SI TIENE MEMBRESIA PREMIUM")
                                 // console.log(datos)
                                 context.commit("updateDescargasPreMP", data);
+                             
+                                return true;
                               }
                               else if(data.status === "pending" )
                               {
@@ -891,18 +897,21 @@ const createStore = () => {
                                 context.state.datosSuscripcion.status = false;
                                 context.state.datosSuscripcion.external_resource_url = external_resource_url;
                                 context.state.datosSuscripcion.date_of_expiration = data.date_of_expiration;
+                                return true;
                               }
                               else
                               {
                                 console.log("AQUII")
                                 datos.estadoMembresia = "canceled";
                                 context.state.datosSuscripcion.status = false;
+                                return true;
                               }
                             }
     
                           })
                           .catch((err)=>{
                             console.log('Error al verificar suscripción', err);
+                            return true;
                           });
 
                         })
@@ -913,9 +922,11 @@ const createStore = () => {
                         context.state.datosSuscripcion.status = false;
                         datos.descargas.mes.active = false;
                         datos.lvluser = 1
+                        return true;
                       }
 
                     })
+                  })
                   }
                   else if(datos.lvluser >= 3)
                   {
@@ -938,7 +949,7 @@ const createStore = () => {
                   }
                   
                   context.commit("cambiastatusSesion",datos);
-
+                  return true;
               
 
                   // state.itemsnotifi=data.docs
@@ -946,8 +957,9 @@ const createStore = () => {
               })
               .catch((error) =>{
                   console.log("Error: ", error);
+                  return true;
               });
-          
+              
               
               
           }
@@ -956,11 +968,13 @@ const createStore = () => {
             console.log("NO HAY USUARIO, ES LVLUSER 0")
             context.state.datosUsuario.descargas.dia.disponibles= -5;
             context.state.datosUsuario.descargas.dia.usadas = [];
-
+            return true;
             // datos.descargasDia.fecha = d.fecha;
           }
         });
-        return true;
+
+
+       
       },
 
       //OBTENER DATOS DE CONFIGURACION DE DESCARGAS
@@ -1538,7 +1552,7 @@ const createStore = () => {
           }
           
           
-          console.log(state.descargasConf);
+          ///console.log(state.descargasConf);
           // console.log("interval");
           // console.log(interval);
           // console.log("interval_count");

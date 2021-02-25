@@ -10,10 +10,8 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.autenticarUsuario().then(data => {
-        setTimeout(() => {
-          this.validsesion = false;
-        }, 2000);
+      this.autenticarUsuario().then((data) => {
+       setTimeout(()=>{this.validsesion=false},2000)
       });
     });
   }

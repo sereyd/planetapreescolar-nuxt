@@ -1,13 +1,12 @@
 import colors from 'vuetify/es5/util/colors'
-import firebase from 'firebase'
-import Vue from 'vue'
+
 export default {
   /*
   ** Nuxt rendering mode
   ** See https://nuxtjs.org/api/configuration-mode
   */
   mode: 'spa',
-  dev: true,
+  dev: false,
   ssr: true,
   /*
   ** Nuxt target
