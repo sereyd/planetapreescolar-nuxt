@@ -3,6 +3,8 @@ import Vuex from "vuex";
 import {addMonths} from 'date-fns';
 import {fromUnixTime} from 'date-fns';
 import {isPast} from 'date-fns';
+import { format } from 'date-fns'
+import { es } from 'date-fns/locale';
 
 
 // import router from '@/router/index'
@@ -679,6 +681,7 @@ const createStore = () => {
                       var dtweb= datasec.docs[0].data().pagos.stripe.modoprueba===true ? datasec.docs[0].data().pagos.stripe.apiUrltest : datasec.docs[0].data().pagos.stripe.apiUrlprod
 
                 const d = this.$moment().format('D/MM/YYYY')
+                
                       ///DESCARGAS POR MES POR DEFECTO PARA EVITAR ERRORES
                       if(!datos.descargas.mes){
                         datos.descargas.mes = {
@@ -693,19 +696,20 @@ const createStore = () => {
                         datos.descargas.dia = {
                           disponibles: context.state.descargasConf.free,
                           usadas: [],
-                          fecha: d.fecha,
+                          fecha: d,
                         }
                       }
   
                       //SI LA FECHA CAMBIA SE RESETEA EL CAMPO PARA OBTENER UNA DESCARGA NUEVA
-                      else if(d.fecha !== datos.descargas.dia.fecha)
+                      else if(d !== datos.descargas.dia.fecha)
                       {
                         ///console.log("el dia cambiooooooo")
                         datos.descargas.dia.disponibles= context.state.descargasConf.free,
                         datos.descargas.dia.usadas = [];
-                        datos.descargas.dia.fecha = d.fecha;
+                        datos.descargas.dia.fecha = d;
                         
                       }
+                      // console.log(datos.descargas.dia);
 
                     let dp= {};
                   context.commit("actualizarConfigDescargas")
