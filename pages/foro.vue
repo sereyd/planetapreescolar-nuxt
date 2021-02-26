@@ -17,6 +17,9 @@
 <script>
 import listaforo from '~/components/listado-foro/listado-foro.vue'
 export default {
+    head:{
+        title:" Espacio creado para compartir vivencias entre educadoras de nivel preescolar | Comunidad Planeta Preescolar."
+    },
     data(){
         return {
 

@@ -703,7 +703,7 @@ const createStore = () => {
                         ///console.log("el dia cambiooooooo")
                         datos.descargas.dia.disponibles= context.state.descargasConf.free,
                         datos.descargas.dia.usadas = [];
-                        datos.descargas.dia.fecha = d.fecha;
+                        datos.descargas.dia.fecha = d;
                         
                       }
 
