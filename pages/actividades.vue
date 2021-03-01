@@ -7,7 +7,9 @@
                       <buscador :esBuscando ="buscando"  @updateBuscando="buscando=$event"/>
                   </v-col>
                 </v-row>
-                <div style="width:100%; height:5px;"></div>
+                <div style="width:100%; height:5px;">
+                  <loaderDate :loader="loading"  />
+                </div>
                 <listablog 
                         :blogpost="planeaciones" :esCompleto="false" @updateBlogpost="planeaciones=$event"
                         tipo="CATEGORIAS" subtipo="planeacion" 
@@ -71,6 +73,7 @@
 import buscador from '~/components/buscador/buscador.vue'
 import reflexiones from '~/components/reflexiones/reflexiones.vue'
 import listablog from '~/components/listado-blog/listado-blog.vue'
+import loaderDate from '~/components/loaderDate/loaderDate.vue'
 
 import { mapState, mapMutations, mapActions } from 'vuex'
 
@@ -102,19 +105,20 @@ export default {
       await this.cargabaseGral()
   },
   computed: {
-    ...mapState(['datosUsuario','categorias']),
+    ...mapState(['datosUsuario','categorias', 'loading']),
   },
   components: {
     buscador,
     reflexiones,
-    listablog
+    listablog,
+    loaderDate
   },
   methods: {
-    ...mapMutations(['guardarVistaValida','actualizarCategorias']),
+    ...mapMutations(['guardarVistaValida','actualizarCategorias','cambiaLoading']),
     ...mapActions(['listaAleatoria']),
     async  cargabaseGral(){
       let cat = [];
-
+   this.cambiaLoading('inicia')
       if(this.categorias.length === 0)
       {
         try {
@@ -159,6 +163,7 @@ export default {
         this.updateCategoriasInicio([...this.categorias])
         this.sliceCategoriasInicio();
       }
+         this.cambiaLoading('finaliza')
     },
 
     updateCategoriasInicio(datos){

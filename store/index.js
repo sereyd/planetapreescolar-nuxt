@@ -474,6 +474,8 @@ const createStore = () => {
         anual:0,
       },
       datosPago:{medio:""},
+      loading:true,
+      cleanview:true
 
 
     }),
@@ -1098,6 +1100,7 @@ const createStore = () => {
 
       async obtenerRecursos(context) {
         // context.state.recursosBusqueda = [];
+        this.cambiaLoading('iniciar')
         try {
           // console.log(context.state.datosBusqueda);
           let datos = {};
@@ -1128,7 +1131,7 @@ const createStore = () => {
                 
               });
               context.dispatch( "actualizarCategorias('cat')" );
-
+              this.cambiaLoading('finaliza')
             });
 
           }
@@ -1184,7 +1187,7 @@ const createStore = () => {
       //CARGA DE POST POR TIPO DE POST PARA LA VISTA DE VER MAS
       async  cargaBasePost({state,commit},tipoPost){
         let postG = [];
-
+        this.cambiaLoading('inicia')
         if(state.categorias.length === 0)
         {
           // console.log("BUSCAR DE FIREBASE")
@@ -1214,7 +1217,7 @@ const createStore = () => {
                 });
                 state.categorias = postG;
                 commit("updateVerMas",tipoPost);
-                
+                this.cambiaLoading('finaliza')
               });
           } catch (e) {
             console.log(e);
@@ -1288,6 +1291,32 @@ const createStore = () => {
 
 
     mutations: {
+      cambiaLoading(state,data){
+
+        if(data==='inicia'){
+          console.log('ini inicia')
+        state.loading=true
+
+        setTimeout(()=>{
+          console.log('fin inicia')
+          state.cleanview=false
+        },1000)
+        }
+
+
+        if(data==='finaliza'){
+          console.log('ini finaliza')
+          state.loading=false
+
+        }
+
+
+        if(data=='libera'){
+          console.log('ini libera')
+          state.cleanview=true
+        }
+       
+      },
       cargaConfiGral(state,data){
         state.configAll=data
       },

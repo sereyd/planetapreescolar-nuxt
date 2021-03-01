@@ -1,5 +1,6 @@
 <template>
-<v-main  v-if="bandera">
+<v-main >
+
   <!-----Buscador------>
 <v-card class="secondary ma-2  modbuscador" >
     <v-card-text class="backbuscador text-center white--text pa-4 rounded-2 pt-3" style="background-image: url('images/nubes.png'); background-position:center center;" >
@@ -12,8 +13,13 @@
   
 <reflexiones  />
 
+
   <!---------RECOMENDACIONES------------>
-<div style="width:100%; height:10px;"></div>
+<div style="width:100%; height:10px;">
+
+<loaderDate :loader="loading"  />
+
+</div>
 <listablog 
   :blogpost="recomendaciones" :esCompleto="false" @updateBlogpost="recomendaciones=$event"
   tipo="CATEGORIAS" subtipo="recomendacion" 
@@ -56,6 +62,7 @@
 import buscador from '~/components/buscador/buscador.vue'
 import reflexiones from '~/components/reflexiones/reflexiones.vue'
 import listablog from '~/components/listado-blog/listado-blog.vue'
+import loaderDate from '~/components/loaderDate/loaderDate.vue'
 import { mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
@@ -67,7 +74,7 @@ export default {
       blog:[],
       memorias:[],
       otros:[],
-      bandera: false,
+      bandera: true,
     };
   },
   // methods:{
@@ -75,25 +82,28 @@ export default {
   // },
   async mounted() {
       await this.cargabaseGral()
-      this.bandera = true
+     // this.bandera = true
   },
   computed: {
-    ...mapState(['datosUsuario', 'categorias']),
+    ...mapState(['datosUsuario', 'categorias', 'loading']),
   },
   components: {
     buscador,
     reflexiones,
-    listablog
+    listablog,
+    loaderDate
   },
   methods: {
-    ...mapMutations(['guardarVistaValida','actualizarCategorias']),
+    ...mapMutations(['guardarVistaValida','actualizarCategorias','cambiaLoading']),
     ...mapActions(['listaAleatoria']),
     async  cargabaseGral(){
       let cat = [];
-
+      ///inicia loader de categorias
+     this.cambiaLoading('inicia')
       if(this.categorias.length === 0)
       {
         try {
+    
           await this.$fireStore
             .collection("CATEGORIAS").orderBy("fecha", "desc")
             .get()
@@ -116,6 +126,7 @@ export default {
                 }
 
                 cat.push(datos);
+       
               
               });
               this.updateCategoriasInicio(cat)
@@ -132,6 +143,7 @@ export default {
         this.updateCategoriasInicio([...this.categorias])
         this.sliceCategoriasInicio();
       }
+       this.cambiaLoading('finaliza')
     },
     updateCategoriasInicio(datos){
       datos.map(cat => {
