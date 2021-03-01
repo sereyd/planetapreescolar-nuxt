@@ -4,7 +4,7 @@
     <!-- <div class="d-flex justify-center">
       <v-btn class="melon white--text mb-2 btn_crearG" @click="crearSesionSuscripcion()">Stripe</v-btn>
     </div> -->
-    <!-- <listadoDirectorio/> -->
+    <listadoDirectorio/>
 </v-main>
 </template>
 
@@ -39,18 +39,20 @@ export default {
 
       if(this.directorios.length === 0)
       {
+        console.log("no haynada")
         try {
           await this.$fireStore
-            .collection("CATEGORIAS").orderBy("fecha", "desc")
+            .collection("directorio")
             .get()
             .then((data) => {
               data.forEach((doc) => {
                 let data = doc.data();
+                console.log(data)
                 // data.tags = data.tags ? data.tags : [];
                 // data.favoritos = data.favoritos ? data.favoritos : [];
                 // data.sinopsis= data.sinopsis ? data.sinopsis : "";
 
-                delete data['idRecurso'];
+                delete data['idDirectorio'];
 
 
                 const datos = {
@@ -59,6 +61,7 @@ export default {
                 }
 
                 directorio.push(datos);
+                console.log(directorio)
                 this.actualizarDirectorios(directorio);
               });
 
@@ -67,6 +70,8 @@ export default {
           console.log(e);
         }
       }
+      console.log("this.directorios")
+      console.log(this.directorios)
       
     },
     crearSesionSuscripcion(){

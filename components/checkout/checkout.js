@@ -188,6 +188,12 @@ export default {
       const priceId = this.configAll.pagos.stripe.idsus[tipoSuscripcion];
 
       var urlendpoint=this.configAll.pagos.stripe.modoprueba === true ? this.configAll.pagos.stripe.apiUrltest : this.configAll.pagos.stripe.apiUrlprod
+      // var urlendpoint = "http://localhost:4242"
+
+      //prueba gratuita en dias
+      console.log(this.configAll.pagos.stripe.pruebagratuita)
+      const trial_period_days = this.configAll.pagos.stripe.pruebagratuita;
+      console.log(trial_period_days)
  
       
       let stripe = Stripe(this.apikeystripe, locale);
@@ -196,6 +202,7 @@ export default {
         priceId: priceId,
         dominio: this.dominio,
         external_reference,
+        trial_period_days,
       }
       // fetch(this.urlAPI+'/customer-portal', {
       //     method: 'POST',
@@ -236,6 +243,9 @@ export default {
         orderData.tipoSuscripcion=tipoSuscripcion
         orderData.importe=this.importe
         orderData.external_reference=external_reference 
+        console.log("data");
+        console.log("data");
+        console.log(data);
 
         //DATA EN STORAGE PARA COMPROBARLA AL HACERASE EL PAGO EXITOSO
         localStorage.setItem("payment_intent", JSON.stringify(data) );

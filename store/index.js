@@ -308,7 +308,7 @@ const createStore = () => {
           title: "Directorio",
           icon: "mdi-book-multiple",
           link: "/directorio",
-          visible: false
+          visible: true
         },
         {
           title: "Calendario",
@@ -466,6 +466,9 @@ const createStore = () => {
 
       ////foroseleccionado
       foroselect:{},
+      
+      //Directorio seleccionado
+      directorioselect:{},
       
       //data para la configuracion de las descargas
       descargasConf:{
@@ -1307,6 +1310,9 @@ const createStore = () => {
       foroseleccionado(state,data){
         state.foroselect=data
       },
+      directorioSeleccionado(state,data){
+        state.directorioselect=data
+      },
       cleanImgStore(state){
         state.imgupload="";
         state.urlimg="";
@@ -1343,7 +1349,17 @@ const createStore = () => {
         state.categorias = payload;
       },
       actualizarDirectorios(state, payload){
-        state.directorios = payload;
+        if(state.directorios.length === 0)
+          state.directorios = payload;
+
+        else
+        state.directorios = [
+          payload,
+          ...state.directorios,
+        ];
+
+        console.log("state.directorios")
+        console.log(state.directorios)
       },
       agregarCategorias(state, payload){
         // console.log(payload)
