@@ -17,6 +17,7 @@ export default {
   ** Headers of the page
   ** See https://nuxtjs.org/api/configuration-head
   */
+ 
   head: {
     titleTemplate: '%s - ' + process.env.npm_package_name,
     title: 'Planeta Preescolar',
@@ -39,6 +40,15 @@ export default {
       { href:"https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css",  rel:"stylesheet" }   
     ]
   },
+  /*
+Configuración de rotuter  
+*/
+router: {
+  linkActiveClass: 'active-link',
+  prefetchLinks: false,
+  linkExactActiveClass: 'exact-active-link',
+  linkPrefetchedClass: 'nuxt-link-prefetched'
+},
   /*
   ** Global CSS
   */
@@ -85,6 +95,8 @@ export default {
     'nuxt-facebook-pixel-module',
     
   ],
+  loading: '~/components/loader/loader.vue',
+
   facebook: {
     /* module options */
     track: 'PageView',
@@ -152,9 +164,10 @@ export default {
       },
   customVariables: ['~/assets/scss/variables.scss'],
   treeShake: true,
-  defaultAssets: false
+  defaultAssets: false,
      
   },
+
 Middleware:['configral'],
   /*
   ** Build configuration

@@ -1,0 +1,43 @@
+<div v-if="loader">
+    <v-progress-linear
+      indeterminate
+      color="primary darken-2"
+    ></v-progress-linear>
+
+    <v-sheet
+    color="grey lighten-4"
+    class="pa-3"
+    v-if="tipo==='bloquetexto'"
+  >
+
+        <v-skeleton-loader
+        v-bind="attrs"
+        type="image, article"
+        ></v-skeleton-loader>
+
+  </v-sheet>
+
+
+<v-row v-if="tipo==='lista'" >
+<v-col v-for="(keys, index) in cols" cols="12" md="3" :key="'columg'+index" >
+
+    <v-sheet
+    color="grey lighten-4"
+    class="pa-3"
+   
+  >
+    <v-skeleton-loader
+      class="mx-auto"
+      max-width="300"
+      type="card"
+    ></v-skeleton-loader>
+  </v-sheet>
+
+
+ 
+
+
+
+</v-col>
+</v-row>
+</div>

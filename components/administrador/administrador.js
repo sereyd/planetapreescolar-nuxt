@@ -165,6 +165,7 @@ export default{
             this.usernotselect={}
         },
         async getElement(){ 
+            this.cambiaLoading('inicia')
             try{
                 this.usuarios=[]
                 this.optionUsuarios=[]
@@ -180,6 +181,8 @@ export default{
                     id: doc.id, //SE LES AGREGA EL ID DEL USAURIO PARA REALIZAR LA BUSQUEDA POR SU ID
                     ...doc.data()
                     }
+
+                    this.cambiaLoading('finaliza')
                 });
                 console.log(this.optionUsuarios)
             }catch(error){

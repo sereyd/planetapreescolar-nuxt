@@ -9,13 +9,13 @@ export default {
     }
   },
   computed:{
-    ...mapState(['datosUsuario'])
+    ...mapState(['datosUsuario', 'loading'])
   },
   mounted(){
     this.cargaDatosforo()
   },
   methods:{
-    ...mapMutations(['foroseleccionado']),
+    ...mapMutations(['foroseleccionado','cambiaLoading']),
    
     foroselect(k){
       this.foroseleccionado(k)
@@ -25,6 +25,7 @@ export default {
       this.cargaDatosforo()
     },
     cargaDatosforo(){
+      this.cambiaLoading('inicia')
       this.items=[]
       var tomaforos
 if(this.datosUsuario.lvluser===3){
@@ -60,6 +61,7 @@ var datospublicacion
                       id:d.id
                   }
             this.items.push(datospublicacion)
+            this.   this.cambiaLoading('finaliza')
           })
 
 })  

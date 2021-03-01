@@ -35,11 +35,11 @@
           active-class="font-weight-black text-caption"
       >
         <v-list-item-icon >
-          <v-icon class="white--text space_elements">{{ item.icon }}</v-icon>
+         <v-icon class="white--text space_elements">{{ item.icon }}</v-icon>
         </v-list-item-icon>
 
         <v-list-item-content>
-          <v-list-item-title class="white--text">{{ item.title }}</v-list-item-title>
+         <v-list-item-title class="white--text">{{ item.title }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -58,7 +58,7 @@
         v-for="item in itemsmenu"
         :key="item.title"
         link
-        :to="item.link"
+        @click="accesclick(item.link)"
         v-if="$validasesion($store,item) && item.visible===true"
         active-class="font-weight-black text-caption"
       >
@@ -67,7 +67,7 @@
         </v-list-item-icon>
 
         <v-list-item-content class="white--text" >
-          {{ item.title }}
+        {{ item.title }}
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -79,7 +79,7 @@
       <!----Espacio de carga de vistas------>
       <v-main class="ma-0 pa-0">
 
-          <nuxt />
+          <nuxtview />
   <boletin />
       </v-main>
 </v-col>
@@ -170,6 +170,7 @@
   import loader from '~/components/loader/loader.vue'
   import alertas from "~/components/alertas/alertas.vue"
   import boletin from "~/components/boletin/boletin.vue"
+  import nuxtview from "~/components/nuxtview/nuxtview.vue"
 
     export default {
 
@@ -225,8 +226,17 @@
       },
       methods:{
 
-        ...mapMutations(['abrirRegistro','changeScreenPrint','cambioMantenimiento','cargaConfiGral']),
+        ...mapMutations(['abrirRegistro','changeScreenPrint','cambioMantenimiento','cargaConfiGral','cambiaLoading']),
         ...mapActions(['scrollmenu']),
+        accesclick(p){
+          this.cambiaLoading('libera')
+          this.$router.push(p)
+        },
+        loadingevent(e){
+       
+       console.log(this.$router)
+       
+       },
         entrarMantenimiento(){
           if(this.clavedesb===this.configall.passmantent){
             this.cambioMantenimiento(false)
@@ -243,7 +253,8 @@
         menulateral,
         loader,
         alertas,
-        boletin
+        boletin,
+        nuxtview
       },
       
     }

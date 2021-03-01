@@ -197,15 +197,15 @@ export default {
     cargablog
   },
   computed: {
-    ...mapState(['datosUsuario']),
+    ...mapState(['datosUsuario','loading']),
   },
   mounted() {
     this.cargaPost();
   },
   methods:{
-
+    ...mapMutations(['cambiaLoading']),
     async cargaPost() {
-
+this.cambiaLoading('inicia')
     this.memorias=[];
         this.blog=[];
         this.reflexiones=[];
@@ -272,7 +272,7 @@ export default {
 
             });
 
-            
+              this.cambiaLoading('finaliza')
           });
 
       }else{
