@@ -265,7 +265,7 @@ data(){
     }
 },
 computed:{
-    ...mapState(['datosUsuario','dominio','urlAPI','urlimg','datosSuscripcion','paises','estados','datosPago']),
+    ...mapState(['datosUsuario','configAll','urlimg','datosSuscripcion','paises','estados','datosPago']),
     fechaFormato(){
         // console.log(this.datosSuscripcion.plan.fechaFin)
         const f = fromUnixTime(this.datosSuscripcion.plan.fechaFin );
@@ -309,16 +309,18 @@ this.datosuser.codigopais=codepais.code
         }
     },
     opcMembresia(){
+        const urlendpoint = this.configAll.pagos.stripe.modoprueba === true ? this.configAll.pagos.stripe.apiUrltest : this.configAll.pagos.mercadopago.apiUrlprod
+        const dominio = this.configAll.url;
 
-        fetch(this.urlAPI+'/customer-portal', {
+        fetch(urlendpoint+'/customer-portal', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
           },
           body: JSON.stringify({
-            sessionId: this. datosPago.collector_id,
-            dominio: `${this.dominio}/perfil`
+            sessionId: this.datosPago.collector_id,
+            dominio: `${dominio}/perfil`
           }),
         })
         .then((response) => response.json())

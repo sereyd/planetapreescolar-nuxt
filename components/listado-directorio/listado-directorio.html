@@ -1,43 +1,147 @@
-<div v-if="directorios.length !== 0">
-    <v-row class="px-0 ma-0 " 
-        v-for="(key,index) in directorios" 
-        :key="'post_'+index" 
-        v-if="key.edopost === 'publico'"
-        
+<div>
+    <v-btn
+        v-if="datosUsuario.lvluser === 3"
+        class="ma-3 melon white--text"
+        style="text-transform: none; border-radius: 12px;"
+        @click="openD()"
     >
-    
-        <v-card
-            class="  d-flex justify-center  mx-2 mb-4"
-            style="overflow: hidden;"
-            height="150px"
-            v-if="key.tipo !== 'hojatrabajo' && key.tipo !== 'reflexion'"
+        Crear promoción
+    </v-btn>
+
+    <div v-if="directorios.length !== 0">
+        <v-row class="px-0 ma-0 " 
+            v-for="(key,index) in directorios" 
+            :key="'post_'+index" 
+            
         >
         
-            <v-col  cols="4" md="3" sm="4" >
-                <!-- <div  style="width:100%; max-width:100%; position:relative;"> -->
-                    <v-img
-                        :src="key.urlImagen === '' || key.urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : key.urlImagen"
-                        contain
-                        max-width="100%"
-                        class="fotomini"
-                    />
-                <!-- </div> -->
-            </v-col>
+            <v-card
+                class="  d-flex justify-center  mx-2 mb-4"
+            >
             
-            <v-col cols="8" md="9" sm="8">
-                <div class="ml-2 textos">
-                    <h4>{{key.titulo}}</h4>
-                    <div>
+                <v-col  cols="4" md="3" sm="4" class=" ">
+                    <!-- <div  style="width:100%; max-width:100%; position:relative;"> -->
+                        <v-img
+                            :src="key.urlImagen === '' || key.urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : key.urlImagen"
+                            contain
+                            max-width="100%"
+                            class="fotomini"
+                        />
+                    <!-- </div> -->
+                </v-col>
+                
+                <v-col cols="8" md="9" sm="8">
+                    <div class="ml-2 textos">
+                        <h4>{{key.titulo}}</h4>
+                        <div>
 
-                        <p >{{key.sinopsis.substr(0,90)}}</p>
+                            <p style="font-size: 14px;">{{key.descripcion}}</p>
+                        </div>
+                        <!-- <p class="datos_extra">{{key.nombreCreador}}</p> -->
+                        <!-- <fechaComponent :fecha="key.fecha" /> -->    
                     </div>
-                    <!-- <p class="datos_extra">{{key.nombreCreador}}</p> -->
-                    <!-- <fechaComponent :fecha="key.fecha" /> -->    
-                </div>
-            </v-col>   
+                    <div>
+                        <a  :href="key.link" target="_blank"
+                            class="v-btn v-btn--contained theme--light v-size--default melon mt-2 white--text"
+                            style="text-transform: none; border-radius: 12px;"
+                        >Ver más</a>
+                        <v-btn
+                            v-if="datosUsuario.lvluser === 3"
+                            class="mt-2 red accent-4 white--text"
+                            style="text-transform: none; border-radius: 12px;"
+                            @click="eliminarPromo(key)"
+                        >
+                            <v-icon rigth dark> mdi-delete </v-icon>
+                        </v-btn>
+                        <v-btn
+                            v-if="datosUsuario.lvluser === 3"
+                            class="mt-2 primary white--text"
+                            style="text-transform: none; border-radius: 12px;"
+                            @click=""
+                        >
+                            <v-icon rigth dark> mdi-pencil</v-icon>
+
+                        </v-btn>
+                    </div>
+                </v-col>   
+            
+            </v-card>
+        </v-row>
+
         
+        
+    </div>
+    <v-dialog v-model="creadirectorio" persistent max-width="755">
+        
+        <v-card class=" px-10">
+            <v-card-title class=" justify-space-between">
+                <v-btn icon text small color="purple" @click="" >
+                </v-btn>
+                <h2 class="primary--text ">Nueva promoción</h2>
+                <v-btn icon text small color="purple" @click="creadirectorio = false" >
+                    <v-icon>mdi-window-close</v-icon>
+                </v-btn>
+            </v-card-title>
+            <div class="mt-8">
+                <v-form
+                    lazy-validation
+                    ref="formDirectorio"
+                    v-model="esDirectorioValido"
+                >
+                <div class="text-center" >
+                    <subirImagen 
+                    
+                        titulo=""  
+                        @updateImg="datosDirectorio.urlImagen=$event" 
+                        ejecimagen="uploadimg" 
+                        tpimg="post"
+                        class=" d-flex justify-center mb-4"
+                    />
+
+
+                    <v-text-field
+                        v-model="datosDirectorio.titulo"
+                        required
+                        label="Titulo"
+                        outlined
+                        dense
+                        :rules="[v => !!v || 'Titulo es requerido']"
+                        @keyup.enter=""
+                    ></v-text-field>
+                    
+                
+                    <v-textarea
+                        label="Descripcion"
+                        required
+                        outlined
+                        dense
+                        v-model="datosDirectorio.descripcion"
+                        :rules="[v => !!v || 'Descripción es requerida']"
+                        height="90px"
+                        @keyup.enter=""
+
+                    ></v-textarea>
+
+                    <v-text-field
+                        v-model="datosDirectorio.link"
+                        label="Link"
+                        required
+                        outlined
+                        dense
+                        :rules="[v => !!v || 'Link es requerida']"
+                        @keyup.enter=""
+                    ></v-text-field>
+
+                    <v-btn 
+                        class="ma-2 primary white--text"
+                        style="text-transform: none; border-radius: 12px;"
+                        @click="validarFormularioDirectorio()"
+                    >
+                        Crear
+                    </v-btn>
+                </div>
+                </v-form>
+            </div>
         </v-card>
-    </v-row>
-    
-    
+    </v-dialog>
 </div>

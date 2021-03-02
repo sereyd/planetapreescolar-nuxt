@@ -3,6 +3,8 @@ import Vuex from "vuex";
 import {addMonths} from 'date-fns';
 import {fromUnixTime} from 'date-fns';
 import {isPast} from 'date-fns';
+import { format } from 'date-fns'
+import { es } from 'date-fns/locale';
 
 
 // import router from '@/router/index'
@@ -465,6 +467,9 @@ const createStore = () => {
       ////foroseleccionado
       foroselect:{},
       
+      //Directorio seleccionado
+      directorioselect:{},
+      
       //data para la configuracion de las descargas
       descargasConf:{
         free:0,
@@ -654,6 +659,7 @@ const createStore = () => {
                     data.idCliente = data.idCliente ? data.idCliente : "";
                     data.idSuscripcion = data.idSuscripcion ? data.idSuscripcion : "";
                     data.descargas = data.descargas ? data.descargas : {};
+                    data.pruebagratuita = data.pruebagratuita ? data.pruebagratuita : false;
                     
                          datos = {
                           id: doc.id,
@@ -681,6 +687,7 @@ const createStore = () => {
                       var dtweb= datasec.docs[0].data().pagos.stripe.modoprueba===true ? datasec.docs[0].data().pagos.stripe.apiUrltest : datasec.docs[0].data().pagos.stripe.apiUrlprod
 
                 const d = this.$moment().format('D/MM/YYYY')
+                
                       ///DESCARGAS POR MES POR DEFECTO PARA EVITAR ERRORES
                       if(!datos.descargas.mes){
                         datos.descargas.mes = {
@@ -695,12 +702,12 @@ const createStore = () => {
                         datos.descargas.dia = {
                           disponibles: context.state.descargasConf.free,
                           usadas: [],
-                          fecha: d.fecha,
+                          fecha: d,
                         }
                       }
   
                       //SI LA FECHA CAMBIA SE RESETEA EL CAMPO PARA OBTENER UNA DESCARGA NUEVA
-                      else if(d.fecha !== datos.descargas.dia.fecha)
+                      else if(d !== datos.descargas.dia.fecha)
                       {
                         ///console.log("el dia cambiooooooo")
                         datos.descargas.dia.disponibles= context.state.descargasConf.free,
@@ -708,6 +715,7 @@ const createStore = () => {
                         datos.descargas.dia.fecha = d;
                         
                       }
+                      // console.log(datos.descargas.dia);
 
                     let dp= {};
                   context.commit("actualizarConfigDescargas")
@@ -784,9 +792,9 @@ const createStore = () => {
                               return true;
                             }
                             else{
-                              datos.estadoMembresia = suscripcion.status;
+                              datos.estadoMembresia = suscripcion.plan.active ? 'active' : suscripcion.status;
                               
-                              if(suscripcion.status === "active")
+                              if(suscripcion.plan.active)
                               {
                                 context.state.datosSuscripcion.status = true;
                                 datos.lvluser = 2;
@@ -1332,6 +1340,9 @@ const createStore = () => {
       foroseleccionado(state,data){
         state.foroselect=data
       },
+      directorioSeleccionado(state,data){
+        state.directorioselect=data
+      },
       cleanImgStore(state){
         state.imgupload="";
         state.urlimg="";
@@ -1368,8 +1379,22 @@ const createStore = () => {
         state.categorias = payload;
       },
       actualizarDirectorios(state, payload){
-        state.directorios = payload;
+        console.log(payload)
+        if(payload.type === "crear")
+          state.directorios = payload.data;
+
+        else if(payload.type === "agregar")
+          state.directorios.push(payload.data);
+
+        else if(payload.type === "eliminar")
+        state.directorios = state.directorios.filter( (lista) => lista.idPromo !== payload.data)
+        
       },
+      // eliminarDirectorio(state, payload){
+      //   const nuevosD = state.directorios.filter( (lista) => lista.idPromo !== payload)
+      //   state.directorios = nuevosD;
+
+      // },
       agregarCategorias(state, payload){
         // console.log(payload)
         // console.log(state.categorias)

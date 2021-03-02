@@ -219,6 +219,23 @@
     </v-card>
   </v-dialog>
 
+  <!-- POPUP DE INFORMACION DE LOS DIAS DE PRUEBA DE UNA NUEVA SUSCRIPCION -->
+  <v-dialog v-model="esPromo" max-width="770" >
+    <v-card>
+      <v-card-title class=" justify-space-between">
+        <v-btn icon text small color="purple" @click="" >
+        </v-btn>
+        <h3 class="primary--text ">Promoción por stripe</h3>
+        <v-btn icon text small color="purple" @click="esPromo = false;" >
+            <v-icon>mdi-window-close</v-icon>
+        </v-btn>
+      </v-card-title>
+      <v-card-text class="text-center">
+        <p>Si te decides a comprar la suscripción por stripe, te regalamos {{configAll.pagos.stripe.pruebagratuita}} dias de prueba.</p>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
+
     
 
 

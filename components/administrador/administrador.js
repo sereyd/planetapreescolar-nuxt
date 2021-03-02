@@ -10,7 +10,7 @@ export default{
             //DATA DE FORMULARIO LOGIN
             usuarios:[],
             tipos:['Miss','Maestra'],
-            lvls:[{value: 0, text: "Gratis"}, {value: 1, text: "Premium"}, {value: 2, text: "Admin"}],
+            lvls:[{value: 1, text: "Gratis"}, {value: 2, text: "Premium"}, {value: 3, text: "Admin"}],
 
             //DATA DE LA TABLA
             titulos:[
@@ -96,13 +96,21 @@ export default{
                 anual:0,
             },
 
+            //DATA PARA CONFIGUIRACION DE SUSCRIPCIONES
+            dialogSus: false,
+            editSus:{
+                diasPrueba:10,
+            },
+            validConfigSus: false,
+
+
             
         }
       
     },
     computed:{
         // ...mapState(['datosUsuario']),
-        ...mapState(['datosUsuario','descargasConf']),
+        ...mapState(['datosUsuario','descargasConf','configAll']),
     },
     methods:{
         ...mapActions(['creaNotificacion']),
@@ -110,6 +118,11 @@ export default{
         abrirConfigD(){
             this.dialogDes = true;
             this.editDescargasConf = {...this.descargasConf};
+        },
+        abrirConfigS(){
+            this.dialogSus = true;
+            const {pruebagratuita} = this.configAll.pagos.stripe
+            this.editSus.diasPrueba = pruebagratuita;
         },
         // async cargaConfiguracionDescargas(){
         //     let datos= {};
@@ -159,6 +172,34 @@ export default{
                 console.error("ErroR al actualizar descargas: ", error);
             });
         },
+        editarConfigSuscripciones(){
+            const {idCAll} = this.configAll;
+            let {pagos} = this.configAll;
+            // console.log(this.descargasConf);
+            // console.log(this.editDescargasConf);
+            //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID
+            let descargasFreeRef = this.$fireStore.collection("ConfiguracionGeneral").doc(idCAll);
+            
+             pagos.stripe.pruebagratuita = this.editSus.diasPrueba
+
+            //  console.log(pagos.stripe);
+            //SE ACTUALIZA EN FIREBASE EL CAMPO DE COMENTARIOS
+            descargasFreeRef.update({
+                pagos
+                // ...this.configAll
+            })
+            .then(() => {
+              console.log("UPDATE CONFIGURACION DESCARGAR ")
+            //   this.actualizarConfigDescargas(this.editDescargasConf);
+            //   console.log(datos)
+            //   console.log(this.descargasConf)
+              this.dialogSus = false;
+        
+            })
+            .catch((error) => {
+                console.error("ErroR al actualizar descargas: ", error);
+            });
+        },
         enviarNotificacion(){
             this.creaNotificacion(this.usernotselect)
 
@@ -184,7 +225,7 @@ export default{
 
                     this.cambiaLoading('finaliza')
                 });
-                console.log(this.optionUsuarios)
+                // console.log(this.optionUsuarios)
             }catch(error){
               console.log(error)
             }
@@ -238,7 +279,17 @@ export default{
             //   this.crearUsuario()
             this.editarConfigDescargas()
             // console.log("todo OK")
-          },
+        },
+
+        validateConfSus () {
+            const vd = this.$refs.formConfigSus.validate();
+            this.validConfigSus = vd;
+            console.log(this.validConfigSus)
+            if(this.validConfigSus)
+            //   this.crearUsuario()
+            this.editarConfigSuscripciones()
+            // console.log("todo OK")
+        },
     },
     mounted(){
         this.getElement()

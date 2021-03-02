@@ -194,7 +194,9 @@
 
         this.$fireStore.collection('ConfiguracionGeneral').get()
         .then((data)=>{
-         const configall=data.docs[0].data()
+         let configall=data.docs[0].data()
+         configall.idCAll=data.docs[0].id
+        //  console.log(configall)
           this.gralconfig=configall
           this.cargaConfiGral(configall)
           this.loader=true
