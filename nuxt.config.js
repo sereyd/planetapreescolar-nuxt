@@ -1,5 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
-
+const fbconfig=require('./firebase-keys.js')
 export default {
   /*
   ** Nuxt rendering mode
@@ -107,17 +107,7 @@ router: {
   },
 
   firebase: {
-    config:{
-      apiKey: "AIzaSyB8GyvM9PdvjufoAyEZv2uRQLVhVQM-Z-o",
-      authDomain: "educadorafirebase.firebaseapp.com",
-      databaseURL: "https://educadorafirebase.firebaseio.com",
-      projectId: "educadorafirebase",
-      storageBucket: "educadorafirebase.appspot.com",
-      messagingSenderId: "4922270561",
-      appId: "1:4922270561:web:d12332e6277b143e5c9b20",
-      measurementId: "G-E7Y6JTQG51"
-    
-      },
+    config:fbconfig.firebaseConfig,
     services: {
       auth: true, // Just as example. Can be any other service.
       firestore:true,

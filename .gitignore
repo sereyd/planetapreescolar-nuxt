@@ -4,7 +4,10 @@
 nuxt.config
 nuxt.config.js
 nuxt.config.*
-
+#firebase config
+firebase-keys.js
+firebase-keys
+firebase-keys.*
 
 ### Node template
 # Logs
