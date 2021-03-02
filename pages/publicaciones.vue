@@ -7,7 +7,7 @@
       <!-- <v-col cols="12" md="12"> </v-col> -->
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 3">
         <h2>Mis Reflexiones</h2>
-
+          <loaderDate :loader="loading"  />
         <cargablog 
           tipo="CATEGORIAS" subtipo="reflexion"   :listaR="reflexiones"
           :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
@@ -25,6 +25,7 @@
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 3">
         <h2>Mis Planeaciones</h2>
 
+         <loaderDate :loader="loading"  />
         <cargablog 
           tipo="CATEGORIAS" subtipo="planeacion"  :listaR="planeaciones" 
           :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
@@ -42,6 +43,7 @@
 
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 3">
         <h2>Mis hojas de trabajo</h2>
+         <loaderDate :loader="loading"  />
         <cargablog 
           tipo="CATEGORIAS" subtipo="hojatrabajo"  :listaR="hojastrabajo" 
           :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
@@ -58,6 +60,7 @@
 
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 3">
         <h2>Mis hojas para ilustrar</h2>
+         <loaderDate :loader="loading"  />
         <cargablog 
           tipo="CATEGORIAS" subtipo="hojailustrar"  :listaR="hojasilustrar" 
           :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
@@ -74,6 +77,7 @@
 
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 3">
         <h2>Mi material didáctico</h2>
+        <loaderDate :loader="loading"  />
         <cargablog 
           tipo="CATEGORIAS" subtipo="materialdidactico"  :listaR="materialdidactico" 
           :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
@@ -90,7 +94,8 @@
 
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 3">
         <h2>Mis interactivos</h2>
-        <cargablog 
+       <loaderDate :loader="loading"  />
+        <cargablog  
           tipo="CATEGORIAS" subtipo="interactivo"  :listaR="interactivos" 
           :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
         >
@@ -106,6 +111,7 @@
 
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 3">
         <h2>Mis otros</h2>
+       <loaderDate :loader="loading"  />
         <cargablog 
           tipo="CATEGORIAS" subtipo="otro"  :listaR="otros" 
           :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
@@ -122,6 +128,7 @@
 
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 1">
         <h2>Mis Memorias</h2>
+     <loaderDate :loader="loading"  />
         <cargablog 
           tipo="CATEGORIAS" subtipo=" memoria"  :listaR="memorias"
           :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
@@ -137,6 +144,7 @@
       </v-col>  
       <v-col cols="12" md="12" v-if="datosUsuario.lvluser >= 1">
         <h2>Mis Blogs</h2>
+         <loaderDate :loader="loading"  />
         <cargablog 
           tipo="CATEGORIAS" subtipo="blog"  :listaR="blog"
           :refreshPost="refreshPost" @updateRefresh="refreshPost=$event"
@@ -157,6 +165,7 @@
 import validasitio from "@/mixins/validasitio.js";
 import editorblog from "~/components/blog-editor/blog-editor.vue";
 import cargablog from "~/components/carga-blog/carga-blog.vue";
+import loaderDate from "~/components/loaderDate/loaderDate.vue"
 import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   data() {
@@ -194,7 +203,8 @@ export default {
   },
   components: {
     editorblog,
-    cargablog
+    cargablog,
+    loaderDate
   },
   computed: {
     ...mapState(['datosUsuario','loading']),
@@ -320,7 +330,7 @@ this.cambiaLoading('inicia')
 
                 else if(datos.tipo === "otro")
                   this.otros.push(datos)
-              
+              this.cambiaLoading('finaliza')
             });
 
             
@@ -333,6 +343,7 @@ this.cambiaLoading('inicia')
 
       } catch (e) {
         console.log(e);
+        this.cambiaLoading('finaliza')
       }
 
   

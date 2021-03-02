@@ -1,7 +1,7 @@
 <template>
 <v-dialog  persistent  v-model="validsesion" width="250">
     <div  style="background-color:#e93976; width:100%; height:100%; text-align: center;">
- <img src="images/loader/loader5.gif" width="100%"  />
+ <img :src="urlimg" width="100%`"  />
 </div>
     </v-dialog>
 </template>
@@ -12,8 +12,12 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      validsesion: false
+      validsesion: false,
+      urlimg:""
     };
+  },
+  created(){
+   this.urlimg=`${window.location.protocol}//${window.location.host}/images/loader/loader5.gif`
   },
   methods: {
     ...mapActions(["autenticarUsuario"]),
@@ -40,11 +44,6 @@ export default {
         console.log('autenticando')
       setTimeout(()=>{this.$nuxt.$loading.finish()}, 500)  
       });
-
-
-
-  
-
     });
   }
 };

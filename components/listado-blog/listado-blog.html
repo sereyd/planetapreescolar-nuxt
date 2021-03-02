@@ -5,9 +5,9 @@
     <v-col cols="9" md="10" class="space">
         <!-- <v-row>
             <v-col cols="12" md="7" sm="8"> -->
-                <h3 class="primary--text space" >{{titulo}}</h3>
+                <h2 class="primary--text space" style="font-size: 18px;" >{{titulo}}</h2>
             <!-- </v-col> -->
-            <p v-if="subtitulos !== ''" class="space" style="font-size: 14px;" >{{subtitulos}}</p>
+            <p v-if="subtitulos !== ''" class="space" style="font-size: 14px;" ><b>{{subtitulos}}</b></p>
         <!-- </v-row> -->
         
     </v-col>
@@ -38,6 +38,7 @@
                             max-width="100%"
                             class="fotomini"
                             @click="muestrapost(key)"
+                            :alt="key.titulo"
                         />
                     </div>
                     <iframe 
@@ -142,8 +143,8 @@
         
                 <div>
                     <div v-if="subtipo==='memoria' || subtipo === 'reflexion'" class=" ml-3 textos">
-                        <h4>{{key.titulo}}</h4>
-                        <p>{{key.nombreCreador}}</p>
+                        <h4><b>{{key.titulo}}</b></h4>
+                        <p><em>{{key.nombreCreador}}</em></p>
                         <!-- <p class="texto_mb">{{ fechaVisual(key.fecha) }}</p> -->
                         <!-- <p class="datosGrupo">{{el.cicloEscolar}}</p>
                         <p class="datosGrupo">{{el.total}} alumnos</p> -->
@@ -153,8 +154,8 @@
                         v-if="subtipo==='blog'" 
                         class=" ml-3 textos"
                     >
-                        <h4>{{key.titulo}}</h4>
-                        <p class="datos_extra">{{key.nombreCreador}}</p>
+                        <h4><b>{{key.titulo}}</b></h4>
+                        <p class="datos_extra"><em>{{key.nombreCreador}}</em></p>
                         <fechaComponent :fecha="key.fecha" />
                         <!-- <p class="datos_extra">{{key.fecha}}</p> -->
                     </div>
@@ -163,16 +164,16 @@
                     <div v-if="key.tipo==='otro'" class=" ml-3 textos">
                         <!-- <p class="datos_extra">{{key}}</p> -->
                         
-                        <h4 style="font-size: 17px;">{{key.titulo}}</h4>
-                        <p class="datos_extra">{{key.nombreCreador}}</p>
+                        <h4 style="font-size: 17px;"><b>{{key.titulo}}</b></h4>
+                        <p class="datos_extra"><em>{{key.nombreCreador}}</em></p>
                         <p class="datos_extra" style="font-size: 14px;" v-html="key.contenido.substr(0,90)"></p>
                     </div>
                     
                     <div v-else-if="subtipo==='planeacion' || subtipo==='materialdidactico' || subtipo==='hojatrabajo' || subtipo==='hojailustrar' || subtipo==='interactivo' || subtipo==='otro' || subtipo==='recomendacion'" class=" ml-3 textos">
                         <!-- <p class="datos_extra">{{key}}</p> -->
                         
-                        <h4 style="font-size: 17px;">{{key.titulo}}</h4>
-                        <p class="datos_extra" style="font-size: 14px;">{{key.materia}}</p>
+                        <h4 style="font-size: 17px;"><b>{{key.titulo}}</b></h4>
+                        <p class="datos_extra" style="font-size: 14px;"><em>{{key.materia}}</em></p>
                         <!-- <p class="datos_extra">{{key.grado}}</p> -->
                         
                         <p class="datos_extra"  style="font-size: 12px;">{{key.sinopsis.substr(0,90)}}</p>
@@ -191,7 +192,7 @@
             </span> -->
     
           
-            <img src="images/logos/planeta_preescolar_bco.png" width="55" class="miniMovil" />
+            <img src="images/logos/planeta_preescolar_bco.png" width="55" class="miniMovil" alt="planetapreescolar" />
         
               &nbsp;  &nbsp; 
               
@@ -203,7 +204,7 @@
                     >
                     <img 
                         v-if="datosUsuario.urlImagen" 
-                        :src="datosUsuario.urlImagen === 'none' || datosUsuario.urlImagen==='' ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : datosUsuario.urlImagen" width="100%" 
+                        :src="datosUsuario.urlImagen === 'none' || datosUsuario.urlImagen==='' ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : datosUsuario.urlImagen"  width="100%" 
                     />
                     </v-avatar>
         

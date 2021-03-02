@@ -1187,7 +1187,7 @@ const createStore = () => {
       //CARGA DE POST POR TIPO DE POST PARA LA VISTA DE VER MAS
       async  cargaBasePost({state,commit},tipoPost){
         let postG = [];
-        this.cambiaLoading('inicia')
+        commit('cambiaLoading','inicia')
         if(state.categorias.length === 0)
         {
           // console.log("BUSCAR DE FIREBASE")
@@ -1217,7 +1217,7 @@ const createStore = () => {
                 });
                 state.categorias = postG;
                 commit("updateVerMas",tipoPost);
-                this.cambiaLoading('finaliza')
+                commit('cambiaLoading','finaliza')
               });
           } catch (e) {
             console.log(e);

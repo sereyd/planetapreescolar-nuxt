@@ -2,9 +2,12 @@
 <v-main >
 
   <!-----Buscador------>
+  <h1 class="text-center" style="font-size:27px;">Recursos descargables para el aprendizaje en
+preescolar | Planeta preescolar.</h1>
 <v-card class="secondary ma-2  modbuscador" >
     <v-card-text class="backbuscador text-center white--text pa-4 rounded-2 pt-3" style="background-image: url('images/nubes.png'); background-position:center center;" >
-        <h2 class="medidah1">¡Muchos recursos para ti!</h2>
+        <h2 class="medidah1" style="font-size:25px;">Selección de
+recursos educativos</h2>
         <p class="medidap">Planeaciones editables, hojas de trabajo, material didáctico, cantos y juegos</p>
          <buscador :selectopt="'todo'"  />
     </v-card-text>

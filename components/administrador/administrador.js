@@ -106,7 +106,7 @@ export default{
     },
     methods:{
         ...mapActions(['creaNotificacion']),
-        ...mapMutations(['cambiarStatusOpenAdmin','actualizarConfigDescargas']),
+        ...mapMutations(['cambiarStatusOpenAdmin','actualizarConfigDescargas','cambiaLoading']),
         abrirConfigD(){
             this.dialogDes = true;
             this.editDescargasConf = {...this.descargasConf};

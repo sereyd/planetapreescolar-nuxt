@@ -30,7 +30,7 @@
         v-for="item in itemsmenu"
         :key="item.title"
         link
-        :to="item.link"
+        @click="accesclick(item.link)"
         v-if="$validasesion($store,item) && item.visible===true"
           active-class="font-weight-black text-caption"
       >
@@ -229,8 +229,12 @@
         ...mapMutations(['abrirRegistro','changeScreenPrint','cambioMantenimiento','cargaConfiGral','cambiaLoading']),
         ...mapActions(['scrollmenu']),
         accesclick(p){
-          this.cambiaLoading('libera')
+          console.log(window.location.pathname)
+          console.log(p)
+        if(window.location.pathname!==p){
+        this.cambiaLoading('libera')
           this.$router.push(p)
+          }
         },
         loadingevent(e){
        

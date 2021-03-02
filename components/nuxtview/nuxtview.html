@@ -4,10 +4,12 @@
     indeterminate
     color="primary darken-2"
   ></v-progress-linear>
+  
 <v-dialog v-model="cleanview" max-width="250" elevation="0">
 <div  style="background-color:#e93976; width:100%; height:100%; text-align: center;">
- <img src="images/loader/loader5.gif" width="100%"  />
+ <img :src="urlimg" width="100%"  />
 </div>
+
 </v-dialog>
 
     <nuxt  />

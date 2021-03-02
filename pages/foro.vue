@@ -1,5 +1,9 @@
 <template>
     <v-main>
+          <h1 class="text-center" style="font-size:27px;">Espacio creado para compartir vivencias entre
+educadoras de nivel preescolar | Comunidad Planeta
+Preescolar.
+</h1>
         <v-row>
         <v-col cols="12" md="10" class="ma-0">
     <listaforo></listaforo>

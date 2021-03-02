@@ -2,6 +2,8 @@
         <v-main >
             <!-- <v-btn @click="listaAleatoria([])">Random</v-btn> -->
                 <!---------planeaciones------------>
+                 <h1 class="text-center" style="font-size:27px;">Planeaciones editables, hojas de trabajo,
+material didáctico, cantos y juegos| Planeta Preescolar.</h1>
                 <v-row>
                    <v-col cols="10">
                       <buscador :esBuscando ="buscando"  @updateBuscando="buscando=$event"/>

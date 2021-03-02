@@ -21,6 +21,7 @@
 <script>
 import validasitio from '@/mixins/validasitio.js'
 import login from '~/components/login/login.vue'
+import {mapState,mapMutations} from 'vuex'
 export default {
     data(){
         return {
@@ -28,6 +29,16 @@ export default {
                 sinregistro:true
                 }
         }
+    },
+    methods:{
+        ...mapMutations(['cambiaLoading'])
+    },
+    mounted(){
+         this.cambiaLoading('inicia')
+    setTimeout(()=>{
+      console.log
+  this.cambiaLoading('finaliza')
+    },2000)
     },
     components:{
         login
