@@ -3,7 +3,7 @@
         v-if="datosUsuario.lvluser === 3"
         class="ma-3 melon white--text"
         style="text-transform: none; border-radius: 12px;"
-        @click="creadirectorio = true"
+        @click="openD()"
     >
         Crear promoción
     </v-btn>
@@ -22,7 +22,7 @@
                 <v-col  cols="4" md="3" sm="4" class=" ">
                     <!-- <div  style="width:100%; max-width:100%; position:relative;"> -->
                         <v-img
-                            :src="key.urlImagen === '' || key.urlImagen === 'none'  ? 'https://www.nsvida.com/wp-content/uploads/2020/07/promociones-y-descuentos.jpg' : key.urlImagen"
+                            :src="key.urlImagen === '' || key.urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : key.urlImagen"
                             contain
                             max-width="100%"
                             class="fotomini"
@@ -35,7 +35,7 @@
                         <h4>{{key.titulo}}</h4>
                         <div>
 
-                            <p style="font-size: 14px;">{{key.descripcion.substr(0,300)}}</p>
+                            <p style="font-size: 14px;">{{key.descripcion}}</p>
                         </div>
                         <!-- <p class="datos_extra">{{key.nombreCreador}}</p> -->
                         <!-- <fechaComponent :fecha="key.fecha" /> -->    
@@ -49,7 +49,7 @@
                             v-if="datosUsuario.lvluser === 3"
                             class="mt-2 red accent-4 white--text"
                             style="text-transform: none; border-radius: 12px;"
-                            @click=""
+                            @click="eliminarPromo(key)"
                         >
                             <v-icon rigth dark> mdi-delete </v-icon>
                         </v-btn>
@@ -68,80 +68,80 @@
             </v-card>
         </v-row>
 
-        <v-dialog v-model="creadirectorio" persistent max-width="755">
-            
-            <v-card class=" px-10">
-                <v-card-title class=" justify-space-between">
-                    <v-btn icon text small color="purple" @click="" >
-                    </v-btn>
-                    <h2 class="primary--text ">Nueva promoción</h2>
-                    <v-btn icon text small color="purple" @click="creadirectorio = false" >
-                        <v-icon>mdi-window-close</v-icon>
-                    </v-btn>
-                </v-card-title>
-                <div class="mt-8">
-                    <v-form
-                        lazy-validation
-                        ref="formDirectorio"
-                        v-model="esDirectorioValido"
-                    >
-                    <div class="text-center" >
-                        <subirImagen 
-                        
-                            titulo=""  
-                            @updateImg="datosDirectorio.urlImagen=$event" 
-                            ejecimagen="uploadimg" 
-                            tpimg="post"
-                            class=" d-flex justify-center mb-4"
-                        />
-
-
-                        <v-text-field
-                            v-model="datosDirectorio.titulo"
-                            required
-                            label="Titulo"
-                            outlined
-                            dense
-                            :rules="[v => !!v || 'Titulo es requerido']"
-                            @keyup.enter=""
-                        ></v-text-field>
-                        
-                    
-                        <v-textarea
-                            label="Descripcion"
-                            required
-                            outlined
-                            dense
-                            v-model="datosDirectorio.descripcion"
-                            :rules="[v => !!v || 'Descripción es requerida']"
-                            height="90px"
-                            @keyup.enter=""
-
-                        ></v-textarea>
-
-                        <v-text-field
-                            v-model="datosDirectorio.link"
-                            label="Link"
-                            required
-                            outlined
-                            dense
-                            :rules="[v => !!v || 'Link es requerida']"
-                            @keyup.enter=""
-                        ></v-text-field>
-
-                        <v-btn 
-                            class="ma-2 primary white--text"
-                            style="text-transform: none; border-radius: 12px;"
-                            @click="validarFormularioDirectorio()"
-                        >
-                            Crear
-                        </v-btn>
-                    </div>
-                    </v-form>
-                </div>
-            </v-card>
-        </v-dialog>
         
         
     </div>
+    <v-dialog v-model="creadirectorio" persistent max-width="755">
+        
+        <v-card class=" px-10">
+            <v-card-title class=" justify-space-between">
+                <v-btn icon text small color="purple" @click="" >
+                </v-btn>
+                <h2 class="primary--text ">Nueva promoción</h2>
+                <v-btn icon text small color="purple" @click="creadirectorio = false" >
+                    <v-icon>mdi-window-close</v-icon>
+                </v-btn>
+            </v-card-title>
+            <div class="mt-8">
+                <v-form
+                    lazy-validation
+                    ref="formDirectorio"
+                    v-model="esDirectorioValido"
+                >
+                <div class="text-center" >
+                    <subirImagen 
+                    
+                        titulo=""  
+                        @updateImg="datosDirectorio.urlImagen=$event" 
+                        ejecimagen="uploadimg" 
+                        tpimg="post"
+                        class=" d-flex justify-center mb-4"
+                    />
+
+
+                    <v-text-field
+                        v-model="datosDirectorio.titulo"
+                        required
+                        label="Titulo"
+                        outlined
+                        dense
+                        :rules="[v => !!v || 'Titulo es requerido']"
+                        @keyup.enter=""
+                    ></v-text-field>
+                    
+                
+                    <v-textarea
+                        label="Descripcion"
+                        required
+                        outlined
+                        dense
+                        v-model="datosDirectorio.descripcion"
+                        :rules="[v => !!v || 'Descripción es requerida']"
+                        height="90px"
+                        @keyup.enter=""
+
+                    ></v-textarea>
+
+                    <v-text-field
+                        v-model="datosDirectorio.link"
+                        label="Link"
+                        required
+                        outlined
+                        dense
+                        :rules="[v => !!v || 'Link es requerida']"
+                        @keyup.enter=""
+                    ></v-text-field>
+
+                    <v-btn 
+                        class="ma-2 primary white--text"
+                        style="text-transform: none; border-radius: 12px;"
+                        @click="validarFormularioDirectorio()"
+                    >
+                        Crear
+                    </v-btn>
+                </div>
+                </v-form>
+            </div>
+        </v-card>
+    </v-dialog>
 </div>

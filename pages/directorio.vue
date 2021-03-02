@@ -4,7 +4,7 @@
     <!-- <div class="d-flex justify-center">
       <v-btn class="melon white--text mb-2 btn_crearG" @click="crearSesionSuscripcion()">Stripe</v-btn>
     </div> -->
-    <listadoDirectorio/>
+    <!-- <listadoDirectorio/> -->
 </v-main>
 </template>
 
@@ -36,10 +36,12 @@ export default {
     ...mapActions(['']),
     async  cargabaseGral(){
       let directorio = [];
+      // console.log("this.directorios antes")
+      // console.log(this.directorios)
 
       if(this.directorios.length === 0)
       {
-        console.log("no haynada")
+        
         try {
           await this.$fireStore
             .collection("directorio")
@@ -47,31 +49,37 @@ export default {
             .then((data) => {
               data.forEach((doc) => {
                 let data = doc.data();
-                console.log(data)
+                // console.log(data)
                 // data.tags = data.tags ? data.tags : [];
                 // data.favoritos = data.favoritos ? data.favoritos : [];
                 // data.sinopsis= data.sinopsis ? data.sinopsis : "";
 
-                delete data['idDirectorio'];
+                delete data['idPromo'];
 
 
                 const datos = {
-                    idRecurso: doc.id,
+                    idPromo: doc.id,
                     ...data
                 }
 
                 directorio.push(datos);
-                console.log(directorio)
-                this.actualizarDirectorios(directorio);
+                // console.log(directorio)
               });
+              console.log("directorio desde 0");
+              console.log(directorio);
+              const payload = {
+                type: "crear",
+                data: directorio
+              }
+              this.actualizarDirectorios(payload);
 
             });
         } catch (e) {
           console.log(e);
         }
       }
-      console.log("this.directorios")
-      console.log(this.directorios)
+      // console.log("this.directorios")
+      // console.log(this.directorios)
       
     },
     crearSesionSuscripcion(){

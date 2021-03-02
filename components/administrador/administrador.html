@@ -25,6 +25,12 @@
             >
             Descargas
           </v-btn>
+          <v-btn 
+            class="melon white--text" 
+            @click="abrirConfigS()"
+            >
+            Suscripciones
+          </v-btn>
       <v-dialog v-model="abrenot" max-width="850">
         <v-card>
           <v-card-title class="primary white--text">
@@ -364,13 +370,13 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="red lighten-1"  @click="dialog=false">Cancelar</v-btn>
-        <v-btn color="green lighten-1"  @click="validarFormulario">Guardar</v-btn>
+        <v-btn color="red lighten-1 white--text"  @click="dialog=false">Cancelar</v-btn>
+        <v-btn color="green lighten-1 white--text"  @click="validarFormulario">Guardar</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 
-
+  <!-- DIALOG PARA GESTIONAR LAS DESCARGAS POR MES DE CADA PLAN -->
   <v-dialog v-model="dialogDes" persistent max-width="755">
       
     <v-card class=" px-10">
@@ -478,6 +484,65 @@
                 <!-- <v-alert v-if="error" type="error" class="mt-2">
                     {{mensajeError}}
                 </v-alert> -->
+        </div>
+      
+    </v-form>
+
+        
+      </div>
+    </v-card>
+  </v-dialog>
+  <!-- DIALOG PARA GESTIONAR LAS DESCARGAS POR MES DE CADA PLAN -->
+
+
+  <!-- DIALOG PARA GESTIONAR SUSCRIPCIONES DE STRIPE -->
+
+  <v-dialog v-model="dialogSus" persistent max-width="755">
+      
+    <v-card class=" px-10">
+      <v-card-title class=" justify-space-between">
+          <v-btn icon text small color="purple"  >
+          </v-btn>
+          <h3 class="primary--text ">Suscripciones</h3>
+          <v-btn icon text small color="purple" @click="dialogSus = false" >
+              <v-icon>mdi-window-close</v-icon>
+          </v-btn>
+      </v-card-title>
+      
+      <div class="mt-5" >
+
+        <v-form ref="formConfigSus" v-model="validConfigSus" lazy-validation>
+        <div>
+          <div class=" d-flex justify-center align-center">
+            </div> 
+                
+                <v-text-field
+                    v-model="editSus.diasPrueba"
+                    label="Días de prueba stripe"
+                    required
+                    outlined
+                    dense
+                    height="20px"
+                    type="number"
+                    :rules="[v => !!v || 'Valor es requerido']"
+                    @keyup.enter="validateConfSus"
+                    class="mb-2"
+                ></v-text-field>
+
+                
+               
+
+                <div class="d-flex justify-center pb-3">
+                  <v-btn 
+                  dark 
+                  class="primary btn_crearCuenta mr-3" 
+                  @click="validateConfSus">Guardar</v-btn>
+                  <v-btn 
+                  dark 
+                  class="primary btn_crearCuenta" 
+                  @click="dialogSus = false">Cancelar</v-btn>
+                </div>
+
         </div>
       
     </v-form>

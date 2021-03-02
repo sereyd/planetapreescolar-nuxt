@@ -48,6 +48,9 @@ export default {
       completado: false,
       linkMP: "",
 
+      //PeriodoPrueba
+      esPromo: false,
+
       correoReglas: [    
         v => !!v || 'Correo es requerido',
         v => /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(v) || 'Correo no válido',
@@ -62,16 +65,22 @@ export default {
   },
   components:{Spinner},
   created(){
-   this.apikeystripe=this.configAll.pagos.stripe.modoprueba === true ? this.configAll.pagos.stripe.apikeytest : this.configAll.pagos.stripe.apikeyprod
+    this.apikeystripe=this.configAll.pagos.stripe.modoprueba === true ? this.configAll.pagos.stripe.apikeytest : this.configAll.pagos.stripe.apikeyprod
+    const {pruebagratuita} = this.configAll.pagos.stripe;
+    const pguser = this.datosUsuario.pruebagratuita;
   
-    console.log(this.apikeytest)
-    },
+    // console.log(this.datosUsuario.pruebagratuita)
+    // console.log(this.configAll.pagos.stripe)
+    // console.log(this.apikeytest)
+    this.esPromo = (!pguser && pruebagratuita > 0) ? true : false;
+
+  },
   methods: {
     ...mapMutations(['guardaDatosUsuarioStore','guardarStripeObj']),
     //PAGOS CON MERCADO LIBRE
     generarCobro(){
       window.Mercadopago.setPublishableKey(this.apiKey);
-      console.log(this.datosMP);
+      // console.log(this.datosMP);
     },
 
     validarMP(){
@@ -137,7 +146,7 @@ export default {
       })
       .then((preference) => {
     
-          console.log(preference);
+          // console.log(preference);
           // alert("stopppp")
          /// location.href = preference.pre.init_point;
          this.urlMP = preference.pre.init_point;
@@ -191,9 +200,9 @@ export default {
       // var urlendpoint = "http://localhost:4242"
 
       //prueba gratuita en dias
-      console.log(this.configAll.pagos.stripe.pruebagratuita)
+      // console.log(this.configAll.pagos.stripe.pruebagratuita)
       const trial_period_days = this.configAll.pagos.stripe.pruebagratuita;
-      console.log(trial_period_days)
+      // console.log(trial_period_days)
  
       
       let stripe = Stripe(this.apikeystripe, locale);
@@ -243,9 +252,9 @@ export default {
         orderData.tipoSuscripcion=tipoSuscripcion
         orderData.importe=this.importe
         orderData.external_reference=external_reference 
-        console.log("data");
-        console.log("data");
-        console.log(data);
+        // console.log("data");
+        // console.log("data");
+        // console.log(data);
 
         //DATA EN STORAGE PARA COMPROBARLA AL HACERASE EL PAGO EXITOSO
         localStorage.setItem("payment_intent", JSON.stringify(data) );

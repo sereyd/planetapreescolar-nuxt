@@ -17,6 +17,8 @@ export default {
         
       };
     },
+    name:"listaDirectorio",
+
     
     computed: {
       ...mapState(['datosUsuario', 'directorios','urlimg']),
@@ -27,6 +29,11 @@ export default {
 
     methods: {
     ...mapMutations(["almacenarFotoStorage","actualizaImgUpload","actualizarDirectorios"]),
+      openD(){
+        console.log("abrir")
+        this.creadirectorio = true
+        console.log(this.creadirectorio)
+      },
       async validarFormularioDirectorio () {
         this.esDirectorioValido =this.$refs.formDirectorio.validate();
   
@@ -45,6 +52,7 @@ export default {
         this.almacenarFotoStorage(ubi);
       },
       async almacenarDirectorioCollection(){
+        console.log(this.directorios)
         if(this.urlimg !== "" && this.urlimg !== "none")
           this.datosDirectorio.urlImagen = this.urlimg
 
@@ -59,6 +67,7 @@ export default {
             descripcion: this.datosDirectorio.descripcion,
             link: this.datosDirectorio.link,
             urlImagen: this.datosDirectorio.urlImagen,
+            foldercode: this.foldercode 
             // tags: this.tags
           }
           // nuevoRecurso.recomendado = nuevo
@@ -67,7 +76,13 @@ export default {
           // console.log(nuevoRecurso);
           await this.$fireStore.collection("directorio").add(nuevoDirectorio);
           // this.listaD.push(this.datosDirectorio)
-          this.actualizarDirectorios(nuevoDirectorio);
+          const payload = {
+            type: "agregar",
+            data: nuevoDirectorio
+          }
+          this.actualizarDirectorios(payload);
+          console.log(this.directorios)
+
           // this.actualizarDirectorio([]);
 
           // this.$emit('updateListaR',this.listaR)
@@ -82,6 +97,64 @@ export default {
         }
       
       },
+
+      async eliminarPromo(data){
+        if (confirm("¿Deseas eliminar esta promoción?") === true) {
+          // console.log("ELIMINADO")
+          // console.log(data);
+          const {foldercode, tipo, idPromo} = data;
+          const {id} = this.datosUsuario
+          const ruta = `directorio/${id}/${foldercode}`;
+          // console.log(ruta)
+          // console.log(data)
+          // this.eliminarDirectorio(idPromo);
+
+          // console.log(ruta)
+  
+          var storageRef = this.$fireStorage.ref();
+          // Create a reference 
+          var mountainsRef = storageRef.child(ruta);
+          
+          // Now we get the references of these files
+          mountainsRef.listAll().then( (result) => {
+
+              result.items.forEach( (file) => {
+                // console.log(file)le
+                 file.delete();
+
+              });
+
+              // console.log("terminadmos de recorrer")
+  
+              //BORRANDO POST SELECCIONADO
+              this.$fireStore.collection("directorio").doc(idPromo).delete()
+              .then(() => {
+                // console.log(idPromo)
+
+                const payload = {
+                  type: "eliminar",
+                  data: idPromo
+                }
+                
+                this.actualizarDirectorios(payload);
+  
+  
+              }).catch((error) => {
+                  console.error("Error removing document: ", error);
+              });
+  
+          }).catch( (error) => {
+            console.log(error);
+              alert("ALGO SALIO MAL")
+  
+          });
+  
+        } else {
+          console.log("SALVADO")
+  
+        }
+      },
+
       resetDatos(){
       
       

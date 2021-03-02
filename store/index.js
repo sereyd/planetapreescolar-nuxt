@@ -308,7 +308,7 @@ const createStore = () => {
           title: "Directorio",
           icon: "mdi-book-multiple",
           link: "/directorio",
-          visible: true
+          visible: false
         },
         {
           title: "Calendario",
@@ -659,6 +659,7 @@ const createStore = () => {
                     data.idCliente = data.idCliente ? data.idCliente : "";
                     data.idSuscripcion = data.idSuscripcion ? data.idSuscripcion : "";
                     data.descargas = data.descargas ? data.descargas : {};
+                    data.pruebagratuita = data.pruebagratuita ? data.pruebagratuita : false;
                     
                          datos = {
                           id: doc.id,
@@ -791,9 +792,9 @@ const createStore = () => {
                               return true;
                             }
                             else{
-                              datos.estadoMembresia = suscripcion.status;
+                              datos.estadoMembresia = suscripcion.plan.active ? 'active' : suscripcion.status;
                               
-                              if(suscripcion.status === "active")
+                              if(suscripcion.plan.active)
                               {
                                 context.state.datosSuscripcion.status = true;
                                 datos.lvluser = 2;
@@ -1378,18 +1379,22 @@ const createStore = () => {
         state.categorias = payload;
       },
       actualizarDirectorios(state, payload){
-        if(state.directorios.length === 0)
-          state.directorios = payload;
+        console.log(payload)
+        if(payload.type === "crear")
+          state.directorios = payload.data;
 
-        else
-        state.directorios = [
-          payload,
-          ...state.directorios,
-        ];
+        else if(payload.type === "agregar")
+          state.directorios.push(payload.data);
 
-        console.log("state.directorios")
-        console.log(state.directorios)
+        else if(payload.type === "eliminar")
+        state.directorios = state.directorios.filter( (lista) => lista.idPromo !== payload.data)
+        
       },
+      // eliminarDirectorio(state, payload){
+      //   const nuevosD = state.directorios.filter( (lista) => lista.idPromo !== payload)
+      //   state.directorios = nuevosD;
+
+      // },
       agregarCategorias(state, payload){
         // console.log(payload)
         // console.log(state.categorias)
