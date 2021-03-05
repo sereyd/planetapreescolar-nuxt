@@ -13,10 +13,10 @@
       <v-btn class="primary white--text" @click="entrarMantenimiento()">Entrar</v-btn>
       {{menMant}}
     </v-card-text>
-  </v-card>
+  </v-card> 
   </v-dialog>
-
-         <menulateral @abremenu="drawer=$event" />
+ 
+         <menulateral @abremenu="drawer=$event" /> 
 
     <v-navigation-drawer
     v-model="drawer"

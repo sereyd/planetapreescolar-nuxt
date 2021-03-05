@@ -517,7 +517,11 @@ const createStore = () => {
   async creaNotificacion({state},data){
     
     var idnot=state.datosUsuario.id
-
+    
+    console.log('********')
+    
+    console.log(data)
+    
     if(data.user!==''){
       idnot=data.user
     }
@@ -541,7 +545,9 @@ const createStore = () => {
       status:0,
       title:data.text
     }
-
+    console.log('*****************************')
+    
+    console.log(datos)
 
       await this.$fireStore.collection('Notificaciones').doc(idnot).collection('notify').add(datos)
 

@@ -2,7 +2,7 @@
 <v-main >
 
   <!-----Buscador------>
-  <h1 class="text-center" style="font-size:27px;">Recursos descargables para el aprendizaje en
+  <h1 class="text-center white--text" style="font-size:1px;">Recursos descargables para el aprendizaje en
 preescolar | Planeta preescolar.</h1>
 <v-card class="secondary ma-2  modbuscador" >
     <v-card-text class="backbuscador text-center white--text pa-4 rounded-2 pt-3" style="background-image: url('images/nubes.png'); background-position:center center;" >

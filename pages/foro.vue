@@ -1,6 +1,6 @@
 <template>
     <v-main>
-          <h1 class="text-center" style="font-size:27px;">Espacio creado para compartir vivencias entre
+          <h1 class="text-center white--text" style="font-size:1px;">Espacio creado para compartir vivencias entre
 educadoras de nivel preescolar | Comunidad Planeta
 Preescolar.
 </h1>
