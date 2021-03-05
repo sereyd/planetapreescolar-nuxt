@@ -41,7 +41,11 @@ de {{numPages}}  Paginas
 
 
 <div style="top:0px; left:0px; width:100%; position:absolute; text-align: center;">
-<img src="pantallas/3Estas leyendo previsualizacion.png" style="width:100%; max-width:500px;" />
+  <!-- <h3>{{subtipo}}</h3> -->
+<img 
+:src=" subtipo === 'planeacion' ? 'pantallas/3Estas leyendo previsualizacion.png' 
+: subtipo === 'otro' ? 'pantallas/7Que estas esperando.png' : 'pantallas/5Descubriste una funcion premium.png' " 
+style="width:100%; max-width:500px;" />
               <v-btn class="melon white--text" style="text-transform: none;" to="/checkout" >¡Hazte Premium!</v-btn>
 </div>
         </div>

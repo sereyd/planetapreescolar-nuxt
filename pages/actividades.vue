@@ -94,7 +94,6 @@ export default {
       hojasilustrar:[],
       materialdidactico:[],
       interactivos:[],
-      otros:[],
       buscando: false,
 
     };
@@ -148,8 +147,8 @@ export default {
                   cat.push(datos);
 
                   
+                this.updateCategoriasInicio(datos);
                 });
-                this.updateCategoriasInicio(cat);
                 this.actualizarCategorias(cat);
                 this.sliceCategoriasInicio();
 
@@ -162,14 +161,16 @@ export default {
       }
       else
       {
+        console.log("YA HAY DATOS EN CATEGORIAS")
+        console.log(this.categorias)
         this.updateCategoriasInicio([...this.categorias])
         this.sliceCategoriasInicio();
       }
          this.cambiaLoading('finaliza')
     },
 
-    updateCategoriasInicio(datos){
-      datos.map(cat => {
+    updateCategoriasInicio(cat){
+      // datos.map(cat => {
 
         if(cat.tipo === "planeacion"  && 
           ( cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
@@ -196,7 +197,7 @@ export default {
         //     this.otros.push(cat)
 
 
-      })
+      // })
 
     },
     async sliceCategoriasInicio(){

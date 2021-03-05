@@ -39,6 +39,11 @@ export default {
     PDF
   },
   props: {
-    src: ""
+    src: "",
+    subtipo:{
+      default:()=>{
+          return 'BLOG'
+      }
+    },
   }
 };

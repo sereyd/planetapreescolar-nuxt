@@ -23,7 +23,7 @@
                 </v-btn>
             </div>
             <!-- <p>{{relacionados[contador].tipo}}</p> -->
-            <v-row v-if="relacionados[contador].tipo === 'planeacion' || relacionados[contador].tipo === 'materialdidactico' || relacionados[contador].tipo === 'hojatrabajo' || relacionados[contador].tipo === 'hojailustrar' ">
+            <v-row v-if="relacionados[contador].tipo === 'planeacion' || relacionados[contador].tipo === 'materialdidactico' || relacionados[contador].tipo === 'hojatrabajo' || relacionados[contador].tipo === 'hojailustrar' || relacionados[contador].tipo === 'otro' ">
                 <v-col cols="12" md="5" sm="5" class="" >
                     <v-img
                         :src="relacionados[contador].urlImagen === '' || relacionados[contador].urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : relacionados[contador].urlImagen"
@@ -50,10 +50,12 @@
                             <div class="mt-4" style="font-size:13px;" v-html="cargarecomendacion"></div>
                         </div>
         
-                        <div v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' || subtipo==='recomendacion'" 
+                        <div v-if="subtipo === 'planeacion' || subtipo === 'materialdidactico' || subtipo === 'hojatrabajo' || subtipo === 'hojailustrar' || subtipo === 'interactivo' || subtipo==='recomendacion' || subtipo==='otro'" 
                         class=" ml-3 textos">
                             <h4>{{relacionados[contador].titulo}}</h4>
                             <p class="datos_extra">{{relacionados[contador].materia}}</p>
+                            <p class="datos_extra" v-if=" subtipo !=='otro'">{{relacionados[contador].grado}}</p>
+                            <p class="datos_extra" v-html="relacionados[contador].contenido" v-if="subtipo ==='otro'"></p>
                             <p class="datos_extra">{{relacionados[contador].sinopsis}}</p>
                         </div>
                         
@@ -171,6 +173,8 @@
                             <h4>{{relacionados[contador].titulo}}</h4>
                             <p class="datos_extra">{{relacionados[contador].materia}}</p>
                             <p class="datos_extra">{{relacionados[contador].grado}}</p>
+                            <p class="datos_extra" style="font-size: 14px;" v-html="relacionados[contador].sinopsis.substr(0,90)"></p>
+
                         </div>
                         
                     </div>
