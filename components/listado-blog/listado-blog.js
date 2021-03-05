@@ -40,7 +40,7 @@ export default{
       ...mapActions(['changeRecursosFavoritos']),
       ...mapMutations(['changeViewOthers','changeViewPost','changeDialogPost']),
       muestrapost(p){
-        console.log(p);
+        // console.log(p);
        
         this.linkembed = "";
 

@@ -134,10 +134,10 @@ export default {
 
                 cat.push(datos);
        
-              this.updateCategoriasInicio(datos)
               
               });
               console.log(cat);
+              this.updateCategoriasInicio(cat)
               this.actualizarCategorias(cat);
               this.sliceCategoriasInicio();
 
@@ -155,8 +155,8 @@ export default {
       }
        this.cambiaLoading('finaliza')
     },
-    updateCategoriasInicio(cat){
-      // datos.map(cat => {
+    updateCategoriasInicio(datos){
+      datos.map(cat => {
 
         if((cat.tipo === "planeacion" || cat.tipo === "materialdidactico" || cat.tipo === "hojatrabajo" || cat.tipo === "hojailustrar" || cat.tipo === "interactivo" ) && cat.recomendado && 
           ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
@@ -176,7 +176,7 @@ export default {
           (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
             this.otros.push(cat)
 
-      // })
+      })
 
     },
     async sliceCategoriasInicio(){

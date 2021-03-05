@@ -147,8 +147,8 @@ export default {
                   cat.push(datos);
 
                   
-                this.updateCategoriasInicio(datos);
                 });
+                this.updateCategoriasInicio(cat);
                 this.actualizarCategorias(cat);
                 this.sliceCategoriasInicio();
 
@@ -169,8 +169,8 @@ export default {
          this.cambiaLoading('finaliza')
     },
 
-    updateCategoriasInicio(cat){
-      // datos.map(cat => {
+    updateCategoriasInicio(datos){
+      datos.map(cat => {
 
         if(cat.tipo === "planeacion"  && 
           ( cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
@@ -197,7 +197,7 @@ export default {
         //     this.otros.push(cat)
 
 
-      // })
+      })
 
     },
     async sliceCategoriasInicio(){
