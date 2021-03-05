@@ -43,12 +43,13 @@
   :blogpost="memorias" :esCompleto="false" @updateBlogpost="memorias=$event"
   tipo="CATEGORIAS" subtipo="memoria" 
   titulo="Memorias de la educadora" subtitulos="Relatos y anécdotas que han dejado huella, comparte tus vivencias." 
+  linkmas="memorias"  
 />
 
 <div style="width:100%; height:0px;" ></div>
 <listablog 
   :blogpost="otros" :esCompleto="false" @updateBlogpost="otros=$event"
-  tipo="CATEGORIAS" subtipo="Administración" 
+  tipo="CATEGORIAS" subtipo="otro" 
   titulo="Administración" subtitulos="Material de administración y consulta que complementa tu actividad diaria." 
   linkmas="otros"  
 />
@@ -81,6 +82,8 @@ export default {
   //   ...mapMutations(['guardarVistaValida']),
   // },
   async mounted() {
+        console.log("INDEX.VUE")
+
       await this.cargabaseGral()
      // this.bandera = true
   },
@@ -102,6 +105,7 @@ export default {
      this.cambiaLoading('inicia')
       if(this.categorias.length === 0)
       {
+        console.log("CONSULTANDO LA BASE DE DATOS")
         try {
     
           await this.$fireStore
@@ -127,9 +131,10 @@ export default {
 
                 cat.push(datos);
        
+              this.updateCategoriasInicio(datos)
               
               });
-              this.updateCategoriasInicio(cat)
+              console.log(cat);
               this.actualizarCategorias(cat);
               this.sliceCategoriasInicio();
 
@@ -140,13 +145,15 @@ export default {
       }
       else
       {
+        console.log("YA HAY DATOS EN CATEGORIAS")
+        console.log(this.categorias)
         this.updateCategoriasInicio([...this.categorias])
         this.sliceCategoriasInicio();
       }
        this.cambiaLoading('finaliza')
     },
-    updateCategoriasInicio(datos){
-      datos.map(cat => {
+    updateCategoriasInicio(cat){
+      // datos.map(cat => {
 
         if((cat.tipo === "planeacion" || cat.tipo === "materialdidactico" || cat.tipo === "hojatrabajo" || cat.tipo === "hojailustrar" || cat.tipo === "interactivo" ) && cat.recomendado && 
           ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
@@ -166,7 +173,7 @@ export default {
           (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
             this.otros.push(cat)
 
-      })
+      // })
 
     },
     async sliceCategoriasInicio(){

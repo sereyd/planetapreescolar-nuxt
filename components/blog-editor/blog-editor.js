@@ -182,7 +182,7 @@ export default {
         if(this.urlimg !== "" && this.urlimg !== "none")
           this.datosRecurso.urlImagen = this.urlimg
 
-        if(this.subtipo === 'blog' && this.subtipo === 'memoria' && this.subtipo === 'reflexion')
+        if(this.subtipo === 'blog' || this.subtipo === 'memoria' || this.subtipo === 'reflexion')
           this.datosRecurso.permisoadmin = true;
 
         //SE OBTIENE EL USUARIO LOGEADO POR MEDIO DEL ID

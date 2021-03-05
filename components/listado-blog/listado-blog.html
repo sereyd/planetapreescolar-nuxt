@@ -52,7 +52,7 @@
                     <v-fab-transition class="mt-5" v-if ="key.tipoRecurso === 'link'">
                         <v-btn
                             :key="'edo_'+index"
-                            :color="key.premium === true ? 'melon' : 'primary'"
+                            color="primary"
                             x-small
                             fab
                             absolute
@@ -119,7 +119,7 @@
                       </v-fab-transition>
 
 
-                      <v-fab-transition class="pb-5" v-if="key.tipo !== 'blog' && key.tipo !== 'memoria' && key.tipo !== 'reflexion'">
+                      <v-fab-transition class="pb-5" v-if="key.tipo !== 'blog' && key.tipo !== 'memoria' && key.tipo !== 'reflexion' && key.tipoRecurso !== 'link'">
                         <v-btn
                             :key="'edo_'+index"
                             :color="key.premium === true ? 'melon' : 'primary'"
@@ -173,7 +173,7 @@
                         
                         <h4 style="font-size: 17px;">{{key.titulo}}</h4>
                         <p class="datos_extra" style="font-size: 14px;">{{key.materia}}</p>
-                        <!-- <p class="datos_extra">{{key.grado}}</p> -->
+                        <p class="datos_extra" v-if=" subtipo !=='otro'">{{key.grado}}</p>
                         
                         <p class="datos_extra"  style="font-size: 12px;">{{key.sinopsis.substr(0,90)}}</p>
                     </div>
