@@ -517,7 +517,11 @@ const createStore = () => {
   async creaNotificacion({state},data){
     
     var idnot=state.datosUsuario.id
-
+    
+    console.log('********')
+    
+    console.log(data)
+    
     if(data.user!==''){
       idnot=data.user
     }
@@ -541,7 +545,9 @@ const createStore = () => {
       status:0,
       title:data.text
     }
-
+    console.log('*****************************')
+    
+    console.log(datos)
 
       await this.$fireStore.collection('Notificaciones').doc(idnot).collection('notify').add(datos)
 
@@ -1195,7 +1201,7 @@ const createStore = () => {
       //CARGA DE POST POR TIPO DE POST PARA LA VISTA DE VER MAS
       async  cargaBasePost({state,commit},tipoPost){
         let postG = [];
-        this.cambiaLoading('inicia')
+        commit('cambiaLoading','inicia')
         if(state.categorias.length === 0)
         {
           // console.log("BUSCAR DE FIREBASE")
@@ -1225,7 +1231,7 @@ const createStore = () => {
                 });
                 state.categorias = postG;
                 commit("updateVerMas",tipoPost);
-                this.cambiaLoading('finaliza')
+                commit('cambiaLoading','finaliza')
               });
           } catch (e) {
             console.log(e);

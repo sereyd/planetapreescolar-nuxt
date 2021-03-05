@@ -1,8 +1,11 @@
 <template>
-  <v-main class="px-10" v-if="bandera">
+  <v-main class="px-10" >
     <v-row>
       <v-col cols="12">
         <buscador :esBuscando ="buscando"  :selectopt="'Blog'" @updateBuscando="buscando=$event"/>
+
+        
+<loaderDate :loader="loading"  />
       </v-col>
     </v-row>
     <v-row>
@@ -76,6 +79,7 @@ import validasitio from "@/mixins/validasitio.js";
 import editorblog from "~/components/blog-editor/blog-editor.vue";
 import cargablog from "~/components/carga-blog/carga-blog.vue";
 import buscador from '~/components/buscador/buscador.vue'
+import  loaderDate from '~/components/loaderDate/loaderDate.vue'
 
 export default {
   data() {
@@ -94,24 +98,25 @@ export default {
       },
       misMemorias:[],
       otrasMemorias:[],
-      bandera: false,
+
       buscando: false,
 
     };
   },
   computed: {
-    ...mapState(["datosUsuario","misPost","otrosPost"])
+    ...mapState(["datosUsuario","misPost","otrosPost","loading"])
   },
   async created() {
 
     await this.inialProceso();
-    this.bandera = true;
+
   },
   components: {
     editorblog,
     cargablog,
     listablog,
-    buscador
+    buscador,
+     loaderDate
   },
   mixins: [validasitio],
   methods: {

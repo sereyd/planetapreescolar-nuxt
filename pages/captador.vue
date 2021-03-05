@@ -35,7 +35,7 @@ export default {
                      this.$fireStore.collection("usuarios").doc(doc.id).update({vercorre:true})
                       
                       setTimeout(()=>{
-                          this.$router.push('/login')
+                       this.$router.push('/exit')
                       },2000)
                   })
               })

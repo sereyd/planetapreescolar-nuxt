@@ -3,10 +3,15 @@
 
 
 <template>
-<v-main class="px-10" v-if="bandera">
+<v-main class="px-10" >
+
+  
     <v-row>
       <v-col cols="12">
         <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/>
+
+<loaderDate :loader="loading"  />
+
       </v-col>
     </v-row>
     <v-row>
@@ -82,6 +87,7 @@ import validasitio from '@/mixins/validasitio.js'
 // import cargablog from "~/components/carga-blog/carga-blog.vue";
 import listablog from "~/components/listado-blog/listado-blog.vue";
 import buscador from '~/components/buscador/buscador.vue'
+import loaderDate from "~/components/loaderDate/loaderDate.vue"
 
 import { mapState, mapMutations, mapActions } from 'vuex'
 
@@ -102,7 +108,6 @@ export default {
                 audios:"",
                 imagenes:"",
             },
-            bandera: false,
             buscando: false,
 
         }
@@ -120,18 +125,19 @@ export default {
       await this.cargaPost();
       // console.log(this.misPost)
 
-      this.bandera = true;
+
     },
     components:{
         // grupos
         // editorblog,
         // cargablog,
         listablog,
-        buscador
+        buscador,
+        loaderDate
         //TreeFolderContents: () => import('./tree-folder-contents.vue')
     },
     computed:{
-      ...mapState(["datosUsuario","misPost","otrosPost"])
+      ...mapState(["datosUsuario","misPost","otrosPost","loading"])
 
     }
 }

@@ -1,554 +1,115 @@
-
-<div class="grey lighten-5 mx-16 mt-5">
-    <!-- <v-btn @click="fullScreenUsuarios = true">Gestionar usuarios</v-btn> -->
-    <v-row no-gutters>
-      <v-col cols="12" md="12"  v-if="$validasesion($store,{permisos:2,logeado:true})" class="pa-10">
-          
-        <v-btn 
-            class="melon white--text" 
-            @click="abrenot=true"
-            >
-            Notificaciones
-          </v-btn>
-
-          <v-btn 
-            class="melon white--text" 
-            to="landingpage"
-            >
-            Landing Page Admin
-          </v-btn>  
+<div class="pa-0">
+  <v-card>
+    <v-toolbar
+      flat
+      color="primary"
+      dark
+    >
+      <v-toolbar-title>Administrador |
 
 
-          <v-btn 
-            class="melon white--text" 
-            @click="abrirConfigD"
-            >
-            Descargas
-          </v-btn>
-          <v-btn 
-            class="melon white--text" 
-            @click="abrirConfigS()"
-            >
-            Suscripciones
-          </v-btn>
-      <v-dialog v-model="abrenot" max-width="850">
-        <v-card>
-          <v-card-title class="primary white--text">
-            Crea Notificaciones
-          </v-card-title>
+      <v-icon title="usuarios registrados">mdi-account</v-icon>:{{usuarios.length}}   <v-btn class="melon white--text" title="descargar o actualizar usuarios" @click="getElement()" >
+        <v-icon>{{usuarios.length===0 ? 'mdi-lan-disconnect' : 'mdi-lan-connect'}}</v-icon>
+        <v-icon> {{usuarios.length===0 ? '' : 'mdi-reload'}} </v-icon>
+      </v-btn>
+      
+      |
+      
+      <v-icon title="notificaciones creadas">mdi-bell</v-icon>:{{notifilist.length}}  <v-btn class="melon white--text" title="descargar o actualizar notificaciones" @click="cargaNotificaciones()" >
+        <v-icon>{{notifilist.length===0 ? 'mdi-lan-disconnect' : 'mdi-lan-connect'}}</v-icon>
+        <v-icon> {{notifilist.length===0 ? '' : 'mdi-reload'}} </v-icon>
+      </v-btn>
+
+      |
+
+        <v-icon title="Landing page creadas" >mdi-web</v-icon>: {{sitiosLp.length}} <v-btn class="melon white--text" title="descargar o actualizar paginas de aterrizaje creadas" @click="cargaSitios()" >
+          <v-icon>{{sitiosLp.length===0 ? 'mdi-lan-disconnect' : 'mdi-lan-connect'}}</v-icon>
+          <v-icon> {{sitiosLp.length===0 ? '' : 'mdi-reload'}} </v-icon>
+        </v-btn> 
+      |
+
+    </v-toolbar-title>
+
+    </v-toolbar>
+    <v-tabs vertical>
+      <v-tab>
+        <v-icon left>
+          mdi-account
+        </v-icon>
+       Gestor de usuarios
+      </v-tab>
+      <v-tab>
+        <v-icon left>
+          mdi-bell
+        </v-icon>
+       Notificaciones
+      </v-tab>
+      <v-tab>
+        <v-icon left>
+          mdi-account-supervisor-circle
+        </v-icon>
+      Suscripciones
+      </v-tab>
+      <v-tab>
+        <v-icon left>
+        mdi-web
+        </v-icon>
+      Landing Page
+      </v-tab>
+      <v-tab>
+        <v-icon left>
+        mdi-application-cog
+        </v-icon>
+      Configuración Sitio
+      </v-tab>
+      <v-tab-item>
+        <v-card flat>
           <v-card-text>
-          <v-row>
-            <v-col cols="12" md="12">
-            <v-select v-model="usernotselect.user" :items="optionUsuarios" >
-            </v-select>
-          </v-col>
-          <v-col cols="12" md="12">
-            <v-text-field v-model="usernotselect.text" label="mensaje de notificación" ></v-text-field>
-           </v-col>
-           <v-col cols="12" md="8">
-            <v-select v-model="usernotselect.icon" :items="iconos"></v-select>
-          </v-col>
-          <v-col cols="12" md="4">
-              <v-icon>{{usernotselect.icon}}</v-icon>
-          </v-col>
-          <v-col cols="12" md="12">
-            <v-text-field v-model="usernotselect.link" label="http:// | https:// | /enlacedelsitio"></v-text-field>
-          </v-col>
-          <v-col cols="12" md="12">
-            <v-btn class="melon white--text" style="text-transform: none;" @click="enviarNotificacion()">Enviar</v-btn>
-          </v-col>
           
-        </v-row>
+           <gestordeusuarios :usuar="usuarios" />
+
           </v-card-text>
-
         </v-card>
-      </v-dialog>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat>
+          <v-card-text>
+            
+            <notificaciones :userobject="optionUsuarios" />
+
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab-item>
+        <v-card flat>
+          <v-card-text>
+            <suscripciones />
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat>
+          <v-card-text>
+          
+            <landingpage  :sitios="sitiosLp"/>
+           
+          
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat>
+          <v-card-text>
+          
+            <configral />
+           
+          
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
     
-      </v-col>
-      <v-col cols="12" :class="fullScreenUsuarios ? 'principal ' : 'p'   ">
-        <div  >
-          <div class="nav primary">
-              <div><button></button></div>
-              <div><h1 class="white--text">Gestor de usuarios</h1></div>              
-              
-                  <div v-if="!fullScreenUsuarios">
-                    <v-btn icon text small 
-                      color="white" @click="fullScreenUsuarios = true"
-                      class="pr-2"
-                    >
-                        <v-icon > mdi-arrow-expand</v-icon>
-                    </v-btn>
-                  </div>
-                  <div v-else>
-                    <v-btn icon text small 
-                      color="white" @click="fullScreenUsuarios = false"
-                      class="pr-2"
-                    >
-                        <v-icon >mdi-window-close </v-icon>
-                    </v-btn>
-                  </div>
-          </div>
-          <div>
-
-              <v-card>
-                  <v-card-title>
-                    
-                    <v-spacer></v-spacer>
-                    <v-text-field
-                      v-model="search"
-                      append-icon="mdi-magnify"
-                      label="buscar"
-                      single-line
-                      hide-details
-                    ></v-text-field>
-                    <v-spacer></v-spacer>
-
-                  </v-card-title>
-                  <v-data-table
-                    :headers="titulos"
-                    :items="usuarios"
-                    :search="search"
-                    :items-per-page="fullScreenUsuarios ? 10 : 3"
-                  >
-                      <template v-slot:item.action2="{ item }" class="red">
-                          <v-avatar size="50" > 
-                              <v-img
-                              :src="item.urlImagen === 'none' || item.urlImage ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : item.urlImagen"
-                              alt="foto"
-                              ></v-img>
-                          </v-avatar>
-                      </template>
-                      <!-- <template v-slot:item.actions="{ item }">
-                          <v-btn class="error"><v-icon>mdi-delete</v-icon></v-btn>
-                      </template> -->
-
-                      <template v-slot:item.actions="{ item }">
-                          <v-icon
-                            small
-                            class="mr-2"
-                            @click="abrirVentana(item)"
-                          >
-                            mdi-pencil
-                          </v-icon>
-                          <!-- <v-icon
-                            small
-                            @click="eliminarUsuario(item)"
-                          >
-                            mdi-delete
-                          </v-icon> -->
-                        </template>
-                  </v-data-table>
-              </v-card>
-          </div>
-
-      </div>
-      </v-col >
-      <v-col cols="12">
-        <v-row>
-          <v-col cols="6">
-            <div  :class="fullScreenUsuarios2 ? 'principal ' : 'p'">
-              <div class="nav primary">
-                  <div><button></button></div>
-                  <div><h1 class="white--text">Gestor de Pagos</h1></div>              
-                  
-                      <div v-if="!fullScreenUsuarios2">
-                        <v-btn icon text small 
-                          color="white" @click="fullScreenUsuarios2 = true"
-                          class="pr-2"
-                        >
-                            <v-icon > mdi-arrow-expand</v-icon>
-                        </v-btn>
-                      </div>
-                      <div v-else>
-                        <v-btn icon text small 
-                          color="white" @click="fullScreenUsuarios2 = false"
-                          class="pr-2"
-                        >
-                            <v-icon >mdi-window-close </v-icon>
-                        </v-btn>
-                      </div>
-              </div>
-              <div>
-    
-                  <v-card>
-                      <v-card-title>
-                        
-                        <v-spacer></v-spacer>
-                        <v-text-field
-                          v-model="search"
-                          append-icon="mdi-magnify"
-                          label="buscar"
-                          single-line
-                          hide-details
-                        ></v-text-field>
-                        <v-spacer></v-spacer>
-    
-                      </v-card-title>
-                      <v-data-table
-                        :headers="titulos"
-                        :items="usuarios"
-                        :search="search"
-                        
-                        
-                      >
-                          <template v-slot:item.action2="{ item }" class="red">
-                              <v-avatar size="50" > 
-                                  <v-img
-                                  :src="item.urlImagen === 'none' || item.urlImage ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : item.urlImagen"
-                                  alt="foto"
-                                  ></v-img>
-                              </v-avatar>
-                          </template>
-                          <!-- <template v-slot:item.actions="{ item }">
-                              <v-btn class="error"><v-icon>mdi-delete</v-icon></v-btn>
-                          </template> -->
-    
-                          <template v-slot:item.actions="{ item }">
-                              <v-icon
-                                small
-                                class="mr-2"
-                                @click="abrirVentana(item)"
-                              >
-                                mdi-pencil
-                              </v-icon>
-                              <!-- <v-icon
-                                small
-                                @click="eliminarUsuario(item)"
-                              >
-                                mdi-delete
-                              </v-icon> -->
-                            </template>
-                      </v-data-table>
-                  </v-card>
-              </div>
-    
-            </div>
-          </v-col>
-          <v-col  cols="6">
-            <div  :class="fullScreenUsuarios3 ? 'principal ' : 'p'   ">
-              <div class="nav primary">
-                  <div><button></button></div>
-                  <div><h1 class="white--text">Gestor de usuarios</h1></div>              
-                  
-                      <div v-if="!fullScreenUsuarios3">
-                        <v-btn icon text small 
-                          color="white" @click="fullScreenUsuarios3 = true"
-                          class="pr-2"
-                        >
-                            <v-icon > mdi-arrow-expand</v-icon>
-                        </v-btn>
-                      </div>
-                      <div v-else>
-                        <v-btn icon text small 
-                          color="white" @click="fullScreenUsuarios3 = false"
-                          class="pr-2"
-                        >
-                            <v-icon >mdi-window-close </v-icon>
-                        </v-btn>
-                      </div>
-              </div>
-              <div>
-    
-                  <v-card>
-                      <v-card-title>
-                        
-                        <v-spacer></v-spacer>
-                        <v-text-field
-                          v-model="search"
-                          append-icon="mdi-magnify"
-                          label="buscar"
-                          single-line
-                          hide-details
-                        ></v-text-field>
-                        <v-spacer></v-spacer>
-    
-                      </v-card-title>
-                      <v-data-table
-                        :headers="titulos"
-                        :items="usuarios"
-                        :search="search"
-                        
-                      >
-                          <template v-slot:item.action2="{ item }" class="red">
-                              <v-avatar size="50" > 
-                                  <v-img
-                                  :src="item.urlImagen === 'none' || item.urlImage ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png' : item.urlImagen"
-                                  alt="foto"
-                                  ></v-img>
-                              </v-avatar>
-                          </template>
-                          <!-- <template v-slot:item.actions="{ item }">
-                              <v-btn class="error"><v-icon>mdi-delete</v-icon></v-btn>
-                          </template> -->
-    
-                          <template v-slot:item.actions="{ item }">
-                              <v-icon
-                                small
-                                class="mr-2"
-                                @click="abrirVentana(item)"
-                              >
-                                mdi-pencil
-                              </v-icon>
-                              <!-- <v-icon
-                                small
-                                @click="eliminarUsuario(item)"
-                              >
-                                mdi-delete
-                              </v-icon> -->
-                            </template>
-                      </v-data-table>
-                  </v-card>
-              </div>
-    
-            </div>
-          </v-col>
-        </v-row>
-      </v-col>
-  </v-row>
-
-
-  <!-- DIALOG -->
-  <v-dialog v-model="dialog" max-width="500px">
-                  
-    <v-card>
-      <v-card-title>
-        <span class="headline">Editar usuario</span>
-      </v-card-title>
-
-      <v-card-text>
-        <v-container>
-          <v-form ref="form"
-            v-model="valid"
-            lazy-validation
-          >
-            <v-row>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field 
-                  v-model="usuarioEditable.nombre" 
-                  label="Nombre:"
-                  :rules="nombreReglas"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field 
-                  v-model="usuarioEditable.apellido" 
-                  label="Apellido:"
-                  :rules="apellidoReglas"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="6">
-                  <v-select
-                  v-model="usuarioEditable.tipo"
-                  :items="tipos"
-                  :rules="[v => !!v || 'Seleccione un tipo']"
-                  label="Tipo:"
-                  ></v-select>
-              </v-col>
-              <!-- <v-col cols="12" sm="6" md="4">
-                <v-text-field v-model="usuarioEditable.correo" label="Correo"></v-text-field>
-              </v-col> -->
-              <!-- <v-col cols="12" sm="6" md="4">
-                <v-text-field v-model="usuarioEditable.lvluser" label="lvluser"></v-text-field>
-              </v-col> -->
-              <v-col cols="12" sm="6" md="6">
-                  <v-select
-                      v-model="usuarioEditable.lvluser"
-                      :items="lvls"
-                      :rules="nivelReglas"
-                      label="Cuenta:"
-                  ></v-select>
-                  <!-- {{usuarioEditable.lvluser}} -->
-              </v-col>
-            </v-row>
-          </v-form>
-          <!-- <v-alert v type="error" class="mt-3">
-            LLENE TODOS LOS CAMPOS
-          </v-alert> -->
-        </v-container>
-      </v-card-text>
-      
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="red lighten-1 white--text"  @click="dialog=false">Cancelar</v-btn>
-        <v-btn color="green lighten-1 white--text"  @click="validarFormulario">Guardar</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-
-  <!-- DIALOG PARA GESTIONAR LAS DESCARGAS POR MES DE CADA PLAN -->
-  <v-dialog v-model="dialogDes" persistent max-width="755">
-      
-    <v-card class=" px-10">
-      <v-card-title class=" justify-space-between">
-          <v-btn icon text small color="purple"  >
-          </v-btn>
-          <h3 class="primary--text ">Datos de descargas</h3>
-          <v-btn icon text small color="purple" @click="dialogDes = false" >
-              <v-icon>mdi-window-close</v-icon>
-          </v-btn>
-      </v-card-title>
-      
-      <div class="mt-5" >
-
-        <v-form ref="formConfigDes" v-model="validConfigD" lazy-validation>
-        <div>
-          <div class=" d-flex justify-center align-center">
-            </div> 
-                <!-- <v-select
-                    v-model="datosUsuarioR.tipo"
-                    :items="tipos"
-                    :rules="[v => !!v || 'Seleccione un tipo']"
-                    placeholder="Tipo:"
-                    required
-                    
-                    outlined
-                    hide-details
-                    cols="4" sm="4"
-                    style="width: 40%; margin-bottom: 10px;"
-                ></v-select> -->
-                <v-text-field
-                  v-model="editDescargasConf.free"
-                  label="Plan free:"
-                  required
-                  outlined
-                  dense
-                  height="20px"
-                  type="number"
-                  :rules="[v => !!v || 'Valor es requerido']"
-                  @keyup.enter="validateConfDes"
-                  class="mb-2"
-                ></v-text-field>
-                <v-text-field
-                    v-model="editDescargasConf.mensual"
-                    label="Plan mensual:"
-                    required
-                    outlined
-                    dense
-                    height="20px"
-                    type="number"
-                    :rules="[v => !!v || 'Valor es requerido']"
-                    @keyup.enter="validateConfDes"
-                    class="mb-2"
-                ></v-text-field>
-
-                <v-text-field
-                    v-model="editDescargasConf.trimestral"
-                    label="Plan trimestral:"
-                    required
-                    outlined
-                    dense
-                    height="20px"
-                    type="number"
-                    :rules="[v => !!v || 'Valor es requerido']"
-                    @keyup.enter="validateConfDes"
-                    class="mb-2"
-                ></v-text-field>
-                <v-text-field
-                    v-model="editDescargasConf.semestral"
-                    label="Plan semestral:"
-                    required
-                    outlined
-                    dense
-                    height="20px"
-                    type="number"
-                    :rules="[v => !!v || 'Valor es requerido']"
-                    @keyup.enter="validateConfDes"
-                    class="mb-2"
-                ></v-text-field> 
-                <v-text-field
-                    v-model="editDescargasConf.anual"
-                    label="Plan anual:"
-                    required
-                    outlined
-                    dense
-                    height="20px"
-                    type="number"
-                    :rules="[v => !!v || 'Valor es requerido']"
-                    @keyup.enter="validateConfDes"
-                    class="mb-2"
-                ></v-text-field>   
-               
-
-                <div class="d-flex justify-center pb-3">
-                  <v-btn 
-                  dark 
-                  class="primary btn_crearCuenta mr-3" 
-                  @click="validateConfDes">Guardar</v-btn>
-                  <v-btn 
-                  dark 
-                  class="primary btn_crearCuenta" 
-                  @click="dialogDes = false">Cancelar</v-btn>
-                </div>
-
-                <!-- <v-alert v-if="error" type="error" class="mt-2">
-                    {{mensajeError}}
-                </v-alert> -->
-        </div>
-      
-    </v-form>
-
-        
-      </div>
-    </v-card>
-  </v-dialog>
-  <!-- DIALOG PARA GESTIONAR LAS DESCARGAS POR MES DE CADA PLAN -->
-
-
-  <!-- DIALOG PARA GESTIONAR SUSCRIPCIONES DE STRIPE -->
-
-  <v-dialog v-model="dialogSus" persistent max-width="755">
-      
-    <v-card class=" px-10">
-      <v-card-title class=" justify-space-between">
-          <v-btn icon text small color="purple"  >
-          </v-btn>
-          <h3 class="primary--text ">Suscripciones</h3>
-          <v-btn icon text small color="purple" @click="dialogSus = false" >
-              <v-icon>mdi-window-close</v-icon>
-          </v-btn>
-      </v-card-title>
-      
-      <div class="mt-5" >
-
-        <v-form ref="formConfigSus" v-model="validConfigSus" lazy-validation>
-        <div>
-          <div class=" d-flex justify-center align-center">
-            </div> 
-                
-                <v-text-field
-                    v-model="editSus.diasPrueba"
-                    label="Días de prueba stripe"
-                    required
-                    outlined
-                    dense
-                    height="20px"
-                    type="number"
-                    :rules="[v => !!v || 'Valor es requerido']"
-                    @keyup.enter="validateConfSus"
-                    class="mb-2"
-                ></v-text-field>
-
-                
-               
-
-                <div class="d-flex justify-center pb-3">
-                  <v-btn 
-                  dark 
-                  class="primary btn_crearCuenta mr-3" 
-                  @click="validateConfSus">Guardar</v-btn>
-                  <v-btn 
-                  dark 
-                  class="primary btn_crearCuenta" 
-                  @click="dialogSus = false">Cancelar</v-btn>
-                </div>
-
-        </div>
-      
-    </v-form>
-
-        
-      </div>
-    </v-card>
-  </v-dialog>
+    </v-tabs>
+  </v-card>
+  <div style="width:100%; height:300px;"></div>
   </div>

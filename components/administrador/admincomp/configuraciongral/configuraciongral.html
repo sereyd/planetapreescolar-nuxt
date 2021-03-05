@@ -1,0 +1,283 @@
+<v-card>
+    <v-card-title>
+Configuración General
+    </v-card-title>
+    <v-card-text>
+
+        <v-tabs v-model="seccion">
+            <v-tab>
+               General
+            </v-tab>
+            <v-tab>
+               Stripe
+             </v-tab>
+             <v-tab>
+                MercadoPago
+              </v-tab>
+        </v-tabs>
+        <v-tabs-items v-model="seccion">
+            <v-tab-item >
+                <v-row>
+                    <v-col cols="12" md="6">
+                        <v-text-field label="url" v-model="gralconfig.url" ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-text-field label="Tienda" v-model="gralconfig.tienda" ></v-text-field>
+                    </v-col>
+
+
+                    <v-col cols="12" md="6">
+
+
+                        <v-switch
+                        v-model="gralconfig.mantenimineto"
+                        label="Mantenimiento"
+                      ></v-switch>
+
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-text-field label="Contraseña de Mantenimiento" v-model="gralconfig.passmantent" ></v-text-field>
+                    </v-col>
+                      <v-col cols="12" md="6">
+                        <v-text-field label="Servidor de correo" v-model="gralconfig.mailserver" ></v-text-field>
+                    </v-col>
+                </v-row>
+
+                </v-tab-item>
+            <v-tab-item >
+               
+                <v-row>
+                    <v-col cols="12" md="4">
+                        <v-switch
+                        v-model="gralconfig.pagos.stripe.modoprueba"
+                        label="Modo de prueba"
+                      ></v-switch>
+                    </v-col>
+
+                    <v-col cols="12" md="4">
+                        <v-switch
+                        v-model="gralconfig.pagos.stripe.visible"
+                        label="Visibilidad"
+                      ></v-switch>
+
+                    </v-col>
+
+                    <v-col cols="12" md="4">
+                        <v-text-field label="Meses de Prueba" v-model="gralconfig.pagos.stripe.pruebagratuita" ></v-text-field>
+
+                    </v-col>
+                    
+
+
+                    <v-col cols="12" md="6">
+                        <v-text-field label="Api Url producción" v-model="gralconfig.pagos.stripe.apiUrlprod" ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-text-field label="Api Url Prueba" v-model="gralconfig.pagos.stripe.apiUrltest" ></v-text-field>
+                    </v-col>
+
+
+
+
+                    <v-col cols="12" md="6">
+                        <v-text-field label="Api Key producción" v-model="gralconfig.pagos.stripe.apikeyprod" ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-text-field label="Api Key Prueba" v-model="gralconfig.pagos.stripe.apikeytest" ></v-text-field>
+                    </v-col>
+
+                    <v-col cols="12" md="6">
+                        <v-text-field label="Api Secreta Key producción" v-model="gralconfig.pagos.stripe.secretkeyprod" ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-text-field label="Api Secreta Key Prueba" v-model="gralconfig.pagos.stripe.secretkeytest" ></v-text-field>
+                    </v-col>
+
+                     <v-col cols="12" md="6">
+                        <v-text-field label="webhook secreto producción" v-model="gralconfig.pagos.stripe.webhooksecret_prod" ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-text-field label="webhook secreto prueba" v-model="gralconfig.pagos.stripe.webhooksecret_test" ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="12">
+                        <v-btn class="primary white--text" @click="addnewpago('stripe')"><v-icon>mdi-plus-circle</v-icon></v-btn>
+                        <v-data-table
+                        :headers="headerpagos"
+                        :items="gralconfig.pagos.stripe.idpagos"
+                        >
+
+                        <template v-slot:item.status='{ item }'>
+                            <v-switch
+                            v-model="item.status"
+                            :label="item.status === true ? 'Activo' : 'Inactivo' "
+                            >
+
+                            </v-switch>
+                    </template>
+                    
+                            <template v-slot:item.edit='{ item,index }'>
+                                <v-btn class="primary white--text" @click="editarpago(item)"><v-icon>mdi-pencil-box-multiple</v-icon></v-btn>
+                                <v-btn class="red white--text" @click="deletelist(item,'stripe')"><v-icon>mdi-delete</v-icon></v-btn>
+                                
+                            </template>
+                        </v-data-table>
+
+                      
+
+                    </v-col>
+
+                </v-row>
+
+
+
+
+                </v-tab-item>
+            <v-tab-item >
+              
+                
+                <v-row>
+                    <v-col cols="12" md="4">
+                        <v-switch
+                        v-model="gralconfig.pagos.mercadopago.modoprueba"
+                        label="Modo de prueba"
+                      ></v-switch>
+                    </v-col>
+
+                    <v-col cols="12" md="4">
+                        <v-switch
+                        v-model="gralconfig.pagos.mercadopago.visible"
+                        label="Visibilidad"
+                      ></v-switch>
+
+                    </v-col>
+
+                    <v-col cols="12" md="6">
+                        <v-text-field label="acceso token key test" v-model="gralconfig.pagos.mercadopago.accestokenkey" ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-text-field label="acceso token key producción" v-model="gralconfig.pagos.accestokenprod" ></v-text-field>
+                    </v-col>
+
+
+
+                    <v-col cols="12" md="6">
+                        <v-text-field label="api key producción" v-model="gralconfig.pagos.mercadopago.apikeyprod" ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-text-field label="api key prueba" v-model="gralconfig.pagos.mercadopago.apikeytest" ></v-text-field>
+                    </v-col>
+
+
+
+                    <v-col cols="12" md="6">
+                        <v-text-field label="api url producción" v-model="gralconfig.pagos.mercadopago.apiUrlprod" ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-text-field label="api url prueba" v-model="gralconfig.pagos.mercadopago.apiUrltest" ></v-text-field>
+                    </v-col>
+
+
+
+
+                    <v-col cols="12" md="6">
+                        <v-text-field label="secret key producción" v-model="gralconfig.pagos.mercadopago.secretkeyprod" ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-text-field label="secret key prueba" v-model="gralconfig.pagos.mercadopago.secretkeytest" ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="12">
+                        <v-btn class="primary white--text" @click="addnewpago('mercadopago')"><v-icon>mdi-plus-circle</v-icon></v-btn>
+                        <v-data-table
+                        :headers="headerpagos"
+                        :items="gralconfig.pagos.mercadopago.idpagos"
+                        >
+                            
+                        <template v-slot:item.status='{ item }'>
+                                <v-switch
+                                v-model="item.status"
+                                :label="item.status===true ? 'Activo' : 'Inactivo' "
+                                >
+
+                                </v-switch>
+                        </template>
+                        
+                        
+                        <template v-slot:item.edit='{ item }'>
+                                <v-btn class="primary white--text" @click="editarpago(item)"><v-icon>mdi-pencil-box-multiple</v-icon></v-btn>
+                                <v-btn class="red white--text" @click="deletelist(item,'mercadopago')"><v-icon>mdi-delete</v-icon></v-btn>
+                                
+                            </template>
+
+                        </v-data-table>
+                    </v-col>
+
+                </v-row>
+
+
+
+
+
+
+                </v-tab-item>  
+        </v-tabs-items>
+        
+        <v-dialog v-model="newedit" max-width="600">
+            <v-card>
+                <v-card-title class="primary white--text">
+                    Editar Pago
+                </v-card-title>    
+                <v-card-text>
+                    <v-text-field label="tipo" v-model="regpago.tipo"></v-text-field>
+                    <v-text-field label="monto" v-model="regpago.monto"></v-text-field>
+                    <v-text-field label="id pago prueba" v-model="regpago.idtest"></v-text-field>
+                    <v-text-field label="id pago producción" v-model="regpago.idprod"></v-text-field>
+                </v-card-text>
+                <v-btn class="primary white--text" @click="newedit=false">Guardar</v-btn>
+                <v-btn class="melon white--text"  @click="newedit=false">Cerrar</v-btn>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="newpay" max-width="600">
+            <v-card>
+                <v-card-title class="primary white--text">
+                 Nuevo pago
+                </v-card-title>    
+                <v-card-text>
+                    <v-text-field label="tipo" v-model="newdata.tipo"></v-text-field>
+                    <v-text-field label="monto" v-model="newdata.monto"></v-text-field>
+                    <v-text-field label="id pago prueba" v-model="newdata.idtest"></v-text-field>
+                    <v-text-field label="id pago producción" v-model="newdata.idprod"></v-text-field>
+                </v-card-text>
+                <v-btn class="primary white--text" @click="guardarPagoAr()">Guardar</v-btn>
+                <v-btn class="melon white--text"  @click="newpay=false">Cerrar</v-btn>
+            </v-card>
+        </v-dialog>
+        
+        
+        
+        <v-btn class="melon white--text" @click="alerta=true">Guardar Cambios</v-btn>
+        
+
+
+        <v-dialog v-model="alerta" max-width="500">
+            <v-card>
+                <v-card-text class="pa-6">
+                    <p style="font-size: 16px;">
+                <v-icon class="red--text">mdi-alert</v-icon>    Esta a punto de realizar cambios a la configuración general   </p>
+                            <br />
+                <v-btn class="primary white--text"  @click="guardarCambios()" >Guardar</v-btn>
+                <v-btn class="melon white--text" @click="alerta=false" >Cancelar</v-btn>
+                </v-card-text>
+
+            </v-card>
+        </v-dialog>
+        
+
+
+
+
+
+
+    </v-card-text>
+    
+</v-card>

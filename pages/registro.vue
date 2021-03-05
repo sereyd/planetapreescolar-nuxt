@@ -128,6 +128,7 @@
   filter: alpha(opacity==80);
   opacity: 0.8;
 }
+
 .fondo{
   padding: 0!important;
   margin: 0!important;
@@ -167,7 +168,7 @@ $font-size-root: 18px;
 <script>
 import validasitio from "@/mixins/validasitio.js";
 import Registro from '~/components/registro/registro.vue';
-
+import { mapState,mapMutations } from 'vuex' 
 
 export default {
   data() {
@@ -180,8 +181,22 @@ export default {
 
     };
   },
+  computed:{
+    ...mapState(['cleanview'])
+  },
+  mounted(){
+    this.cambiaLoading('inicia')
+    setTimeout(()=>{
+      console.log
+  this.cambiaLoading('finaliza')
+    },2000)
+   
+  },
   components:{
     Registro
+  },
+  methods:{
+    ...mapMutations(['cambiaLoading'])
   },
   mixins: [validasitio]
 };

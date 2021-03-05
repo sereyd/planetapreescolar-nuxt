@@ -5,6 +5,7 @@ import subirImagen from '@/components/subirimagen/subirimagen.vue'
 export default{
     data(){
         return {
+          urlhost:"",
             finish:false,
             succesreg:false,
             //DATA DE ELEMENTOS
@@ -83,7 +84,10 @@ export default{
       subirImagen
     },
     computed:{
-        ...mapState(['datosUsuario','urlimg','dominio']),
+        ...mapState(['datosUsuario','urlimg','dominio','configAll']),
+    },
+    created(){
+      this.urlhost=`${window.location.protocol}//${window.location.host}/`
     },
     methods:{
 
@@ -116,6 +120,8 @@ export default{
                 lvluser:0
               };
               this.almacenarUsuarioCollection();
+     
+
             }
             else
             {
@@ -154,8 +160,8 @@ export default{
              ////Guarda los datos de usuario en el store con una mutación 
            this.guardaDatosUsuarioStore(this.datosUsuarioR);
            this.resetearData();
-              // this.$router.push('/')
-         ///  window.location.href = URLactual.origin;
+         /// this.$router.push('/')
+          window.location.href = this.urlhost;
 
 
           } catch (error) {
@@ -226,7 +232,7 @@ export default{
               
               ///envia correo de confirmación 
 
-             fetch(this.$store.state.configAll.url+'/mailsender/',
+             fetch(this.$store.state.configAll.mailserver+'/mailsender/',
               {
                 method:'POST',
                 headers:{

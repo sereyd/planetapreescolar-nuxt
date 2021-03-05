@@ -108,8 +108,9 @@ export default {
       const description = tipoS === "trimestral" ? "Planeta Preescolar: Trimestral" : 
         tipoS === "semestral" ? "Planeta Preescolar: Semestral" :
         tipoS === "anual" ? "Planeta Preescolar: Anual" : "Planeta Preescolar: Mensual";
-      
-      const price = this.configAll.pagos.mercadopago.idpagos[tipoS];
+
+        var listPagos=this.configAll.pagos.mercadopago.idpagos.find(pago=>pago.tipo===tipoS)
+      const price = listPagos.monto
 
     /*  this.urlsusMP = tipoS === "trimestral" ? 
       "https://www.mercadopago.com/mlm/debits/new?preapproval_plan_id=2c9380847726c5de01773a8cbb520dc0" : 
@@ -189,12 +190,14 @@ export default {
       const external_reference = this.$codegenerate().toString();
  
       // this.importe = priceTipo === 'trimestral' ? "$500.00 MX" : "$1500.00 MX";
-      this.importe  = this.configAll.pagos.stripe.idpagos[tipoSuscripcion];
+      var arraypagos=this.configAll.pagos.stripe.idpagos.find(pago=>pago.tipo === tipoSuscripcion);
+
+      this.importe  = arraypagos.monto
 
       const locale = "es"
       
       //SE VERIFICA QUE TIPO DE MEMBRESIA SE DESEA PAGAR
-      const priceId = this.configAll.pagos.stripe.idsus[tipoSuscripcion];
+      const priceId = this.configAll.pagos.stripe.modoprueba===true ? arraypagos.idtest : arraypagos.idprod
 
       var urlendpoint=this.configAll.pagos.stripe.modoprueba === true ? this.configAll.pagos.stripe.apiUrltest : this.configAll.pagos.stripe.apiUrlprod
       // var urlendpoint = "http://localhost:4242"

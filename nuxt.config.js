@@ -7,7 +7,7 @@ export default {
   */
   mode: 'spa',
   dev: false,
-  ssr: true,
+  ssr: false,
   /*
   ** Nuxt target
   ** See https://nuxtjs.org/api/configuration-target

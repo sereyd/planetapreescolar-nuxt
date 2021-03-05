@@ -1,0 +1,109 @@
+<v-card>
+  <v-card-title>
+    <h2>Administrador de Landing Page</h2>
+  </v-card-title>
+    <v-card-text>
+<div style="display: none;">{{cargasitios}}</div>
+
+    <v-btn class="melon white--text" @click="addpage = true">
+      Crear Nueva Pagina
+    </v-btn>
+
+
+<h3>Lista de sitios</h3>
+  <v-data-table :items="sitiosLp" :headers="sitioHeader">
+
+    <template v-slot:item.url='{ item }' >
+     <a :href="protocolo+'//'+host+'/v/'+item.url" target="_blank" > {{protocolo+'//'+host+'/v/'+item.url}}</a>
+    </template>
+  
+    <template v-slot:item.editar='{item}'>
+
+       <v-btn class="melon white--text" @click="editarpub(item)"><v-icon>mdi-pencil-outline</v-icon></v-btn>
+      <v-btn class="melon white--text" @click="eliminapub(item)"><v-icon>mdi-delete</v-icon></v-btn>
+      </template>
+
+  </v-data-table>
+
+
+
+
+    <v-dialog
+      v-model="addpage"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-card-title class="primary white--text">
+          Nueva Landing Page<v-spacer></v-spacer>
+          <v-btn class="primary white--text" @click="cerrarPagEditor()"
+            >Cerrar</v-btn
+          >
+        </v-card-title>
+        <v-card-text>
+          <v-text-field
+            label="Ingrese el titulo de la pagina"
+            v-model="datalp.titulo"
+          >
+           
+          </v-text-field>
+          <v-text-field
+            label="url-del-sitio "
+            readonly
+            v-model="creaurlsitio"
+          >
+             <template v-slot:append>
+              <v-btn class="melon white--text" @click="validaUrl()"> Validar url</v-btn>
+            </template>
+
+          </v-text-field>
+          <v-label class="primary white--text" v-if="fase1===true">
+            {{ urldesitio }}
+          </v-label>
+          <br />
+
+
+          <v-text-field v-model="datalp.desc" label="Descripción" v-if="fase1===true">
+          </v-text-field>
+
+          <br />
+          <v-combobox
+            v-if="fase1===true"
+            v-model="datalp.tags"
+            hide-selected
+            label="Ingrese las palabras clave de busqueda para los buscadores"
+            multiple
+            small-chips
+            solo
+          >
+          </v-combobox>
+          <br />
+
+          <VueEditor
+          v-if="fase1===true"
+            class="elevation-3 rounded-lg"
+            v-model="datalp.contenido"
+          ></VueEditor>
+          <br /><br />
+          <v-dialog v-model="pregCont" max-width="700">
+            <v-card >
+              <v-card-title class="melon white--text">
+                  La url y titulo ya están en uso.  ¿desea carga los datos?<br />
+                </v-card-title>
+              <v-card-text class="pt-5 pb-5 text-center">
+              
+                <v-btn class="primary white--text" @click="cargaDatosExitente()">Cargar Datos</v-btn>
+                <v-btn class="melon white--text" @click="limpiadatos()"> Ingresar un nuevo titulo </v-btn>
+
+              </v-card-text>
+            </v-card>
+          </v-dialog>
+          <v-btn class="melon white--text" v-if="fase1===true" @click="guardarCambios()"
+            >Guardar Cambios</v-btn
+          >
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+    </v-card-text>
+  </v-card>

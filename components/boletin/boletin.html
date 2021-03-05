@@ -33,7 +33,11 @@
         <v-label>
      Ingrese su fecha de nacimiento
         </v-label>
+        
         <v-text-field  v-model="reg.fecha"  type="Date"></v-text-field>
+
+
+        <v-text-field label="País"  v-model="reg.pais" ></v-text-field>
         <v-banner class="error white--text text-center" v-if="menerror" v-html="menerror"></v-banner>
         
         <v-btn class="primary white--text" width="100%" @click="registrarBoletin()">Registrar</v-btn>
