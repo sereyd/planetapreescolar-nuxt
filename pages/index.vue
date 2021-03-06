@@ -136,7 +136,7 @@ export default {
        
               
               });
-              console.log(cat);
+              // console.log(cat);
               this.updateCategoriasInicio(cat)
               this.actualizarCategorias(cat);
               this.sliceCategoriasInicio();
@@ -149,7 +149,7 @@ export default {
       else
       {
         console.log("YA HAY DATOS EN CATEGORIAS")
-        console.log(this.categorias)
+        // console.log(this.categorias)
         this.updateCategoriasInicio([...this.categorias])
         this.sliceCategoriasInicio();
       }

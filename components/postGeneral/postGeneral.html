@@ -1,6 +1,12 @@
 <v-card-text>
     <v-container v-if="relacionados.length !== 0 ">
-        <div v-if="datosUsuario.userlogin || relacionados[contador].tipo === 'blog'">
+        <div 
+            v-if="datosUsuario.estadoMembresia == 'active' 
+            ||( datosUsuario.userlogin 
+                && (relacionados[contador].tipo !== 'interactivo' && relacionados[contador].tipo !== 'hojatrabajo') 
+              )
+            || relacionados[contador].tipo === 'blog' || relacionados[contador].tipoRecurso === 'link'"
+        >
             <v-card style="border-radius: 14px;">
             <div class="d-flex justify-space-between">
                 <v-btn
@@ -263,16 +269,30 @@
             </div>
         </div>
         <div v-else>
-            <div class="d-flex justify-center">
+            <div class="d-flex justify-center" 
+            v-if="datosUsuario.userlogin"
+            >
                  <v-img
-                     src="pantallas/1Continua navegando.png"
+                     :src="relacionados[contador].tipo !== 'interactivo' ? 'pantallas/6Te gusto este material.png' 
+                     : 'pantallas/4No te quedes con las ganas.png'"
                      contain
                      class=""
                      style="width: 100%; height:430px;"
                      >
                  </v-img>
             </div>
-            <div class="d-flex justify-center">
+            <div class="d-flex justify-center" 
+            v-else
+            >
+                 <v-img
+                     src="pantallas/1Continua navegando.png' : 'pantallas/1Continua navegando.png"
+                     contain
+                     class=""
+                     style="width: 100%; height:430px;"
+                     >
+                 </v-img>
+            </div>
+            <div class="d-flex justify-center" v-if="!datosUsuario.userlogin">
                 <v-btn
                     class="melon white--text mr-2 "
                     @click="$router.push('/login')"
