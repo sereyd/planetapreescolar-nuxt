@@ -1239,6 +1239,8 @@ const createStore = () => {
         }else{
           // console.log("BUSCAR DE STORE")
           commit("updateVerMas",tipoPost);
+          commit('cambiaLoading','finaliza')
+
 
 
         }
@@ -1722,7 +1724,7 @@ const createStore = () => {
 
       },
       updateVerMas(state,tipoPost){
-        // console.log(state.categorias);
+        console.log(tipoPost);
         if(tipoPost === "actividades")
         {
           // console.log("RECOMENDADOS")
@@ -1737,7 +1739,7 @@ const createStore = () => {
         }
         else if(tipoPost === "recomendados")
         {
-          // console.log("RECOMENDADOS")
+          console.log("RECOMENDADOS")
           state.misPost = state.categorias.filter( 
             post  => ( post.recomendado  && post.idCreador === state.datosUsuario.id && post.permisoadmin)
           )
