@@ -64,8 +64,7 @@ router: {
     '@/plugins/codegenerate.js',
     '@/plugins/v-calendar.js',
     '@/plugins/comparativa.js',
-    ///'@/plugins/i18n.js'
-    // { src: '~plugins/v-calendar.js', ssr: false }
+    '@/plugins/laoderall.js'
   ],
   /*
   ** Auto import components

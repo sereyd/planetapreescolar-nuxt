@@ -1,6 +1,6 @@
 <template>
 <v-main >
-
+<div style="display:none;">{{loaderData}}</div>
   <!-----Buscador------>
   <h1 class="text-center white--text" style="font-size:1px;">Recursos descargables para el aprendizaje en
 preescolar | Planeta preescolar.</h1>
@@ -79,19 +79,21 @@ export default {
       memorias:[],
       otros:[],
       bandera: true,
+      intent:0
     };
   },
   // methods:{
   //   ...mapMutations(['guardarVistaValida']),
   // },
-  async mounted() {
-        console.log("INDEX.VUE")
 
-      await this.cargabaseGral()
-     // this.bandera = true
-  },
   computed: {
-    ...mapState(['datosUsuario', 'categorias', 'loading']),
+    ...mapState(['datosUsuario', 'categorias', 'loading','configAll']),
+    loaderData(){
+      if(Object.keys(this.configAll).length>0){
+        console.log('carga base')
+        this.cargabaseGral()
+      }
+    }
   },
   components: {
     buscador,
@@ -106,17 +108,22 @@ export default {
       let cat = [];
       ///inicia loader de categorias
      this.cambiaLoading('inicia')
-      if(this.categorias.length === 0)
-      {
-        console.log("CONSULTANDO LA BASE DE DATOS")
+
+        ////console.log("CONSULTANDO LA BASE DE DATOS")
+ 
         try {
-    
-          await this.$fireStore
-            .collection("CATEGORIAS").orderBy("fecha", "desc")
-            .get()
-            .then((data) => {
-              data.forEach((doc) => {
-                let data = doc.data();
+
+          var limitesecc=this.configAll.loadlimit.find(limit=>limit.seccion==='index')
+    ///////recomendados
+    //// carga reflexiones
+          await this.$fireStore 
+           .collection("CATEGORIAS")
+          .where("recomendado", "==", true)   
+          .limit(limitesecc.limite)
+          .get()
+            .then((dat) => {
+              dat.forEach((doc) => {
+                  let data = doc.data();
                 data.tags = data.tags ? data.tags : [];
                 data.favoritos = data.favoritos ? data.favoritos : [];
                 data.sinopsis= data.sinopsis ? data.sinopsis : "";
@@ -125,75 +132,71 @@ export default {
                   data.premium =  typeof(data.premium) === "undefined" ? false : data.premium
 
                 delete data['idRecurso'];
-
-
                 const datos = {
                     idRecurso: doc.id,
                     ...data
                 }
-
-                cat.push(datos);
-       
-              this.updateCategoriasInicio(datos)
-              
+                this.recomendaciones.push(datos)
               });
-              console.log(cat);
-              this.actualizarCategorias(cat);
-              this.sliceCategoriasInicio();
-
             });
+
+             await this.$fireStore 
+           .collection("CATEGORIAS")
+          .where("tipo", "==", 'blog')   
+          .limit(limitesecc.limite)
+          .get()
+            .then((dat) => {
+              dat.forEach((doc) => {
+                  let data = doc.data();
+                data.tags = data.tags ? data.tags : [];
+                data.favoritos = data.favoritos ? data.favoritos : [];
+                data.sinopsis= data.sinopsis ? data.sinopsis : "";
+
+                if(data.tipo !== "blog" || data.tipo !== "reflexion" || data.tipo !== "memoria")
+                  data.premium =  typeof(data.premium) === "undefined" ? false : data.premium
+
+                delete data['idRecurso'];
+                const datos = {
+                    idRecurso: doc.id,
+                    ...data
+                }
+                this.blog.push(datos)
+              });
+            });
+
+         await this.$fireStore 
+           .collection("CATEGORIAS")
+          .where("tipo", "==", 'memoria')   
+          .limit(limitesecc.limite)
+          .get()
+            .then((dat) => {
+              dat.forEach((doc) => {
+                  let data = doc.data();
+                data.tags = data.tags ? data.tags : [];
+                data.favoritos = data.favoritos ? data.favoritos : [];
+                data.sinopsis= data.sinopsis ? data.sinopsis : "";
+
+                if(data.tipo !== "blog" || data.tipo !== "reflexion" || data.tipo !== "memoria")
+                  data.premium =  typeof(data.premium) === "undefined" ? false : data.premium
+
+                delete data['idRecurso'];
+                const datos = {
+                    idRecurso: doc.id,
+                    ...data
+                }
+                this.memorias.push(datos)
+              });
+            });
+
+
         } catch (e) {
           console.log(e);
         }
-      }
-      else
-      {
-        console.log("YA HAY DATOS EN CATEGORIAS")
-        console.log(this.categorias)
-        this.updateCategoriasInicio([...this.categorias])
-        this.sliceCategoriasInicio();
-      }
+        console.log(this.recomendaciones)
        this.cambiaLoading('finaliza')
     },
-    updateCategoriasInicio(cat){
-      // datos.map(cat => {
-
-        if((cat.tipo === "planeacion" || cat.tipo === "materialdidactico" || cat.tipo === "hojatrabajo" || cat.tipo === "hojailustrar" || cat.tipo === "interactivo" ) && cat.recomendado && 
-          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
-          this.recomendaciones.push(cat)
-
-        else if(cat.tipo === "blog"  && 
-          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
-          this.blog = [
-            ...this.blog,
-            cat]
-
-        else if(cat.tipo === "memoria"  &&
-          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
-          this.memorias.push(cat)
-
-        else if(cat.tipo === "otro"  && 
-          (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
-            this.otros.push(cat)
-
-      // })
-
-    },
-    async sliceCategoriasInicio(){
-
-      this.blog = 
-        this.blog.length > 4 ? await this.listaAleatoria(this.blog) : this.blog.slice(0, 4) 
-      
-      this.memorias = 
-        this.memorias.length > 4 ? await this.listaAleatoria(this.memorias) : this.memorias.slice(0, 4) 
-      
-      this.recomendaciones = 
-        this.recomendaciones.length > 4 ? await this.listaAleatoria(this.recomendaciones) : this.recomendaciones.slice(0, 4) 
-
-      this.otros = 
-        this.otros.length > 4 ? await this.listaAleatoria(this.otros) : this.otros.slice(0, 4) 
   
-    }
+  
   },
 };
 </script>
