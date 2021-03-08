@@ -1,21 +1,21 @@
-<template>
+r<template>
   <v-main class="px-10" v-if="bandera">
-    <v-row>
-      <v-col cols="12">
-        <buscador :esBuscando ="buscando"  :selectopt="'Memorias'" @updateBuscando="buscando=$event"/>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col
-        cols="12"
-        md="12"
-        v-if="
+    <v-row
+     v-if="
           $validasesion($store, {
             sinregistro: false,
             logeado: true,
             permisos: 1
           })
-        "
+        ">
+      <v-col cols="12">
+        <buscador :esBuscando ="buscando"  :selectopt="'Memorias'" @updateBuscando="buscando=$event"/>
+      </v-col>
+ 
+      <v-col
+        cols="12"
+        md="12"
+       
       >
         <!-- <h2
           class="primary--text"
@@ -31,7 +31,7 @@
         </h2> -->
 
         <listablog
-          :blogpost="misPost" @updateBlogpost="misPost=$event"
+          blogpost="memoria" @updateBlogpost="misPost=$event"
           tipo="CATEGORIAS"  subtipo="memoria"
           :userId="this.datosUsuario.id"
           titulo="Mis Memorias"
@@ -60,12 +60,36 @@
       >
 
         <listablog
-          :blogpost="otrosPost" @updateBlogpost="otrosPost=$event"
+          blogpost="otrosPost" @updateBlogpost="otrosPost=$event"
           tipo="CATEGORIAS"  subtipo="memoria"
           titulo="Memorias de otras educadoras"
           subtitulos="Comparte tus vivencias y experiencias con la comunidad"
         />
       </v-col>
+    </v-row>
+
+     <v-row 
+     v-if="
+          $validasesion($store, {
+            sinregistro: true,
+            logeado: false,
+            permisos: 0
+          })
+        "
+    >
+    <v-col cols="12" md="3">
+    </v-col>
+
+       <v-col cols="12" md="6" class="text-center">
+         <img src="pantallas/1Continua navegando.png" width="100%" />
+         <br />
+         <v-btn to="/registro" class="melon white--text">Regístrate</v-btn>
+          <v-btn to="/login" class="melon white--text">Inicia Sesión</v-btn>
+    </v-col> 
+
+    <v-col cols="12" md="3">
+    </v-col>
+
     </v-row>
   </v-main>
 </template>
@@ -74,7 +98,6 @@ import { mapState, mapActions } from "vuex";
 import listablog from "~/components/listado-blog/listado-blog.vue";
 import validasitio from "@/mixins/validasitio.js";
 import editorblog from "~/components/blog-editor/blog-editor.vue";
-import cargablog from "~/components/carga-blog/carga-blog.vue";
 import buscador from '~/components/buscador/buscador.vue'
 
 export default {
@@ -109,7 +132,6 @@ export default {
   },
   components: {
     editorblog,
-    cargablog,
     listablog,
     buscador
   },

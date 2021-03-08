@@ -1,5 +1,6 @@
 <template>
         <v-main >
+        
             <!-- <v-btn @click="listaAleatoria([])">Random</v-btn> -->
                 <!---------planeaciones------------>
                  <h1 class="text-center white--text" style="font-size:1px;">Planeaciones editables, hojas de trabajo,
@@ -9,11 +10,12 @@ material didáctico, cantos y juegos| Planeta Preescolar.</h1>
                       <buscador :esBuscando ="buscando"  @updateBuscando="buscando=$event"/>
                   </v-col>
                 </v-row>
+                
                 <div style="width:100%; height:5px;">
                   <loaderDate :loader="loading"  />
                 </div>
                 <listablog 
-                        :blogpost="planeaciones" :esCompleto="false" @updateBlogpost="planeaciones=$event"
+                        blogpost="planeacion" :esCompleto="false" @updateBlogpost="planeaciones=$event"
                         tipo="CATEGORIAS" subtipo="planeacion" 
                         titulo="Planeaciones" subtitulos="Biblioteca con cientos de planeaciones, no te quedes sin ideas."  
                         linkmas="planeaciones" 
@@ -22,7 +24,7 @@ material didáctico, cantos y juegos| Planeta Preescolar.</h1>
 
                 <!-------HOJAS DE TRABAJO------------->
                 <listablog 
-                        :blogpost="hojastrabajo" :esCompleto="false" @updateBlogpost="hojastrabajo=$event"
+                        blogpost="hojatrabajo" :esCompleto="false" @updateBlogpost="hojastrabajo=$event"
                         tipo="CATEGORIAS" subtipo="hojatrabajo" 
                         titulo="Hojas de trabajo para los niños" subtitulos="Actividades para reforzar los aprendizajes en forma divertida" 
                         linkmas="hojas-trabajo"  
@@ -31,7 +33,7 @@ material didáctico, cantos y juegos| Planeta Preescolar.</h1>
 
                 <!-------HOJAS PARA ILUSTRAR------------->
                 <listablog 
-                        :blogpost="hojasilustrar" :esCompleto="false" @updateBlogpost="hojasilustrar=$event"
+                        blogpost="hojailustrar" :esCompleto="false" @updateBlogpost="hojasilustrar=$event"
                         tipo="CATEGORIAS" subtipo="hojailustrar" 
                         titulo="Hojas para colorear" subtitulos="" 
                         linkmas="hojas-ilustrar"  
@@ -40,7 +42,7 @@ material didáctico, cantos y juegos| Planeta Preescolar.</h1>
 
                 <!-------MATERIAL DIDÁCTICO------------->
                 <listablog 
-                        :blogpost="materialdidactico" :esCompleto="false" @updateBlogpost="materialdidactico=$event"
+                        blogpost="materialdidactico" :esCompleto="false" @updateBlogpost="materialdidactico=$event"
                         tipo="CATEGORIAS" subtipo="materialdidactico" 
                         titulo="Material didáctico para los niños" subtitulos="Loterías, memoramas, juegos, dominós, frisos, gafetes, reglamentos a todo color." 
                         linkmas="material-didactico"  
@@ -49,7 +51,7 @@ material didáctico, cantos y juegos| Planeta Preescolar.</h1>
 
                 <!-------INTERACTIVOS------------->
                 <listablog 
-                        :blogpost="interactivos" :esCompleto="false" @updateBlogpost="interactivos=$event"
+                        blogpost="interactivo" :esCompleto="false" @updateBlogpost="interactivos=$event"
                         tipo="CATEGORIAS" subtipo="interactivo" 
                         titulo="Interactivos para los niños" subtitulos="Cantos, cuentos, videos y actividades interactivas" 
                         linkmas="interactivos"  
@@ -67,7 +69,7 @@ material didáctico, cantos y juegos| Planeta Preescolar.</h1>
 
                 
                 <!-- <div style="width:100%; height:150px;" v-if="interactivos.length > 0"></div> -->
-
+           
         </v-main>
 </template>
 

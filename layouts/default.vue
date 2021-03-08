@@ -80,7 +80,11 @@
       <v-main class="ma-0 pa-0">
 
           <nuxtview />
-  <boletin />
+  
+  
+          <boletin />
+
+
       </v-main>
 </v-col>
 </v-row>     
@@ -88,7 +92,65 @@
 
 <alertas />
 <input type="text" value="¡Copyright Sereyd 2021 Copia no permitida!" id="copyright" style="width:1px; position:absolute; z-index:0px; color:#fff;">
-  </v-app>
+ 
+
+  <v-footer
+
+      class="prysec white--text"
+      
+    >
+<v-row>
+<v-col cols="12" md="3" class="text-center" >
+    <h4>Planeta Preescolar</h4>
+      <p style="font-size:11px;">
+      Copyright  &copy; {{ new Date().getFullYear() }} Grupo Sereyd<br />
+      todos los derechos reservados
+      </p>
+   </v-col>
+  <v-col cols="12" md="3" class="text-center">
+     <h4>Suscríbete</h4>
+      <p style="font-size:11px;">
+        <ul  style="list-style:none;">
+          <li>Planes de pago</li>
+          <li>Precios expresados en Pesos Mexicanos </li>
+          </ul>
+      </p>
+  </v-col>
+  <v-col cols="12" md="3" class="text-center">
+        <h4>Contacto</h4>
+      <p style="font-size:11px;">
+        <ul style="list-style:none;">
+          <li>soporte@planetapreescolar.com</li>
+          <li><router-link class="white--text" to="/aviso-de-privacidad">Aviso de privacidad</router-link></li>
+          <li><router-link class="white--text" to="/terminos-y-condiciones">Términos y condiciones</router-link></li>
+          <li><router-link class="white--text" to="/preguntas-frecuentes">Preguntas frecuentes</router-link></li>
+          </ul>
+      </p>
+  </v-col>
+  <v-col cols="12" md="3" class="text-center">
+
+      <h4>Siguenos</h4>
+      <p style="font-size:11px;">
+        Redes sociales        
+      </p>
+
+
+
+  </v-col>
+
+<v-col cols="12" md="12" class="text-center">
+  <span> Copyright  &copy; {{ new Date().getFullYear() }}  Koddy-Go</span>
+</v-col>
+  </v-row>
+
+    
+    
+    
+    </v-footer> 
+ 
+ 
+ 
+</v-app>
 </template>
 <style scoped>
 /*   vista mobil */

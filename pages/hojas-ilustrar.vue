@@ -1,37 +1,33 @@
 <template>
-  <v-main class="px-10" v-if="bandera">
-    <v-row>
-      <v-col cols="12">
-        <buscador :esBuscando ="buscando"  :selectopt="'Hojas para ilustrar'" @updateBuscando="buscando=$event"/>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col
-        cols="12"
-        md="12"
-        v-if="
-          $validasesion($store, {
-            sinregistro: false,
-            logeado: true,
-            permisos: 1
-          })
-        "
-      >
-        <!-- <h2
-          class="primary--text"
-          v-if="
+  <v-main class="px-10" 
+  >
+    <v-row   
+     v-if="
             $validasesion($store, {
               sinregistro: false,
               logeado: true,
               permisos: 1
             })
-          "
+          "             
+          >                                                                          >
+      <v-col cols="12">
+        <buscador :esBuscando ="buscando"  :selectopt="'Hojas para ilustrar'" @updateBuscando="buscando=$event"/>
+      </v-col>
+  
+      <v-col
+        cols="12"
+        md="12"
+       
+      >
+        <!-- <h2
+          class="primary--text"
+         
         >
           Mis Hojas para colorear
         </h2> -->
 
         <listablog
-          :blogpost="misPost" @updateBlogpost="misPost=$event"
+          blogpost="hojailustrar" @updateBlogpost="misPost=$event"
           tipo="CATEGORIAS"  subtipo="hojailustrar"
           :userId="this.datosUsuario.id"
           titulo="Mis Hojas para colorear"
@@ -60,12 +56,38 @@
       >
 
         <listablog
-          :blogpost="otrosPost" @updateBlogpost="otrosPost=$event"
+          blogpost="otrosPost" @updateBlogpost="otrosPost=$event"
           tipo="CATEGORIAS"  subtipo="hojatrabajo"
           titulo="Hojas para colorear"
           subtitulos=""
         />
       </v-col>
+    </v-row>
+
+
+
+       <v-row 
+     v-if="
+          $validasesion($store, {
+            sinregistro: true,
+            logeado: false,
+            permisos: 0
+          })
+        "
+    >
+    <v-col cols="12" md="3">
+    </v-col>
+
+       <v-col cols="12" md="6" class="text-center">
+         <img src="pantallas/1Continua navegando.png" width="100%" />
+         <br />
+         <v-btn to="/registro" class="melon white--text">Regístrate</v-btn>
+          <v-btn to="/login" class="melon white--text">Inicia Sesión</v-btn>
+    </v-col> 
+
+    <v-col cols="12" md="3">
+    </v-col>
+
     </v-row>
   </v-main>
 </template>

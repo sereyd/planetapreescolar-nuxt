@@ -14,7 +14,7 @@ export default{
     data(){
         // name:"listablog",
         return {
-           
+            dataArray:[],
             dialogPost:false,
             // viewpost:false,
             // viewothers: false,
@@ -36,9 +36,206 @@ export default{
             // dialogPlanes:false,
         }
     },
+    mounted(){
+      if(this.blogpost){
+        this.loadBase(this.blogpost)
+      }
+    },
+ 
     methods:{
       ...mapActions(['changeRecursosFavoritos']),
       ...mapMutations(['changeViewOthers','changeViewPost','changeDialogPost']),
+      loadBase(p){
+        let lobas=this.$fireStore.collection('CATEGORIAS')
+        let ben=""
+        var val
+        
+       
+        if(this.configAll && Object.keys(this.configAll).length===0){
+         setTimeout(()=>{ this.loadBase(p) },500) 
+        }else{
+
+          var sec=window.location.pathname
+          let cant=this.configAll.loadlimit.find(lim=>lim.seccion===sec)
+          var numorden=Math.floor(Math.random() * 2)
+          var recomorden=Math.floor(Math.random() * 2)
+          var otrospostran=Math.floor(Math.random() * 9) 
+
+          var randsec1=Math.floor(Math.random() * 3)
+          var randsec2=Math.floor(Math.random() * 3)
+          var randsec3=Math.floor(Math.random() * 2)
+
+          var randOrderby=Math.floor(Math.random() * 3)
+
+          //// valores para realizar random 
+          var orden=['asc','desc']
+          var seccion1=['blog','memoria','otro']
+          var seccion2=['planeacion','hojatrabajo','hojailustrar']
+          var seccion3=['materialdidactico','interactivo']
+
+          var otrosPost=['blog','memoria','otro','planeacion','hojatrabajo','hojailustrar','materialdidactico','interactivo']
+
+          var bolearecom=[true,false]
+          var orderby=['titulo','fecha','recomendado']
+          switch(cant.carga){
+          case 'rand': ///// realiza busquedas en random
+         
+          switch(p){ //// seccion de recomendados realiza la busqueda de 3 secciones que tengan recomendado
+            case 'recomendado':
+              console.log('se ejecuta rand y recomendado')
+            lobas.where('recomendado','==',true)
+            lobas.where('tipo','==',seccion1[randsec1])
+            lobas.where('tipo','==',seccion2[randsec2])
+            lobas.where('tipo','==',seccion3[randsec3])
+
+            .orderBy(orderby[randOrderby],orden[numorden])
+            .limit(cant.limite).get()
+            .then((dat)=>{
+              dat.forEach((doc) => {
+                let data = doc.data();
+              data.tags = data.tags ? data.tags : [];
+              data.favoritos = data.favoritos ? data.favoritos : [];
+              data.sinopsis= data.sinopsis ? data.sinopsis : "";
+              if(data.tipo !== "otro" )
+                data.premium =  typeof(data.premium) === "undefined" ? false : data.premium
+              delete data['idRecurso'];
+              let datos = {
+                  idRecurso: doc.id,
+                  ...data
+              }
+              this.dataArray.push(datos)
+            });
+            })
+
+          break; ///// cual quier otro tipo carga un random
+          case 'otrosPost':
+          case 'otrospost':
+
+            lobas.where('tipo','==',otrosPost[otrospostran])
+            .orderBy(orderby[randOrderby],orden[numorden])
+            .limit(cant.limite).get()
+            .then((dat)=>{
+              dat.forEach((doc) => {
+                let data = doc.data();
+              data.tags = data.tags ? data.tags : [];
+              data.favoritos = data.favoritos ? data.favoritos : [];
+              data.sinopsis= data.sinopsis ? data.sinopsis : "";
+              if(data.tipo !== "otro" )
+                data.premium =  typeof(data.premium) === "undefined" ? false : data.premium
+              delete data['idRecurso'];
+              let datos = {
+                  idRecurso: doc.id,
+                  ...data
+              }
+              this.dataArray.push(datos)
+            });
+            })
+
+          break;
+          default:
+
+            lobas.where('tipo','==',p)
+            .orderBy(orderby[randOrderby],orden[numorden])
+            .limit(cant.limite).get()
+            .then((dat)=>{
+              dat.forEach((doc) => {
+                let data = doc.data();
+              data.tags = data.tags ? data.tags : [];
+              data.favoritos = data.favoritos ? data.favoritos : [];
+              data.sinopsis= data.sinopsis ? data.sinopsis : "";
+              if(data.tipo !== "otro" )
+                data.premium =  typeof(data.premium) === "undefined" ? false : data.premium
+              delete data['idRecurso'];
+              let datos = {
+                  idRecurso: doc.id,
+                  ...data
+              }
+              this.dataArray.push(datos)
+            });
+            })
+            break;
+          
+          }
+          break;
+          case 'lista': /////////carga en listas 
+          
+            switch(p){
+              case 'otrosPost':
+              case 'otrospost':
+                console.log('carga otro post y lista')
+                lobas.where('tipo','==',otrosPost[otrospostran])
+                .orderBy(orderby[randOrderby],orden[numorden])
+                .limit(4).get()
+                .then((dat)=>{
+                  dat.forEach((doc) => {
+                    let data = doc.data();
+                  data.tags = data.tags ? data.tags : [];
+                  data.favoritos = data.favoritos ? data.favoritos : [];
+                  data.sinopsis= data.sinopsis ? data.sinopsis : "";
+                  if(data.tipo !== "otro" )
+                    data.premium =  typeof(data.premium) === "undefined" ? false : data.premium
+                  delete data['idRecurso'];
+                  let datos = {
+                      idRecurso: doc.id,
+                      ...data
+                  }
+                  this.dataArray.push(datos)
+                });
+                })
+
+                break;
+              case 'recomendado':
+                console.log('se ejecuta lista y recomendado')
+            lobas.where('recomendado','==',true)
+            .orderBy('titulo','desc')
+            .limit(cant.limite).get()
+            .then((dat)=>{
+              dat.forEach((doc) => {
+                let data = doc.data();
+              data.tags = data.tags ? data.tags : [];
+              data.favoritos = data.favoritos ? data.favoritos : [];
+              data.sinopsis= data.sinopsis ? data.sinopsis : "";
+              if(data.tipo !== "otro" )
+                data.premium =  typeof(data.premium) === "undefined" ? false : data.premium
+              delete data['idRecurso'];
+              let datos = {
+                  idRecurso: doc.id,
+                  ...data
+              }
+              this.dataArray.push(datos)
+            });
+            })
+
+              break;
+              default:
+
+                lobas.where('tipo','==',p)
+                .orderBy('titulo','desc')
+                .limit(cant.limite).get()
+                .then((dat)=>{
+                  dat.forEach((doc) => {
+                    let data = doc.data();
+                  data.tags = data.tags ? data.tags : [];
+                  data.favoritos = data.favoritos ? data.favoritos : [];
+                  data.sinopsis= data.sinopsis ? data.sinopsis : "";
+                  if(data.tipo !== "otro" )
+                    data.premium =  typeof(data.premium) === "undefined" ? false : data.premium
+                  delete data['idRecurso'];
+                  let datos = {
+                      idRecurso: doc.id,
+                      ...data
+                  }
+                  this.dataArray.push(datos)
+                });
+                })
+
+                break;
+              }
+            break;
+        }
+
+        }
+      },
       muestrapost(p){
         // console.log(p);
        
@@ -65,8 +262,6 @@ export default{
 
           // this.viewpost = true;
           this.changeViewPost(true);
-
-
         }
 
       if(this.vistapost.tipoRecurso === 'link')
@@ -144,8 +339,8 @@ export default{
         },
         
         blogpost:{
-          type: Array,
-          default: () => []
+          type: String,
+          default:""
         },
         titulo:{
             default:()=>{
@@ -201,7 +396,7 @@ export default{
 
     // },
     computed: {
-      ...mapState(['datosUsuario','itemsmenu','descargarFree','viewothers','viewpost']),
+      ...mapState(['datosUsuario','itemsmenu','descargarFree','viewothers','viewpost','configAll']),
       cargarecomendacion(){
         var limit=350
         var loncadena= this.reflexionSeleccionada.contenido.length

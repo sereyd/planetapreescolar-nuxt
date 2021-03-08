@@ -6,25 +6,28 @@
 <v-main class="px-10" >
 
   
-    <v-row>
-      <v-col cols="12">
-        <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/>
-
-<loaderDate :loader="loading"  />
-
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col
-        cols="12"
-        md="12"
-        v-if="
+    <v-row
+    
+     v-if="
           $validasesion($store, {
             sinregistro: false,
             logeado: true,
             permisos: 1
           })
         "
+
+    >
+      <v-col cols="12">
+        <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/>
+
+<loaderDate :loader="loading"  />
+
+      </v-col>
+  
+      <v-col
+        cols="12"
+        md="12"
+       
       >
         <h2
           class="primary--text"
@@ -40,7 +43,7 @@
         </h2>
 
         <listablog
-          :blogpost="misPost" @updateBlogpost="misPost=$event"
+          blogpost="recomendado" @updateBlogpost="misPost=$event"
           tipo="CATEGORIAS"  subtipo="recomendacion"
           :userId="this.datosUsuario.id"
           titulo=""
@@ -61,21 +64,50 @@
         </listablog>
       </v-col>
 
-      <div style="width:100%; height:0px;"></div>
+   
 
       <v-col
         cols="12"
         md="12"
+        
       >
 
         <listablog
-          :blogpost="otrosPost" @updateBlogpost="otrosPost=$event"
+          blogpost="otrospost" @updateBlogpost="otrosPost=$event"
           tipo="CATEGORIAS"  subtipo="recomendacion"
           titulo="Recursos recomendados publicos"
           subtitulos="Conoce lo que pasa en el mundo de la educación inicial"
         />
+
       </v-col>
     </v-row>
+
+    <v-row 
+     v-if="
+          $validasesion($store, {
+            sinregistro: true,
+            logeado: false,
+            permisos: 0
+          })
+        "
+    >
+    <v-col cols="12" md="3">
+    </v-col>
+
+       <v-col cols="12" md="6" class="text-center">
+         <img src="pantallas/1Continua navegando.png" width="100%" />
+         <br />
+         <v-btn to="/registro" class="melon white--text">Regístrate</v-btn>
+          <v-btn to="/login" class="melon white--text">Inicia Sesión</v-btn>
+    </v-col> 
+
+    <v-col cols="12" md="3">
+    </v-col>
+
+    </v-row>
+
+
+       <div style="width:100%; height:0px;"></div>
   </v-main>
         
 </template>
