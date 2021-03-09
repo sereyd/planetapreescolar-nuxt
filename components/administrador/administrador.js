@@ -4,6 +4,7 @@ import suscripciones from '~/components/administrador/admincomp/suscripciones/su
 import notificaciones from '~/components/administrador/admincomp/notificaciones/notificaciones.vue'
 import landingpage from '~/components/administrador/admincomp/landinpage/landingpage.vue'
 import configral from '~/components/administrador/admincomp/configuraciongral/configuraciongral.vue'
+import limitesitios from '~/components/administrador/admincomp/adminpage/adminpage.vue'
 
 export default{
     data(){
@@ -12,7 +13,8 @@ export default{
             usuarios:[],
             optionUsuarios:[],
             sitiosLp:[],
-            notifilist:[]
+            notifilist:[],
+            permisos:[]
             
         }
       
@@ -80,6 +82,9 @@ export default{
            
 
         },
+        validasitio(p){
+
+        },
         async cargaSitios(){
 
             this.sitiosLp=[]
@@ -114,8 +119,8 @@ export default{
         gestordeusuarios,
         suscripciones,
         notificaciones,
-        gestordepagos,
         landingpage,
-        configral
+        configral,
+        limitesitios
     }
 }

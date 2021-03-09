@@ -32,7 +32,7 @@
             <v-row v-if="relacionados[contador].tipo === 'planeacion' || relacionados[contador].tipo === 'materialdidactico' || relacionados[contador].tipo === 'hojatrabajo' || relacionados[contador].tipo === 'hojailustrar' || relacionados[contador].tipo === 'otro' ">
                 <v-col cols="12" md="5" sm="5" class="" >
                     <v-img
-                        :src="relacionados[contador].urlImagen === '' || relacionados[contador].urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : relacionados[contador].urlImagen"
+                        :src="relacionados[contador].urlImagen === '' || relacionados[contador].urlImagen === 'none'  ? url+'/images/logos/planeta_preescolar_logo.png' : relacionados[contador].urlImagen"
                         contain
                         :class="[relacionados[contador].tipo === 'hojatrabajo' || relacionados[contador].tipo === 'hojailustrar' ? 'fotohojatrabajo' : 'fotomd']"
                         
@@ -128,7 +128,7 @@
                     <!-- <p>linkEmbed: {{linkembed}}</p> -->
                     <div v-if="relacionados[contador].tipoRecurso !== 'link'">
                         <v-img
-                            :src="relacionados[contador].urlImagen === '' || relacionados[contador].urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : relacionados[contador].urlImagen"
+                            :src="relacionados[contador].urlImagen === '' || relacionados[contador].urlImagen === 'none'  ? url+'/images/logos/planeta_preescolar_logo.png' : relacionados[contador].urlImagen"
                             contain
                             class="fotomd "  
                         />
@@ -273,8 +273,8 @@
             v-if="datosUsuario.userlogin"
             >
                  <v-img
-                     :src="relacionados[contador].tipo !== 'interactivo' ? 'pantallas/6Te gusto este material.png' 
-                     : 'pantallas/4No te quedes con las ganas.png'"
+                     :src="relacionados[contador].tipo !== 'interactivo' ? url+'/pantallas/6Te gusto este material.png' 
+                     : url+'/pantallas/4No te quedes con las ganas.png'"
                      contain
                      class=""
                      style="width: 100%; height:430px;"
@@ -285,7 +285,7 @@
             v-else
             >
                  <v-img
-                     src="pantallas/1Continua navegando.png' : 'pantallas/1Continua navegando.png"
+                     :src="url+'/pantallas/1Continua navegando.png'"
                      contain
                      class=""
                      style="width: 100%; height:430px;"
@@ -322,7 +322,7 @@
           <div class="" v-if=" datosUsuario.lvluser > 0 && datosUsuario.lvluser < 3">
             <div class="d-flex justify-center" v-if="datosUsuario.descargas.mes.active">
                 <img
-                  src="../../static/pantallas/9Agotaste todas tus descargas.png"
+                  :src="url+'/pantallas/9Agotaste todas tus descargas.png'"
                   width="520"
                   height="400"
                   class=""
@@ -330,7 +330,7 @@
             </div>
             <div class="d-flex justify-center" v-else>
                 <img
-                  src="../../static/pantallas/8Agotaste tu descarga.png"
+                  :src="url+'/static/pantallas/8Agotaste tu descarga.png'"
                   width="520"
                   height="400"
                   class=""

@@ -51,9 +51,19 @@ export default{
                 v =>  (v >= 0 && v < 3) || 'Seleccione un nivel'
             ],
             tipos:['Miss','Maestra'],
-            lvls:[{value: 1, text: "Gratis"}, {value: 2, text: "Premium"}, {value: 3, text: "Admin"}]
+            lvls:[{value: 1, text: "Gratis"}, {value: 2, text: "Premium"}, {value: 3, text: "Admin"}],
+            categorias:[
+                {value:'nada', text:'Ninguno'},
+                {value:'admin', text:'Administrador'},
+                {value:'social', text:'Social Media'},
+                {value:'pub', text:'Publicador'},
+                {value:'cont',text:'Contabilidad'},
+                {value:'metricas',text:'Metricas'},
+                {value:'dis',text:'Distribuidor'},
+                {value:'soporte', text:'Soporte'}
+            ]
         }
-    },
+    },  
     computed:{
         cargauser(){
             if(this.usuar){

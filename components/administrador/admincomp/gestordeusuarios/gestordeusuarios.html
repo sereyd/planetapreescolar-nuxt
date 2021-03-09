@@ -58,10 +58,9 @@
     </div>
 
   <!-- DIALOG -->
-  <v-dialog v-model="dialog" max-width="500px">
-                  
+  <v-dialog v-model="dialog" fullscreen >
     <v-card>
-      <v-card-title>
+      <v-card-title class="primary white--text">
         <span class="headline">Editar usuario</span>
       </v-card-title>
 
@@ -72,41 +71,71 @@
             lazy-validation
           >
             <v-row>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field 
+              <v-col cols="12" md="3">
+                <v-text-field  outlined
                   v-model="usuarioEditable.nombre" 
                   label="Nombre:"
                   :rules="nombreReglas"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="6">
-                <v-text-field 
+              <v-col cols="12" md="3">
+                <v-text-field  outlined
                   v-model="usuarioEditable.apellido" 
                   label="Apellido:"
                   :rules="apellidoReglas"
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6" md="6">
-                  <v-select
+              <v-col cols="12" md="3">
+                  <v-select outlined
                   v-model="usuarioEditable.tipo"
                   :items="tipos"
                   :rules="[v => !!v || 'Seleccione un tipo']"
                   label="Tipo:"
-                  ></v-select>
+                  ></v-select outlined>
               </v-col>
-             <v-col cols="12" sm="6" md="4">
-                <v-text-field v-model="usuarioEditable.correo" label="Correo"></v-text-field>
+             <v-col cols="12" md="3">
+                <v-text-field  outlined v-model="usuarioEditable.correo" label="Correo"></v-text-field>
               </v-col>
            
-              <v-col cols="12" sm="6" md="6">
-                  <v-select
+              <v-col cols="12" md="3">
+                  <v-select outlined
                       v-model="usuarioEditable.lvluser"
                       :items="lvls"
-                      :rules="nivelReglas"
                       label="Cuenta:"
-                  ></v-select>
+                  ></v-select outlined>
                   <!-- {{usuarioEditable.lvluser}} -->
               </v-col>
+              <v-col cols="12" md="3">
+                <v-select outlined
+                    v-model="usuarioEditable.catadmin"
+                    :items="categorias"
+                 
+                    label="Categoria de Admin:"
+                ></v-select outlined>
+
+            </v-col>
+            <v-col cols="12" md="3">
+              <v-switch
+                  v-model="usuarioEditable.vercorre"
+                  label="Validar correo"
+              ></v-switch>
+
+          </v-col>
+          <v-col cols="12" md="3">
+            <v-switch
+                v-model="usuarioEditable.userlogin"
+                 :label="usuarioEditable.userlogin===true ? 'Usuario Activo' : 'Usuario Bloqueado' "
+            ></v-switch>
+
+        </v-col>
+        <v-col cols="12" md="12" >
+            <h3>Envio de Mensaje</h3>
+            <v-text-field label="Asunto" ></v-text-field>
+            <v-checkbox label="Notificación"></v-checkbox>
+            <v-checkbox label="Correo"></v-checkbox>
+            <v-textarea label="Ingrese el cuerpo de mensaje"></v-textarea>
+        </v-col>
+    
             </v-row>
           </v-form>
           <!-- <v-alert v type="error" class="mt-3">

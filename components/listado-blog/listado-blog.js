@@ -14,6 +14,7 @@ export default{
     data(){
         // name:"listablog",
         return {
+            url:"",
             dataArray:[],
             dialogPost:false,
             // viewpost:false,
@@ -32,9 +33,10 @@ export default{
             spinner:true,
 
             linkembed:"https://www.youtube.com/embed/AddqzrFdR4Q",
-
-            // dialogPlanes:false,
         }
+    },
+    created(){
+      this.url=window.location.protocol+"//"+window.location.host
     },
     mounted(){
       if(this.blogpost){
@@ -44,8 +46,9 @@ export default{
  
     methods:{
       ...mapActions(['changeRecursosFavoritos']),
-      ...mapMutations(['changeViewOthers','changeViewPost','changeDialogPost']),
+      ...mapMutations(['changeViewOthers','changeViewPost','changeDialogPost','cambiaLoading']),
       loadBase(p){
+        this.cambiaLoading('inicia')
         let lobas=this.$fireStore.collection('CATEGORIAS')
         let ben=""
         var val
@@ -57,6 +60,7 @@ export default{
 
           var sec=window.location.pathname
           let cant=this.configAll.loadlimit.find(lim=>lim.seccion===sec)
+          let cantidadlimite=parseInt(cant.limite)
           var numorden=Math.floor(Math.random() * 2)
           var recomorden=Math.floor(Math.random() * 2)
           var otrospostran=Math.floor(Math.random() * 9) 
@@ -89,7 +93,7 @@ export default{
             lobas.where('tipo','==',seccion3[randsec3])
 
             .orderBy(orderby[randOrderby],orden[numorden])
-            .limit(cant.limite).get()
+            .limit(cantidadlimite).get()
             .then((dat)=>{
               dat.forEach((doc) => {
                 let data = doc.data();
@@ -104,6 +108,7 @@ export default{
                   ...data
               }
               this.dataArray.push(datos)
+              this.cambiaLoading('finaliza')
             });
             })
 
@@ -113,7 +118,7 @@ export default{
 
             lobas.where('tipo','==',otrosPost[otrospostran])
             .orderBy(orderby[randOrderby],orden[numorden])
-            .limit(cant.limite).get()
+            .limit(cantidadlimite).get()
             .then((dat)=>{
               dat.forEach((doc) => {
                 let data = doc.data();
@@ -128,6 +133,7 @@ export default{
                   ...data
               }
               this.dataArray.push(datos)
+              this.cambiaLoading('finaliza')
             });
             })
 
@@ -136,7 +142,7 @@ export default{
 
             lobas.where('tipo','==',p)
             .orderBy(orderby[randOrderby],orden[numorden])
-            .limit(cant.limite).get()
+            .limit(cantidadlimite).get()
             .then((dat)=>{
               dat.forEach((doc) => {
                 let data = doc.data();
@@ -151,6 +157,7 @@ export default{
                   ...data
               }
               this.dataArray.push(datos)
+              this.cambiaLoading('finaliza')
             });
             })
             break;
@@ -180,6 +187,7 @@ export default{
                       ...data
                   }
                   this.dataArray.push(datos)
+                  this.cambiaLoading('finaliza')
                 });
                 })
 
@@ -188,7 +196,7 @@ export default{
                 console.log('se ejecuta lista y recomendado')
             lobas.where('recomendado','==',true)
             .orderBy('titulo','desc')
-            .limit(cant.limite).get()
+            .limit(cantidadlimite).get()
             .then((dat)=>{
               dat.forEach((doc) => {
                 let data = doc.data();
@@ -203,6 +211,7 @@ export default{
                   ...data
               }
               this.dataArray.push(datos)
+              this.cambiaLoading('finaliza')
             });
             })
 
@@ -211,7 +220,7 @@ export default{
 
                 lobas.where('tipo','==',p)
                 .orderBy('titulo','desc')
-                .limit(cant.limite).get()
+                .limit(cantidadlimite).get()
                 .then((dat)=>{
                   dat.forEach((doc) => {
                     let data = doc.data();
@@ -226,6 +235,7 @@ export default{
                       ...data
                   }
                   this.dataArray.push(datos)
+                  this.cambiaLoading('finaliza')
                 });
                 })
 
