@@ -31,7 +31,7 @@ export default{
                 {
                     text:'Editar',
                     value:'actions',
-                    sorteable: false
+                    sortable: false
                 }   
             ],
             dialog:false,
