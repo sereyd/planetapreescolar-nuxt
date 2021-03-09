@@ -87,8 +87,8 @@ export default {
         // this.planes = idpagos;
         
         // this.obtenerCupones();
-        // this.urlAPI = this.configAll.pagos.stripe.modoprueba===true ? this.configAll.pagos.stripe.apiUrltest : this.configAll.pagos.stripe.apiUrlprod
-        this.urlAPI = "http://localhost:4242";
+        this.urlAPI = this.configAll.pagos.stripe.modoprueba===true ? this.configAll.pagos.stripe.apiUrltest : this.configAll.pagos.stripe.apiUrlprod
+        // this.urlAPI = "http://localhost:4242";
 
     },
     methods:{
