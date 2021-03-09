@@ -275,13 +275,66 @@ const createStore = () => {
         screenprinf:false,
 
       itemsmenu: [
-        { title: "Inicio", icon: "mdi-home", link: "/", visible: true },
+        { 
+          title: "Inicio", 
+          icon: "mdi-home", 
+          link: "/", 
+          visible: true 
+        },
         {
+          title: "Recomendaciones",
+          icon: "mdi-check-bold",
+          link: "/recomendacion",
+          visible: true
+        },
+        {
+          title: "Planeaciones",
+          icon: "mdi-notebook",
+          link: "/planeaciones",
+          visible: true
+        },
+        {
+          title: "Hojas de trabajo",
+          icon: "mdi-file-document-multiple-outline",
+          link: "/hojas-trabajo",
+          visible: true
+        },
+        {
+          title: "Material didáctico",
+          icon: "mdi-scissors-cutting",
+          link: "/material-didactico",
+          visible: true
+        },
+        {
+          title: "Hojas para colorear",
+          icon: "mdi-draw",
+          link: "/hojas-ilustrar",
+          visible: true
+        },
+        {
+          title: "Administración",
+          icon: "mdi-file-tree-outline",
+          link: "/otros",
+          visible: true
+        },
+        {
+          title: "Blog",
+          icon: "mdi-post",
+          link: "/blog",
+          visible: true
+        },
+        {
+          title: "Memorias",
+          icon: "mdi-head-minus-outline",
+          link: "/memorias",
+          visible: true
+        },
+       /* {
           title: "Actividades",
           icon: "mdi-human",
           link: "/actividades",
-          visible: true
-        },
+          visible: false
+        },*/
         {
           title: "Foro",
           icon: "mdi-forum",

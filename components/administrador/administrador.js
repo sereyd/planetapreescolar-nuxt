@@ -2,7 +2,6 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 import gestordeusuarios from '~/components/administrador/admincomp/gestordeusuarios/gestordeusuarios.vue'
 import suscripciones from '~/components/administrador/admincomp/suscripciones/suscripciones.vue'
 import notificaciones from '~/components/administrador/admincomp/notificaciones/notificaciones.vue'
-import gestordepagos from '~/components/administrador/admincomp/gestordepagos/gestordepagos.vue'
 import landingpage from '~/components/administrador/admincomp/landinpage/landingpage.vue'
 import configral from '~/components/administrador/admincomp/configuraciongral/configuraciongral.vue'
 
@@ -103,11 +102,8 @@ export default{
              await this.$fireStore.collection('Notificaciones').get()
            .then((data)=>{
                console.log(data)
-                
            })
          }
-
-     
     },
     mounted(){
         this.cambiaLoading('inicia')

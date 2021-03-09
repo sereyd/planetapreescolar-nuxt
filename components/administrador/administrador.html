@@ -6,8 +6,7 @@
       dark
     >
       <v-toolbar-title>Administrador |
-
-
+        
       <v-icon title="usuarios registrados">mdi-account</v-icon>:{{usuarios.length}}   <v-btn class="melon white--text" title="descargar o actualizar usuarios" @click="getElement()" >
         <v-icon>{{usuarios.length===0 ? 'mdi-lan-disconnect' : 'mdi-lan-connect'}}</v-icon>
         <v-icon> {{usuarios.length===0 ? '' : 'mdi-reload'}} </v-icon>
@@ -31,7 +30,7 @@
     </v-toolbar-title>
 
     </v-toolbar>
-    <v-tabs vertical>
+    <v-tabs>
       <v-tab>
         <v-icon left>
           mdi-account

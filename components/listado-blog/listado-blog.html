@@ -1,4 +1,4 @@
-<div v-if="blogpost.length !== 0">
+<div v-if="dataArray.length !== 0">
     
     <v-row class="px-0 ma-0" >
     
@@ -16,7 +16,7 @@
        <v-btn v-if="linkmas!=='#'" class="melon white--text rounded-pill btn_crearG" :to="'/'+linkmas"  >Ver más</v-btn> 
     </v-col>
             <v-col 
-                v-for="(key,index) in blogpost" 
+                v-for="(key,index) in dataArray" 
                 :key="'post_'+index" 
                 cols="12" md="3" sm="6" 
                 class=" mb-3" 

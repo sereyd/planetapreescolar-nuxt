@@ -12,7 +12,7 @@
 </v-main>
     </v-col>
     <v-col cols="12" md="6" class="ma-0 pa-0 primary">
-       <img src="pantallas/2Inicio de Sesion.png" width="100%" height="89%"/>
+       <img src="pantallas/2Inicio de Sesion.png" width="100%" />
     </v-col>
     
     </v-row>

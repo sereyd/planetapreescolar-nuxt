@@ -64,8 +64,7 @@ router: {
     '@/plugins/codegenerate.js',
     '@/plugins/v-calendar.js',
     '@/plugins/comparativa.js',
-    ///'@/plugins/i18n.js'
-    // { src: '~plugins/v-calendar.js', ssr: false }
+    '@/plugins/laoderall.js'
   ],
   /*
   ** Auto import components
@@ -79,6 +78,10 @@ router: {
     '@nuxtjs/vuetify',
     '@nuxtjs/moment'
   ],
+  /// config google analitycs
+  analytics: {
+    collectionEnabled: true // default
+  },
   moment: {
     defaultTimezone: 'America/Los_Angeles',
     locales: ['es']
@@ -103,7 +106,7 @@ router: {
     pixelId: '2871388423188636',
     autoPageView: true,
     disabled: false,
-    debug: true
+    debug: false
   },
 
   firebase: {
@@ -111,8 +114,9 @@ router: {
     services: {
       auth: true, // Just as example. Can be any other service.
       firestore:true,
-      storage: true
-    },
+      storage: true,
+      analytics: true
+    },  
    
   },
  

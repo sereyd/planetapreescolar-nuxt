@@ -282,7 +282,6 @@ this.cambiaLoading('inicia')
 
             });
 
-              this.cambiaLoading('finaliza')
           });
 
       }else{
@@ -330,7 +329,7 @@ this.cambiaLoading('inicia')
 
                 else if(datos.tipo === "otro")
                   this.otros.push(datos)
-              this.cambiaLoading('finaliza')
+    
             });
 
             
@@ -343,9 +342,12 @@ this.cambiaLoading('inicia')
 
       } catch (e) {
         console.log(e);
-        this.cambiaLoading('finaliza')
+       
       }
-
+      setTimeout(()=>{
+         this.cambiaLoading('finaliza')
+      },2000)
+      
   
     },
   },

@@ -1,6 +1,6 @@
 <template>
 <v-main >
-
+<div style="display:none;"></div>
   <!-----Buscador------>
   <h1 class="text-center white--text" style="font-size:1px;">Recursos descargables para el aprendizaje en
 preescolar | Planeta preescolar.</h1>
@@ -17,45 +17,98 @@ recursos educativos</h2>
 <reflexiones  />
 
 
-  <!---------RECOMENDACIONES------------>
-<div style="width:100%; height:10px;">
+                <div style="width:100%; height:10px;">
 
-<loaderDate :loader="loading"  />
+                <loaderDate :loader="loading"  />
 
-</div>
-<listablog 
-  :blogpost="recomendaciones" :esCompleto="false" @updateBlogpost="recomendaciones=$event"
-  tipo="CATEGORIAS" subtipo="recomendacion" 
-  titulo="Recomendación del día" subtitulos="Una selección de recursos y planeaciones para tu día"  
-  linkmas="recomendacion" 
-/>
-
-  <!-------Blog------------->
-<div style="width:100%; height:0px;"></div>
-<listablog 
-  :blogpost="blog" :esCompleto="false" @updateBlogpost="blog=$event"
-  tipo="CATEGORIAS" subtipo="blog" 
-  titulo="Blog de la educadora" subtitulos="Conoce lo que pasa en la educación preescolar." 
-  linkmas="blog"  
-/>
+                </div>
 
 
-  <!---------memorias------------>
-<div style="width:100%; height:0px;"></div>
-<listablog 
-  :blogpost="memorias" :esCompleto="false" @updateBlogpost="memorias=$event"
-  tipo="CATEGORIAS" subtipo="memoria" 
-  titulo="Memorias de la educadora" subtitulos="Relatos y anécdotas que han dejado huella, comparte tus vivencias." 
-  linkmas="memorias"  
-/>
+                <!---------RECOMENDACIONES------------>
 
-<div style="width:100%; height:0px;" ></div>
-<listablog 
-  :blogpost="otros" :esCompleto="false" @updateBlogpost="otros=$event"
-  tipo="CATEGORIAS" subtipo="otro" 
-  titulo="Administración" subtitulos="Material de administración y consulta que complementa tu actividad diaria." 
-  linkmas="otros"  
-/>
+                <listablog 
+                  blogpost="recomendado" :esCompleto="false" @updateBlogpost="recomendaciones=$event"
+                  tipo="CATEGORIAS" subtipo="recomendacion" 
+                  titulo="Recomendación del día" subtitulos="Una selección de recursos y planeaciones para tu día"  
+                  linkmas="recomendacion" 
+                />
+
+
+                <listablog 
+                        blogpost="planeacion" :esCompleto="false" @updateBlogpost="planeaciones=$event"
+                        tipo="CATEGORIAS" subtipo="planeacion" 
+                        titulo="Planeaciones" subtitulos="Biblioteca con cientos de planeaciones, no te quedes sin ideas."  
+                        linkmas="planeaciones" 
+                />
+                <div style="width:100%; height:0px;" v-if="planeaciones.length > 0"></div>
+
+                <!-------HOJAS DE TRABAJO------------->
+                <listablog 
+                        blogpost="hojatrabajo" :esCompleto="false" @updateBlogpost="hojastrabajo=$event"
+                        tipo="CATEGORIAS" subtipo="hojatrabajo" 
+                        titulo="Hojas de trabajo para los niños" subtitulos="Actividades para reforzar los aprendizajes en forma divertida" 
+                        linkmas="hojas-trabajo"  
+                />
+                <div style="width:100%; height:0px;" v-if="hojastrabajo.length > 0"></div>
+
+                <!-------HOJAS PARA ILUSTRAR------------->
+                <listablog 
+                        blogpost="hojailustrar" :esCompleto="false" @updateBlogpost="hojasilustrar=$event"
+                        tipo="CATEGORIAS" subtipo="hojailustrar" 
+                        titulo="Hojas para colorear" subtitulos="" 
+                        linkmas="hojas-ilustrar"  
+                />
+                <div style="width:100%; height:0px;" v-if="hojasilustrar.length > 0"></div>
+
+                <!-------MATERIAL DIDÁCTICO------------->
+                <listablog 
+                        blogpost="materialdidactico" :esCompleto="false" @updateBlogpost="materialdidactico=$event"
+                        tipo="CATEGORIAS" subtipo="materialdidactico" 
+                        titulo="Material didáctico para los niños" subtitulos="Loterías, memoramas, juegos, dominós, frisos, gafetes, reglamentos a todo color." 
+                        linkmas="material-didactico"  
+                />
+                <div style="width:100%; height:0px;" v-if="materialdidactico.length > 0"></div>
+
+                <!-------INTERACTIVOS------------->
+                <listablog 
+                        blogpost="interactivo" :esCompleto="false" @updateBlogpost="interactivos=$event"
+                        tipo="CATEGORIAS" subtipo="interactivo" 
+                        titulo="Interactivos para los niños" subtitulos="Cantos, cuentos, videos y actividades interactivas" 
+                        linkmas="interactivos"  
+                />
+
+                <!-------Administración------------->
+
+                <div style="width:100%; height:0px;" ></div>
+                <listablog 
+                  blogpost="otro" :esCompleto="false" @updateBlogpost="otros=$event"
+                  tipo="CATEGORIAS" subtipo="otro" 
+                  titulo="Administración" subtitulos="Material de administración y consulta que complementa tu actividad diaria." 
+                  linkmas="otros"  
+                />
+
+                  <!-------Blog------------->
+
+                <div style="width:100%; height:0px;"></div>
+                <listablog 
+                  blogpost="blog" :esCompleto="false" @updateBlogpost="blog=$event"
+                  tipo="CATEGORIAS" subtipo="blog" 
+                  titulo="Blog de la educadora" subtitulos="Conoce lo que pasa en la educación preescolar." 
+                  linkmas="blog"  
+                />
+
+
+                  <!---------memorias------------>
+                  
+                <div style="width:100%; height:0px;"></div>
+                <listablog 
+                  blogpost="memoria" :esCompleto="false" @updateBlogpost="memorias=$event"
+                  tipo="CATEGORIAS" subtipo="memoria" 
+                  titulo="Memorias de la educadora" subtitulos="Relatos y anécdotas que han dejado huella, comparte tus vivencias." 
+                  linkmas="memorias"  
+                />
+
+                
 
 
 </v-main>
@@ -74,24 +127,30 @@ export default {
   data() {
     return {
       // reflexiones:[],
+         // reflexiones:[],
+      planeaciones:[],
+      hojastrabajo:[],
+      hojasilustrar:[],
+      materialdidactico:[],
+      interactivos:[],
       recomendaciones:[],
       blog:[],
       memorias:[],
       otros:[],
       bandera: true,
+      intent:0
     };
   },
-  // methods:{
-  //   ...mapMutations(['guardarVistaValida']),
-  // },
-  async mounted() {
-        console.log("INDEX.VUE")
 
-      await this.cargabaseGral()
-     // this.bandera = true
-  },
+mounted(){
+  this.cambiaLoading('inicia')
+  setTimeout(()=>{
+this.cambiaLoading('finaliza')
+
+  },500)
+},
   computed: {
-    ...mapState(['datosUsuario', 'categorias', 'loading']),
+    ...mapState(['datosUsuario', 'categorias', 'loading','configAll']),
   },
   components: {
     buscador,
@@ -102,98 +161,9 @@ export default {
   methods: {
     ...mapMutations(['guardarVistaValida','actualizarCategorias','cambiaLoading']),
     ...mapActions(['listaAleatoria']),
-    async  cargabaseGral(){
-      let cat = [];
-      ///inicia loader de categorias
-     this.cambiaLoading('inicia')
-      if(this.categorias.length === 0)
-      {
-        console.log("CONSULTANDO LA BASE DE DATOS")
-        try {
-    
-          await this.$fireStore
-            .collection("CATEGORIAS").orderBy("fecha", "desc")
-            .get()
-            .then((data) => {
-              data.forEach((doc) => {
-                let data = doc.data();
-                data.tags = data.tags ? data.tags : [];
-                data.favoritos = data.favoritos ? data.favoritos : [];
-                data.sinopsis= data.sinopsis ? data.sinopsis : "";
-
-                if(data.tipo !== "blog" || data.tipo !== "reflexion" || data.tipo !== "memoria")
-                  data.premium =  typeof(data.premium) === "undefined" ? false : data.premium
-
-                delete data['idRecurso'];
-
-
-                const datos = {
-                    idRecurso: doc.id,
-                    ...data
-                }
-
-                cat.push(datos);
-       
-              
-              });
-              // console.log(cat);
-              this.updateCategoriasInicio(cat)
-              this.actualizarCategorias(cat);
-              this.sliceCategoriasInicio();
-
-            });
-        } catch (e) {
-          console.log(e);
-        }
-      }
-      else
-      {
-        console.log("YA HAY DATOS EN CATEGORIAS")
-        // console.log(this.categorias)
-        this.updateCategoriasInicio([...this.categorias])
-        this.sliceCategoriasInicio();
-      }
-       this.cambiaLoading('finaliza')
-    },
-    updateCategoriasInicio(datos){
-      datos.map(cat => {
-
-        if((cat.tipo === "planeacion" || cat.tipo === "materialdidactico" || cat.tipo === "hojatrabajo" || cat.tipo === "hojailustrar" || cat.tipo === "interactivo" ) && cat.recomendado && 
-          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
-          this.recomendaciones.push(cat)
-
-        else if(cat.tipo === "blog"  && 
-          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
-          this.blog = [
-            ...this.blog,
-            cat]
-
-        else if(cat.tipo === "memoria"  &&
-          ( cat.edopost === "publico" || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id) ) )
-          this.memorias.push(cat)
-
-        else if(cat.tipo === "otro"  && 
-          (cat.edopost === "publico" && cat.permisoadmin || (cat.edopost === "privado" && cat.idCreador === this.datosUsuario.id)) )
-            this.otros.push(cat)
-
-      })
-
-    },
-    async sliceCategoriasInicio(){
-
-      this.blog = 
-        this.blog.length > 4 ? await this.listaAleatoria(this.blog) : this.blog.slice(0, 4) 
-      
-      this.memorias = 
-        this.memorias.length > 4 ? await this.listaAleatoria(this.memorias) : this.memorias.slice(0, 4) 
-      
-      this.recomendaciones = 
-        this.recomendaciones.length > 4 ? await this.listaAleatoria(this.recomendaciones) : this.recomendaciones.slice(0, 4) 
-
-      this.otros = 
-        this.otros.length > 4 ? await this.listaAleatoria(this.otros) : this.otros.slice(0, 4) 
   
-    }
+  
+  
   },
 };
 </script>
