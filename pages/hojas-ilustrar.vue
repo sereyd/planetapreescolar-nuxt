@@ -1,9 +1,7 @@
 <template>
   <v-main class="px-10" 
   >
-    <v-row   
-          
-          >                                                                          >
+    <v-row>                                                                          
       <v-col cols="12">
         <buscador :esBuscando ="buscando"  :selectopt="'Hojas para ilustrar'" @updateBuscando="buscando=$event"/>
       </v-col>

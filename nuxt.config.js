@@ -97,8 +97,12 @@ router: {
     'nuxt-stripe-module',
     'nuxt-i18n',
     'nuxt-facebook-pixel-module',
-    
+    '@nuxtjs/google-adsense'
   ],
+  
+ 'google-adsense': {
+  id: 'ca-pub-1332742967604414'
+},
   loading: '~/components/loader/loader.vue',
 
   facebook: {

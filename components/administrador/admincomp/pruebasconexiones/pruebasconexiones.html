@@ -1,0 +1,44 @@
+<v-card>
+
+    <v-card-text>
+        <v-tabs>
+            <v-tab>
+                Correo
+            </v-tab>
+        
+   
+            <v-tab-item>
+             <v-card>
+                 <v-card-title  class="primary white--text">
+                        Prueba de envío de correo
+                 </v-card-title>
+                 <v-card-text>
+
+                    <v-banner >
+                        Direccion de servicio de correo:<b>{{configAll.mailserver}}</b>
+                    </v-banner>
+                    <v-text-field
+                    v-model="datos.correo"
+                    label="Correo"
+                  ></v-text-field>
+
+                    <v-textarea v-model="datos.contenido" label="Ingrese el texto de prueba">
+
+                    </v-textarea>
+                    <v-btn class="melon white--text" @click="enviacorreo()">
+                        <v-icon class="white--text">mdi-send</v-icon> Probar correo
+                    </v-btn>
+                    <v-card>
+                        <v-card-text class="black white--text">
+                            Datos de envio:{{payload}}
+                            <hr  />
+                            Respuesta :{{respuesta}}
+                        </v-card-text>
+                    </v-card>
+
+                 </v-card-text>
+             </v-card>
+            </v-tab-item>
+        </v-tabs>
+    </v-card-text>
+</v-card>

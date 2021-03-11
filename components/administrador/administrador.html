@@ -67,6 +67,12 @@
       </v-tab>
       <v-tab v-if="$validacat(datosUsuario,['admin'])">
         <v-icon left>
+        mdi-tools
+        </v-icon>
+     Pruebas Conexiones
+      </v-tab>
+      <v-tab v-if="$validacat(datosUsuario,['admin'])">
+        <v-icon left>
         mdi-application-cog
         </v-icon>
       Configuración Sitio
@@ -118,7 +124,16 @@
           </v-card-text>
         </v-card>
       </v-tab-item>
-
+      <v-tab-item  v-if="$validacat(datosUsuario,['admin'])">
+        <v-card flat>
+          <v-card-text>
+          
+            <pruebasecc />
+           
+          
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
       <v-tab-item  v-if="$validacat(datosUsuario,['admin'])">
         <v-card flat>
           <v-card-text>

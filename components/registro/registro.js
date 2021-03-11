@@ -12,7 +12,7 @@ export default{
             uploadimg:false,
             checkbox:false,
             spinner: false,
-
+            payload:{},
             //DATA PARA LOS SELECT DEL FORMULARIO
             tipos:['Miss','Maestra'],
             years: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26],
@@ -147,7 +147,36 @@ export default{
          this.datosUsuarioR.codigocorreo=codigo1
          
          await this.almacenarFotoStorage("fotos_perfil/"+codigo);
-    
+          
+          
+         if(!this.urlimg){
+         this.payload={
+          tipo:'confirmacion',
+          datos:this.datosUsuarioR,
+          url:this.configAll.url
+        }
+
+       fetch(this.configAll.mailserver+'/mailsender/',
+        {
+          method:'POST',
+          headers:{
+            'Content-type':'applications/json'
+          },
+          body:JSON.stringify(this.payload)
+
+        }
+       )
+       .then((data)=>{
+
+        this.payload.tipomensaje='registro'
+        this.payload.accion='envio para confirmación de correo'
+
+       this.$fireStore.collection('correos').add(this.payload)
+       .then(()=>{
+        this.finish=true
+       })
+      })
+    }
         },
         async almacenarUsuarioCollection(){
         // const URLactual = window.location;
@@ -222,32 +251,46 @@ export default{
         //DE ESTA FORMA EVITA QUE ALMACENE EL USUARIO EN LA COLLECION
         console.log("error: "+this.error)
          if(!this.error){
-             this.almacenarUsuarioCollection();
+           
              this.succesreg=true
-              var payload={
-                tipo:'confirmacion',
-                datos:this.datosUsuarioR,
-                url:this.dominio
-              }
+             
+           
               
               ///envia correo de confirmación 
+              this.almacenarUsuarioCollection();
 
-             fetch(this.$store.state.configAll.mailserver+'/mailsender/',
+              this.payload={
+                tipo:'confirmacion',
+                datos:this.datosUsuarioR,
+                url:this.configAll.url
+              }
+
+             fetch(this.configAll.mailserver+'/mailsender/',
               {
                 method:'POST',
                 headers:{
                   'Content-type':'applications/json'
                 },
-                body:JSON.stringify(payload)
+                body:JSON.stringify(this.payload)
 
               }
              )
              .then((data)=>{
-               console.log(data)
+
+              this.payload.tipomensaje='registro'
+              this.payload.accion='envio para confirmación de correo'
+
+             this.$fireStore.collection('correo').add(this.payload)
+             .then(()=>{
               this.finish=true
+             })
+              
               
             })
       
+            
+
+
             }else{ 
               this.spinner = false 
             }

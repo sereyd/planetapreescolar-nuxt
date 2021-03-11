@@ -5,6 +5,7 @@ import notificaciones from '~/components/administrador/admincomp/notificaciones/
 import landingpage from '~/components/administrador/admincomp/landinpage/landingpage.vue'
 import configral from '~/components/administrador/admincomp/configuraciongral/configuraciongral.vue'
 import limitesitios from '~/components/administrador/admincomp/adminpage/adminpage.vue'
+import pruebasecc from '~/components/administrador/admincomp/pruebasconexiones/pruebasconexiones.vue'
 
 export default{
     data(){
@@ -121,6 +122,7 @@ export default{
         notificaciones,
         landingpage,
         configral,
-        limitesitios
+        limitesitios,
+        pruebasecc
     }
 }

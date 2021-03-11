@@ -126,7 +126,7 @@ export default {
         quantity: 1,
         description,
         price,
-        dominio: this.dominio,
+        dominio: this.configAll.url,
         external_reference
 
       };
@@ -212,7 +212,7 @@ export default {
 
       var orderData={
         priceId: priceId,
-        dominio: this.dominio,
+        dominio: this.configAll.url,
         external_reference,
         trial_period_days,
       }

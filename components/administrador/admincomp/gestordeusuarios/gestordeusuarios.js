@@ -93,6 +93,38 @@ export default{
             this.valid = vd;
             if(this.valid)
             this.editarUsuario();
+        },
+        enviacorreo(){
+            this.respuesta={}
+            this.payload={}
+
+           this.payload={
+                tipo:'mensaje',
+                datos:this.usuarioEditable,
+                url:this.configAll.url
+              }
+              
+              ///envia correo de confirmación 
+
+             fetch(this.configAll.mailserver+'/mailsender/',
+              {
+                method:'POST',
+                headers:{
+                  'Content-type':'applications/json'
+                },
+                body:JSON.stringify(this.payload)
+
+              }
+             )
+             .then(res=>res.json()) 
+             .then((res)=>{
+                this.payload.tipomensaje='mensaje'
+                this.payload.accion='Mensaje a usuario'
+                this.$fireStore.collection('correos').add(payload)
+                .then(()=>{
+                })
+                
+            })
         }
     },
     props:{
