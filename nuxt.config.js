@@ -64,7 +64,8 @@ router: {
     '@/plugins/codegenerate.js',
     '@/plugins/v-calendar.js',
     '@/plugins/comparativa.js',
-    '@/plugins/laoderall.js'
+    '@/plugins/laoderall.js',
+    '@/plugins/consolelogtest.js'
   ],
   /*
   ** Auto import components
@@ -169,10 +170,5 @@ Middleware:['configral'],
   */
   build: {
 
-    extend(config, ctx) {
-      
-      
-    }
-    
   }
   }

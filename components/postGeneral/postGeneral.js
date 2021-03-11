@@ -14,6 +14,7 @@ import comentarios from '~/components/comentarios/comentarios.vue'
 export default{
     data(){
         return {
+            url:"",
             relacionados:[],
             bandera: false,
 
@@ -27,6 +28,11 @@ export default{
             //refrescar el componete de audio
             cargandoaudio:false,
         }
+    },
+    created(){
+     
+      this.url=window.location.protocol+"//"+window.location.host
+      console.log(this.url)
     },
     async mounted() {
         await this.cargabaseGral()

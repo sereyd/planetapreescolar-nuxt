@@ -1,0 +1,31 @@
+<v-card>
+    <v-card-title>
+        Administrador de secciones 
+    </v-card-title>
+    <v-card-text>
+<v-data-table :headers="titulos" :items="datoslimites.loadlimit">
+    <template v-slot:item.editar='{ item }'>
+        <v-btn class="melon white--text" @click="abrirEditar(item)" ><v-icon>mdi-pencil-box</v-icon></v-btn>
+    </template>
+
+</v-data-table>
+
+<v-dialog max-width="600" v-model="ventanaeditar">
+    <v-card>
+        <v-card-title>
+            Editar Sección <v-spacer></v-spacer> <v-btn @click="ventanaeditar=false"><v-icon>mdi-close</v-icon></v-icon></v-btn>
+        </v-card-title>
+        <v-card-text>
+            <v-select label="Carga" :items="options" v-model="editaSeccion.carga"></v-select>
+            <v-text-field type="number" label="Limite" v-model="editaSeccion.limite"></v-text-field>
+            <v-text-field label="Seccion" v-model="editaSeccion.seccion"></v-text-field>
+            <v-btn class="melon white--text" @click="guardarCambios()">Guardar</v-btn>
+        </v-card-text>
+    </v-card>
+
+</v-dialog>
+
+
+
+    </v-card-text>
+</v-card>

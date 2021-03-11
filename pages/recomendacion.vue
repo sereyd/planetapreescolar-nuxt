@@ -6,17 +6,7 @@
 <v-main class="px-10" >
 
   
-    <v-row
-    
-     v-if="
-          $validasesion($store, {
-            sinregistro: false,
-            logeado: true,
-            permisos: 1
-          })
-        "
-
-    >
+    <v-row >
       <v-col cols="12">
         <buscador :esBuscando ="buscando" @updateBuscando="buscando=$event"/>
 
@@ -31,14 +21,7 @@
       >
         <h2
           class="primary--text"
-          v-if="
-            $validasesion($store, {
-              sinregistro: false,
-              logeado: true,
-              permisos: 1
-            })
-          "
-        >
+          >
           Mis recursos recomendados
         </h2>
 
@@ -82,32 +65,7 @@
       </v-col> -->
     </v-row>
 
-    <v-row 
-     v-if="
-          $validasesion($store, {
-            sinregistro: true,
-            logeado: false,
-            permisos: 0
-          })
-        "
-    >
-    <v-col cols="12" md="3">
-    </v-col>
-
-       <v-col cols="12" md="6" class="text-center">
-         <img src="pantallas/1Continua navegando.png" width="100%" />
-         <br />
-         <v-btn to="/registro" class="melon white--text">Regístrate</v-btn>
-          <v-btn to="/login" class="melon white--text">Inicia Sesión</v-btn>
-    </v-col> 
-
-    <v-col cols="12" md="3">
-    </v-col>
-
-    </v-row>
-
-
-       <div style="width:100%; height:0px;"></div>
+     <div style="width:100%; height:0px;"></div>
   </v-main>
         
 </template>

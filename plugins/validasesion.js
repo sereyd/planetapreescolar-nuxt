@@ -1,5 +1,6 @@
 import Vue from "vue";
 
+
 Vue.prototype.$validasesion = (store, item) => {
   let ret = false;  
   
@@ -21,5 +22,15 @@ Vue.prototype.$validasesion = (store, item) => {
     
   }
 
+  return ret;
+};
+
+Vue.prototype.$validacat=(store,item)=>{
+  var ret=false;
+  if(item.indexOf(store.catadmin)>-1){
+    ret=true
+  }else{
+    ret=false
+  }
   return ret;
 };

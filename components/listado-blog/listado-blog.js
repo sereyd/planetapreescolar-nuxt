@@ -14,6 +14,7 @@ export default{
     data(){
         // name:"listablog",
         return {
+            url:"",
             dataArray:[],
             dialogPost:false,
             // viewpost:false,
@@ -32,32 +33,67 @@ export default{
             spinner:true,
 
             linkembed:"https://www.youtube.com/embed/AddqzrFdR4Q",
-
-            // dialogPlanes:false,
         }
     },
-    mounted(){
-      console.log(this.blogpost)
-      if(this.blogpost){
-        this.loadBase(this.blogpost)
-      }
+    created(){
+    
+      this.url=window.location.protocol+"//"+window.location.host
+      
+      
     },
- 
+    mounted(){
+    if(this.blogpost){
+        if(this.busqueda.length===0){
+            setTimeout(()=>{
+              this.loadBase(this.blogpost)
+            },600)
+        }else{
+          this.loadBase(this.blogpost)
+        }
+
+    }
+     if(!this.busqueda) {
+        this.loadBase(this.blogpost)
+     }
+  
+    },
+    computed: {
+      ...mapState(['datosUsuario','itemsmenu','descargarFree','viewothers','viewpost','configAll','baseBusqueda']),
+  cargarecomendacion(){
+        var limit=350
+        var loncadena= this.reflexionSeleccionada.contenido.length
+        var suspensivos="..."
+        var contenido= this.reflexionSeleccionada.contenido.substr(0,limit)
+        if(loncadena<limit){
+            suspensivos=""
+        }
+        return contenido+suspensivos
+    },
+    cantidadComentarios(comentarios){
+      let comen = comentarios.filter(com => com.valido === true);
+      return comen.length;
+    },
+   
+
+    },
     methods:{
-      ...mapActions(['changeRecursosFavoritos']),
-      ...mapMutations(['changeViewOthers','changeViewPost','changeDialogPost']),
+      ...mapActions(['changeRecursosFavoritos','ejecutaFiltrosBusqueda']),
+      ...mapMutations(['changeViewOthers','changeViewPost','changeDialogPost','cambiaLoading','cargaBaseBusqueda']),
       loadBase(p){
+
+        this.cambiaLoading('inicia')
         let lobas=this.$fireStore.collection('CATEGORIAS')
         let ben=""
         var val
-        
-       
+        this.dataArray=[]
+
         if(this.configAll && Object.keys(this.configAll).length===0){
          setTimeout(()=>{ this.loadBase(p) },500) 
         }else{
 
           var sec=window.location.pathname
           let cant=this.configAll.loadlimit.find(lim=>lim.seccion===sec)
+          let cantidadlimite=parseInt(cant.limite)
           var numorden=Math.floor(Math.random() * 2)
           var recomorden=Math.floor(Math.random() * 2)
           var otrospostran=Math.floor(Math.random() * 9) 
@@ -78,19 +114,77 @@ export default{
 
           var bolearecom=[true,false]
           var orderby=['titulo','fecha','recomendado']
+
+
+          if(this.busqueda.length>0){
+            if(this.baseBusqueda.length===0){
+          
+          lobas.get()
+            .then((dat)=>{
+            new Promise((res)=>{
+              this.cargaBaseBusqueda(dat)
+              res('ok')
+            })
+            .then((r)=>{
+
+              this.ejecutaFiltrosBusqueda(this.busqueda)
+              .then((dat)=>{
+                dat.forEach((doc) => {
+                  let data = doc;
+                data.tags = data.tags ? data.tags : [];
+                data.favoritos = data.favoritos ? data.favoritos : [];
+                data.sinopsis= data.sinopsis ? data.sinopsis : "";
+                if(data.tipo !== "otro" )
+                  data.premium =  typeof(data.premium) === "undefined" ? false : data.premium
+                delete data['idRecurso'];
+                let datos = {
+                    idRecurso: doc.id,
+                    ...data
+                }
+                this.dataArray.push(datos)
+                this.cambiaLoading('finaliza')
+              });
+              })
+            })
+           
+            this.cambiaLoading('finaliza')
+  console.log('callback----')
+            })
+          }else{
+          this.ejecutaFiltrosBusqueda(this.busqueda)
+          .then((dat)=>{
+            dat.forEach((doc) => {
+              let data = doc;
+            data.tags = data.tags ? data.tags : [];
+            data.favoritos = data.favoritos ? data.favoritos : [];
+            data.sinopsis= data.sinopsis ? data.sinopsis : "";
+            if(data.tipo !== "otro" )
+              data.premium =  typeof(data.premium) === "undefined" ? false : data.premium
+            delete data['idRecurso'];
+            let datos = {
+                idRecurso: doc.id,
+                ...data
+            }
+            this.dataArray.push(datos)
+            this.cambiaLoading('finaliza')
+          });
+          })
+          }
+
+          }else{
+
           switch(cant.carga){
           case 'rand': ///// realiza busquedas en random
          
           switch(p){ //// seccion de recomendados realiza la busqueda de 3 secciones que tengan recomendado
             case 'recomendado':
-              console.log('se ejecuta rand y recomendado')
             lobas.where('recomendado','==',true)
             lobas.where('tipo','==',seccion1[randsec1])
             lobas.where('tipo','==',seccion2[randsec2])
             lobas.where('tipo','==',seccion3[randsec3])
 
             .orderBy(orderby[randOrderby],orden[numorden])
-            .limit(cant.limite).get()
+            .limit(cantidadlimite).get()
             .then((dat)=>{
               dat.forEach((doc) => {
                 let data = doc.data();
@@ -105,6 +199,7 @@ export default{
                   ...data
               }
               this.dataArray.push(datos)
+              this.cambiaLoading('finaliza')
             });
             })
 
@@ -114,7 +209,7 @@ export default{
 
             lobas.where('tipo','==',otrosPost[otrospostran])
             .orderBy(orderby[randOrderby],orden[numorden])
-            .limit(cant.limite).get()
+            .limit(cantidadlimite).get()
             .then((dat)=>{
               dat.forEach((doc) => {
                 let data = doc.data();
@@ -129,6 +224,7 @@ export default{
                   ...data
               }
               this.dataArray.push(datos)
+              this.cambiaLoading('finaliza')
             });
             })
 
@@ -137,7 +233,7 @@ export default{
 
             lobas.where('tipo','==',p)
             .orderBy(orderby[randOrderby],orden[numorden])
-            .limit(cant.limite).get()
+            .limit(cantidadlimite).get()
             .then((dat)=>{
               dat.forEach((doc) => {
                 let data = doc.data();
@@ -152,6 +248,7 @@ export default{
                   ...data
               }
               this.dataArray.push(datos)
+              this.cambiaLoading('finaliza')
             });
             })
             break;
@@ -181,6 +278,7 @@ export default{
                       ...data
                   }
                   this.dataArray.push(datos)
+                  this.cambiaLoading('finaliza')
                 });
                 })
 
@@ -189,7 +287,7 @@ export default{
                 console.log('se ejecuta lista y recomendado')
             lobas.where('recomendado','==',true)
             .orderBy('titulo','desc')
-            .limit(cant.limite).get()
+            .limit(cantidadlimite).get()
             .then((dat)=>{
               dat.forEach((doc) => {
                 let data = doc.data();
@@ -204,6 +302,7 @@ export default{
                   ...data
               }
               this.dataArray.push(datos)
+              this.cambiaLoading('finaliza')
             });
             })
 
@@ -212,7 +311,7 @@ export default{
 
                 lobas.where('tipo','==',p)
                 .orderBy('titulo','desc')
-                .limit(cant.limite).get()
+                .limit(cantidadlimite).get()
                 .then((dat)=>{
                   dat.forEach((doc) => {
                     let data = doc.data();
@@ -227,6 +326,7 @@ export default{
                       ...data
                   }
                   this.dataArray.push(datos)
+                  this.cambiaLoading('finaliza')
                 });
                 })
 
@@ -234,9 +334,11 @@ export default{
               }
             break;
         }
+      }
 
         }
       },
+      
       muestrapost(p){
         // console.log(p);
        
@@ -382,6 +484,12 @@ export default{
           type: Boolean,
           default: false,
         },
+        busqueda:{
+          type:String,
+          default:()=>{
+            return ""
+          }
+        }
     },
     components:{
       VueEditor,
@@ -396,22 +504,6 @@ export default{
 
 
     // },
-    computed: {
-      ...mapState(['datosUsuario','itemsmenu','descargarFree','viewothers','viewpost','configAll']),
-      cargarecomendacion(){
-        var limit=350
-        var loncadena= this.reflexionSeleccionada.contenido.length
-        var suspensivos="..."
-        var contenido= this.reflexionSeleccionada.contenido.substr(0,limit)
-        if(loncadena<limit){
-            suspensivos=""
-        }
-        return contenido+suspensivos
-    },
-    cantidadComentarios(comentarios){
-      let comen = comentarios.filter(com => com.valido === true);
-      return comen.length;
-    },
     
-    },
+
 }

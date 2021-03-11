@@ -1,6 +1,6 @@
 <template>
-<div class="v-dialog v-dialog--active v-dialog--fullscreen">
-<v-container fluid class="  ma-0 pa-0">
+<div>
+
   <v-row class="ma-0 pa-0  " >
     <!-- <h3>Crear cuenta como</h3> -->
     <v-col cols="12" md="12" class="ma-0 pa-0 " v-if="tipo_registro === ''">
@@ -9,7 +9,7 @@
     <h2 class="font-weight-black text-center py-4 titulo">Crear cuenta como</h2>
 
       <v-row
-       class=" d-flex justify-center"
+       class=" justify-center"
       >
     <!-- <h3>Crear cuenta como</h3> -->
 
@@ -116,7 +116,7 @@
     </v-col>
   </v-row>
   <!-- </div> -->
-</v-container>
+
 </div>
 </template>
 <style scoped>

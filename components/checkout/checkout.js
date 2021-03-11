@@ -67,12 +67,12 @@ export default {
   created(){
     this.apikeystripe=this.configAll.pagos.stripe.modoprueba === true ? this.configAll.pagos.stripe.apikeytest : this.configAll.pagos.stripe.apikeyprod
     const {pruebagratuita} = this.configAll.pagos.stripe;
-    const haspruebaFree = this.datosUsuario.pruebagratuita;
+    const pguser = this.datosUsuario.pruebagratuita;
   
     // console.log(this.datosUsuario.pruebagratuita)
     // console.log(this.configAll.pagos.stripe)
     // console.log(this.apikeytest)
-    this.esPromo = (haspruebaFree && pruebagratuita > 0) ? true : false;
+    this.esPromo = (!pguser && pruebagratuita > 0) ? true : false;
 
   },
   methods: {
@@ -199,16 +199,13 @@ export default {
       //SE VERIFICA QUE TIPO DE MEMBRESIA SE DESEA PAGAR
       const priceId = this.configAll.pagos.stripe.modoprueba===true ? arraypagos.idtest : arraypagos.idprod
 
-      // var urlendpoint=this.configAll.pagos.stripe.modoprueba === true ? this.configAll.pagos.stripe.apiUrltest : this.configAll.pagos.stripe.apiUrlprod
-      var urlendpoint = "http://localhost:4242"
+      var urlendpoint=this.configAll.pagos.stripe.modoprueba === true ? this.configAll.pagos.stripe.apiUrltest : this.configAll.pagos.stripe.apiUrlprod
+      // var urlendpoint = "http://localhost:4242"
 
       //prueba gratuita en dias
       // console.log(this.configAll.pagos.stripe.pruebagratuita)
-      let trial_period_days = this.configAll.pagos.stripe.pruebagratuita;
+      const trial_period_days = this.configAll.pagos.stripe.pruebagratuita;
       // console.log(trial_period_days)
-
-      //verificar que este usuario no haya usado aun la prueba gratuita
-      trial_period_days = this.datosUsuario.pruebagratuita ? trial_period_days : 0;
  
       
       let stripe = Stripe(this.apikeystripe, locale);

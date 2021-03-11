@@ -4,6 +4,7 @@ import suscripciones from '~/components/administrador/admincomp/suscripciones/su
 import notificaciones from '~/components/administrador/admincomp/notificaciones/notificaciones.vue'
 import landingpage from '~/components/administrador/admincomp/landinpage/landingpage.vue'
 import configral from '~/components/administrador/admincomp/configuraciongral/configuraciongral.vue'
+import limitesitios from '~/components/administrador/admincomp/adminpage/adminpage.vue'
 
 export default{
     data(){
@@ -12,7 +13,8 @@ export default{
             usuarios:[],
             optionUsuarios:[],
             sitiosLp:[],
-            notifilist:[]
+            notifilist:[],
+            permisos:[]
             
         }
       
@@ -66,19 +68,21 @@ export default{
                         text:doc.data().nombre+" "+doc.data().apellido+": "+doc.data().correo,
                         value:doc.id
                     })
-                    
-                    return {
-                        id: doc.id, //SE LES AGREGA EL ID DEL USAURIO PARA REALIZAR LA BUSQUEDA POR SU ID
-                        ...doc.data()
+
+                return {
+                    id: doc.id, //SE LES AGREGA EL ID DEL USAURIO PARA REALIZAR LA BUSQUEDA POR SU ID
+                    ...doc.data()
                     }
+                    this.cambiaLoading('finaliza')
                 });
-                this.cambiaLoading('finaliza')
-                console.log(this.optionUsuarios)
-                console.log(this.usuarios)
+                // console.log(this.optionUsuarios)
             }catch(error){
               console.log(error)
             }
            
+
+        },
+        validasitio(p){
 
         },
         async cargaSitios(){
@@ -107,7 +111,6 @@ export default{
     },
     mounted(){
         this.cambiaLoading('inicia')
-        this.getElement();
         setTimeout(()=>{
             this.cambiaLoading('finaliza')
         },500)
@@ -116,8 +119,8 @@ export default{
         gestordeusuarios,
         suscripciones,
         notificaciones,
-        gestordepagos,
         landingpage,
-        configral
+        configral,
+        limitesitios
     }
 }

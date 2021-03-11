@@ -13,6 +13,7 @@ const createStore = () => {
   return new Vuex.Store({
     state: () => ({
       configAll:{},
+      baseBusqueda:[],
       estados:[
         'Aguascalientes',
         'Baja California',
@@ -544,6 +545,17 @@ const createStore = () => {
 
     }),
     actions: {
+      ejecutaFiltrosBusqueda({state},data){
+
+
+        const filterItems = query => {
+          return state.baseBusqueda.filter((el) =>
+            el.titulo.toLowerCase().indexOf(query.toLowerCase()) > -1
+          );
+        }
+            let resultado=filterItems(data)
+          return resultado 
+      },
       nuxtServerInit () {
        console.log('nuxt server init')
       },
@@ -1363,31 +1375,34 @@ const createStore = () => {
 
     },
 
-
-
     mutations: {
+      cargaBaseBusqueda(state,data){
+        
+        data.docs.forEach((doc)=>{
+          state.baseBusqueda.push(doc.data())
+        })
+       
+      },
       cambiaLoading(state,data){
 
         if(data==='inicia'){
-          console.log('ini inicia')
+         // console.log('ini inicia')
         state.loading=true
 
         setTimeout(()=>{
-          console.log('fin inicia')
+        ///  console.log('fin inicia')
           state.cleanview=false
         },1000)
         }
 
-
         if(data==='finaliza'){
-          console.log('ini finaliza')
+        //  console.log('ini finaliza')
           state.loading=false
 
         }
 
-
         if(data=='libera'){
-          console.log('ini libera')
+        ///  console.log('ini libera')
           state.cleanview=true
         }
        

@@ -1,67 +1,77 @@
 <div class="pa-0">
-  <v-card>
+  <v-card v-if="!datosUsuario.catadmin">
+    <v-card-text class="text-center">
+      Tiene permisos de <b>administrador</b> pero no tiene <b> nivel de categoría</b>, reportelo con su administrador
+
+    </v-card-text>
+    </v-card>
+  </v-card>
+  <v-card v-if="datosUsuario.catadmin">
     <v-toolbar
       flat
       color="primary"
       dark
     >
-      <v-toolbar-title>Administrador |
+      <v-toolbar-title>adminlvl: {{datosUsuario.adminlvl}} | Catadmin: {{datosUsuario.catadmin}} 
         
-      <v-icon title="usuarios registrados">mdi-account</v-icon>:{{usuarios.length}}   <v-btn class="melon white--text" title="descargar o actualizar usuarios" @click="getElement()" >
+        <span v-if="$validacat(datosUsuario,['admin','soporte'])" >|
+        
+      <v-icon  title="usuarios registrados">mdi-account</v-icon>:{{usuarios.length}}   <v-btn  class="melon white--text" title="descargar o actualizar usuarios" @click="getElement()" >
         <v-icon>{{usuarios.length===0 ? 'mdi-lan-disconnect' : 'mdi-lan-connect'}}</v-icon>
         <v-icon> {{usuarios.length===0 ? '' : 'mdi-reload'}} </v-icon>
       </v-btn>
-      
-      |
-      
-      <v-icon title="notificaciones creadas">mdi-bell</v-icon>:{{notifilist.length}}  <v-btn class="melon white--text" title="descargar o actualizar notificaciones" @click="cargaNotificaciones()" >
-        <v-icon>{{notifilist.length===0 ? 'mdi-lan-disconnect' : 'mdi-lan-connect'}}</v-icon>
-        <v-icon> {{notifilist.length===0 ? '' : 'mdi-reload'}} </v-icon>
-      </v-btn>
+      </span>
 
+      <span v-if="$validacat(datosUsuario,['admin','social'])" >
       |
-
         <v-icon title="Landing page creadas" >mdi-web</v-icon>: {{sitiosLp.length}} <v-btn class="melon white--text" title="descargar o actualizar paginas de aterrizaje creadas" @click="cargaSitios()" >
           <v-icon>{{sitiosLp.length===0 ? 'mdi-lan-disconnect' : 'mdi-lan-connect'}}</v-icon>
           <v-icon> {{sitiosLp.length===0 ? '' : 'mdi-reload'}} </v-icon>
         </v-btn> 
       |
+    </span>
 
     </v-toolbar-title>
 
     </v-toolbar>
     <v-tabs>
-      <v-tab>
+      <v-tab v-if="$validacat(datosUsuario,['admin','soporte'])">
         <v-icon left>
           mdi-account
         </v-icon>
        Gestor de usuarios
       </v-tab>
-      <v-tab>
+      <v-tab v-if="$validacat(datosUsuario,['admin','soporte','social'])">
         <v-icon left>
           mdi-bell
         </v-icon>
        Notificaciones
       </v-tab>
-      <v-tab>
+      <v-tab v-if="$validacat(datosUsuario,['admin','soporte'])">
         <v-icon left>
           mdi-account-supervisor-circle
         </v-icon>
       Suscripciones
       </v-tab>
-      <v-tab>
+      <v-tab v-if="$validacat(datosUsuario,['admin','social'])">
         <v-icon left>
         mdi-web
         </v-icon>
       Landing Page
       </v-tab>
-      <v-tab>
+      <v-tab v-if="$validacat(datosUsuario,['admin'])">
+        <v-icon left>
+        mdi-web
+        </v-icon>
+      Limites de Sitios
+      </v-tab>
+      <v-tab v-if="$validacat(datosUsuario,['admin'])">
         <v-icon left>
         mdi-application-cog
         </v-icon>
       Configuración Sitio
       </v-tab>
-      <v-tab-item>
+      <v-tab-item v-if="$validacat(datosUsuario,['admin','soporte'])">
         <v-card flat>
           <v-card-text>
           
@@ -70,7 +80,7 @@
           </v-card-text>
         </v-card>
       </v-tab-item>
-      <v-tab-item>
+      <v-tab-item  v-if="$validacat(datosUsuario,['admin','soporte','social'])">
         <v-card flat>
           <v-card-text>
             
@@ -80,14 +90,14 @@
         </v-card>
       </v-tab-item>
 
-      <v-tab-item>
+      <v-tab-item  v-if="$validacat(datosUsuario,['admin','soporte'])">
         <v-card flat>
           <v-card-text>
             <suscripciones />
           </v-card-text>
         </v-card>
       </v-tab-item>
-      <v-tab-item>
+      <v-tab-item  v-if="$validacat(datosUsuario,['admin','social'])">
         <v-card flat>
           <v-card-text>
           
@@ -97,7 +107,19 @@
           </v-card-text>
         </v-card>
       </v-tab-item>
-      <v-tab-item>
+
+      <v-tab-item  v-if="$validacat(datosUsuario,['admin'])">
+        <v-card flat>
+          <v-card-text>
+          
+            <limitesitios />
+           
+          
+          </v-card-text>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab-item  v-if="$validacat(datosUsuario,['admin'])">
         <v-card flat>
           <v-card-text>
           
@@ -107,7 +129,7 @@
           </v-card-text>
         </v-card>
       </v-tab-item>
-    
+      
     </v-tabs>
   </v-card>
   <div style="width:100%; height:300px;"></div>

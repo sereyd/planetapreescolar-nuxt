@@ -282,8 +282,6 @@
           },800)
         }
         });
-
-
       },
       computed:{
         ...mapState(['dialog', 'test','itemsmenu','vistaValida','mensajealerta','staleras','tpalert','menufix'])
@@ -292,6 +290,9 @@
 
         ...mapMutations(['abrirRegistro','changeScreenPrint','cambioMantenimiento','cargaConfiGral','cambiaLoading']),
         ...mapActions(['scrollmenu']),
+       workerResponseHandler: function (event) {
+        console.log('[WORKER REPONSE]', event.data)
+      },
         accesclick(p){
           console.log(window.location.pathname)
           console.log(p)
