@@ -24,6 +24,9 @@ export default{
             contador:0,
             dialogPlanes:false,
             descargaMesActual:{},
+
+            //refrescar el componete de audio
+            cargandoaudio:false,
         }
     },
     created(){
@@ -73,8 +76,8 @@ export default{
                       {
                           if(
                              ( datos.tipo === "planeacion" || datos.tipo === "hojatrabajo" || datos.tipo === "hojailustrar" || datos.tipo === "materialdidactico" || datos.tipo === "interactivo" || datos.tipo === "otro" )  && 
-                              ( datos.edopost === "publico" || 
-                                  (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) 
+                              ( datos.edopost === "publico" && datos.permisoadmin
+                                // || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) 
                               ) 
                           )
                           {
@@ -94,8 +97,8 @@ export default{
 
                         if(
                               datos.tipo === this.subtipo  && 
-                              ( datos.edopost === "publico" || 
-                                  (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) 
+                              ( datos.edopost === "publico" && datos.permisoadmin
+                                // || (datos.edopost === "privado" && datos.idCreador === this.datosUsuario.id) 
                               ) 
                           )
                           {
@@ -223,6 +226,16 @@ export default{
       },
       cambioUrls(){
         let postS = {...this.relacionados[this.contador]}
+        console.log(postS.tipo)
+        console.log(postS.tipoRecurso)
+        console.log("this.cargandoaudio antes")
+        console.log(this.cargandoaudio)
+        if(postS.tipo === 'interactivo' && postS.tipoRecurso === "audio")
+          this.cargandoaudio = true;
+
+        console.log("this.cargandoaudio despues")
+        console.log(this.cargandoaudio)
+
         if(postS.tipoRecurso === 'link')
         {
           let {urlVista} = postS;
@@ -230,6 +243,9 @@ export default{
           // this.linkembed = embed;
           this.$emit("updateLinkEmbed",embed)
         }
+
+        
+        
 
         const xhr = new XMLHttpRequest();
         xhr.responseType = 'blob';
@@ -270,6 +286,13 @@ export default{
           xhr.open('GET', postS.urlDescargable);
           xhr.send();
         }
+
+          
+          setTimeout(()=>{ 
+            this.cargandoaudio = false; 
+            this.$emit("updateSpinner",false)
+          }, 500)
+       
       },
 
     },

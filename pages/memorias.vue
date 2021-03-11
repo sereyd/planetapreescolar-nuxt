@@ -28,8 +28,8 @@ r<template>
           blogpost="memoria" @updateBlogpost="misPost=$event"
           tipo="CATEGORIAS"  subtipo="memoria"
           :userId="this.datosUsuario.id"
-          titulo="Mis Memorias"
-          subtitulos="Comparte tus vivencias y experiencias con la comunidad"
+          titulo=""
+          subtitulos=""
           :addslot="true"
         >
           <!-- <editorblog
@@ -48,7 +48,7 @@ r<template>
 
       <div style="width:100%; height:0px;"></div>
 
-      <v-col
+      <!-- <v-col
         cols="12"
         md="12"
       >
@@ -59,7 +59,7 @@ r<template>
           titulo="Memorias de otras educadoras"
           subtitulos="Comparte tus vivencias y experiencias con la comunidad"
         />
-      </v-col>
+      </v-col> -->
     </v-row>
 
     

@@ -22,7 +22,7 @@
           blogpost="hojailustrar" @updateBlogpost="misPost=$event"
           tipo="CATEGORIAS"  subtipo="hojailustrar"
           :userId="this.datosUsuario.id"
-          titulo="Mis Hojas para colorear"
+          titulo=""
           subtitulos=""
           :addslot="true"
         >
@@ -42,7 +42,7 @@
 
       <div style="width:100%; height:0px;"></div>
 
-      <v-col
+      <!-- <v-col
         cols="12"
         md="12"
       >
@@ -53,7 +53,7 @@
           titulo="Hojas para colorear"
           subtitulos=""
         />
-      </v-col>
+      </v-col> -->
     </v-row>
 
 

@@ -41,7 +41,7 @@
           blogpost="interactivo" @updateBlogpost="misPost=$event"
           tipo="CATEGORIAS"  subtipo="interactivo"
           :userId="this.datosUsuario.id"
-          titulo="Mis interactivos"
+          titulo=""
           subtitulos=""
           :addslot="true"
         >
@@ -61,7 +61,7 @@
 
       <div style="width:100%; height:0px;"></div>
 
-      <v-col
+      <!-- <v-col
         cols="12"
         md="12"
       >
@@ -72,15 +72,15 @@
           titulo="Interactivos publicos"
           subtitulos="Conoce lo que pasa en el mundo de la educación inicial"
         />
-      </v-col>
+      </v-col> -->
     </v-row>
        <v-row 
      v-if="
           $validasesion($store, {
-            sinregistro: false,
+            sinregistro: true,
             logeado: false,
             permisos: 0
-          })
+          })          
         "
     >
     <v-col cols="12" md="3">

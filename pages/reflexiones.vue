@@ -30,7 +30,7 @@
           tipo="CATEGORIAS"  subtipo="reflexion"
           :userId="this.datosUsuario.id"
           titulo=""
-          subtitulos="Comparte tus reflexiones con la comunidad"
+          subtitulos=""
           :addslot="true"
         >
         </listablog>
@@ -43,12 +43,12 @@
         md="12"
       >
 
-        <listablog
+        <!-- <listablog
           :blogpost="otrosPost" @updateBlogpost="otrosPost=$event"
           tipo="CATEGORIAS"  subtipo="reflexion"
           titulo="Reflexiones de otras educadoras"
           subtitulos="Comparte tus relexiones con la comunidad"
-        />
+        /> -->
       </v-col>
     </v-row>
   </v-main>

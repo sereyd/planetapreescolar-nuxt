@@ -1,55 +1,285 @@
 <div>
-<v-card class=" px-10">
-
-      <v-card-title class=" justify-space-between">
-          <v-btn icon text small color="purple"  >
-          </v-btn>
-          <h3 class="primary--text ">Suscripciones</h3>
+  <v-card class=" px-10">
+  
+        <v-card-title class=" justify-space-between">
+          <v-btn 
+          dark 
+          class="primary  mr-3 mt-2" 
+          @click="obtenerCupones()">Cupones</v-btn>
+            </v-btn>
+            <h3 class="primary--text ">Suscripciones</h3>
+          
+        </v-card-title>
+        <v-card-text>
+        <div class="mt-5" >
+  
+          <v-form ref="formConfigSus" v-model="validConfigSus" lazy-validation>
+          <div>
+            <div class=" d-flex justify-center align-center">
+              </div> 
+                  
+                  <v-text-field
+                      v-model="editSus.diasPrueba"
+                      label="Días de prueba stripe"
+                      required
+                      outlined
+                      dense
+                      height="20px"
+                      type="number"
+                      :rules="[v => !!v || 'Valor es requerido']"
+                      @keyup.enter="validateConfSus"
+                      class="mb-2"
+                  ></v-text-field>
+                  <!-- <v-btn 
+                    dark 
+                    class="primary  mr-3 mb-3" 
+                    @click="obtenerCupones()">Cupones</v-btn> -->
+  
+                  
+               
+  
+                  <div class="d-flex justify-center pb-3">
+                    <v-btn 
+                    dark 
+                    class="primary  mr-3" 
+                    @click="validateConfSus">Guardar</v-btn>
+                    <v-btn 
+                    dark 
+                    class="primary " 
+                    @click="dialogSus = false">Cancelar</v-btn>
+                  </div>
+  
+                  <v-banner v-if="mensajeres" class="success text-center white--text">{{mensajeres}}</v-banner>
+  
+          </div>
         
+      </v-form>
+  
+          
+        </div>
+      </v-card-text>
+      </v-card>
+  
+      <v-dialog v-model="dialogcupones" max-width="770" >
+        <v-card>
+          <v-card-title class=" justify-space-between">
+            <v-btn icon text small color="purple" @click="" >
+            </v-btn>
+            <h3 class="primary--text ">{{tituloCupon}}</h3>
+            <v-btn v-if ="!dialogEditarCupon" icon text small color="purple" @click="dialogcupones = false;" >
+                <v-icon>mdi-window-close</v-icon>
+            </v-btn>
+            <v-btn v-else icon text small color="purple" @click="backListadoC()" >
+              <v-icon>mdi-keyboard-backspace</v-icon>
+          </v-btn>
+          </v-card-title>
+  
+          
+  
+          <v-card-text class="text-center">
+            <div v-if="!dialogEditarCupon">
+              <h5 class="text-center" v-if="listaCupones.length === 0">No hay cupones</h5>
+              <v-btn 
+                dark 
+                class="primary  mr-3 mb-3" 
+                @click="abrirVentanaCupon()">Crear cupón</v-btn>
+  
+              <v-row class="primary">
+                <v-col  cols="2" class="primary" >
+                    <div class="white--text">
+                        <span>ID</span>
+                    </div>
+                </v-col>
+                <v-col  cols="4" class="">
+                    <div class="white--text">
+                        <span>Nombre</span>
+                    </div>
+                </v-col>
+                <v-col cols="2" >
+                    <div class="white--text">
+                        <span>%</span>
+                    </div>
+                </v-col>
+                <v-col  cols="2" class="" >
+                    <div class="white--text">
+                        <span>Cantidad</span>
+                    </div>
+                </v-col>
+                
+              </v-row>
+              <!-- ROW DE ELEMENTOS CUPONES -->
+              <v-row  v-for="(cupon, index) in listaCupones" :key="'cupon_'+index">
+                <v-col cols="2 class="" >
+                    <div class=" texto_usuario">
+                        <span>{{cupon.code}}</span>
+                    </div>
+                </v-col>
+                <v-col  cols="4" class="">
+                    <div class=" texto_usuario">
+                        <span>{{cupon.coupon.name}}</span>
+                    </div>
+                </v-col>
+                <v-col  cols="2" class="">
+                    <div class=" texto_usuario">
+                        <span>{{cupon.coupon.percent_off}}%</span>
+                    </div>
+                </v-col>
+                <v-col  cols="2" class="">
+                    <div class=" texto_usuario">
+                        <span>{{cupon.coupon.times_redeemed}}/{{cupon.coupon.max_redemptions}}</span>
+                    </div>
+                </v-col>
+                <v-col cols="2" class="">
+                  <!-- <v-icon
+                  small
+                  class="mr-2"
+                  @click="abrirVentanaCupon(cupon, 'editar')"
+                  >
+                    mdi-pencil
+                  </v-icon> -->
+                  <v-icon
+                    small
+                    @click="eliminarCupon(cupon)"
+                  >
+                    mdi-delete
+                  </v-icon>
+                </v-col>
+              </v-row>
+            </div>
+  
+            <div v-else>
+              <v-form ref="formCuponE"
+                v-model="validCuponE"
+                lazy-validation
+              >
+                <v-row>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field 
+                      v-model="cuponEditable.name" 
+                      label="Nombre:"
+                      :rules="[v => !!v || 'Nombre es requerido']"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field 
+                      v-model="cuponEditable.max_redemptions" 
+                      label="Cantidad:"
+                      :rules="cantidadReglas"
+                      type="number"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-text-field 
+                      v-model="cuponEditable.percent_off" 
+                      label="Porcentaje:"
+                      :rules="porcentajeReglas"
+                      type="number"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="6">
+                    <v-select
+                        v-model="cuponEditable.productos"
+                        :items="planes"
+                        multiple
+                        chips
+                        :rules="[v => !!v || 'plan o planes son requeridos']"
+                        label="plan:"
+                        hint="planes a los que se les aplica el cupón"
+                        persistent-hint
+                    ></v-select>
+                    <!-- {{usuarioEditable.lvluser}} -->
+                </v-col>
+                  
+                </v-row>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="red lighten-1 white--text"  @click="backListadoC()">Cancelar</v-btn>
+                  <v-btn color="green lighten-1 white--text"  @click="validarFormularioCupones()">Guardar</v-btn>
+                </v-card-actions>
+              </v-form>
+            </div>
+  
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+    </div>
+  
+  
+    <!-- <v-card v-if="!dialogEditarCupon">
+      <v-card-title class=" justify-space-between">
+        <v-btn icon text small color="purple" @click="" >
+        </v-btn>
+        <h3 class="primary--text ">Cupones de stripe</h3>
+        <v-btn icon text small color="purple" @click="dialogcupones = false;" >
+            <v-icon>mdi-window-close</v-icon>
+        </v-btn>
+      </v-card-title>
+      <v-card-text class="text-center">
+        <h5 class="text-center" v-if="listaCupones.length === 0">No hay cupones</h5>
+        <v-data-table
+          v-else
+          :headers="headers"
+          :items="listaCupones"
+          :items-per-page="5"
+          class="elevation-1"
+        ></v-data-table>
+        
+        <template v-slot:item.actions="{ item }">
+          <v-icon
+            small
+            class="mr-2"
+            @click="abrirVentanaCupon(item)"
+          >
+            mdi-pencil
+          </v-icon>
+          
+        </template>
+        
+      </v-card-text>
+    </v-card>
+    <v-card v-else>
+      <v-card-title>
+        <span class="headline">{{tituloCupon}}</span>
       </v-card-title>
       <v-card-text>
-      <div class="mt-5" >
-
-        <v-form ref="formConfigSus" v-model="validConfigSus" lazy-validation>
-        <div>
-          <div class=" d-flex justify-center align-center">
-            </div> 
-                
-                <v-text-field
-                    v-model="editSus.diasPrueba"
-                    label="Días de prueba stripe"
-                    required
-                    outlined
-                    dense
-                    height="20px"
-                    type="number"
-                    :rules="[v => !!v || 'Valor es requerido']"
-                    @keyup.enter="validateConfSus"
-                    class="mb-2"
+        <v-container>
+          <v-form ref="formCuponE"
+            v-model="validCuponE"
+            lazy-validation
+          >
+            <v-row>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field 
+                  v-model="cuponEditable.nombre" 
+                  label="Nombre:"
+                  :rules="[v => !!v || 'Nombre es requerido']"
                 ></v-text-field>
-
-                
-             
-
-                <div class="d-flex justify-center pb-3">
-                  <v-btn 
-                  dark 
-                  class="primary btn_crearCuenta mr-3" 
-                  @click="validateConfSus">Guardar</v-btn>
-                  <v-btn 
-                  dark 
-                  class="primary btn_crearCuenta" 
-                  @click="dialogSus = false">Cancelar</v-btn>
-                </div>
-
-                <v-banner v-if="mensajeres" class="success text-center white--text">{{mensajeres}}</v-banner>
-
-        </div>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field 
+                  v-model="cuponEditable.cantidad" 
+                  label="Cantidad:"
+                  :rules="[v => !!v || 'Cantidad es requerida']"
+                  type="number"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6" md="6">
+                <v-text-field 
+                  v-model="cuponEditable.porcentaje" 
+                  label="Porcentaje:"
+                  :rules="[v => !!v || 'Porcentaje es requerido']"
+                  type="number"
+                ></v-text-field>
+              </v-col>
+              
+            </v-row>
+          </v-form>
+        </v-container>
+      </v-card-text>
       
-    </v-form>
-
-        
-      </div>
-    </v-card-text>
-    </v-card>
-  </div>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="red lighten-1 white--text"  @click="dialogEditarCupon=false">Cancelar</v-btn>
+        <v-btn color="green lighten-1 white--text"  @click="validarFormulario">Guardar</v-btn>
+      </v-card-actions>
+    </v-card> -->

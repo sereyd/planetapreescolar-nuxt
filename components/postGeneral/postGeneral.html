@@ -134,11 +134,12 @@
                         />
                         <!-- v-if="relacionados[contador].tipoRecurso==='audio'" -->
                         <audio-player 
-                            v-if="relacionados[contador].tipo === 'interactivo' && relacionados[contador].urlVista !== '' "
+                            v-if="relacionados[contador].tipo === 'interactivo' && relacionados[contador].urlVista !== '' && !cargandoaudio"
                             style="max-width:100%; width:100%; background-color:azure; "
                             >
                             <source :src="relacionados[contador].urlVista" />
                         </audio-player>
+                        <Spinner v-else />
                     </div>
                     <iframe 
                         v-else
@@ -197,6 +198,7 @@
                         v-if=" relacionados[contador].urlDescargable !== '' &&
                         ( subtipo !== 'blog' && subtipo !== 'memoria' ) && urlFileB !== ''"
                     >
+
                         <Spinner 
                             v-if="spinner" 
                         />
@@ -269,17 +271,25 @@
             </div>
         </div>
         <div v-else>
-            <div class="d-flex justify-center" 
+            <div class="d-flex justify-center flex-column" 
             v-if="datosUsuario.userlogin"
             >
-                 <v-img
-                     :src="relacionados[contador].tipo !== 'interactivo' ? url+'/pantallas/6Te gusto este material.png' 
-                     : url+'/pantallas/4No te quedes con las ganas.png'"
-                     contain
-                     class=""
-                     style="width: 100%; height:430px;"
-                     >
-                 </v-img>
+                <v-img
+                    :src="relacionados[contador].tipo === 'interactivo' ? url+'/pantallas/6Te gusto este material.png' 
+                    : url+'/pantallas/4No te quedes con las ganas.png'"
+                    contain
+                    class=""
+                    style="width: 100%; height:430px;"
+                    >
+                </v-img>
+                 
+                <div class="d-flex justify-center">
+                    <v-btn
+                        class="melon white--text "
+                        @click="$router.push('/checkout')"
+                    >Hazte premium</v-btn>
+                </div>
+                 
             </div>
             <div class="d-flex justify-center" 
             v-else

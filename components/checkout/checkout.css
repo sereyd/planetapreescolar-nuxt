@@ -6,6 +6,13 @@
   
   }
 
+  tbody tr td{
+    padding:0!important;
+  }
+  thead tr th{
+    padding: 0!important;
+  }
+
   /* .stripe-card {
     width: 300px;
     border: 1px solid grey;

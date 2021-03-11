@@ -42,7 +42,7 @@ export default{
       
     },
     mounted(){
-    if(this.busqueda){
+    if(this.blogpost){
         if(this.busqueda.length===0){
             setTimeout(()=>{
               this.loadBase(this.blogpost)

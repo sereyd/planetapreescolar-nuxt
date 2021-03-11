@@ -49,7 +49,7 @@
 
    
 
-      <v-col
+      <!-- <v-col
         cols="12"
         md="12"
         
@@ -58,11 +58,11 @@
         <listablog
           blogpost="otrospost" @updateBlogpost="otrosPost=$event"
           tipo="CATEGORIAS"  subtipo="recomendacion"
-          titulo="Recursos recomendados publicos"
-          subtitulos="Conoce lo que pasa en el mundo de la educación inicial"
+          titulo=""
+          subtitulos=""
         />
 
-      </v-col>
+      </v-col> -->
     </v-row>
 
      <div style="width:100%; height:0px;"></div>
