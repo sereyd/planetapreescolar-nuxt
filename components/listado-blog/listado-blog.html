@@ -1,11 +1,12 @@
 <div v-if="dataArray.length !== 0">
-    
+
+
     <v-row class="px-0 ma-0" >
     
     <v-col cols="9" md="10" class="space">
         <!-- <v-row>
             <v-col cols="12" md="7" sm="8"> -->
-                <h2 class="primary--text space" style="font-size: 18px;" >{{titulo}}</h2>
+                <h2 class="primary--text space" style="font-size: 18px;" >{{titulo}}   {{busqueda}}</h2>
             <!-- </v-col> -->
             <p v-if="subtitulos !== ''" class="space" style="font-size: 14px;" ><b>{{subtitulos}}</b></p>
         <!-- </v-row> -->
@@ -33,7 +34,7 @@
                     <!-- <p>{{key.tipoRecurso}}</p> -->
                     <div v-if="key.tipoRecurso !== 'link'" style="width:100%; max-width:100%; position:relative;">
                         <v-img
-                            :src="key.urlImagen === '' || key.urlImagen === 'none'  ? 'images/logos/planeta_preescolar_logo.png' : key.urlImagen"
+                            :src="key.urlImagen === '' || key.urlImagen === 'none'  ? url+'/images/logos/planeta_preescolar_logo.png' : key.urlImagen"
                             :contain="key.tipo === 'hojatrabajo' ? true : false"
                             max-width="100%"
                             class="fotomini"
@@ -192,7 +193,7 @@
             </span> -->
     
           
-            <img src="images/logos/planeta_preescolar_bco.png" width="55" class="miniMovil" alt="planetapreescolar" />
+            <img :src="url+'/images/logos/planeta_preescolar_bco.png'" width="55" class="miniMovil" alt="planetapreescolar" />
         
               &nbsp;  &nbsp; 
               

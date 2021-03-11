@@ -68,15 +68,14 @@ export default{
                         text:doc.data().nombre+" "+doc.data().apellido+": "+doc.data().correo,
                         value:doc.id
                     })
-                    
-                    return {
-                        id: doc.id, //SE LES AGREGA EL ID DEL USAURIO PARA REALIZAR LA BUSQUEDA POR SU ID
-                        ...doc.data()
+
+                return {
+                    id: doc.id, //SE LES AGREGA EL ID DEL USAURIO PARA REALIZAR LA BUSQUEDA POR SU ID
+                    ...doc.data()
                     }
+                    this.cambiaLoading('finaliza')
                 });
-                this.cambiaLoading('finaliza')
-                console.log(this.optionUsuarios)
-                console.log(this.usuarios)
+                // console.log(this.optionUsuarios)
             }catch(error){
               console.log(error)
             }
@@ -112,7 +111,6 @@ export default{
     },
     mounted(){
         this.cambiaLoading('inicia')
-        this.getElement();
         setTimeout(()=>{
             this.cambiaLoading('finaliza')
         },500)
