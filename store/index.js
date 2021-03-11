@@ -312,6 +312,12 @@ const createStore = () => {
           visible: true
         },
         {
+          title: "Interactivos",
+          icon: "mdi-checkerboard",
+          link: "/interactivos",
+          visible: true
+        },
+        {
           title: "Administración",
           icon: "mdi-file-tree-outline",
           link: "/otros",

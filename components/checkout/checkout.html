@@ -1,11 +1,11 @@
 
-<div class="mx-15">
-  <div v-if="!spinner">
-    <h3 class="text-center primary--text mt-2">Forma parte de nuestra comunidad exclusiva de Educadoras Premium</h3>
-    <h3 class="text-center primary--text">Accede a miles de materiales educativos</h3>
+<div class="">
+  <div v-if="!spinner" class="mx-15">
+    <h3 class="text-center melon--text mt-2">Forma parte de nuestra comunidad exclusiva de Educadoras Premium</h3>
+    <h3 class="text-center " style="color: #039BE5;">Accede a miles de materiales educativos</h3>
     <h3 class="text-center primary--text">Nuevos recursos cada semana</h3>
-    <h3 class="text-center primary--text">Descarga cuando quieras</h3>
-    <h3 class="text-center primary--text">Cancela cuando quieras.</h3>
+    <h3 class="text-center primary--text" style="font-weight: lighter;">Descarga cuando quieras.</h3>
+    <h3 class="text-center " style="font-weight: lighter;">Cancela cuando quieras.</h3>
     
 
 
@@ -19,53 +19,58 @@
   </div>
   <h2 v-else class="text-center">Redireccionando...</h2>
 
-  <v-container>
+  <div>
     <v-simple-table>
       <template v-slot:default>
         <thead>
           <tr>
-            <th class="text-left">
-            
-            </th>
-            <th class="text-left">
+            <th class="text-center px-3">
               <img
-              src="../../static/images/anual.png"
+                src="../../static/planes/Logo.png"
+                width="120"
+                height="120"
+                class=""
+              />
+            </th>
+            <th class="text-center">
+              <img
+              src="../../static/planes/Free.png"
               width="120"
               height="120"
               class=""
             />
 
             </th>
-            <th class="text-left">
+            <th class="text-center">
               <img
-              src="../../static/images/trimestral.png"
+              src="../../static/planes/Mensual.png"
               width="120"
               height="120"
               class=""
             />
 
             </th>
-            <th class="text-left">
+            <th class="text-center">
               <img
-              src="../../static/images/semestral.png"
+              src="../../static/planes/Trimestral.png"
               width="120"
               height="120"
               class=""
             />
 
             </th>
-            <th class="text-left">
+            <th class="text-center">
               <img
-              src="../../static/images/anual.png"
+              src="../../static/planes/Semestral.png"
               width="120"
               height="120"
               class=""
             />
 
             </th>
-            <th class="text-left">
+            <th class="text-center">
               <img
-              src="../../static/images/anual.png"
+              src="../../static/planes/Anual.png"
               width="120"
               height="120"
               class=""
@@ -76,28 +81,28 @@
         </thead>
         <tbody>
           <tr>
-            <td class="text-right">Planes</td>
-            <td class="text-center">Free</td>
-            <td class="text-center">Mensual</td>
-            <td class="text-center">Trimestral</td>
-            <td class="text-center">Semestral</td>
-            <td class="text-center">Anual</td>
+            <td class="text-right primary--text rounded-2" ></td>
+            <td class="text-center primary--text rounded-2" style="font-size: 20px; font-weight: bolder;"><strong>Free</strong></td>
+            <td class="text-center primary--text rounded-2" style="font-size: 20px; font-weight: bolder;"><strong>Mensual</strong></td>
+            <td class="text-center primary--text rounded-2" style="font-size: 20px; font-weight: bolder;"><strong>Trimestral</strong></td>
+            <td class="text-center primary--text rounded-2" style="font-size: 20px; font-weight: bolder;"><strong>Semestral</strong></td>
+            <td class="text-center primary--text rounded-2" style="font-size: 20px; font-weight: bolder;"><strong>Anual</strong></td>
           </tr>
           <tr>
-            <td class="text-right">Descarga diaria contenido Free</td>
-            <td class="text-center">1</td>
-            <td class="text-center">1</td>
-            <td class="text-center">1</td>
-            <td class="text-center">1</td>
-            <td class="text-center">1</td>
+            <td class="text-center" style="font-size: 14px;">Descarga diaria contenido Free</td>
+            <td class="text-center" style="font-size: 21px;">1</td>
+            <td class="text-center" style="font-size: 21px;">1</td>
+            <td class="text-center" style="font-size: 21px;">1</td>
+            <td class="text-center" style="font-size: 21px;">1</td>
+            <td class="text-center" style="font-size: 21px;">1</td>
           </tr>
           <tr>
-            <td class="text-right">Descargas Mensuales Contenido Premium</td>
-            <td class="text-center">0</td>
-            <td class="text-center">50</td>
-            <td class="text-center">60</td>
-            <td class="text-center">70</td>
-            <td class="text-center">80</td>
+            <td class="text-center" style="font-size: 14px;">Descargas Mensuales Contenido Premium</td>
+            <td class="text-center" style="font-size: 21px;">0</td>
+            <td class="text-center" style="font-size: 21px;">50</td>
+            <td class="text-center" style="font-size: 21px;">60</td>
+            <td class="text-center" style="font-size: 21px;">70</td>
+            <td class="text-center" style="font-size: 21px;">80</td>
           </tr>
           <!-- <tr>
             <td class="text-right">Total Descargas Mensuales</td>
@@ -108,147 +113,87 @@
             <td class="text-center">110</td>
           </tr> -->
           <tr>
-            <td class="text-right">Visualización de todas las planeaciones completas.</td>
+            <td class="text-center" style="font-size: 14px;">Visualización de planeaciones completas.</td>
             <td class="text-center"> </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
+            <td class="text-center">⚫</td>
+            <td class="text-center">⚫</td>
+            <td class="text-center">⚫</td>
+            <td class="text-center">⚫</td>
           </tr>
           <tr>
-            <td class="text-right">Vuélvete Autora, escribiendo tus experiencias educativas en nuestro Blog.</td>
+            <td class="text-center" style="font-size: 14px;">Escribe tus experiencias en el blog.</td>
             <td class="text-center"> </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
+            <td class="text-center">⚫</td>
+            <td class="text-center">⚫</td>
+            <td class="text-center">⚫</td>
+            <td class="text-center">⚫</td>
           </tr>
           <tr>
-            <td class="text-right">Inspira a más educadoras contando tus vivencias en Memorias de una Educadora.</td>
+            <td class="text-center" style="font-size: 14px;">Inspira a más educadoras escribiendo tus memorias.</td>
             <td class="text-center"> </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
+            <td class="text-center">⚫</td>
+            <td class="text-center">⚫</td>
+            <td class="text-center">⚫</td>
+            <td class="text-center">⚫</td>
           </tr>
           <tr>
-            <td class="text-right">Foro Educativo</td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
+            <td class="text-center" style="font-size: 14px;">Foro Educativo</td>
+            <td class="text-center">⚫</td>
+            <td class="text-center">⚫</td>
+            <td class="text-center">⚫</td>
+            <td class="text-center">⚫</td>
+            <td class="text-center">⚫</td>
           </tr>
 
-          <!-- <tr>
-            <td class="text-right">Sección Administrativa</td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-          </tr>
-          <tr>
-            <td class="text-right">Blog Educativo</td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-          </tr>
-          <tr>
-            <td class="text-right">Directorio de Servicios</td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-          </tr>
-          <tr>
-            <td class="text-right">Memorias de una Educadora</td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-          </tr>
-          <tr>
-            <td class="text-right">Participación en Foro Educativo</td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-          </tr>
-          <tr>
-            <td class="text-right">Lectura de Planeaciones</td>
-            <td class="text-center"> </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-          </tr>
-          <tr>
-            <td class="text-right">Edición de Planeaciones</td>
-            <td class="text-center"> </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-          </tr>
-          <tr>
-            <td class="text-right">Administración de Grupos</td>
-            <td class="text-center"> </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-          </tr>
-          <tr>
-            <td class="text-right">Promoción Suscriptoras VIP</td>
-            <td class="text-center"> </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-          </tr>
-          <tr>
-            <td class="text-right">Meses Sin Intereses</td>
-            <td class="text-center"> </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-            <td class="text-center">◉ </td>
-          </tr> -->
           <tr>
             <td class="text-right"></td>
             <td class="text-center"> 
 
-              <b>Resgistro</b>   <br />
+              <p>Sólo con tu registro</p>   <br />
               <!--<v-btn class="melon white--text" to="/" >Regístrate</v-btn>-->
             
             
             </td>
             <td class="text-center"> 
-              <b>$490.00 MXN</b>   <br />
-              <v-btn class="melon white--text" v-if="configAll.pagos.stripe.visible" @click="crearSesionSuscripcion('mensual')">Tarjeta</v-btn>  <br /><br />
-              <v-btn class="melon white--text" v-if="configAll.pagos.mercadopago.visible" @click="formasPago('mensual')" >Efectivo</v-btn>  
+              <br /><b class="primary--text my-2">$490.00 mxn</b>   <br />
+              <div class="px-2 mt-2">
+                <v-btn class="melon white--text" v-if="configAll.pagos.stripe.visible" rounded
+                  @click="crearSesionSuscripcion('mensual')">Paga con tarjeta</v-btn>  <br />
+                <v-btn class="melon white--text mt-1" v-if="configAll.pagos.mercadopago.visible" rounded
+                  @click="formasPago('mensual')" >Efectivo</v-btn>  
+              </div>
             </td>
             <td class="text-center"> 
-              <b>$1,290.00 MXN</b>   <br />
-              <v-btn class="melon white--text" v-if="configAll.pagos.stripe.visible" @click="crearSesionSuscripcion('trimestral')">Tarjeta</v-btn>   <br /><br />
-              <v-btn class="melon white--text" v-if="configAll.pagos.mercadopago.visible" @click="formasPago('trimestral')" >Efectivo</v-btn>  
+              <br /><b class="primary--text my-2">$1,290.00 mxn</b>   <br />
+              <div class="px-2 mt-2">
+                <v-btn 
+                class="melon white--text" v-if="configAll.pagos.stripe.visible" rounded
+                @click="crearSesionSuscripcion('trimestral')">Paga con tarjeta</v-btn>   <br />
+                <v-btn 
+                class="melon white--text mt-1" v-if="configAll.pagos.mercadopago.visible" rounded
+                @click="formasPago('trimestral')" >Efectivo</v-btn>  
+              </div>
               
             </td>
             <td class="text-center">  
-              <b>$2,190.00 MXN</b>   <br />
-              <v-btn class="melon white--text" v-if="configAll.pagos.stripe.visible" @click="crearSesionSuscripcion('semestral')">Tarjeta</v-btn>   <br /><br />
-              <v-btn class="melon white--text" v-if="configAll.pagos.mercadopago.visible" @click="formasPago('semestral')" >Efectivo</v-btn>    
+              <br /><b class="primary--text my-2">$2,190.00 mxn</b>   <br />
+              <div class="px-2 mt-2">
+
+                <v-btn class="melon white--text" v-if="configAll.pagos.stripe.visible" rounded
+                  @click="crearSesionSuscripcion('semestral')">Paga con tarjeta</v-btn>   <br />
+                <v-btn class="melon white--text mt-1" v-if="configAll.pagos.mercadopago.visible" rounded
+                  @click="formasPago('semestral')" >Efectivo</v-btn>    
+              </div>
             </td>
             <td class="text-center"> 
-              <b>$3,490.00 MXN</b>   <br />
-              <v-btn class="melon white--text" v-if="configAll.pagos.stripe.visible" @click="crearSesionSuscripcion('anual')">Tarjeta</v-btn>   <br /><br />
-              <v-btn class="melon white--text" v-if="configAll.pagos.mercadopago.visible" @click="formasPago('anual')" >Efectivo</v-btn>    
+              <br /><b class="primary--text my-2">$3,490.00 mxn</b>   <br />
+              <div class="px-2 mt-2">
+                <v-btn class="melon white--text" v-if="configAll.pagos.stripe.visible" rounded
+                  @click="crearSesionSuscripcion('anual')">Paga con tarjeta</v-btn>   <br />
+                <v-btn class="melon white--text mt-1" v-if="configAll.pagos.mercadopago.visible" rounded
+                  @click="formasPago('anual')" >Efectivo</v-btn>    
+
+              </div>
             </td>
           </tr>
         </tbody>
@@ -256,7 +201,7 @@
     </v-simple-table>
 
 
-</v-container>
+</div>
   <v-dialog v-model="loaderpage" max-width="200">
     <v-card>
       <v-card-text class="text-center">

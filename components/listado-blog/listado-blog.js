@@ -37,6 +37,7 @@ export default{
         }
     },
     mounted(){
+      console.log(this.blogpost)
       if(this.blogpost){
         this.loadBase(this.blogpost)
       }

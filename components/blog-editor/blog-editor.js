@@ -139,7 +139,7 @@ export default {
       else if(this.subtipo === "interactivo")
       {
         tipoM= "Nuevo interactivo";
-        this.tipoRecursoFile = "audio/mp3"
+        this.tipoRecursoFile = "audio/mp3, .ppt, .pptx, ppsx"
         this.labelFile="Seleccione archivo"
         this.tipoRecursoSelect ="audio"
       }
