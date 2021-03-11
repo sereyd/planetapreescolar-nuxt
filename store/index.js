@@ -1801,15 +1801,15 @@ const createStore = () => {
         console.log(tipoPost);
         if(tipoPost === "actividades")
         {
-          // console.log("RECOMENDADOS")
+          console.log("ACTIVIDADES")
           state.misPost = state.categorias.filter( 
             post  => (post.tipo === "planeacion" && post.permisoadmin && (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)))
           )
   
-          state.otrosPost = state.categorias.filter( 
-            post  => 
-              ( post.tipo === "recurso" && post.permisoadmin &&  (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)) )
-          )
+          // state.otrosPost = state.categorias.filter( 
+          //   post  => 
+          //     ( post.tipo === "recurso" && post.permisoadmin &&  (post.recomendado === true && post.edopost === "publico" || (post.edopost === "privado" && post.idCreador === state.datosUsuario.id)) )
+          // )
         }
         else if(tipoPost === "recomendados")
         {
@@ -1818,25 +1818,27 @@ const createStore = () => {
             post  => ( post.recomendado  && post.idCreador === state.datosUsuario.id && post.permisoadmin)
           )
   
-          state.otrosPost = state.categorias.filter( 
-            post  => 
-              ( post.recomendado  && post.edopost === "publico" && post.permisoadmin )
-          )
+          // state.otrosPost = state.categorias.filter( 
+          //   post  => 
+          //     ( post.recomendado  && post.edopost === "publico" && post.permisoadmin )
+          // )
         }
         else
         {
-  
+          
+          console.log("CATEGORIA INDIVUAL")
+          
           state.misPost = state.categorias.filter( 
             post  => (post.tipo === tipoPost && post.idCreador === state.datosUsuario.id && post.permisoadmin)
           )
   
-          state.otrosPost = state.categorias.filter( 
-            post  => 
-              ( post.tipo === tipoPost && (post.idCreador !== state.datosUsuario.id && post.edopost !== "privado") && post.permisoadmin)
-          )
+          // state.otrosPost = state.categorias.filter( 
+          //   post  => 
+          //     ( post.tipo === tipoPost && (post.idCreador !== state.datosUsuario.id && post.edopost !== "privado") && post.permisoadmin)
+          // )
         }
-        // console.log("state.misPost")
-        // console.log(state.misPost)
+        console.log("state.misPost")
+        console.log(state.misPost)
         // console.log("state.otrosPost")
         // console.log(state.otrosPost)
   
