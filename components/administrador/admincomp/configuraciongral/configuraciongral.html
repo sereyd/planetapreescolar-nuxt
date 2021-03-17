@@ -99,11 +99,48 @@ Configuración General
                     <v-col cols="12" md="6">
                         <v-text-field label="webhook secreto prueba" v-model="gralconfig.pagos.stripe.webhooksecret_test" ></v-text-field>
                     </v-col>
-                    <v-col cols="12" md="12">
+
+                    <v-col cols="12" md="12" v-if="!modoprueba">
                         <v-btn class="primary white--text" @click="addnewpago('stripe')"><v-icon>mdi-plus-circle</v-icon></v-btn>
                         <v-data-table
                         :headers="headerpagos"
                         :items="gralconfig.pagos.stripe.idpagos"
+                        >
+
+                        <template v-slot:item.status='{ item }'>
+                            <v-switch
+                            v-model="item.status"
+                            :label="item.status === true ? 'Activo' : 'Inactivo' "
+                            >
+
+                            </v-switch>
+                    </template>
+                    
+                            <template v-slot:item.edit='{ item,index }'>
+                                <v-btn class="primary white--text" @click="editarpago(item)"><v-icon>mdi-pencil-box-multiple</v-icon></v-btn>
+                                <v-btn class="red white--text" @click="deletelist(item,'stripe')"><v-icon>mdi-delete</v-icon></v-btn>
+                                
+                            </template>
+                        </v-data-table>
+
+                      
+
+                    </v-col>
+                    <v-col cols="12" md="12" v-else>
+                        <v-select
+                            v-model="paisSeleccionado"
+                            :items="pais"
+                            menu-props="auto"
+                            label="País"
+                            hide-details
+                            prepend-icon="mdi-flag-variant"
+                            single-line
+                            class="mb-2"
+                        ></v-select> 
+                        <v-btn class="primary white--text" @click="addnewpago('stripe')"><v-icon>mdi-plus-circle</v-icon></v-btn>
+                        <v-data-table
+                        :headers="headerpagos"
+                        :items="arraySeleccionado"
                         >
 
                         <template v-slot:item.status='{ item }'>

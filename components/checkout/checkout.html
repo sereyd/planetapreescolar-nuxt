@@ -155,7 +155,7 @@
             
             </td>
             <td class="text-center"> 
-              <br /><b class="primary--text my-2">$490.00 mxn</b>   <br />
+              <br /><b class="primary--text my-2">{{mestitle}} {{moneda}}</b>   <br />
               <div class="px-2 mt-2">
                 <v-btn class="melon white--text" v-if="configAll.pagos.stripe.visible" rounded
                   @click="crearSesionSuscripcion('mensual')">Paga con tarjeta</v-btn>  <br />
@@ -164,7 +164,7 @@
               </div>
             </td>
             <td class="text-center"> 
-              <br /><b class="primary--text my-2">$1,290.00 mxn</b>   <br />
+              <br /><b class="primary--text my-2">{{trimestretitle}} {{moneda}}</b>   <br />
               <div class="px-2 mt-2">
                 <v-btn 
                 class="melon white--text" v-if="configAll.pagos.stripe.visible" rounded
@@ -176,7 +176,7 @@
               
             </td>
             <td class="text-center">  
-              <br /><b class="primary--text my-2">$2,190.00 mxn</b>   <br />
+              <br /><b class="primary--text my-2">{{semestretitle}} {{moneda}}</b>   <br />
               <div class="px-2 mt-2">
 
                 <v-btn class="melon white--text" v-if="configAll.pagos.stripe.visible" rounded
@@ -186,7 +186,7 @@
               </div>
             </td>
             <td class="text-center"> 
-              <br /><b class="primary--text my-2">$3,490.00 mxn</b>   <br />
+              <br /><b class="primary--text my-2">{{anualtitle}} {{moneda}}</b>   <br />
               <div class="px-2 mt-2">
                 <v-btn class="melon white--text" v-if="configAll.pagos.stripe.visible" rounded
                   @click="crearSesionSuscripcion('anual')">Paga con tarjeta</v-btn>   <br />
@@ -201,6 +201,18 @@
     </v-simple-table>
 
 
+</div>
+<div>
+  <v-select
+    v-model="moneda"
+    v-if="configAll.pagos.stripe.modoprueba"
+    :items="pais"
+    menu-props="auto"
+    label="Seleccione el tipo de moneda"
+    hide-details
+    prepend-icon="mdi-cash-multiple"
+    single-line
+  ></v-select> 
 </div>
   <v-dialog v-model="loaderpage" max-width="200">
     <v-card>

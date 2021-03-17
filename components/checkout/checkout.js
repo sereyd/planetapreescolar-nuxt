@@ -56,6 +56,165 @@ export default {
         v => /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i.test(v) || 'Correo no válido',
       ],
 
+      
+      
+
+      idpagosStripe:{
+        mexico:[
+          {
+            codigo:"mxn",
+            idtest:"price_1ISk01GqO5WLKI2HIbazOYlY",
+            idprod:"price_1ISk6OANenJgOhZEVGgVL3d8",
+            monto:"490",
+            status:true,
+            tipo:"mensual",
+          },
+          {
+            codigo:"mxn",
+            idtest:"price_1ISk2BGqO5WLKI2HRPM9yvZH",
+            idprod:"price_1ISk7eANenJgOhZE0RriTc60",
+            monto:"1290",
+            status:true,
+            tipo:"trimestral",
+          },
+          {
+            codigo:"mxn",
+            idtest:"price_1ISk3NGqO5WLKI2HBIkW2gvi",
+            idprod:"price_1ISk8PANenJgOhZECG8X6hgD",
+            monto:"2190",
+            status:true,
+            tipo:"semestral",
+          },
+          {
+            codigo:"mxn",
+            idtest:"price_1ISk4wGqO5WLKI2HBRXtuChH",
+            idprod:"price_1ISk90ANenJgOhZEr9R80KCN",
+            monto:"3490",
+            status:true,
+            tipo:"anual",
+          }
+        ],
+        estadosunidos:[
+          {
+            codigo:"usd",
+            idtest:"price_1IVKj1GqO5WLKI2H3mJggbpP",
+            idprod:"",
+            monto:"23.71",
+            status:true,
+            tipo:"mensual",
+          },
+          {
+            codigo:"usd",
+            idtest:"price_1IVO5BGqO5WLKI2HXZKbtMlD",
+            idprod:"",
+            monto:"62.45",
+            status:true,
+            tipo:"trimestral",
+          },
+          {
+            codigo:"usd",
+            idtest:"price_1IVO5iGqO5WLKI2Hi3bog0uK",
+            idprod:"",
+            monto:"106.02",
+            status:true,
+            tipo:"semestral",
+          },
+          {
+            codigo:"usd",
+            idtest:"price_1IVO6YGqO5WLKI2HIxhEnoV5",
+            idprod:"",
+            monto:"168.95",
+            status:true,
+            tipo:"anual",
+          }
+        ],
+        argentina:[
+          {
+            codigo:"ars",
+            idtest:"price_1IVOMwGqO5WLKI2HesxE1iTa",
+            idprod:"",
+            monto:"2161.06",
+            status:true,
+            tipo:"mensual",
+          },
+          {
+            codigo:"ars",
+            idtest:"price_1IVONMGqO5WLKI2Hk4Do7bJM",
+            idprod:"",
+            monto:"5689.32",
+            status:true,
+            tipo:"trimestral",
+          },
+          {
+            codigo:"ars",
+            idtest:"price_1IVONmGqO5WLKI2HEdyW3dNL",
+            idprod:"",
+            monto:"9658.62",
+            status:true,
+            tipo:"semestral",
+          },
+          {
+            codigo:"ars",
+            idtest:"price_1IVOODGqO5WLKI2HAah3RBb8",
+            idprod:"",
+            monto:"15392.05",
+            status:true,
+            tipo:"anual",
+          }
+        ],
+        chile:[
+          {
+            codigo:"clp",
+            idtest:"price_1IVOVcGqO5WLKI2HEGpRslJF",
+            idprod:"",
+            monto:"17157",
+            status:true,
+            tipo:"mensual",
+          },
+          {
+            codigo:"clp",
+            idtest:"price_1IVOVwGqO5WLKI2HJSr8QVZg",
+            idprod:"",
+            monto:"45169",
+            status:true,
+            tipo:"trimestral",
+          },
+          {
+            codigo:"clp",
+            idtest:"price_1IVOWnGqO5WLKI2H2JQuA8QM",
+            idprod:"",
+            monto:"76682",
+            status:true,
+            tipo:"semestral",
+          },
+          {
+            codigo:"clp",
+            idtest:"price_1IVOXJGqO5WLKI2He2mhEmJS",
+            idprod:"",
+            monto:"122201",
+            status:true,
+            tipo:"anual",
+          }
+        ],
+       
+      },
+      moneda:"mxn",
+      dialogMoneda: false,
+      mestitle:"$490",
+      trimestretitle:"$1290",
+      semestretitle:"$2190",
+      anualtitle:"$3490",
+      pais: [
+        // { text: 'Peso Méxicano', value:"mxn" },
+        // { text: 'Dolar', value:"usd" },
+        // { text: 'Peso argentino', value:"ars" },
+        // { text: 'Peso chileno', value:"clp" },
+        // { text: 'State 5' },
+        // { text: 'State 6' },
+        // { text: 'State 7' },
+      ],
+      paisselect:{},
+
         
     }
   },
@@ -68,11 +227,30 @@ export default {
     this.apikeystripe=this.configAll.pagos.stripe.modoprueba === true ? this.configAll.pagos.stripe.apikeytest : this.configAll.pagos.stripe.apikeyprod
     const {pruebagratuita} = this.configAll.pagos.stripe;
     const pguser = this.datosUsuario.pruebagratuita;
-  
+
+    // this.idPagosStripe = 
     // console.log(this.datosUsuario.pruebagratuita)
     // console.log(this.configAll.pagos.stripe)
     // console.log(this.apikeytest)
     this.esPromo = (!pguser && pruebagratuita > 0) ? true : false;
+
+    if(this.configAll.pagos.stripe.modoprueba)
+    {
+      const {idpagosS} = this.configAll.pagos.stripe
+      
+      this.pais = [...this.configAll.pagos.stripe.idpagosS.listamonedas]
+      this.paisselect = idpagosS.listamonedas.find(l => l.value === this.moneda);
+      
+    }
+    // await this.$fireStore.collection("ConfiguracionGeneral").add(this.configAll);
+    // let confA = {...this.configAll};
+    // confA.pagos.stripe.idpagosS = this.idpagosStripe;
+    // console.log(confA)
+    // await this.$fireStore.collection('ConfiguracionGeneral').doc("3zOXwONDBT76LjUkIAxa").update(confA)
+
+
+
+
 
   },
   methods: {
@@ -183,110 +361,172 @@ export default {
   //  alert("up nueva orden")
  },
 
-    //PAGOS CON STRIPE
-    crearSesionSuscripcion(tipoSuscripcion){
-      this.loaderpage=true
-      this.spinner = true;
-      const external_reference = this.$codegenerate().toString();
+    
  
-      // this.importe = priceTipo === 'trimestral' ? "$500.00 MX" : "$1500.00 MX";
-      var arraypagos=this.configAll.pagos.stripe.idpagos.find(pago=>pago.tipo === tipoSuscripcion);
+ //PAGOS CON STRIPE
+  
+  crearSesionSuscripcion(tipoSuscripcion){
 
-      this.importe  = arraypagos.monto
+      if(this.moneda !== "")
+      {
+        this.loaderpage=true
+        this.spinner = true;
+        const external_reference = this.$codegenerate().toString();
 
-      const locale = "es"
-      
-      //SE VERIFICA QUE TIPO DE MEMBRESIA SE DESEA PAGAR
-      const priceId = this.configAll.pagos.stripe.modoprueba===true ? arraypagos.idtest : arraypagos.idprod
+        let arraypagos=[];
+        const {idpagosS} = this.configAll.pagos.stripe
+        let objPago = {};
+        
+        if(this.configAll.pagos.stripe.modoprueba)
+        {
+          
+          // const objPago = this.moneda === "mxn" ? idpagosS.mexico :
+          // this.moneda === "ars" ? idpagosS.argentina :
+          // this.moneda === "usd" ? idpagosS.estadosunidos : idpagosS.chile;
 
-      var urlendpoint=this.configAll.pagos.stripe.modoprueba === true ? this.configAll.pagos.stripe.apiUrltest : this.configAll.pagos.stripe.apiUrlprod
-      // var urlendpoint = "http://localhost:4242"
+          // const select = idpagosS.listamonedas.find(l => l.value === this.moneda);
+          // console.log(array);
+          objPago = idpagosS[this.paisselect.id];
+          
+          arraypagos= objPago.find(pago=>pago.tipo === tipoSuscripcion);
 
-      //prueba gratuita en dias
-      // console.log(this.configAll.pagos.stripe.pruebagratuita)
-      const trial_period_days = this.configAll.pagos.stripe.pruebagratuita;
-      // console.log(trial_period_days)
- 
-      
-      let stripe = Stripe(this.apikeystripe, locale);
-
-      var orderData={
-        priceId: priceId,
-        dominio: this.dominio,
-        external_reference,
-        trial_period_days,
-      }
-      // fetch(this.urlAPI+'/customer-portal', {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       'Access-Control-Allow-Origin': '*',
-      //     },
-      //     body: JSON.stringify({
-      //       sessionId: this. datosPago.collector_id,
-      //       dominio: `${this.dominio}/perfil`
-      //     }),
-      //   })
-      //LLAMADA A LA API EXTERNA PARA CREAR UNA SESION DE PAGO
-      // fetch("http://localhost:4242/create-checkout-session", {
-      fetch(urlendpoint+"/create-checkout-session", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          'Access-Control-Allow-Origin': '*',
-        },
-        body: JSON.stringify(orderData)
-      })
-      .then((result) => {
-        if (!result.ok) {
-          return result.json().then((json) => {
-            if (json.error && json.error.message) {
-              throw new Error(result.url + ' ' + result.status + ' ' + json.error.message);
-            }
-          });
         }
-        return result.json();
-      })
+        else{
+          objPago = idpagosS.mexico; 
+          arraypagos = objPago.find(pago=>pago.tipo === tipoSuscripcion);
+        }
+  
+        // this.importe = priceTipo === 'trimestral' ? "$500.00 MX" : "$1500.00 MX";
+        // this.moneda === "ars" ? this.idpagosStripe.argentina :
 
-      .then((data) => {
-        //DATOS PARA PANTALLA DE PAGO EXITOSO
-        data.tipoSuscripcion = tipoSuscripcion;
-        data.importe = this.importe;
-        orderData.tipoSuscripcion=tipoSuscripcion
-        orderData.importe=this.importe
-        orderData.external_reference=external_reference 
-        // console.log("data");
-        // console.log("data");
-        // console.log(data);
+        // var arraypagos= objPago.find(pago=>pago.tipo === tipoSuscripcion);
 
-        //DATA EN STORAGE PARA COMPROBARLA AL HACERASE EL PAGO EXITOSO
-        localStorage.setItem("payment_intent", JSON.stringify(data) );
-        localStorage.setItem("user", JSON.stringify(this.datosUsuario) );
+        this.importe  = arraypagos.monto
 
-        orderData.medio="Stripe"
-        this.registroPago(orderData)
+        const locale = "es"
+        
+        //SE VERIFICA QUE TIPO DE MEMBRESIA SE DESEA PAGAR
+        const priceId = this.configAll.pagos.stripe.modoprueba===true ? arraypagos.idtest : arraypagos.idprod
 
-        //SE EJECUTA LA VENTANA DE STRIPE PARA INSERTAR DATOS DE LA TARJETA
-        // console.log(data.sessionId)
-        stripe
-          .redirectToCheckout({
-            sessionId: data.sessionId
-          })
-          .then( (result) => {
+        var urlendpoint=this.configAll.pagos.stripe.modoprueba === true ? this.configAll.pagos.stripe.apiUrltest : this.configAll.pagos.stripe.apiUrlprod
+        // var urlendpoint = "http://localhost:4242"
 
-            if (result.error) {
-              // var displayError = document.getElementById("error-message");
-              // displayError.textContent = result.error.message;
-              console.log(result.error)
-            }else{
-              localStorage.setItem("result_beta", JSON.stringify(result) );
+        //prueba gratuita en dias
+        // console.log(this.configAll.pagos.stripe.pruebagratuita)
+        const trial_period_days = this.configAll.pagos.stripe.pruebagratuita;
+        // console.log(trial_period_days)
+  
+        
+        let stripe = Stripe(this.apikeystripe, locale);
 
-            }
-          });
-      });
+        var orderData={
+          priceId: priceId,
+          dominio: this.dominio,
+          external_reference,
+          trial_period_days,
+        }
+        // fetch(this.urlAPI+'/customer-portal', {
+        //     method: 'POST',
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //       'Access-Control-Allow-Origin': '*',
+        //     },
+        //     body: JSON.stringify({
+        //       sessionId: this. datosPago.collector_id,
+        //       dominio: `${this.dominio}/perfil`
+        //     }),
+        //   })
+        //LLAMADA A LA API EXTERNA PARA CREAR UNA SESION DE PAGO
+        // fetch("http://localhost:4242/create-checkout-session", {
+        fetch(urlendpoint+"/create-checkout-session", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            'Access-Control-Allow-Origin': '*',
+          },
+          body: JSON.stringify(orderData)
+        })
+        .then((result) => {
+          if (!result.ok) {
+            return result.json().then((json) => {
+              if (json.error && json.error.message) {
+                throw new Error(result.url + ' ' + result.status + ' ' + json.error.message);
+              }
+            });
+          }
+          return result.json();
+        })
+
+        .then((data) => {
+          //DATOS PARA PANTALLA DE PAGO EXITOSO
+          data.tipoSuscripcion = tipoSuscripcion;
+          data.importe = this.importe;
+          orderData.tipoSuscripcion=tipoSuscripcion
+          orderData.importe=this.importe
+          orderData.external_reference=external_reference 
+          // console.log("data");
+          // console.log("data");
+          // console.log(data);
+
+          //DATA EN STORAGE PARA COMPROBARLA AL HACERASE EL PAGO EXITOSO
+          localStorage.setItem("payment_intent", JSON.stringify(data) );
+          localStorage.setItem("user", JSON.stringify(this.datosUsuario) );
+
+          orderData.medio="Stripe"
+          this.registroPago(orderData)
+
+          //SE EJECUTA LA VENTANA DE STRIPE PARA INSERTAR DATOS DE LA TARJETA
+          // console.log(data.sessionId)
+          stripe
+            .redirectToCheckout({
+              sessionId: data.sessionId
+            })
+            .then( (result) => {
+
+              if (result.error) {
+                // var displayError = document.getElementById("error-message");
+                // displayError.textContent = result.error.message;
+                console.log(result.error)
+              }else{
+                localStorage.setItem("result_beta", JSON.stringify(result) );
+
+              }
+            });
+        });
+      }
+      else
+      {
+        alert("Seleccione el tipo de moneda")
+        this.dialogMoneda =true;
+      }
 
     },
 
 
   },
+  watch:{
+    moneda(){
+      const {idpagosS} = this.configAll.pagos.stripe
+
+      // const array =  this.moneda === "mxn" ? idpagosS.mexico :
+      // this.moneda === "ars" ? idpagosS.argentina :
+      // this.moneda === "usd" ? idpagosS.estadosunidos : idpagosS.chile;
+
+    this.paisselect = idpagosS.listamonedas.find(l => l.value === this.moneda);
+      // console.log(array);
+      const array = idpagosS[this.paisselect.id];
+      array.forEach(pago=>{
+        if(pago.tipo === "mensual")
+          this.mestitle = "$"+pago.monto
+        else if(pago.tipo === "trimestral")
+          this.trimestretitle = "$"+pago.monto
+        else  if(pago.tipo === "semestral")
+          this.semestretitle = "$"+pago.monto
+        else if(pago.tipo === "anual")
+          this.anualtitle = "$"+pago.monto
+      });
+
+
+    }
+  }
 }
